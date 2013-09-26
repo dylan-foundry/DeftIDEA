@@ -8,5 +8,6 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="org.dylanfoundry.deft.DylanFileTypeFactory"/>
+    <fileTypeFactory implementation="org.dylanfoundry.deft.LIDFileTypeFactory"/>
   </extensions>
 </idea-plugin>

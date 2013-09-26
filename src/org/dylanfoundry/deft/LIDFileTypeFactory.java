@@ -16,16 +16,15 @@
 
 package org.dylanfoundry.deft;
 
-import com.intellij.openapi.util.IconLoader;
+import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
+import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
-
-public class DylanIcons {
-  private static Icon load(String path) {
-    return IconLoader.getIcon(path, DylanIcons.class);
+public class LIDFileTypeFactory extends FileTypeFactory {
+  public void createFileTypes(@NotNull FileTypeConsumer consumer) {
+    consumer.consume(
+            LIDFileType.INSTANCE,
+            new ExtensionFileNameMatcher(LIDFileType.DEFAULT_EXTENSION));
   }
-
-  public static final Icon DYLAN_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
-  public static final Icon LID_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
 }
-

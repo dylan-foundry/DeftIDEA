@@ -24,27 +24,27 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
-public class DylanFileType extends LanguageFileType {
-  public static final LanguageFileType INSTANCE = new DylanFileType();
+public class LIDFileType extends LanguageFileType {
+  public static final LanguageFileType INSTANCE = new LIDFileType();
   @NonNls
-  public static final String DEFAULT_EXTENSION = "dylan";
+  public static final String DEFAULT_EXTENSION = "lid";
 
-  private DylanFileType() {
-    super(DylanLanguage.INSTANCE);
+  private LIDFileType() {
+    super(LIDLanguage.INSTANCE);
   }
 
   @NonNls
   @NotNull
   @Override
   public String getName() {
-    return DylanBundle.message("dylan.file.type.name");
+    return DylanBundle.message("lid.file.type.name");
   }
 
   @NonNls
   @NotNull
   @Override
   public String getDescription() {
-    return DylanBundle.message("dylan.file.type.description");
+    return DylanBundle.message("lid.file.type.description");
   }
 
   @NonNls
@@ -56,7 +56,7 @@ public class DylanFileType extends LanguageFileType {
 
   @Override
   public Icon getIcon() {
-    return DylanIcons.DYLAN_FILE;
+    return DylanIcons.LID_FILE;
   }
 
   @Override
@@ -64,4 +64,3 @@ public class DylanFileType extends LanguageFileType {
     return CharsetToolkit.UTF8;
   }
 }
-

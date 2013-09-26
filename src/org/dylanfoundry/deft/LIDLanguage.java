@@ -16,16 +16,12 @@
 
 package org.dylanfoundry.deft;
 
-import com.intellij.openapi.util.IconLoader;
+import com.intellij.lang.Language;
 
-import javax.swing.*;
+public class LIDLanguage extends Language {
+  public static final Language INSTANCE = new LIDLanguage();
 
-public class DylanIcons {
-  private static Icon load(String path) {
-    return IconLoader.getIcon(path, DylanIcons.class);
+  private LIDLanguage() {
+    super("LID", "application/lid");
   }
-
-  public static final Icon DYLAN_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
-  public static final Icon LID_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
 }
-
