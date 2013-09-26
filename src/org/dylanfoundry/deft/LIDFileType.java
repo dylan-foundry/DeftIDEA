@@ -37,14 +37,14 @@ public class LIDFileType extends LanguageFileType {
   @NotNull
   @Override
   public String getName() {
-    return DylanBundle.message("lid.file.type.name");
+    return DeftBundle.message("lid.file.type.name");
   }
 
   @NonNls
   @NotNull
   @Override
   public String getDescription() {
-    return DylanBundle.message("lid.file.type.description");
+    return DeftBundle.message("lid.file.type.description");
   }
 
   @NonNls

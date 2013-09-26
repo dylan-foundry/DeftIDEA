@@ -37,14 +37,14 @@ public class DylanFileType extends LanguageFileType {
   @NotNull
   @Override
   public String getName() {
-    return DylanBundle.message("dylan.file.type.name");
+    return DeftBundle.message("dylan.file.type.name");
   }
 
   @NonNls
   @NotNull
   @Override
   public String getDescription() {
-    return DylanBundle.message("dylan.file.type.description");
+    return DeftBundle.message("dylan.file.type.description");
   }
 
   @NonNls

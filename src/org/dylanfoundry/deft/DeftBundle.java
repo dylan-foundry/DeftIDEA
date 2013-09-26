@@ -24,11 +24,11 @@ import org.jetbrains.annotations.PropertyKey;
 import java.lang.ref.Reference;
 import java.util.ResourceBundle;
 
-public class DylanBundle {
+public class DeftBundle {
   private static Reference<ResourceBundle> ourBundle;
 
   @NonNls
-  private static final String BUNDLE = "org.dylanfoundry.deft.DylanBundle";
+  private static final String BUNDLE = "org.dylanfoundry.deft.DeftBundle";
 
   public static String message(@PropertyKey(resourceBundle = BUNDLE) String key, Object... params) {
     return CommonBundle.message(getBundle(), key, params);
