@@ -20,9 +20,9 @@ import com.intellij.openapi.util.IconLoader;
 
 import javax.swing.*;
 
-public class DylanIcons {
+public class DeftIcons {
   private static Icon load(String path) {
-    return IconLoader.getIcon(path, DylanIcons.class);
+    return IconLoader.getIcon(path, DeftIcons.class);
   }
 
   public static final Icon DYLAN_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16

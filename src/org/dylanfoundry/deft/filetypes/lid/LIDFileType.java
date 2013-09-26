@@ -20,7 +20,7 @@ import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.dylanfoundry.deft.DeftBundle;
-import org.dylanfoundry.deft.DylanIcons;
+import org.dylanfoundry.deft.DeftIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +58,7 @@ public class LIDFileType extends LanguageFileType {
 
   @Override
   public Icon getIcon() {
-    return DylanIcons.LID_FILE;
+    return DeftIcons.LID_FILE;
   }
 
   @Override
