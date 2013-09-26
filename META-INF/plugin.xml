@@ -1,0 +1,12 @@
+<idea-plugin version="2">
+  <id>org.dylanfoundry.deft</id>
+  <name>Dylan Support</name>
+  <description>
+    This plugin provides support for the Dylan programming language.
+  </description>
+  <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileTypeFactory implementation="org.dylanfoundry.deft.DylanFileTypeFactory"/>
+  </extensions>
+</idea-plugin>
