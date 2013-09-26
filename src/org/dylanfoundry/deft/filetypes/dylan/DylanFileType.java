@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft;
+package org.dylanfoundry.deft.filetypes.dylan;
 
 import com.intellij.openapi.fileTypes.LanguageFileType;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.dylanfoundry.deft.DeftBundle;
+import org.dylanfoundry.deft.DylanIcons;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 

@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft;
+package org.dylanfoundry.deft.filetypes.dylan;
 
 import com.intellij.lang.Language;
 
-public class LIDLanguage extends Language {
-  public static final Language INSTANCE = new LIDLanguage();
+public class DylanLanguage extends Language {
+  public static final Language INSTANCE = new DylanLanguage();
 
-  private LIDLanguage() {
-    super("LID", "application/lid");
+  private DylanLanguage() {
+    super("Dylan", "application/dylan");
   }
 }
+

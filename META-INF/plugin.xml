@@ -7,7 +7,7 @@
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileTypeFactory implementation="org.dylanfoundry.deft.DylanFileTypeFactory"/>
-    <fileTypeFactory implementation="org.dylanfoundry.deft.LIDFileTypeFactory"/>
+    <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.dylan.DylanFileTypeFactory"/>
+    <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.lid.LIDFileTypeFactory"/>
   </extensions>
 </idea-plugin>

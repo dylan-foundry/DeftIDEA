@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft;
+package org.dylanfoundry.deft.filetypes.dylan;
 
-import com.intellij.lang.Language;
+import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
+import org.jetbrains.annotations.NotNull;
 
-public class DylanLanguage extends Language {
-  public static final Language INSTANCE = new DylanLanguage();
-
-  private DylanLanguage() {
-    super("Dylan", "application/dylan");
+public class DylanFileTypeFactory extends FileTypeFactory {
+  public void createFileTypes(@NotNull FileTypeConsumer consumer) {
+    consumer.consume(
+      DylanFileType.INSTANCE,
+      new ExtensionFileNameMatcher(DylanFileType.DEFAULT_EXTENSION));
   }
 }
 

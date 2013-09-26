@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft;
+package org.dylanfoundry.deft.filetypes.lid;
 
-import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
-import com.intellij.openapi.fileTypes.FileTypeConsumer;
-import com.intellij.openapi.fileTypes.FileTypeFactory;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.lang.Language;
 
-public class LIDFileTypeFactory extends FileTypeFactory {
-  public void createFileTypes(@NotNull FileTypeConsumer consumer) {
-    consumer.consume(
-            LIDFileType.INSTANCE,
-            new ExtensionFileNameMatcher(LIDFileType.DEFAULT_EXTENSION));
+public class LIDLanguage extends Language {
+  public static final Language INSTANCE = new LIDLanguage();
+
+  private LIDLanguage() {
+    super("LID", "application/lid");
   }
 }
