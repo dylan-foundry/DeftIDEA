@@ -25,8 +25,8 @@ public class DeftIcons {
     return IconLoader.getIcon(path, DeftIcons.class);
   }
 
-  public static final Icon DYLAN_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
-  public static final Icon MELANGE_INTERFACE_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
-  public static final Icon LID_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
+  public static final Icon DYLAN_FILE = load("/org/dylanfoundry/deft/icons/file_dylan_16.png"); // 16x16
+  public static final Icon MELANGE_INTERFACE_FILE = load("/org/dylanfoundry/deft/icons/file_intr_16.png"); // 16x16
+  public static final Icon LID_FILE = load("/org/dylanfoundry/deft/icons/file_lid_16.png"); // 16x16
 }
 
