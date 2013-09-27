@@ -9,5 +9,6 @@
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.dylan.DylanFileTypeFactory"/>
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.lid.LIDFileTypeFactory"/>
+    <lang.parserDefinition language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDParserDefinition"/>
   </extensions>
 </idea-plugin>

@@ -1,0 +1,21 @@
+{
+  parserClass="org.dylanfoundry.deft.filetypes.lid.parser.LIDParser"
+  stubParserClass="org.dylanfoundry.deft.filetypes.lid.parser.GeneratedParserUtilBase"
+ 
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+ 
+  psiClassPrefix="LID"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.dylanfoundry.deft.filetypes.lid.psi"
+  psiImplPackage="org.dylanfoundry.deft.filetypes.lid.psi.impl"
+ 
+  elementTypeHolderClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDTypes"
+  elementTypeClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDElementType"
+  tokenTypeClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDTokenType"
+}
+ 
+lidFile ::= item_*
+ 
+private item_ ::= (property|COMMENT|CRLF)
+ 
+property ::= (KEY? SEPARATOR VALUE?) | KEY
