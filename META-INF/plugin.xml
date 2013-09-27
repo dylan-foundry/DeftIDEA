@@ -11,5 +11,6 @@
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.intr.MelangeInterfaceFileTypeFactory"/>
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.lid.LIDFileTypeFactory"/>
     <lang.parserDefinition language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDParserDefinition"/>
+    <lang.syntaxHighlighterFactory key="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDSyntaxHighlighterFactory"/>
   </extensions>
 </idea-plugin>
