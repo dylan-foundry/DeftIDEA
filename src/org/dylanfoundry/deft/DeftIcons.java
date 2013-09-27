@@ -26,6 +26,7 @@ public class DeftIcons {
   }
 
   public static final Icon DYLAN_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
+  public static final Icon MELANGE_INTERFACE_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
   public static final Icon LID_FILE = load("/org/dylanfoundry/deft/icons/dylan_16.png"); // 16x16
 }
 

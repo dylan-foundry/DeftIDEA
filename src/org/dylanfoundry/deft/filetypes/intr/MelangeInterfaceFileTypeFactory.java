@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft.filetypes.dylan;
+package org.dylanfoundry.deft.filetypes.intr;
 
-import com.intellij.lang.Language;
+import com.intellij.openapi.fileTypes.ExtensionFileNameMatcher;
+import com.intellij.openapi.fileTypes.FileTypeConsumer;
+import com.intellij.openapi.fileTypes.FileTypeFactory;
+import org.jetbrains.annotations.NotNull;
 
-public class DylanLanguage extends Language {
-  public static final Language INSTANCE = new DylanLanguage();
-
-  private DylanLanguage() {
-    super("Dylan", "application/dylan");
-  }
-
-  // This is used by MelangeInterfaceLanguage which extends
-  // the Dylan language.
-  protected DylanLanguage(String languageName) {
-    super(languageName);
+public class MelangeInterfaceFileTypeFactory extends FileTypeFactory {
+  public void createFileTypes(@NotNull FileTypeConsumer consumer) {
+    consumer.consume(
+      MelangeInterfaceFileType.INSTANCE,
+      new ExtensionFileNameMatcher(MelangeInterfaceFileType.DEFAULT_EXTENSION));
   }
 }
 

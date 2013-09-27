@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft.filetypes.dylan;
+package org.dylanfoundry.deft.filetypes.intr;
 
 import com.intellij.lang.Language;
+import org.dylanfoundry.deft.filetypes.dylan.DylanLanguage;
 
-public class DylanLanguage extends Language {
-  public static final Language INSTANCE = new DylanLanguage();
+public class MelangeInterfaceLanguage extends DylanLanguage {
+  public static final Language INSTANCE = new MelangeInterfaceLanguage();
 
-  private DylanLanguage() {
-    super("Dylan", "application/dylan");
-  }
-
-  // This is used by MelangeInterfaceLanguage which extends
-  // the Dylan language.
-  protected DylanLanguage(String languageName) {
-    super(languageName);
+  private MelangeInterfaceLanguage() {
+    super("Melange Interface");
   }
 }
 
