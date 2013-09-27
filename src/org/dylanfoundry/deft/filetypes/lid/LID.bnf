@@ -1,6 +1,6 @@
 {
   parserClass="org.dylanfoundry.deft.filetypes.lid.parser.LIDParser"
-  stubParserClass="org.dylanfoundry.deft.filetypes.lid.parser.GeneratedParserUtilBase"
+  stubParserClass="org.dylanfoundry.deft.parser.GeneratedParserUtilBase"
  
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
  

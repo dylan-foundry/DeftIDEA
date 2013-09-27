@@ -1,4 +1,4 @@
-package org.dylanfoundry.deft.filetypes.lid.parser;
+package org.dylanfoundry.deft.parser;
 
 import com.intellij.lang.*;
 import com.intellij.lang.impl.PsiBuilderAdapter;
