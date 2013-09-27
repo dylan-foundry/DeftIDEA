@@ -26,6 +26,9 @@ public class LIDParser implements PsiParser {
     if (root_ == PROPERTY) {
       result_ = property(builder_, level_ + 1);
     }
+    else if (root_ == VALUE_LIST) {
+      result_ = value_list(builder_, level_ + 1);
+    }
     else {
       Marker marker_ = builder_.mark();
       enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, null);
@@ -76,7 +79,7 @@ public class LIDParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (KEY? SEPARATOR VALUE?) | KEY
+  // KEY? SEPARATOR value_list
   public static boolean property(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property")) return false;
     if (!nextTokenIs(builder_, KEY) && !nextTokenIs(builder_, SEPARATOR)
@@ -85,7 +88,8 @@ public class LIDParser implements PsiParser {
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<property>");
     result_ = property_0(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, KEY);
+    result_ = result_ && consumeToken(builder_, SEPARATOR);
+    result_ = result_ && value_list(builder_, level_ + 1);
     if (result_) {
       marker_.done(PROPERTY);
     }
@@ -96,34 +100,31 @@ public class LIDParser implements PsiParser {
     return result_;
   }
 
-  // KEY? SEPARATOR VALUE?
+  // KEY?
   private static boolean property_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = property_0_0(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEPARATOR);
-    result_ = result_ && property_0_2(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // KEY?
-  private static boolean property_0_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "property_0_0")) return false;
     consumeToken(builder_, KEY);
     return true;
   }
 
-  // VALUE?
-  private static boolean property_0_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "property_0_2")) return false;
-    consumeToken(builder_, VALUE);
+  /* ********************************************************** */
+  // VALUE*
+  public static boolean value_list(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "value_list")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<value list>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!consumeToken(builder_, VALUE)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "value_list");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(VALUE_LIST);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
     return true;
   }
 
