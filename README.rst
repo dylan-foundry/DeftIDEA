@@ -17,3 +17,8 @@ a custom language plugin <http://confluence.jetbrains.com/display/IntelliJIDEA/P
 
 Be sure to also disable the external compiler via the *Settings → Compiler
 → Use external build* option.
+
+To run the plugin in a separate IntelliJ IDEA instance you need to add a run
+configuration. To do this open the *Run/Debug Configurations* window (via *Run
+→ Edit Configurations...*), click the *+* button and choose *Plugin*. You can
+rename your configuration to a more descriptive name such as *"DeftIDEA"*.
