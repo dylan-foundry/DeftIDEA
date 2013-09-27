@@ -9,6 +9,7 @@ import org.dylanfoundry.deft.filetypes.lid.psi.impl.*;
 public interface LIDTypes {
 
   IElementType PROPERTY = new LIDElementType("PROPERTY");
+  IElementType VALUE_LIST = new LIDElementType("VALUE_LIST");
 
   IElementType COMMENT = new LIDTokenType("COMMENT");
   IElementType CRLF = new LIDTokenType("CRLF");
@@ -21,6 +22,9 @@ public interface LIDTypes {
       IElementType type = node.getElementType();
        if (type == PROPERTY) {
         return new LIDPropertyImpl(node);
+      }
+      else if (type == VALUE_LIST) {
+        return new LIDValueListImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

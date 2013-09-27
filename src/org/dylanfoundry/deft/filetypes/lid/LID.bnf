@@ -18,4 +18,6 @@ lidFile ::= item_*
  
 private item_ ::= (property|COMMENT|CRLF)
  
-property ::= (KEY? SEPARATOR VALUE?) | KEY
+property ::= (KEY? SEPARATOR value_list)
+
+value_list ::= VALUE*
