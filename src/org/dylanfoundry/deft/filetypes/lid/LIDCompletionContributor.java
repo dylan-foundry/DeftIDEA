@@ -27,7 +27,12 @@ public class LIDCompletionContributor extends CompletionContributor {
         "Jam-Includes:",
         "Executable:",
         "Base-Address:",
-        "Linker-Options:"
+        "Linker-Options:",
+        "Copyright:",
+        "License:",
+        "Warranty:",
+        "Major-Version:",
+        "Minor-Version:"
     };
 
     public LIDCompletionContributor() {
