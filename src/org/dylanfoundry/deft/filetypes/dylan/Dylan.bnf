@@ -1,0 +1,23 @@
+{
+  parserClass="org.dylanfoundry.deft.filetypes.dylan.parser.DylanParser"
+  stubParserClass="org.dylanfoundry.deft.parser.GeneratedParserUtilBase"
+ 
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+ 
+  psiClassPrefix="Dylan"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.dylanfoundry.deft.filetypes.dylan.psi"
+  psiImplPackage="org.dylanfoundry.deft.filetypes.dylan.psi.impl"
+ 
+  elementTypeHolderClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes"
+  elementTypeClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanElementType"
+  tokenTypeClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanTokenType"
+}
+ 
+dylanFile ::= item_*
+ 
+private item_ ::= (property|COMMENT|CRLF)
+ 
+property ::= (KEY? SEPARATOR value_list)
+
+value_list ::= VALUE*
