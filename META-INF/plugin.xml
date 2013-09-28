@@ -14,6 +14,7 @@
     <!-- LID files -->
     <lang.parserDefinition language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDParserDefinition"/>
     <lang.syntaxHighlighterFactory key="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDSyntaxHighlighterFactory"/>
+    <completion.contributor language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDCompletionContributor"/>
     <colorSettingsPage implementation="org.dylanfoundry.deft.filetypes.lid.LIDColorSettingsPage"/>
 
     <!-- Dylan files -->

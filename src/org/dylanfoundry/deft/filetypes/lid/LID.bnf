@@ -20,4 +20,4 @@ private item_ ::= (property|COMMENT|CRLF)
  
 property ::= (KEY? SEPARATOR value_list)
 
-value_list ::= VALUE*
+value_list ::= (VALUE? CRLF)*
