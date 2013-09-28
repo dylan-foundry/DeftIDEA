@@ -36,13 +36,13 @@ SEPARATOR=[:]
 
 <YYINITIAL> {WHITE_SPACE}+                                  { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
  
-<WAITING_VALUE> {CRLF}                                      { yybegin(YYINITIAL); }
+<WAITING_VALUE> {CRLF}                                      { yybegin(YYINITIAL); return DylanTypes.CRLF; }
  
 <WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
  
 <WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return DylanTypes.VALUE; }
  
-{CRLF}                                                      { yybegin(YYINITIAL); }
+{CRLF}                                                      { yybegin(YYINITIAL); return DylanTypes.CRLF; }
  
 {WHITE_SPACE}+                                              { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
  

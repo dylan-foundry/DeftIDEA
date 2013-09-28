@@ -464,16 +464,16 @@ class DylanLexer implements FlexLexer {
       zzMarkedPos = zzMarkedPosL;
 
       switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
+        case 2: 
+          { yybegin(YYINITIAL); return DylanTypes.CRLF;
+          }
+        case 8: break;
         case 6: 
           { yybegin(YYINITIAL); return DylanTypes.VALUE;
           }
-        case 8: break;
+        case 9: break;
         case 4: 
           { yybegin(YYINITIAL); return DylanTypes.KEY;
-          }
-        case 9: break;
-        case 2: 
-          { yybegin(YYINITIAL);
           }
         case 10: break;
         case 1: 
