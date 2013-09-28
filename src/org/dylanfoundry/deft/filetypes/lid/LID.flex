@@ -15,6 +15,7 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
+END_OF_LINE_COMMENT=("//")[^\r\n]*
 CRLF= \n|\r|\r\n
 WHITE_SPACE=[\ \t\f]
 FIRST_VALUE_CHARACTER=[^ \n\r\f\\]
@@ -26,7 +27,9 @@ SEPARATOR=[:]
 %state WAITING_VALUE
 
 %%
- 
+
+<YYINITIAL> {END_OF_LINE_COMMENT}                           { yybegin(YYINITIAL); return LIDTypes.COMMENT; }
+
 <YYINITIAL> {FIRST_KEY_CHARACTER}{KEY_CHARACTER}*           { yybegin(YYINITIAL); return LIDTypes.KEY; }
 
 <YYINITIAL> {SEPARATOR}                                     { yybegin(WAITING_VALUE); return LIDTypes.SEPARATOR; }
