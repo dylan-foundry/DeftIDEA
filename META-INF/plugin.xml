@@ -12,5 +12,6 @@
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.lid.LIDFileTypeFactory"/>
     <lang.parserDefinition language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDParserDefinition"/>
     <lang.syntaxHighlighterFactory key="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDSyntaxHighlighterFactory"/>
+    <colorSettingsPage implementation="org.dylanfoundry.deft.filetypes.lid.LIDColorSettingsPage"/>
   </extensions>
 </idea-plugin>
