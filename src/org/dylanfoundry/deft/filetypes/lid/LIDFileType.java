@@ -30,6 +30,7 @@ public class LIDFileType extends LanguageFileType {
   public static final LanguageFileType INSTANCE = new LIDFileType();
   @NonNls
   public static final String DEFAULT_EXTENSION = "lid";
+  public static final String ALTERNATE_EXTENSION = "hdp";
 
   private LIDFileType() {
     super(LIDLanguage.INSTANCE);

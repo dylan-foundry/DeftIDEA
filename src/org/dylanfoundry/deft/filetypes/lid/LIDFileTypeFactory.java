@@ -25,6 +25,7 @@ public class LIDFileTypeFactory extends FileTypeFactory {
   public void createFileTypes(@NotNull FileTypeConsumer consumer) {
     consumer.consume(
             LIDFileType.INSTANCE,
-            new ExtensionFileNameMatcher(LIDFileType.DEFAULT_EXTENSION));
+            new ExtensionFileNameMatcher(LIDFileType.DEFAULT_EXTENSION),
+            new ExtensionFileNameMatcher(LIDFileType.ALTERNATE_EXTENSION));
   }
 }
