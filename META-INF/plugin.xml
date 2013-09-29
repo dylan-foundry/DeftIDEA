@@ -11,6 +11,12 @@
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.intr.MelangeInterfaceFileTypeFactory"/>
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.lid.LIDFileTypeFactory"/>
 
+    <sdkType implementation="org.dylanfoundry.deft.module.DeftSdkType"/>
+    <moduleType id="DYLAN_MODULE" implementationClass="org.dylanfoundry.deft.module.DeftModuleType"/>
+    <framework.type implementation="org.dylanfoundry.deft.module.DeftFrameworkType"/>
+    <facetType implementation="org.dylanfoundry.deft.module.facet.DeftFacetType"/>
+    <projectStructureDetector implementation="org.dylanfoundry.deft.module.DeftProjectStructureDetector"/>
+
     <!-- LID files -->
     <lang.parserDefinition language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDParserDefinition"/>
     <lang.syntaxHighlighterFactory key="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDSyntaxHighlighterFactory"/>
