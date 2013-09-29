@@ -5,6 +5,7 @@ import com.intellij.psi.PsiDirectory;
 import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.DeftIcons;
 import org.dylanfoundry.deft.filetypes.dylan.DylanFileType;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateDylanFileAction extends BaseCreateDeftFileAction {
 
@@ -12,6 +13,12 @@ public class CreateDylanFileAction extends BaseCreateDeftFileAction {
         super(DeftBundle.message("newfile.dylan.menu.action.text"),
               DeftBundle.message("newfile.dylan.menu.action.description"),
                 DeftIcons.DYLAN_FILE);
+    }
+
+    @NotNull
+    @Override
+    protected String getTemplateName() {
+        return DeftTemplatesFactory.NEW_DYLAN_FILE_NAME;
     }
 
     @Override

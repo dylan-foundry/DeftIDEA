@@ -5,6 +5,7 @@ import com.intellij.psi.PsiDirectory;
 import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.DeftIcons;
 import org.dylanfoundry.deft.filetypes.intr.MelangeInterfaceFileType;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateMelangeInterfaceFileAction extends BaseCreateDeftFileAction {
 
@@ -12,6 +13,12 @@ public class CreateMelangeInterfaceFileAction extends BaseCreateDeftFileAction {
         super(DeftBundle.message("newfile.intr.menu.action.text"),
               DeftBundle.message("newfile.intr.menu.action.description"),
                 DeftIcons.MELANGE_INTERFACE_FILE);
+    }
+
+    @NotNull
+    @Override
+    protected String getTemplateName() {
+        return DeftTemplatesFactory.NEW_INTR_FILE_NAME;
     }
 
     @Override

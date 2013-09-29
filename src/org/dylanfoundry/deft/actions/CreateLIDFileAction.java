@@ -5,6 +5,7 @@ import com.intellij.psi.PsiDirectory;
 import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.DeftIcons;
 import org.dylanfoundry.deft.filetypes.lid.LIDFileType;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateLIDFileAction extends BaseCreateDeftFileAction {
 
@@ -12,6 +13,12 @@ public class CreateLIDFileAction extends BaseCreateDeftFileAction {
         super(DeftBundle.message("newfile.lid.menu.action.text"),
               DeftBundle.message("newfile.lid.menu.action.description"),
                 DeftIcons.LID_FILE);
+    }
+
+    @NotNull
+    @Override
+    protected String getTemplateName() {
+        return DeftTemplatesFactory.NEW_LID_FILE_NAME;
     }
 
     @Override

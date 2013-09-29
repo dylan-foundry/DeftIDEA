@@ -7,6 +7,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -33,11 +35,21 @@ abstract public class BaseCreateDeftFileAction extends CreateElementActionBase {
 
     @NotNull
     protected PsiElement[] create(String newName, PsiDirectory directory) throws Exception {
-        return new PsiElement[] { directory.createFile(getFileName(newName)) };
+        return doCreate(newName, directory);
     }
 
     @NotNull
     protected  abstract FileType getFileType();
+
+    @NotNull
+    protected PsiElement[] doCreate(String newName, PsiDirectory directory) {
+        PsiFile file = createFileFromTemplate(directory, newName, getTemplateName());
+        PsiElement child = file.getLastChild();
+        return (child != null) ? new PsiElement[]{file, child} : new PsiElement[]{file};
+    }
+
+    @NotNull
+    protected abstract String getTemplateName();
 
     @NotNull
     protected String getFileName(String newName) {
@@ -45,6 +57,15 @@ abstract public class BaseCreateDeftFileAction extends CreateElementActionBase {
         if (newName.endsWith(defaultExtension))
             return newName;
         return newName + "." + defaultExtension;
+    }
+
+    protected PsiFile createFileFromTemplate(final PsiDirectory directory,
+                                                    String newName,
+                                                    String templateName,
+                                                    String... parameters) throws IncorrectOperationException {
+        String fileName = getFileName(newName);
+        return DeftTemplatesFactory.createFromTemplate(directory, newName, fileName, getFileType(),
+                templateName, parameters);
     }
 
     protected String getErrorTitle() {
