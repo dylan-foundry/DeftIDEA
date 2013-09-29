@@ -22,6 +22,7 @@
     <lang.syntaxHighlighterFactory key="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDSyntaxHighlighterFactory"/>
     <completion.contributor language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDCompletionContributor"/>
     <colorSettingsPage implementation="org.dylanfoundry.deft.filetypes.lid.LIDColorSettingsPage"/>
+    <inspectionToolProvider implementation="org.dylanfoundry.deft.filetypes.lid.inspections.InspectionProvider"/>
 
     <!-- Dylan files -->
     <lang.parserDefinition language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanParserDefinition"/>
