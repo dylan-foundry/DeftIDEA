@@ -21,7 +21,8 @@ import com.intellij.codeInspection.InspectionToolProvider;
 public class InspectionProvider implements InspectionToolProvider {
     public Class[] getInspectionClasses() {
         return new Class[] {
-          MustContainLibraryInspection.class
+          MustContainLibraryInspection.class,
+          ValidTargetTypeInspection.class
         };
     }
 }
