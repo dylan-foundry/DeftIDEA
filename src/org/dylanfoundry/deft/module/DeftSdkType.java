@@ -39,7 +39,7 @@ public class DeftSdkType extends SdkType {
   @Override
   public String suggestHomePath() {
     if (SystemInfo.isWindows) {
-      return "C:\\Lua";
+      return "C:\\Program Files\\Open Dylan";
     } else if (SystemInfo.isUnix) {
       return "/opt/opendylan-2013.1";
     }
