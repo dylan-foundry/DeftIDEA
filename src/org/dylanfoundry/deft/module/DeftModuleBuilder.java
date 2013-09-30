@@ -26,6 +26,7 @@ import com.intellij.openapi.projectRoots.ProjectJdkTable;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.text.StringUtil;
+import org.dylanfoundry.deft.DeftBundle;
 import org.jetbrains.annotations.NotNull;
 import org.dylanfoundry.deft.DeftIcons;
 import org.dylanfoundry.deft.module.facet.DeftFacet;
@@ -60,22 +61,20 @@ public class DeftModuleBuilder extends JavaModuleBuilder implements ModuleBuilde
   @Override
   public String getDescription() {
     if (ProjectJdkTable.getInstance().getSdksOfType(DeftSdkType.getInstance()).isEmpty()) {
-      return "<html><body>Before you start make sure you have Open Dylan installed." +
-          "<br/>Download from<a href='http://opendylan.org/download/'>OpenDylan.org</a>." +
-          "<br/>Unpack the file to any folder and select it as the Open Dylan SDK.</body></html>";
+      return DeftBundle.message("module.description.no_sdk");
     } else {
-      return "Dylan module";
+      return DeftBundle.message("module.description");
     }
   }
 
   @Override
   public String getPresentableName() {
-    return "Dylan Module";
+    return DeftBundle.message("module.name.presentable");
   }
 
   @Override
   public String getGroupName() {
-    return "Dylan";
+    return DeftBundle.message("module.name.group");
   }
 
   @Override
