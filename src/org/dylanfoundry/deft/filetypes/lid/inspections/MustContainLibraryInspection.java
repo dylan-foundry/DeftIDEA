@@ -21,6 +21,7 @@ import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.dylanfoundry.deft.filetypes.lid.psi.LIDFile;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDProperty;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
 import org.jetbrains.annotations.Nls;
@@ -43,18 +44,20 @@ class MustContainLibraryInspection extends AbstractLIDInspection {
     return new LIDVisitor() {
       @Override
       public void visitFile(PsiFile file) {
-        boolean hasLibraryProperty = false;
-        LIDProperty[] properties = PsiTreeUtil.getChildrenOfType(file, LIDProperty.class);
-        if (properties != null) {
-          for (LIDProperty property : properties) {
-            if (property.getFirstChild().getText().toLowerCase().equals("library")) {
-              hasLibraryProperty = true;
-              break;
+        if (file instanceof LIDFile) {
+          LIDProperty[] properties = PsiTreeUtil.getChildrenOfType(file, LIDProperty.class);
+          if (properties != null) {
+            boolean hasLibraryProperty = false;
+            for (LIDProperty property : properties) {
+              if (property.getFirstChild().getText().toLowerCase().equals("library")) {
+                hasLibraryProperty = true;
+                break;
+              }
+            }
+            if (hasLibraryProperty == false) {
+              holder.registerProblem(properties[0], "Must contain 'Library' property.", ProblemHighlightType.ERROR);
             }
           }
-        }
-        if (hasLibraryProperty == false) {
-          holder.registerProblem(properties[0], "Must contain 'Library' property.", ProblemHighlightType.ERROR);
         }
       }
     };
