@@ -37,7 +37,7 @@ public class DeftSdkComboBox extends ComboboxWithBrowseButton {
       @Override
       protected void customizeCellRenderer(JList list, Object value, int index, boolean selected, boolean hasFocus) {
         if (value instanceof Sdk) {
-          append(((Sdk) value).getName());
+          append(((Sdk) value).getName() + " (" + ((Sdk) value).getVersionString() + ")");
         } else {
           append("Select Open Dylan SDK", SimpleTextAttributes.ERROR_ATTRIBUTES);
         }
