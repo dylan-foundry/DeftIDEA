@@ -24,6 +24,7 @@ import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.ProjectJdkTable;
 import com.intellij.openapi.projectRoots.Sdk;
+import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.text.StringUtil;
 import org.dylanfoundry.deft.DeftBundle;
@@ -79,7 +80,7 @@ public class DeftModuleBuilder extends JavaModuleBuilder implements ModuleBuilde
 
   @Override
   public ModuleWizardStep[] createWizardSteps(WizardContext wizardContext, ModulesProvider modulesProvider) {
-    return new ModuleWizardStep[]{new DeftModuleWizardStep(this)};
+    return new ModuleWizardStep[0];
   }
 
   public void moduleCreated(@NotNull final Module module) {
@@ -115,5 +116,10 @@ public class DeftModuleBuilder extends JavaModuleBuilder implements ModuleBuilde
   @Override
   protected List<WizardInputField> getAdditionalFields() {
     return Arrays.<WizardInputField>asList(new DeftWizardInputField());
+  }
+
+  @Override
+  public boolean isSuitableSdkType(SdkTypeId sdkType) {
+    return sdkType instanceof DeftSdkType;
   }
 }
