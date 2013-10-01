@@ -7,7 +7,15 @@ import com.intellij.psi.PsiElement;
 
 public class DylanVisitor extends PsiElementVisitor {
 
+  public void visitHeader(@NotNull DylanHeader o) {
+    visitPsiElement(o);
+  }
+
   public void visitProperty(@NotNull DylanProperty o) {
+    visitPsiElement(o);
+  }
+
+  public void visitStatements(@NotNull DylanStatements o) {
     visitPsiElement(o);
   }
 

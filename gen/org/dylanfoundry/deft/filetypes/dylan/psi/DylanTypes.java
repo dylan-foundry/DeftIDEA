@@ -8,20 +8,41 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.impl.*;
 
 public interface DylanTypes {
 
+  IElementType HEADER = new DylanElementType("HEADER");
   IElementType PROPERTY = new DylanElementType("PROPERTY");
+  IElementType STATEMENTS = new DylanElementType("STATEMENTS");
   IElementType VALUE_LIST = new DylanElementType("VALUE_LIST");
 
+  IElementType BUILTIN = new DylanTokenType("BUILTIN");
+  IElementType CHARACTER = new DylanTokenType("CHARACTER");
+  IElementType CLASS = new DylanTokenType("CLASS");
   IElementType COMMENT = new DylanTokenType("COMMENT");
+  IElementType CONSTANT = new DylanTokenType("CONSTANT");
   IElementType CRLF = new DylanTokenType("CRLF");
+  IElementType FUNCTION = new DylanTokenType("FUNCTION");
+  IElementType IDENTIFIER = new DylanTokenType("IDENTIFIER");
   IElementType KEY = new DylanTokenType("KEY");
+  IElementType KEYWORD = new DylanTokenType("KEYWORD");
+  IElementType NUMBER = new DylanTokenType("NUMBER");
+  IElementType OPERATOR = new DylanTokenType("OPERATOR");
+  IElementType PUNCTUATION = new DylanTokenType("PUNCTUATION");
   IElementType SEPARATOR = new DylanTokenType("SEPARATOR");
+  IElementType SHARP_WORD = new DylanTokenType("SHARP_WORD");
+  IElementType STRING = new DylanTokenType("STRING");
+  IElementType SYMBOL = new DylanTokenType("SYMBOL");
   IElementType VALUE = new DylanTokenType("VALUE");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == PROPERTY) {
+       if (type == HEADER) {
+        return new DylanHeaderImpl(node);
+      }
+      else if (type == PROPERTY) {
         return new DylanPropertyImpl(node);
+      }
+      else if (type == STATEMENTS) {
+        return new DylanStatementsImpl(node);
       }
       else if (type == VALUE_LIST) {
         return new DylanValueListImpl(node);

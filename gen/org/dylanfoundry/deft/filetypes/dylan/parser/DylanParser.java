@@ -23,8 +23,14 @@ public class DylanParser implements PsiParser {
     int level_ = 0;
     boolean result_;
     builder_ = adapt_builder_(root_, builder_, this);
-    if (root_ == PROPERTY) {
+    if (root_ == HEADER) {
+      result_ = header(builder_, level_ + 1);
+    }
+    else if (root_ == PROPERTY) {
       result_ = property(builder_, level_ + 1);
+    }
+    else if (root_ == STATEMENTS) {
+      result_ = statements(builder_, level_ + 1);
     }
     else if (root_ == VALUE_LIST) {
       result_ = value_list(builder_, level_ + 1);
@@ -44,19 +50,40 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // item_*
+  // header statements
   static boolean dylanFile(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "dylanFile")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = header(builder_, level_ + 1);
+    result_ = result_ && statements(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // item_*
+  public static boolean header(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "header")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<header>");
     int offset_ = builder_.getCurrentOffset();
     while (true) {
       if (!item_(builder_, level_ + 1)) break;
       int next_offset_ = builder_.getCurrentOffset();
       if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "dylanFile");
+        empty_element_parsed_guard_(builder_, offset_, "header");
         break;
       }
       offset_ = next_offset_;
     }
+    marker_.done(HEADER);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
     return true;
   }
 
@@ -104,6 +131,56 @@ public class DylanParser implements PsiParser {
   private static boolean property_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_0")) return false;
     consumeToken(builder_, KEY);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|CRLF
+  static boolean statement_(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statement_")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, KEYWORD);
+    if (!result_) result_ = consumeToken(builder_, BUILTIN);
+    if (!result_) result_ = consumeToken(builder_, OPERATOR);
+    if (!result_) result_ = consumeToken(builder_, FUNCTION);
+    if (!result_) result_ = consumeToken(builder_, SHARP_WORD);
+    if (!result_) result_ = consumeToken(builder_, NUMBER);
+    if (!result_) result_ = consumeToken(builder_, PUNCTUATION);
+    if (!result_) result_ = consumeToken(builder_, IDENTIFIER);
+    if (!result_) result_ = consumeToken(builder_, CHARACTER);
+    if (!result_) result_ = consumeToken(builder_, STRING);
+    if (!result_) result_ = consumeToken(builder_, CLASS);
+    if (!result_) result_ = consumeToken(builder_, CONSTANT);
+    if (!result_) result_ = consumeToken(builder_, SYMBOL);
+    if (!result_) result_ = consumeToken(builder_, CRLF);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // statement_*
+  public static boolean statements(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statements")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<statements>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!statement_(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "statements");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(STATEMENTS);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
     return true;
   }
 
