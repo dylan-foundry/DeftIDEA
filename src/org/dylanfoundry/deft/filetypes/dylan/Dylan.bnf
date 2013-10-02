@@ -20,7 +20,7 @@ headers ::= header*
 
 header ::= (KEY SEPARATOR values)
 
-values ::= (VALUE? CRLF)*
+values ::= (VALUE CRLF)*
 
 source_records ::= source_record*
 
