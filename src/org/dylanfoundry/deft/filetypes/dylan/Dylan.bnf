@@ -20,10 +20,10 @@ headers ::= header*
 
 header ::= (KEY SEPARATOR values)
 
-values ::= (VALUE CRLF)*
+values ::= (VALUE? CRLF)*
 
 source_records ::= source_record*
 
-source_record ::= statement_*
+source_record ::= statement_
 
 private statement_ ::= (KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|COMMENT|CRLF)
