@@ -62,11 +62,11 @@ SEPARATOR=[:]
 // Dylan header
 <YYINITIAL> {
     {END_OF_LINE_COMMENT}                           { return DylanTypes.COMMENT; }
+    {CRLF}{CRLF}                                    { yybegin(DYLAN_CODE); return  DylanTypes.CRLF; }
     {ALPHA_CHARACTER}{KEY_CHARACTER}*               { return DylanTypes.KEY; }
     {SEPARATOR}                                     { yybegin(WAITING_VALUE); return DylanTypes.SEPARATOR; }
     {WHITE_SPACE}+                                  { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
     {CRLF}                                          { return DylanTypes.CRLF; }
-    {CRLF}{CRLF}                                    { yybegin(DYLAN_CODE); return  TokenType.WHITE_SPACE; }
 }
 
 <WAITING_VALUE> {
@@ -395,5 +395,5 @@ SEPARATOR=[:]
     .                                               { return DylanTypes.SYMBOL; }
 }
 
-{CRLF}                                              { yybegin(DYLAN_CODE); }
+{CRLF}                                              { yybegin(DYLAN_CODE); return DylanTypes.CRLF; }
 .                                                   { return TokenType.BAD_CHARACTER; }
