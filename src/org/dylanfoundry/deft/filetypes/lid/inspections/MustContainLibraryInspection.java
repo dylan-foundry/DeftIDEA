@@ -19,6 +19,7 @@ package org.dylanfoundry.deft.filetypes.lid.inspections;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
+import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItem;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItems;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
@@ -28,14 +29,14 @@ import org.jetbrains.annotations.NotNull;
 class MustContainLibraryInspection extends AbstractLIDInspection {
   @Override
   public String getStaticDescription() {
-    return "LID files must have a library keyword.";
+    return DeftBundle.message("inspections.lid.must-contain-library.static-description");
   }
 
   @Override
   @Nls
   @NotNull
   public String getDisplayName() {
-    return "Must contain 'Library'";
+    return DeftBundle.message("inspections.lid.must-contain-library.display-name");
   }
 
   public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -50,7 +51,7 @@ class MustContainLibraryInspection extends AbstractLIDInspection {
           }
         }
         if (hasLibraryProperty == false) {
-          holder.registerProblem(items.getFirstChild(), "Must contain 'Library' property.", ProblemHighlightType.ERROR);
+          holder.registerProblem(items.getFirstChild(), DeftBundle.message("inspections.lid.must-contain-library.register-problem"), ProblemHighlightType.ERROR);
         }
       }
     };

@@ -20,6 +20,7 @@ import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItem;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItems;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
@@ -29,14 +30,14 @@ import org.jetbrains.annotations.NotNull;
 class ValidTargetTypeInspection extends AbstractLIDInspection {
   @Override
   public String getStaticDescription() {
-    return "Target-Type must be valid.";
+    return DeftBundle.message("inspections.lid.valid-target-type.static-description");
   }
 
   @Override
   @Nls
   @NotNull
   public String getDisplayName() {
-    return "Valid 'Target-Type'";
+    return DeftBundle.message("inspections.lid.valid-target-type.display-name");
   }
 
   public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
@@ -49,7 +50,7 @@ class ValidTargetTypeInspection extends AbstractLIDInspection {
             if (value != null) {
               String valueText = value.getText().toLowerCase();
               if (!valueText.equals("dll") && !valueText.equals("executable")) {
-                holder.registerProblem(value, "Target-Type must be either 'dll' or 'executable'.", ProblemHighlightType.ERROR);
+                holder.registerProblem(value, DeftBundle.message("inspections.lid.valid-target-type.register-problem"), ProblemHighlightType.ERROR);
               }
             }
             break;
