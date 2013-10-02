@@ -10,7 +10,8 @@ public interface DylanTypes {
 
   IElementType HEADER = new DylanElementType("HEADER");
   IElementType PROPERTY = new DylanElementType("PROPERTY");
-  IElementType STATEMENTS = new DylanElementType("STATEMENTS");
+  IElementType SOURCE_RECORD = new DylanElementType("SOURCE_RECORD");
+  IElementType SOURCE_RECORDS = new DylanElementType("SOURCE_RECORDS");
   IElementType VALUE_LIST = new DylanElementType("VALUE_LIST");
 
   IElementType BUILTIN = new DylanTokenType("BUILTIN");
@@ -41,8 +42,11 @@ public interface DylanTypes {
       else if (type == PROPERTY) {
         return new DylanPropertyImpl(node);
       }
-      else if (type == STATEMENTS) {
-        return new DylanStatementsImpl(node);
+      else if (type == SOURCE_RECORD) {
+        return new DylanSourceRecordImpl(node);
+      }
+      else if (type == SOURCE_RECORDS) {
+        return new DylanSourceRecordsImpl(node);
       }
       else if (type == VALUE_LIST) {
         return new DylanValueListImpl(node);

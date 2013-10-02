@@ -15,7 +15,11 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitStatements(@NotNull DylanStatements o) {
+  public void visitSourceRecord(@NotNull DylanSourceRecord o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSourceRecords(@NotNull DylanSourceRecords o) {
     visitPsiElement(o);
   }
 

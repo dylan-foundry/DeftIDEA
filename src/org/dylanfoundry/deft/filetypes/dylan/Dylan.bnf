@@ -14,7 +14,7 @@
   tokenTypeClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanTokenType"
 }
  
-dylanFile ::= header statements
+dylanFile ::= header source_records
 
 header ::= item_*
 
@@ -24,6 +24,8 @@ property ::= (KEY? SEPARATOR value_list)
 
 value_list ::= (VALUE? CRLF)*
 
-statements ::= statement_*
+source_records ::= source_record*
+
+source_record ::= statement_*
 
 private statement_ ::= (KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|CRLF)

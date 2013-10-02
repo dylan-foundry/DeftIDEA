@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanStatements extends PsiElement {
+public interface DylanSourceRecords extends PsiElement {
+
+  @NotNull
+  List<DylanSourceRecord> getSourceRecordList();
 
 }

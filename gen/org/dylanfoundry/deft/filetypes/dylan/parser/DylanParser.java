@@ -29,8 +29,11 @@ public class DylanParser implements PsiParser {
     else if (root_ == PROPERTY) {
       result_ = property(builder_, level_ + 1);
     }
-    else if (root_ == STATEMENTS) {
-      result_ = statements(builder_, level_ + 1);
+    else if (root_ == SOURCE_RECORD) {
+      result_ = source_record(builder_, level_ + 1);
+    }
+    else if (root_ == SOURCE_RECORDS) {
+      result_ = source_records(builder_, level_ + 1);
     }
     else if (root_ == VALUE_LIST) {
       result_ = value_list(builder_, level_ + 1);
@@ -50,13 +53,13 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // header statements
+  // header source_records
   static boolean dylanFile(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "dylanFile")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = header(builder_, level_ + 1);
-    result_ = result_ && statements(builder_, level_ + 1);
+    result_ = result_ && source_records(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -135,6 +138,48 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // statement_*
+  public static boolean source_record(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "source_record")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<source record>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!statement_(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "source_record");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(SOURCE_RECORD);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // source_record*
+  public static boolean source_records(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "source_records")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<source records>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!source_record(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "source_records");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(SOURCE_RECORDS);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  /* ********************************************************** */
   // KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|CRLF
   static boolean statement_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "statement_")) return false;
@@ -161,27 +206,6 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
-  }
-
-  /* ********************************************************** */
-  // statement_*
-  public static boolean statements(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "statements")) return false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<statements>");
-    int offset_ = builder_.getCurrentOffset();
-    while (true) {
-      if (!statement_(builder_, level_ + 1)) break;
-      int next_offset_ = builder_.getCurrentOffset();
-      if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "statements");
-        break;
-      }
-      offset_ = next_offset_;
-    }
-    marker_.done(STATEMENTS);
-    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
-    return true;
   }
 
   /* ********************************************************** */
