@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanHeader extends PsiElement {
 
   @NotNull
-  List<DylanProperty> getPropertyList();
+  DylanValues getValues();
 
 }

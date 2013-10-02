@@ -26,8 +26,8 @@ public class DylanParser implements PsiParser {
     if (root_ == HEADER) {
       result_ = header(builder_, level_ + 1);
     }
-    else if (root_ == PROPERTY) {
-      result_ = property(builder_, level_ + 1);
+    else if (root_ == HEADERS) {
+      result_ = headers(builder_, level_ + 1);
     }
     else if (root_ == SOURCE_RECORD) {
       result_ = source_record(builder_, level_ + 1);
@@ -35,8 +35,8 @@ public class DylanParser implements PsiParser {
     else if (root_ == SOURCE_RECORDS) {
       result_ = source_records(builder_, level_ + 1);
     }
-    else if (root_ == VALUE_LIST) {
-      result_ = value_list(builder_, level_ + 1);
+    else if (root_ == VALUES) {
+      result_ = values(builder_, level_ + 1);
     }
     else {
       Marker marker_ = builder_.mark();
@@ -53,12 +53,12 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // header source_records
+  // headers source_records
   static boolean dylanFile(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "dylanFile")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = header(builder_, level_ + 1);
+    result_ = headers(builder_, level_ + 1);
     result_ = result_ && source_records(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -70,70 +70,41 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // item_*
+  // KEY SEPARATOR values
   public static boolean header(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "header")) return false;
+    if (!nextTokenIs(builder_, KEY)) return false;
+    boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<header>");
+    result_ = consumeTokens(builder_, 0, KEY, SEPARATOR);
+    result_ = result_ && values(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(HEADER);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // header*
+  public static boolean headers(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "headers")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<headers>");
     int offset_ = builder_.getCurrentOffset();
     while (true) {
-      if (!item_(builder_, level_ + 1)) break;
+      if (!header(builder_, level_ + 1)) break;
       int next_offset_ = builder_.getCurrentOffset();
       if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "header");
+        empty_element_parsed_guard_(builder_, offset_, "headers");
         break;
       }
       offset_ = next_offset_;
     }
-    marker_.done(HEADER);
+    marker_.done(HEADERS);
     exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // property|COMMENT|CRLF
-  static boolean item_(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "item_")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = property(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, COMMENT);
-    if (!result_) result_ = consumeToken(builder_, CRLF);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // KEY? SEPARATOR value_list
-  public static boolean property(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "property")) return false;
-    if (!nextTokenIs(builder_, KEY) && !nextTokenIs(builder_, SEPARATOR)
-        && replaceVariants(builder_, 2, "<property>")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<property>");
-    result_ = property_0(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEPARATOR);
-    result_ = result_ && value_list(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(PROPERTY);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
-    return result_;
-  }
-
-  // KEY?
-  private static boolean property_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "property_0")) return false;
-    consumeToken(builder_, KEY);
     return true;
   }
 
@@ -180,7 +151,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|CRLF
+  // KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|COMMENT|CRLF
   static boolean statement_(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "statement_")) return false;
     boolean result_ = false;
@@ -198,6 +169,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, CLASS);
     if (!result_) result_ = consumeToken(builder_, CONSTANT);
     if (!result_) result_ = consumeToken(builder_, SYMBOL);
+    if (!result_) result_ = consumeToken(builder_, COMMENT);
     if (!result_) result_ = consumeToken(builder_, CRLF);
     if (!result_) {
       marker_.rollbackTo();
@@ -210,31 +182,31 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // (VALUE? CRLF)*
-  public static boolean value_list(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "value_list")) return false;
+  public static boolean values(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "values")) return false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<value list>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<values>");
     int offset_ = builder_.getCurrentOffset();
     while (true) {
-      if (!value_list_0(builder_, level_ + 1)) break;
+      if (!values_0(builder_, level_ + 1)) break;
       int next_offset_ = builder_.getCurrentOffset();
       if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "value_list");
+        empty_element_parsed_guard_(builder_, offset_, "values");
         break;
       }
       offset_ = next_offset_;
     }
-    marker_.done(VALUE_LIST);
+    marker_.done(VALUES);
     exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
     return true;
   }
 
   // VALUE? CRLF
-  private static boolean value_list_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "value_list_0")) return false;
+  private static boolean values_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "values_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = value_list_0_0(builder_, level_ + 1);
+    result_ = values_0_0(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, CRLF);
     if (!result_) {
       marker_.rollbackTo();
@@ -246,8 +218,8 @@ public class DylanParser implements PsiParser {
   }
 
   // VALUE?
-  private static boolean value_list_0_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "value_list_0_0")) return false;
+  private static boolean values_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "values_0_0")) return false;
     consumeToken(builder_, VALUE);
     return true;
   }

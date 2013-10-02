@@ -9,10 +9,10 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.impl.*;
 public interface DylanTypes {
 
   IElementType HEADER = new DylanElementType("HEADER");
-  IElementType PROPERTY = new DylanElementType("PROPERTY");
+  IElementType HEADERS = new DylanElementType("HEADERS");
   IElementType SOURCE_RECORD = new DylanElementType("SOURCE_RECORD");
   IElementType SOURCE_RECORDS = new DylanElementType("SOURCE_RECORDS");
-  IElementType VALUE_LIST = new DylanElementType("VALUE_LIST");
+  IElementType VALUES = new DylanElementType("VALUES");
 
   IElementType BUILTIN = new DylanTokenType("BUILTIN");
   IElementType CHARACTER = new DylanTokenType("CHARACTER");
@@ -39,8 +39,8 @@ public interface DylanTypes {
        if (type == HEADER) {
         return new DylanHeaderImpl(node);
       }
-      else if (type == PROPERTY) {
-        return new DylanPropertyImpl(node);
+      else if (type == HEADERS) {
+        return new DylanHeadersImpl(node);
       }
       else if (type == SOURCE_RECORD) {
         return new DylanSourceRecordImpl(node);
@@ -48,8 +48,8 @@ public interface DylanTypes {
       else if (type == SOURCE_RECORDS) {
         return new DylanSourceRecordsImpl(node);
       }
-      else if (type == VALUE_LIST) {
-        return new DylanValueListImpl(node);
+      else if (type == VALUES) {
+        return new DylanValuesImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

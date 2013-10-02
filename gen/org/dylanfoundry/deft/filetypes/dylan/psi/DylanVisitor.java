@@ -11,7 +11,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitProperty(@NotNull DylanProperty o) {
+  public void visitHeaders(@NotNull DylanHeaders o) {
     visitPsiElement(o);
   }
 
@@ -23,7 +23,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitValueList(@NotNull DylanValueList o) {
+  public void visitValues(@NotNull DylanValues o) {
     visitPsiElement(o);
   }
 
