@@ -19,10 +19,8 @@ package org.dylanfoundry.deft.filetypes.lid.inspections;
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import org.dylanfoundry.deft.filetypes.lid.psi.LIDFile;
-import org.dylanfoundry.deft.filetypes.lid.psi.LIDProperty;
+import org.dylanfoundry.deft.filetypes.lid.psi.LIDItem;
+import org.dylanfoundry.deft.filetypes.lid.psi.LIDItems;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
@@ -43,21 +41,16 @@ class MustContainLibraryInspection extends AbstractLIDInspection {
   public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
     return new LIDVisitor() {
       @Override
-      public void visitFile(PsiFile file) {
-        if (file instanceof LIDFile) {
-          LIDProperty[] properties = PsiTreeUtil.getChildrenOfType(file, LIDProperty.class);
-          if (properties != null) {
-            boolean hasLibraryProperty = false;
-            for (LIDProperty property : properties) {
-              if (property.getFirstChild().getText().toLowerCase().equals("library")) {
-                hasLibraryProperty = true;
-                break;
-              }
-            }
-            if (hasLibraryProperty == false) {
-              holder.registerProblem(properties[0], "Must contain 'Library' property.", ProblemHighlightType.ERROR);
-            }
+      public void visitItems(LIDItems items) {
+        boolean hasLibraryProperty = false;
+        for (LIDItem item : items.getItemList()) {
+          if (item.getFirstChild().getText().toLowerCase().equals("library")) {
+            hasLibraryProperty = true;
+            break;
           }
+        }
+        if (hasLibraryProperty == false) {
+          holder.registerProblem(items.getFirstChild(), "Must contain 'Library' property.", ProblemHighlightType.ERROR);
         }
       }
     };

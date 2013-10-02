@@ -14,10 +14,10 @@
   tokenTypeClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDTokenType"
 }
  
-lidFile ::= item_*
- 
-private item_ ::= (property|COMMENT|CRLF)
- 
-property ::= (KEY? SEPARATOR value_list)
+lidFile ::= items
 
-value_list ::= (VALUE? CRLF)*
+items ::= item*
+ 
+item ::= (KEY SEPARATOR values)
+
+values ::= (VALUE CRLF?)*

@@ -7,11 +7,15 @@ import com.intellij.psi.PsiElement;
 
 public class LIDVisitor extends PsiElementVisitor {
 
-  public void visitProperty(@NotNull LIDProperty o) {
+  public void visitItem(@NotNull LIDItem o) {
     visitPsiElement(o);
   }
 
-  public void visitValueList(@NotNull LIDValueList o) {
+  public void visitItems(@NotNull LIDItems o) {
+    visitPsiElement(o);
+  }
+
+  public void visitValues(@NotNull LIDValues o) {
     visitPsiElement(o);
   }
 

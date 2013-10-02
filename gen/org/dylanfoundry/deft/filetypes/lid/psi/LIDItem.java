@@ -5,6 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface LIDValueList extends PsiElement {
+public interface LIDItem extends PsiElement {
+
+  @NotNull
+  LIDValues getValues();
 
 }

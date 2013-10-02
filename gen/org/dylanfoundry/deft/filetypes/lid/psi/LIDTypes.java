@@ -8,10 +8,10 @@ import org.dylanfoundry.deft.filetypes.lid.psi.impl.*;
 
 public interface LIDTypes {
 
-  IElementType PROPERTY = new LIDElementType("PROPERTY");
-  IElementType VALUE_LIST = new LIDElementType("VALUE_LIST");
+  IElementType ITEM = new LIDElementType("ITEM");
+  IElementType ITEMS = new LIDElementType("ITEMS");
+  IElementType VALUES = new LIDElementType("VALUES");
 
-  IElementType COMMENT = new LIDTokenType("COMMENT");
   IElementType CRLF = new LIDTokenType("CRLF");
   IElementType KEY = new LIDTokenType("KEY");
   IElementType SEPARATOR = new LIDTokenType("SEPARATOR");
@@ -20,11 +20,14 @@ public interface LIDTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == PROPERTY) {
-        return new LIDPropertyImpl(node);
+       if (type == ITEM) {
+        return new LIDItemImpl(node);
       }
-      else if (type == VALUE_LIST) {
-        return new LIDValueListImpl(node);
+      else if (type == ITEMS) {
+        return new LIDItemsImpl(node);
+      }
+      else if (type == VALUES) {
+        return new LIDValuesImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }
