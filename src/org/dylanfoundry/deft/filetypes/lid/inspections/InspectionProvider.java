@@ -22,6 +22,7 @@ public class InspectionProvider implements InspectionToolProvider {
     public Class[] getInspectionClasses() {
         return new Class[] {
           MustContainLibraryInspection.class,
+          NoDylanExtensionsInspection.class,
           ValidTargetTypeInspection.class
         };
     }
