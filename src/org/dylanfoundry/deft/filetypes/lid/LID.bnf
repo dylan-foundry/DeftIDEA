@@ -18,6 +18,10 @@ lidFile ::= items
 
 items ::= item*
  
-item ::= (KEY SEPARATOR values)
+item ::= (item_key SEPARATOR values)
 
-values ::= (VALUE CRLF?)*
+item_key ::= KEY
+
+values ::= (item_value CRLF?)*
+
+item_value ::= VALUE

@@ -17,6 +17,12 @@ public class LIDValuesImpl extends ASTWrapperPsiElement implements LIDValues {
     super(node);
   }
 
+  @Override
+  @NotNull
+  public List<LIDItemValue> getItemValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LIDItemValue.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof LIDVisitor) ((LIDVisitor)visitor).visitValues(this);
     else super.accept(visitor);

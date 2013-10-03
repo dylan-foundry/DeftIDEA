@@ -11,26 +11,14 @@ import static org.dylanfoundry.deft.filetypes.lid.psi.LIDTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.lid.psi.*;
 
-public class LIDItemImpl extends ASTWrapperPsiElement implements LIDItem {
+public class LIDItemValueImpl extends ASTWrapperPsiElement implements LIDItemValue {
 
-  public LIDItemImpl(ASTNode node) {
+  public LIDItemValueImpl(ASTNode node) {
     super(node);
   }
 
-  @Override
-  @NotNull
-  public LIDItemKey getItemKey() {
-    return findNotNullChildByClass(LIDItemKey.class);
-  }
-
-  @Override
-  @NotNull
-  public LIDValues getValues() {
-    return findNotNullChildByClass(LIDValues.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LIDVisitor) ((LIDVisitor)visitor).visitItem(this);
+    if (visitor instanceof LIDVisitor) ((LIDVisitor)visitor).visitItemValue(this);
     else super.accept(visitor);
   }
 

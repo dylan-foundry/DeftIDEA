@@ -11,6 +11,14 @@ public class LIDVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitItemKey(@NotNull LIDItemKey o) {
+    visitPsiElement(o);
+  }
+
+  public void visitItemValue(@NotNull LIDItemValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitItems(@NotNull LIDItems o) {
     visitPsiElement(o);
   }

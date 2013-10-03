@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface LIDValues extends PsiElement {
 
+  @NotNull
+  List<LIDItemValue> getItemValueList();
+
 }

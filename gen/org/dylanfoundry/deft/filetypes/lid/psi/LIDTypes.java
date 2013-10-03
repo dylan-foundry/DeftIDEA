@@ -10,6 +10,8 @@ public interface LIDTypes {
 
   IElementType ITEM = new LIDElementType("ITEM");
   IElementType ITEMS = new LIDElementType("ITEMS");
+  IElementType ITEM_KEY = new LIDElementType("ITEM_KEY");
+  IElementType ITEM_VALUE = new LIDElementType("ITEM_VALUE");
   IElementType VALUES = new LIDElementType("VALUES");
 
   IElementType CRLF = new LIDTokenType("CRLF");
@@ -25,6 +27,12 @@ public interface LIDTypes {
       }
       else if (type == ITEMS) {
         return new LIDItemsImpl(node);
+      }
+      else if (type == ITEM_KEY) {
+        return new LIDItemKeyImpl(node);
+      }
+      else if (type == ITEM_VALUE) {
+        return new LIDItemValueImpl(node);
       }
       else if (type == VALUES) {
         return new LIDValuesImpl(node);
