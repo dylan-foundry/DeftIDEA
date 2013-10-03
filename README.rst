@@ -22,3 +22,25 @@ To run the plugin in a separate IntelliJ IDEA instance you need to add a run
 configuration. To do this open the *Run/Debug Configurations* window (via *Run
 → Edit Configurations...*), click the *+* button and choose *Plugin*. You can
 rename your configuration to a more descriptive name such as *"DeftIDEA"*.
+
+Documentation
+-------------
+
+Writing an IntelliJ plugin requires finding and reading documentation on a
+variety of things:
+
+IntelliJ Plugin Development:
+
+* http://confluence.jetbrains.com/display/IDEADEV/PluginDevelopment
+
+GrammarKit:
+
+* https://github.com/JetBrains/Grammar-Kit/blob/master/README.md
+* https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md
+* https://github.com/JetBrains/Grammar-Kit/blob/master/HOWTO.md
+
+Configuring IntelliJ
+--------------------
+
+Virtual Whitespace at the end of the line:
+   This can be disabled in the editor preferences.
