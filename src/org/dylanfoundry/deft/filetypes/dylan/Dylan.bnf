@@ -26,8 +26,519 @@ values ::= (header_value? CRLF)*
 
 header_value ::= VALUE
 
-source_records ::= source_record*
+source_records ::= source_record | variable | expression | name | token | body? | case_body? | macro
 
-source_record ::= statement_
+token ::= name | SYMBOL | NUMBER | CHARACTER_LITERAL | STRING | operator | punctuation | hash_word
 
-private statement_ ::= (KEYWORD|BUILTIN|OPERATOR|FUNCTION|SHARP_WORD|NUMBER|PUNCTUATION|IDENTIFIER|CHARACTER|STRING|CLASS|CONSTANT|SYMBOL|COMMENT|CRLF)
+punctuation ::= bracketing_punctuation | non_bracketing_punctuation
+
+bracketing_punctuation ::= LPAREN | RPAREN | LBRACKET | RBRACKET | LBRACE | RBRACE | HASH_PAREN | HASH_BRACKET
+
+non_bracketing_punctuation ::=
+      COMMA
+    | DOT
+    | SEMICOLON
+    | COLON_COLON
+    | MINUS
+    | EQUAL
+    | EQUAL_EQUAL
+    | EQUAL_ARROW
+    | HASH_HASH
+    | QUERY
+    | QUERY_QUERY
+    | QUERY_EQUAL
+    | ELLIPSIS
+
+core_word ::= non_end_core_word | END
+
+non_end_core_word ::= DEFINE | HANDLER | LET | LOCAL | MACRO | OTHERWISE
+
+nondefining_word ::= NONDEFINING_BEGIN_WORD | NONDEFINING_FUNCTION_WORD | NONDEFINING_NONEXPRESSION_WORD
+
+define_body_word ::= DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_BODY_FUNCTION_WORD
+
+define_list_word ::= DEFINE_LIST_NONEXPRESSION_WORD | DEFINE_LIST_BEGIN_WORD | DEFINE_LIST_FUNCTION_WORD
+
+nonexpression_word ::= NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD
+
+begin_word ::= NONDEFINING_BEGIN_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_LIST_BEGIN_WORD
+
+function_word ::= NONDEFINING_FUNCTION_WORD | DEFINE_BODY_FUNCTION_WORD | DEFINE_LIST_FUNCTION_WORD
+
+reserved_word ::= core_word | NONDEFINING_FUNCTION_WORD | NONDEFINING_BEGIN_WORD | define_body_word | define_list_word
+
+unreserved_word ::= NONDEFINING_NONEXPRESSION_WORD
+
+name ::= reserved_word | unreserved_name
+
+escaped_name ::= ESCAPED_WORD | OPERATOR_NAME
+
+unreserved_name ::= unreserved_word | escaped_name
+
+nondefining_name ::= nondefining_word | escaped_name
+
+ordinary_name ::= nonexpression_word | escaped_name
+
+macro_name ::= nondefining_name | define_body_word | define_list_word
+
+name_not_end ::= macro_name | non_end_core_word
+
+hash_word ::= HASH_T | HASH_F | HASH_NEXT | HASH_REST | HASH_KEY | HASH_ALL_KEYS | HASH_INCLUDE
+
+operator ::= BINARY_OPERATOR_ONLY | UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+
+unary_operator ::= UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+
+binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+
+/* Program Structure, page 414 */
+
+source_record ::= body?
+
+body ::= constituents SEMICOLON?
+
+constituents ::= constituent | constituent SEMICOLON constituent
+
+constituent ::= non_expression_constituent | expression
+
+non_expression_constituent ::= definition | local_declaration
+
+macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO_CALL
+
+/* Property Lists, page 414 */
+
+property_list ::= property | property_list COMMA property
+
+property ::= SYMBOL value
+
+value ::= basic_fragment
+
+/* Fragments, page 415-416 */
+
+body_fragment ::= non_statement_body_fragment | statement non_statement_body_fragment_opt
+
+list_fragment ::= non_statement_list_fragment | statement non_statement_list_fragment_opt
+
+basic_fragment ::= non_statement_basic_fragment | statement non_statement_basic_fragment_opt
+
+non_statement_body_fragment ::=
+      definition semicolon_fragment_opt
+    | local_declaration semicolon_fragment_opt
+    | simple_fragment body_fragment_opt
+    | COMMA body_fragment_opt
+    | SEMICOLON body_fragment_opt
+
+semicolon_fragment ::= SEMICOLON body_fragment_opt
+
+non_statement_list_fragment ::= simple_fragment list_fragment_opt | COMMA list_fragment_opt
+
+non_statement_basic_fragment ::= simple_fragment basic_fragment_opt
+
+simple_fragment ::=
+      variable_name
+    | constant_fragment
+    | operator
+    | bracketed_fragment
+    | function_macro_call
+    | hash_word
+    | DOT
+    | COLON_COLON
+    | EQUAL_ARROW
+    | QUERY
+    | QUERY_QUERY
+    | QUERY_EQUAL
+    | ELLIPSIS
+    | HASH_HASH
+    | OTHERWISE
+    | PARSED_FUNCTION_CALL
+    | PARSED_MACRO_CALL
+
+bracketed_fragment ::=
+      LPAREN body_fragment_opt RPAREN
+    | LBRACKET body_fragment_opt RBRACKET
+    | LBRACE body_fragment_opt RBRACE
+
+constant_fragment ::=
+      NUMBER
+    | CHARACTER_LITERAL
+    | STRING
+    | SYMBOL
+    | HASH_PAREN constants DOT constant RPAREN
+    | HASH_PAREN constants_opt RPAREN
+    | HASH_BRACKET constants_opt RBRACKET
+    | PARSED_LIST_CONSTANT
+    | PARSED_VECTOR_CONSTANT
+
+/* Definitions, page 416 */
+
+definition ::= definition_macro_call | DEFINE MACRO macro_definition | PARSED_DEFINITION
+
+definition_macro_call ::=
+      DEFINE modifiers_opt define_body_word body_fragment_opt definition_tail
+    | DEFINE modifiers_opt define_list_word list_fragment_opt
+
+modifier ::= nondefining_name
+
+modifiers ::= modifier | modifiers modifier
+
+definition_tail ::= END | END macro_name | END define_body_word macro_name
+
+/* Local Declarations, page 417 */
+
+local_declaration ::=
+      LET bindings
+    | LET HANDLER condition EQUAL handler
+    | LOCAL local_methods
+    | PARSED_LOCAL_DECLARATION
+
+condition ::=
+      unparenthesized_operand
+    | LPAREN operand RPAREN operand_tails
+    | LPAREN operand COMMA property_list RPAREN
+
+handler ::= expression
+
+local_methods ::= method_definition | local_methods COMMA method_definition
+
+bindings ::= variable EQUAL expression | LPAREN variable_list RPAREN EQUAL expression
+
+variable_list ::= variables | variables COMMA HASH_REST variable_name | HASH_REST variable_name
+
+variables ::= variable | variables COMMA variable
+
+variable ::= variable_name | variable_name COLON_COLON operand
+
+variable_name ::= ordinary_name
+
+/* Expression, page 418-419 */
+
+expressions ::= expression | expressions COMMA expression
+
+expression ::= binary_operand | expression binary_operator binary_operand
+
+expression_no_symbol ::= binary_operand_no_symbol | binary_operand_no_symbol binary_operator binary_operand
+
+unparenthesized_expression ::= unparenthesized_binary_operand | unparenthesized_expression binary_operator binary_operand
+
+binary_operand_no_symbol ::= unary_operator_opt operand
+
+binary_operand ::= SYMBOL | binary_operand_no_symbol
+
+unparenthesized_binary_operand ::= SYMBOL | unparenthesized_operand | unary_operator operand
+
+operand ::= operand operand_tail | leaf
+
+unparenthesized_operand ::= unparenthesized_operand operand_tail | unparenthesized_leaf
+
+operand_tail ::= LPAREN arguments_opt RPAREN | LBRACKET arguments_opt RBRACKET | DOT variable_name
+
+operand_tails ::= | operand_tails operand_tail
+
+function_macro_call ::= function_word LPAREN body_fragment_opt RPAREN
+
+leaf ::= LPAREN expression RPAREN | unparenthesized_leaf
+
+unparenthesized_leaf ::=
+      literal
+    | variable_name
+    | function_macro_call
+    | statement
+    | PARSED_FUNCTION_CALL
+    | PARSED_MACRO_CALL
+
+arguments ::= argument | arguments COMMA argument
+
+argument ::= SYMBOL expression | expression_no_symbol | SYMBOL
+
+literal ::=
+      NUMBER
+    | CHARACTER_LITERAL
+    | string_literal
+    | HASH_T
+    | HASH_F
+    | HASH_PAREN constants DOT constant RPAREN
+    | HASH_PAREN constants_opt RPAREN
+    | HASH_BRACKET constants_opt RBRACKET
+    | PARSED_LIST_CONSTANT
+    | PARSED_VECTOR_CONSTANT
+
+string_literal ::= STRING | string_literal STRING
+
+constants ::= constant | constants COMMA constant
+
+constant ::= literal | SYMBOL
+
+/* Statements, page 419 */
+
+statement ::= begin_word body_fragment_opt end_clause
+
+end_clause ::= END BEGIN_WORD_opt
+
+/*
+ * The parsing of case bodies is changed in structure
+ * from the official BNF grammar, because that version
+ * leads to inherent shift/reduce conflicts between
+ * the expression used to introduce a case and the
+ * constituents of the case body.  This grammar should
+ * accept exactly the same set of input sequences, just
+ * parse LALR(1).  (I believe the grammar as presented
+ * is probably LALR(2), but don't ask me to prove it.)
+ */
+
+case_body ::= case_label case_constiuents
+
+case_label
+      unparenthesized_expression EQUAL_ARROW
+    | unparenthesized_expression COMMA expressions EQUAL_ARROW
+    | LPAREN expression RPAREN operand_tails EQUAL_ARROW
+    | LPAREN expression RPAREN operand_tails COMMA expressions EQUAL_ARROW
+    | LPAREN expression COMMA expressions RPAREN EQUAL_ARROW
+    | OTHERWISE EQUAL_ARROW_opt
+
+case_constiuents
+      case_tail
+    | LPAREN expression RPAREN case_tail
+    | unparenthesized_expression case_tail
+    | non_expression_constituent case_tail
+
+case_tail ::=
+    | SEMICOLON case_constiuents
+    | SEMICOLON case_label case_constiuents
+
+/* Methods, pages 420-421 */
+
+method_definition ::= method_name parameter_list body_opt END method_name_opt
+
+/*
+ * The hack for dealing with the word ``method'' is in
+ * the production for method_name.  If the optional
+ * variable_name is present, it is the name of the
+ * local method and the macro_name must be the word
+ * ``method.''  If the variable_name is not present,
+ * the name of the local method can be found in the
+ * macro_name;  it must be checked that it isn't a
+ * core word, etc.  I'm not sure that the syntactic
+ * category macro_name is the best possible, but it
+ * is workable.
+ *
+ * I feel unclean.
+ */
+
+method_name ::= macro_name variable_name_opt
+
+parameter_list ::=
+      LPAREN parameters_opt RPAREN semicolon_opt
+    | LPAREN parameters_opt RPAREN EQUAL_ARROW variable SEMICOLON
+    | LPAREN parameters_opt RPAREN EQUAL_ARROW LPAREN values_list_opt RPAREN semicolon_opt
+
+parameters ::=
+      required_parameters
+    | required_parameters COMMA next_rest_key_parameter_list
+    | next_rest_key_parameter_list
+
+next_rest_key_parameter_list ::=
+      HASH_NEXT variable_name
+    | HASH_NEXT variable_name COMMA rest_key_parameter_list
+    | rest_key_parameter_list
+
+rest_key_parameter_list ::=
+      HASH_REST variable_name
+    | HASH_REST variable_name COMMA key_parameter_list
+    | key_parameter_list
+
+key_parameter_list ::=
+      HASH_KEY
+    | HASH_KEY COMMA HASH_ALL_KEYS
+    | HASH_KEY keyword_parameters
+    | HASH_KEY keyword_parameters COMMA HASH_ALL_KEYS
+
+required_parameters ::=
+      required_parameter
+    | required_parameters COMMA required_parameter
+
+required_parameter ::=
+      variable
+    | variable_name EQUAL_EQUAL expression
+
+keyword_parameters ::=
+      keyword_parameter
+    | keyword_parameters COMMA keyword_parameter
+
+keyword_parameter ::= SYMBOL_opt variable default_opt
+
+default ::= EQUAL expression
+
+values_list ::=
+      variables
+    | variables COMMA HASH_REST variable
+    | HASH_REST variable
+
+/* Macro Definitions, page 421 */
+
+macro_definition ::=
+    macro_name main_rule_set aux_rule_sets_opt END MACRO_opt macro_name_opt
+
+main_rule_set ::=
+      body_style_definition_rules
+    | list_style_definition_rules
+    | statement_rules
+    | function_rules
+
+body_style_definition_rules ::=
+      body_style_definition_rule
+    | body_style_definition_rules body_style_definition_rule
+
+list_style_definition_rules ::=
+      list_style_definition_rule
+    | list_style_definition_rules list_style_definition_rule
+
+statement_rules ::=
+      statement_rule
+    | statement_rules statement_rule
+
+function_rules ::=
+      function_rule
+    | function_rules function_rule
+
+/*
+ * The following two rules are altered in substance from
+ * what appears in the BNF grammar, because that's inherently
+ * ambiguous in this area.  The original rules follow the
+ * word DEFINE with (roughly)
+ *
+ *   definition_head_opt macro_name pattern_opt
+ *
+ * but there's no way a stupid parser can tell which word
+ * in a sequence corresponds to the macro_name, unless some
+ * extra context-sensitive information is introduced.  Rather
+ * than mandating such odd behavior, I've simply decided to
+ * offload that work to the semantic analysis phase, and
+ * to leave these rules as simple as possible.
+ */
+
+body_style_definition_rule ::= LBRACE DEFINE pattern semicolon_opt END RBRACE EQUAL_ARROW rhs
+
+list_style_definition_rule ::= LBRACE DEFINE pattern RBRACE EQUAL_ARROW rhs
+
+rhs ::= LBRACE template_opt RBRACE semicolon_opt
+
+statement_rule ::= LBRACE macro_name maybe_pattern_and_semicolon END RBRACE EQUAL_ARROW rhs
+
+function_rule ::= LBRACE macro_name LPAREN pattern_opt RPAREN RBRACE EQUAL_ARROW rhs
+
+/* definition_head ::=
+      modifier_pattern
+    | definition_head modifier_pattern */
+
+/* modifier_pattern ::=
+      modifier
+    | pattern_variable */
+
+/* Patterns, pages 421-423 */
+
+maybe_pattern_and_semicolon ::= pattern semicolon_opt | semicolon_opt
+
+pattern ::= pattern_list | pattern SEMICOLON pattern_list
+
+pattern_list ::=
+      pattern_sequence
+    | pattern_sequence COMMA pattern_list
+    | property_list_pattern
+
+pattern_sequence ::=
+      simple_pattern
+    | pattern_sequence simple_pattern
+
+simple_pattern ::=
+      name_not_end
+    | EQUAL_ARROW
+    | bracketed_pattern
+    | binding_pattern
+    | pattern_variable
+
+bracketed_pattern ::=
+      LPAREN pattern_opt RPAREN
+    | LBRACKET pattern_opt RBRACKET
+    | LBRACE pattern_opt RBRACE
+
+binding_pattern ::=
+      pattern_variable COLON_COLON pattern_variable
+    | pattern_variable EQUAL pattern_variable
+    | pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
+
+pattern_variable ::=
+      QUERY name
+    | QUERY CONSTRAINED_NAME
+    | ELLIPSIS
+
+property_list_pattern ::=
+      HASH_REST pattern_variable
+    | HASH_KEY pattern_keywords_opt
+    | HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords_opt
+
+pattern_keywords ::=
+      HASH_ALL_KEYS
+    | pattern_keyword
+    | pattern_keyword COMMA pattern_keywords
+
+pattern_keyword ::=
+      QUERY name default_opt
+    | QUERY CONSTRAINED_NAME default_opt
+    | QUERY_QUERY name default_opt
+    | QUERY_QUERY CONSTRAINED_NAME default_opt
+
+/* Templates, pages 423-424 */
+
+template ::=
+      template_element
+    | template template_element
+
+template_element ::=
+      name
+    | SYMBOL
+    | NUMBER
+    | CHARACTER_LITERAL
+    | STRING
+    | UNARY_OPERATOR_ONLY
+    | separator
+    | hash_word
+    | DOT
+    | COLON_COLON
+    | EQUAL_ARROW
+    | LPAREN template_opt RPAREN
+    | LBRACKET template_opt RBRACKET
+    | LBRACE template_opt RBRACE
+    | HASH_PAREN template_opt RPAREN
+    | HASH_BRACKET template_opt RBRACKET
+    | PARSED_LIST_CONSTANT
+    | PARSED_VECTOR_CONSTANT
+    | substitution
+
+separator ::=
+      SEMICOLON
+    | COMMA
+    | binary_operator
+    /* idle thought:  what about moving '.' to here? */
+
+substitution ::=
+      name_prefix_opt QUERY name_string_or_symbol name_suffix_opt
+    | QUERY_QUERY name separator_opt ELLIPSIS
+    | ELLIPSIS
+    | QUERY_EQUAL name
+
+name_prefix ::= STRING HASH_HASH
+
+name_suffix ::= HASH_HASH STRING
+
+name_string_or_symbol ::= name | STRING | SYMBOL
+
+/* Auxiliary Rule Sets, page 424 */
+
+aux_rule_sets ::= aux_rule_set | aux_rule_sets aux_rule_set
+
+aux_rule_set ::= SYMBOL aux_rules
+
+aux_rules ::= aux_rule | aux_rules aux_rule
+
+aux_rule ::= LBRACE pattern_opt RBRACE EQUAL_ARROW rhs
+

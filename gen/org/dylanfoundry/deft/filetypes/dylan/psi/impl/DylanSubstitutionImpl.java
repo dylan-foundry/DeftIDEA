@@ -1,0 +1,55 @@
+// This is a generated file. Not intended for manual editing.
+package org.dylanfoundry.deft.filetypes.dylan.psi.impl;
+
+import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import org.dylanfoundry.deft.filetypes.dylan.psi.*;
+
+public class DylanSubstitutionImpl extends ASTWrapperPsiElement implements DylanSubstitution {
+
+  public DylanSubstitutionImpl(ASTNode node) {
+    super(node);
+  }
+
+  @Override
+  @Nullable
+  public DylanName getName() {
+    return findChildByClass(DylanName.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanNameStringOrSymbol getNameStringOrSymbol() {
+    return findChildByClass(DylanNameStringOrSymbol.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNamePrefixOpt() {
+    return findChildByType(NAME_PREFIX_OPT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNameSuffixOpt() {
+    return findChildByType(NAME_SUFFIX_OPT);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getSeparatorOpt() {
+    return findChildByType(SEPARATOR_OPT);
+  }
+
+  public void accept(@NotNull PsiElementVisitor visitor) {
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSubstitution(this);
+    else super.accept(visitor);
+  }
+
+}

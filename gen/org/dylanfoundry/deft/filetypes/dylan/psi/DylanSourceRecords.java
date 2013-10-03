@@ -7,7 +7,28 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanSourceRecords extends PsiElement {
 
-  @NotNull
-  List<DylanSourceRecord> getSourceRecordList();
+  @Nullable
+  DylanBody getBody();
+
+  @Nullable
+  DylanCaseBody getCaseBody();
+
+  @Nullable
+  DylanExpression getExpression();
+
+  @Nullable
+  DylanMacro getMacro();
+
+  @Nullable
+  DylanName getName();
+
+  @Nullable
+  DylanSourceRecord getSourceRecord();
+
+  @Nullable
+  DylanToken getToken();
+
+  @Nullable
+  DylanVariable getVariable();
 
 }

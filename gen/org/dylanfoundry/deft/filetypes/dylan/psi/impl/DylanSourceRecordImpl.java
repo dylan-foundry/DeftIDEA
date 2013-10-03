@@ -17,6 +17,12 @@ public class DylanSourceRecordImpl extends ASTWrapperPsiElement implements Dylan
     super(node);
   }
 
+  @Override
+  @Nullable
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSourceRecord(this);
     else super.accept(visitor);

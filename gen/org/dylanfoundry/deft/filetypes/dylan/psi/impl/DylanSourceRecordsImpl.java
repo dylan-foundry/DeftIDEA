@@ -18,9 +18,51 @@ public class DylanSourceRecordsImpl extends ASTWrapperPsiElement implements Dyla
   }
 
   @Override
-  @NotNull
-  public List<DylanSourceRecord> getSourceRecordList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanSourceRecord.class);
+  @Nullable
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanCaseBody getCaseBody() {
+    return findChildByClass(DylanCaseBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanExpression getExpression() {
+    return findChildByClass(DylanExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanMacro getMacro() {
+    return findChildByClass(DylanMacro.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanName getName() {
+    return findChildByClass(DylanName.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanSourceRecord getSourceRecord() {
+    return findChildByClass(DylanSourceRecord.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanToken getToken() {
+    return findChildByClass(DylanToken.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanVariable getVariable() {
+    return findChildByClass(DylanVariable.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
