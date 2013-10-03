@@ -1,10 +1,13 @@
 <idea-plugin version="2">
   <id>org.dylanfoundry.deft</id>
-  <name>Dylan Support</name>
-  <description>
-    This plugin provides support for the Dylan programming language.
-  </description>
+  <name>DeftIDEA</name>
+  <description><![CDATA[
+    <p>This plugin provides support for the <a href="http://opendylan.org/">Dylan</a> programming language.</p>
+  ]]></description>
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
+  <version>0.1</version>
+
+  <idea-version since-build="129.239"/>
 
   <extensions defaultExtensionNs="com.intellij">
     <fileTypeFactory implementation="org.dylanfoundry.deft.filetypes.dylan.DylanFileTypeFactory"/>
