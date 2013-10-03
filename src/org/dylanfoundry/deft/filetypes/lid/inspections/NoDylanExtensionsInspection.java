@@ -55,6 +55,7 @@ public class NoDylanExtensionsInspection extends AbstractLIDInspection {
                 holder.registerProblem(value, DeftBundle.message("inspections.lid.no-dylan-extensions.register-problem"), ProblemHighlightType.WEAK_WARNING);
               }
             }
+            break;
           }
         }
       }
