@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, Konstantin Bulenkov.
+ * Copyright 2013, Bruce Mitchener, Jr.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,13 @@
 
 package org.dylanfoundry.deft.module;
 
+import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
+import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import org.dylanfoundry.deft.DeftIcons;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -55,5 +60,17 @@ public class DeftModuleType extends ModuleType<DeftModuleBuilder> {
 
   public static DeftModuleType getInstance() {
     return INSTANCE;
+  }
+
+  @NotNull
+  public ModuleWizardStep[] createWizardSteps(@NotNull final WizardContext wizardContext,
+                                              @NotNull final DeftModuleBuilder moduleBuilder,
+                                              @NotNull final ModulesProvider modulesProvider) {
+    return new ModuleWizardStep[]{new ProjectJdkForModuleStep(wizardContext, DeftSdkType.getInstance()) {
+      public void updateDataModel() {
+        super.updateDataModel();
+        moduleBuilder.setModuleJdk(getJdk());
+      }
+    }};
   }
 }

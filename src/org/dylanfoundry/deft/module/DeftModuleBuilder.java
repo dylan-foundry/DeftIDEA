@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, Konstantin Bulenkov.
+ * Copyright 2013, Bruce Mitchener, Jr.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,22 @@
 
 package org.dylanfoundry.deft.module;
 
-import com.intellij.facet.FacetManager;
-import com.intellij.facet.FacetType;
-import com.intellij.facet.FacetTypeRegistry;
-import com.intellij.facet.ModifiableFacetModel;
 import com.intellij.ide.util.projectWizard.*;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.projectRoots.ProjectJdkTable;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.projectRoots.SdkTypeId;
-import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
-import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.openapi.roots.CompilerModuleExtension;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.roots.ModuleRootManager;
 import org.dylanfoundry.deft.DeftBundle;
 import org.jetbrains.annotations.NotNull;
 import org.dylanfoundry.deft.DeftIcons;
-import org.dylanfoundry.deft.module.facet.DeftFacet;
-import org.dylanfoundry.deft.module.facet.DeftFacetType;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.List;
 
-public class DeftModuleBuilder extends JavaModuleBuilder implements ModuleBuilderListener {
-  private Sdk mySdk;
-
+public class DeftModuleBuilder extends JavaModuleBuilder implements SourcePathsBuilder, ModuleBuilderListener {
   public DeftModuleBuilder() {
     addListener(this);
   }
@@ -79,43 +71,21 @@ public class DeftModuleBuilder extends JavaModuleBuilder implements ModuleBuilde
   }
 
   @Override
-  public ModuleWizardStep[] createWizardSteps(WizardContext wizardContext, ModulesProvider modulesProvider) {
-    return new ModuleWizardStep[0];
+  public void setupRootModel(ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+    addListener(this);
+    super.setupRootModel(modifiableRootModel);
   }
 
   public void moduleCreated(@NotNull final Module module) {
-    if (mySdk != null && mySdk.getSdkType() instanceof DeftSdkType) {
-      setupFacet(module, mySdk);
+    ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(module).getModifiableModel();
+    try {
+      CompilerModuleExtension extension = modifiableModel.getModuleExtension(CompilerModuleExtension.class);
+      extension.setCompilerOutputPath(extension.getCompilerOutputUrl());
+      extension.inheritCompilerOutputPath(false);
     }
-  }
-
-  public static void setupFacet(Module module, Sdk sdk) {
-    final String facetId = DeftFacetType.getInstance().getStringId();
-    if (!StringUtil.isEmptyOrSpaces(facetId)) {
-
-      final FacetManager facetManager = FacetManager.getInstance(module);
-      final FacetType<?, ?> type = FacetTypeRegistry.getInstance().findFacetType(facetId);
-
-      if (type != null) {
-        if (facetManager.getFacetByType(type.getId()) == null) {
-          final ModifiableFacetModel model = facetManager.createModifiableModel();
-
-          final DeftFacet facet = (DeftFacet) facetManager.addFacet(type, type.getDefaultFacetName(), null);
-          facet.getConfiguration().setSdk(sdk);
-          model.addFacet(facet);
-          model.commit();
-        }
-      }
+    finally {
+      modifiableModel.commit();
     }
-  }
-
-  public void setSdk(Sdk sdk) {
-    mySdk = sdk;
-  }
-
-  @Override
-  protected List<WizardInputField> getAdditionalFields() {
-    return Arrays.<WizardInputField>asList(new DeftWizardInputField());
   }
 
   @Override

@@ -16,8 +16,6 @@
 
     <sdkType implementation="org.dylanfoundry.deft.module.DeftSdkType"/>
     <moduleType id="DEFT_MODULE" implementationClass="org.dylanfoundry.deft.module.DeftModuleType"/>
-    <framework.type implementation="org.dylanfoundry.deft.module.DeftFrameworkType"/>
-    <facetType implementation="org.dylanfoundry.deft.module.facet.DeftFacetType"/>
     <projectStructureDetector implementation="org.dylanfoundry.deft.module.DeftProjectStructureDetector"/>
 
     <!-- LID files -->

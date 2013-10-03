@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, Konstantin Bulenkov.
+ * Copyright 2013, Bruce Mitchener, Jr.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

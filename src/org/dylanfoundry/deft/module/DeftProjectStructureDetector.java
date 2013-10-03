@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, Konstantin Bulenkov.
+ * Copyright 2013, Bruce Mitchener, Jr.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,11 @@ package org.dylanfoundry.deft.module;
 
 import com.intellij.ide.util.importProject.ModuleDescriptor;
 import com.intellij.ide.util.importProject.ProjectDescriptor;
-import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
+import com.intellij.ide.util.projectWizard.ProjectJdkForModuleStep;
 import com.intellij.ide.util.projectWizard.importSources.DetectedProjectRoot;
 import com.intellij.ide.util.projectWizard.importSources.ProjectFromSourcesBuilder;
 import com.intellij.ide.util.projectWizard.importSources.ProjectStructureDetector;
-import com.intellij.openapi.module.JavaModuleType;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.util.io.FileUtilRt;
 import org.jetbrains.annotations.NotNull;
 
@@ -59,19 +56,7 @@ public class DeftProjectStructureDetector extends ProjectStructureDetector {
       if (modules.isEmpty()) {
         modules = new ArrayList<ModuleDescriptor>();
         for (DetectedProjectRoot root : roots) {
-          modules.add(new ModuleDescriptor(new File(builder.getBaseProjectPath()), JavaModuleType.getModuleType(), root){
-
-            @Override
-            public void updateModuleConfiguration(Module module, ModifiableRootModel rootModel) {
-              super.updateModuleConfiguration(module, rootModel);
-              for (ModuleBuilder moduleBuilder : builder.getContext().getAllBuilders()) {
-                if (moduleBuilder instanceof DeftModuleBuilder) {
-                  ((DeftModuleBuilder) moduleBuilder).moduleCreated(module);
-                  return;
-                }
-              }
-            }
-          });
+         modules.add(new ModuleDescriptor(new File(builder.getBaseProjectPath()), DeftModuleType.getInstance(), root));
         }
         projectDescriptor.setModules(modules);
       }
@@ -79,15 +64,12 @@ public class DeftProjectStructureDetector extends ProjectStructureDetector {
   }
 
   @Override
-  public List<ModuleWizardStep> createWizardSteps(ProjectFromSourcesBuilder builder, ProjectDescriptor projectDescriptor, Icon stepIcon) {
-    for (ModuleBuilder moduleBuilder : builder.getContext().getAllBuilders()) {
-      if (moduleBuilder instanceof DeftModuleBuilder) {
-        ArrayList<ModuleWizardStep> steps = new ArrayList<ModuleWizardStep>();
-        steps.add(new DeftModuleWizardStep((DeftModuleBuilder) moduleBuilder));
-        return steps;
-      }
-    }
-    return Collections.emptyList();
+  public List<ModuleWizardStep> createWizardSteps(ProjectFromSourcesBuilder builder,
+                                                  ProjectDescriptor projectDescriptor,
+                                                  Icon stepIcon) {
+    List<ModuleWizardStep> steps = new ArrayList<ModuleWizardStep>();
+    steps.add(new ProjectJdkForModuleStep(builder.getContext(), DeftSdkType.getInstance()));
+    return steps;
   }
 
   @Override
