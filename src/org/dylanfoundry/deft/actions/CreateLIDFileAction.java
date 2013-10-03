@@ -32,16 +32,19 @@ public class CreateLIDFileAction extends BaseCreateDeftFileAction {
     }
 
     @Override
+    @NotNull
     protected String getDialogPrompt() {
         return DeftBundle.message("newfile.lid.dlg.prompt");
     }
 
     @Override
+    @NotNull
     protected String getDialogTitle() {
         return DeftBundle.message("newfile.lid.dlg.title");
     }
 
     @Override
+    @NotNull
     protected FileType getFileType() {
         return LIDFileType.INSTANCE;
     }

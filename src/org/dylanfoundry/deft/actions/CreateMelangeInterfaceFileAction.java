@@ -32,16 +32,19 @@ public class CreateMelangeInterfaceFileAction extends BaseCreateDeftFileAction {
     }
 
     @Override
+    @NotNull
     protected String getDialogPrompt() {
         return DeftBundle.message("newfile.intr.dlg.prompt");
     }
 
     @Override
+    @NotNull
     protected String getDialogTitle() {
         return DeftBundle.message("newfile.intr.dlg.title");
     }
 
     @Override
+    @NotNull
     protected FileType getFileType() {
         return MelangeInterfaceFileType.INSTANCE;
     }

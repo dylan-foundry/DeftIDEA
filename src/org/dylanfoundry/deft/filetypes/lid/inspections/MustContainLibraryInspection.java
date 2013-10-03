@@ -39,10 +39,11 @@ class MustContainLibraryInspection extends AbstractLIDInspection {
     return DeftBundle.message("inspections.lid.must-contain-library.display-name");
   }
 
+  @NotNull
   public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
     return new LIDVisitor() {
       @Override
-      public void visitItems(LIDItems items) {
+      public void visitItems(@NotNull LIDItems items) {
         boolean hasLibraryProperty = false;
         for (LIDItem item : items.getItemList()) {
           if (item.getItemKey().getText().toLowerCase().equals("library")) {
@@ -50,7 +51,7 @@ class MustContainLibraryInspection extends AbstractLIDInspection {
             break;
           }
         }
-        if (hasLibraryProperty == false) {
+        if (!hasLibraryProperty) {
           holder.registerProblem(items.getFirstChild(), DeftBundle.message("inspections.lid.must-contain-library.register-problem"), ProblemHighlightType.ERROR);
         }
       }

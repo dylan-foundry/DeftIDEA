@@ -42,10 +42,11 @@ public class NoDylanExtensionsInspection extends AbstractLIDInspection {
     return DeftBundle.message("inspections.lid.no-dylan-extensions.display-name");
   }
 
+  @NotNull
   public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
     return new LIDVisitor() {
       @Override
-      public void visitItems(LIDItems items) {
+      public void visitItems(@NotNull LIDItems items) {
         for (LIDItem item : items.getItemList()) {
           if (item.getItemKey().getText().toLowerCase().equals("files")) {
             List<LIDItemValue> itemValues = item.getValues().getItemValueList();

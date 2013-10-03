@@ -32,16 +32,19 @@ public class CreateDylanFileAction extends BaseCreateDeftFileAction {
     }
 
     @Override
+    @NotNull
     protected String getDialogPrompt() {
         return DeftBundle.message("newfile.dylan.dlg.prompt");
     }
 
     @Override
+    @NotNull
     protected String getDialogTitle() {
         return DeftBundle.message("newfile.dylan.dlg.title");
     }
 
     @Override
+    @NotNull
     protected FileType getFileType() {
         return DylanFileType.INSTANCE;
     }

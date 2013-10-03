@@ -40,10 +40,11 @@ class ValidTargetTypeInspection extends AbstractLIDInspection {
     return DeftBundle.message("inspections.lid.valid-target-type.display-name");
   }
 
+  @NotNull
   public PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
     return new LIDVisitor() {
       @Override
-      public void visitItems(LIDItems items) {
+      public void visitItems(@NotNull LIDItems items) {
         for (LIDItem item : items.getItemList()) {
           if (item.getItemKey().getText().toLowerCase().equals("target-type")) {
             if (!item.getValues().getItemValueList().isEmpty()) {
