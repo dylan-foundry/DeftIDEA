@@ -18,9 +18,9 @@ public class DylanSemicolonFragmentImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
-  public PsiElement getBodyFragmentOpt() {
-    return findNotNullChildByType(BODY_FRAGMENT_OPT);
+  @Nullable
+  public DylanBodyFragment getBodyFragment() {
+    return findChildByClass(DylanBodyFragment.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

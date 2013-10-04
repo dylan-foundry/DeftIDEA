@@ -8,18 +8,21 @@ import com.intellij.psi.PsiElement;
 public interface DylanNonStatementBodyFragment extends PsiElement {
 
   @Nullable
+  DylanBodyFragment getBodyFragment();
+
+  @Nullable
   DylanDefinition getDefinition();
 
   @Nullable
   DylanLocalDeclaration getLocalDeclaration();
 
   @Nullable
+  DylanSemicolonFragment getSemicolonFragment();
+
+  @Nullable
   DylanSimpleFragment getSimpleFragment();
 
   @Nullable
-  PsiElement getBodyFragmentOpt();
-
-  @Nullable
-  PsiElement getSemicolonFragmentOpt();
+  DylanSlotDeclaration getSlotDeclaration();
 
 }

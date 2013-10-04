@@ -11,15 +11,15 @@ public interface DylanTemplateElement extends PsiElement {
   DylanHashWord getHashWord();
 
   @Nullable
-  DylanName getName();
-
-  @Nullable
   DylanSeparator getSeparator();
 
   @Nullable
   DylanSubstitution getSubstitution();
 
   @Nullable
-  PsiElement getTemplateOpt();
+  DylanTemplate getTemplate();
+
+  @Nullable
+  DylanWordName getWordName();
 
 }

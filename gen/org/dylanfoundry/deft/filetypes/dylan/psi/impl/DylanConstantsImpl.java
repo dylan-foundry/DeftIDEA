@@ -19,14 +19,8 @@ public class DylanConstantsImpl extends ASTWrapperPsiElement implements DylanCon
 
   @Override
   @NotNull
-  public DylanConstant getConstant() {
-    return findNotNullChildByClass(DylanConstant.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanConstants getConstants() {
-    return findChildByClass(DylanConstants.class);
+  public List<DylanConstant> getConstantList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanConstant.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

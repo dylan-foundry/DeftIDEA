@@ -19,14 +19,8 @@ public class DylanRequiredParametersImpl extends ASTWrapperPsiElement implements
 
   @Override
   @NotNull
-  public DylanRequiredParameter getRequiredParameter() {
-    return findNotNullChildByClass(DylanRequiredParameter.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanRequiredParameters getRequiredParameters() {
-    return findChildByClass(DylanRequiredParameters.class);
+  public List<DylanRequiredParameter> getRequiredParameterList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanRequiredParameter.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

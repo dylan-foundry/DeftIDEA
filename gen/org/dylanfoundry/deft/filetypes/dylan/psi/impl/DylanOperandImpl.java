@@ -18,21 +18,15 @@ public class DylanOperandImpl extends ASTWrapperPsiElement implements DylanOpera
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DylanLeaf getLeaf() {
-    return findChildByClass(DylanLeaf.class);
+    return findNotNullChildByClass(DylanLeaf.class);
   }
 
   @Override
-  @Nullable
-  public DylanOperand getOperand() {
-    return findChildByClass(DylanOperand.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperandTail getOperandTail() {
-    return findChildByClass(DylanOperandTail.class);
+  @NotNull
+  public List<DylanOperandTail> getOperandTailList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanOperandTail.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

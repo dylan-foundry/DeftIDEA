@@ -18,15 +18,9 @@ public class DylanRhsImpl extends ASTWrapperPsiElement implements DylanRhs {
   }
 
   @Override
-  @NotNull
-  public PsiElement getSemicolonOpt() {
-    return findNotNullChildByType(SEMICOLON_OPT);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getTemplateOpt() {
-    return findNotNullChildByType(TEMPLATE_OPT);
+  @Nullable
+  public DylanTemplate getTemplate() {
+    return findChildByClass(DylanTemplate.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

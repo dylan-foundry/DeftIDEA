@@ -16,7 +16,4 @@ public interface DylanLiteral extends PsiElement {
   @Nullable
   DylanStringLiteral getStringLiteral();
 
-  @Nullable
-  PsiElement getConstantsOpt();
-
 }

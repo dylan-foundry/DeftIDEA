@@ -19,6 +19,12 @@ public class DylanDefinitionMacroCallImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
+  public DylanBodyFragment getBodyFragment() {
+    return findChildByClass(DylanBodyFragment.class);
+  }
+
+  @Override
+  @Nullable
   public DylanDefineBodyWord getDefineBodyWord() {
     return findChildByClass(DylanDefineBodyWord.class);
   }
@@ -37,20 +43,14 @@ public class DylanDefinitionMacroCallImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public PsiElement getBodyFragmentOpt() {
-    return findChildByType(BODY_FRAGMENT_OPT);
+  public DylanListFragment getListFragment() {
+    return findChildByClass(DylanListFragment.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getListFragmentOpt() {
-    return findChildByType(LIST_FRAGMENT_OPT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getModifiersOpt() {
-    return findChildByType(MODIFIERS_OPT);
+  public DylanModifiers getModifiers() {
+    return findChildByClass(DylanModifiers.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -19,8 +19,8 @@ public class DylanSubstitutionImpl extends ASTWrapperPsiElement implements Dylan
 
   @Override
   @Nullable
-  public DylanName getName() {
-    return findChildByClass(DylanName.class);
+  public DylanNamePrefix getNamePrefix() {
+    return findChildByClass(DylanNamePrefix.class);
   }
 
   @Override
@@ -31,20 +31,20 @@ public class DylanSubstitutionImpl extends ASTWrapperPsiElement implements Dylan
 
   @Override
   @Nullable
-  public PsiElement getNamePrefixOpt() {
-    return findChildByType(NAME_PREFIX_OPT);
+  public DylanNameSuffix getNameSuffix() {
+    return findChildByClass(DylanNameSuffix.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getNameSuffixOpt() {
-    return findChildByType(NAME_SUFFIX_OPT);
+  public DylanSeparator getSeparator() {
+    return findChildByClass(DylanSeparator.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getSeparatorOpt() {
-    return findChildByType(SEPARATOR_OPT);
+  public DylanWordName getWordName() {
+    return findChildByClass(DylanWordName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

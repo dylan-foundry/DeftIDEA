@@ -18,27 +18,21 @@ public class DylanMethodDefinitionImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
+  @Nullable
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
+  }
+
+  @Override
   @NotNull
-  public DylanMethodName getMethodName() {
-    return findNotNullChildByClass(DylanMethodName.class);
+  public List<DylanMethodName> getMethodNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanMethodName.class);
   }
 
   @Override
   @NotNull
   public DylanParameterList getParameterList() {
     return findNotNullChildByClass(DylanParameterList.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getBodyOpt() {
-    return findNotNullChildByType(BODY_OPT);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getMethodNameOpt() {
-    return findNotNullChildByType(METHOD_NAME_OPT);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

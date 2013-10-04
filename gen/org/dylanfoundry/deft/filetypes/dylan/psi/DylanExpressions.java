@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanExpressions extends PsiElement {
 
   @NotNull
-  DylanExpression getExpression();
-
-  @Nullable
-  DylanExpressions getExpressions();
+  List<DylanExpression> getExpressionList();
 
 }

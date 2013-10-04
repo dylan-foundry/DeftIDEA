@@ -19,14 +19,14 @@ public class DylanPropertyListPatternImpl extends ASTWrapperPsiElement implement
 
   @Override
   @Nullable
-  public DylanPatternVariable getPatternVariable() {
-    return findChildByClass(DylanPatternVariable.class);
+  public DylanPatternKeywords getPatternKeywords() {
+    return findChildByClass(DylanPatternKeywords.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getPatternKeywordsOpt() {
-    return findChildByType(PATTERN_KEYWORDS_OPT);
+  public DylanPatternVariable getPatternVariable() {
+    return findChildByClass(DylanPatternVariable.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

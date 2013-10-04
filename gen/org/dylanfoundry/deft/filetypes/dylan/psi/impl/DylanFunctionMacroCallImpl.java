@@ -18,15 +18,15 @@ public class DylanFunctionMacroCallImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @NotNull
-  public DylanFunctionWord getFunctionWord() {
-    return findNotNullChildByClass(DylanFunctionWord.class);
+  @Nullable
+  public DylanBodyFragment getBodyFragment() {
+    return findChildByClass(DylanBodyFragment.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getBodyFragmentOpt() {
-    return findNotNullChildByType(BODY_FRAGMENT_OPT);
+  public DylanFunctionWord getFunctionWord() {
+    return findNotNullChildByClass(DylanFunctionWord.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

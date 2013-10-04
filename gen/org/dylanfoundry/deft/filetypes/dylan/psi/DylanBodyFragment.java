@@ -13,7 +13,4 @@ public interface DylanBodyFragment extends PsiElement {
   @Nullable
   DylanStatement getStatement();
 
-  @Nullable
-  PsiElement getNonStatementBodyFragmentOpt();
-
 }

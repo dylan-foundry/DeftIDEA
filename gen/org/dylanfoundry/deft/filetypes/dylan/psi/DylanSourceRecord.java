@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanSourceRecord extends PsiElement {
 
-  @Nullable
+  @NotNull
   DylanBody getBody();
 
 }

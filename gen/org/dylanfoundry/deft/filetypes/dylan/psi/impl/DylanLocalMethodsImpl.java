@@ -18,15 +18,9 @@ public class DylanLocalMethodsImpl extends ASTWrapperPsiElement implements Dylan
   }
 
   @Override
-  @Nullable
-  public DylanLocalMethods getLocalMethods() {
-    return findChildByClass(DylanLocalMethods.class);
-  }
-
-  @Override
   @NotNull
-  public DylanMethodDefinition getMethodDefinition() {
-    return findNotNullChildByClass(DylanMethodDefinition.class);
+  public List<DylanMethodDefinition> getMethodDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanMethodDefinition.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanRequiredParameters extends PsiElement {
 
   @NotNull
-  DylanRequiredParameter getRequiredParameter();
-
-  @Nullable
-  DylanRequiredParameters getRequiredParameters();
+  List<DylanRequiredParameter> getRequiredParameterList();
 
 }

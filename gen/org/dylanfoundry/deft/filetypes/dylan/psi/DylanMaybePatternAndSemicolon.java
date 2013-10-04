@@ -10,7 +10,4 @@ public interface DylanMaybePatternAndSemicolon extends PsiElement {
   @Nullable
   DylanPattern getPattern();
 
-  @Nullable
-  PsiElement getSemicolonOpt();
-
 }

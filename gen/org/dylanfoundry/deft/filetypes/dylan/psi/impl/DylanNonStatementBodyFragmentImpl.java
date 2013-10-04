@@ -19,6 +19,12 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
+  public DylanBodyFragment getBodyFragment() {
+    return findChildByClass(DylanBodyFragment.class);
+  }
+
+  @Override
+  @Nullable
   public DylanDefinition getDefinition() {
     return findChildByClass(DylanDefinition.class);
   }
@@ -31,20 +37,20 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
+  public DylanSemicolonFragment getSemicolonFragment() {
+    return findChildByClass(DylanSemicolonFragment.class);
+  }
+
+  @Override
+  @Nullable
   public DylanSimpleFragment getSimpleFragment() {
     return findChildByClass(DylanSimpleFragment.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getBodyFragmentOpt() {
-    return findChildByType(BODY_FRAGMENT_OPT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getSemicolonFragmentOpt() {
-    return findChildByType(SEMICOLON_FRAGMENT_OPT);
+  public DylanSlotDeclaration getSlotDeclaration() {
+    return findChildByClass(DylanSlotDeclaration.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanEndClause extends PsiElement {
 
+  @Nullable
+  DylanBeginWord getBeginWord();
+
 }

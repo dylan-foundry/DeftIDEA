@@ -19,14 +19,8 @@ public class DylanBodyStyleDefinitionRulesImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public DylanBodyStyleDefinitionRule getBodyStyleDefinitionRule() {
-    return findNotNullChildByClass(DylanBodyStyleDefinitionRule.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanBodyStyleDefinitionRules getBodyStyleDefinitionRules() {
-    return findChildByClass(DylanBodyStyleDefinitionRules.class);
+  public List<DylanBodyStyleDefinitionRule> getBodyStyleDefinitionRuleList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanBodyStyleDefinitionRule.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

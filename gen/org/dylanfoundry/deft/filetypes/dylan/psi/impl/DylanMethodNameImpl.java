@@ -24,9 +24,9 @@ public class DylanMethodNameImpl extends ASTWrapperPsiElement implements DylanMe
   }
 
   @Override
-  @NotNull
-  public PsiElement getVariableNameOpt() {
-    return findNotNullChildByType(VARIABLE_NAME_OPT);
+  @Nullable
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -7,16 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanMethodDefinition extends PsiElement {
 
+  @Nullable
+  DylanBody getBody();
+
   @NotNull
-  DylanMethodName getMethodName();
+  List<DylanMethodName> getMethodNameList();
 
   @NotNull
   DylanParameterList getParameterList();
-
-  @NotNull
-  PsiElement getBodyOpt();
-
-  @NotNull
-  PsiElement getMethodNameOpt();
 
 }

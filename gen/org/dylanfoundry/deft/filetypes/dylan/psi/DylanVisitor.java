@@ -91,6 +91,14 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitCaseConstituents(@NotNull DylanCaseConstituents o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCaseLabel(@NotNull DylanCaseLabel o) {
+    visitPsiElement(o);
+  }
+
   public void visitCaseTail(@NotNull DylanCaseTail o) {
     visitPsiElement(o);
   }
@@ -123,7 +131,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitDefault(@NotNull DylanDefault o) {
+  public void visitDefaultValue(@NotNull DylanDefaultValue o) {
     visitPsiElement(o);
   }
 
@@ -207,6 +215,14 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitInitSpecification(@NotNull DylanInitSpecification o) {
+    visitPsiElement(o);
+  }
+
+  public void visitInitSpecifications(@NotNull DylanInitSpecifications o) {
+    visitPsiElement(o);
+  }
+
   public void visitKeyParameterList(@NotNull DylanKeyParameterList o) {
     visitPsiElement(o);
   }
@@ -280,10 +296,6 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitModifiers(@NotNull DylanModifiers o) {
-    visitPsiElement(o);
-  }
-
-  public void visitName(@NotNull DylanName o) {
     visitPsiElement(o);
   }
 
@@ -447,6 +459,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSlotDeclaration(@NotNull DylanSlotDeclaration o) {
+    visitPsiElement(o);
+  }
+
   public void visitSourceRecord(@NotNull DylanSourceRecord o) {
     visitPsiElement(o);
   }
@@ -540,6 +556,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitVariables(@NotNull DylanVariables o) {
+    visitPsiElement(o);
+  }
+
+  public void visitWordName(@NotNull DylanWordName o) {
     visitPsiElement(o);
   }
 

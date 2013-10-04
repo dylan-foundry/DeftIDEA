@@ -19,14 +19,8 @@ public class DylanExpressionsImpl extends ASTWrapperPsiElement implements DylanE
 
   @Override
   @NotNull
-  public DylanExpression getExpression() {
-    return findNotNullChildByClass(DylanExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanExpressions getExpressions() {
-    return findChildByClass(DylanExpressions.class);
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

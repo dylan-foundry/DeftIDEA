@@ -13,7 +13,4 @@ public interface DylanBodyStyleDefinitionRule extends PsiElement {
   @NotNull
   DylanRhs getRhs();
 
-  @NotNull
-  PsiElement getSemicolonOpt();
-
 }

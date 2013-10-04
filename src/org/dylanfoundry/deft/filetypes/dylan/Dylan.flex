@@ -15,17 +15,29 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
-ALPHA_CHARACTER=[a-zA-Z]
 DIGIT=[0-9]
-GRAPH_CHARACTER=[!&*<=>|\^$%@_]
-NAME_CHARACTER={ALPHA_CHARACTER}|{DIGIT}|{GRAPH_CHARACTER}|[-+~?/]
 
-OPERATOR="+"|"-"|"*"|"/"|"^"|"="|"=="|"<"|">"|"<="|">="|"~="|"~=="|"&"|"|"|":="|"~"
+ALPHABETIC_CHARACTER=[a-zA-Z]
+NUMERIC_CHARACTER={DIGIT}
+GRAPHIC_CHARACTER=[!&*<=>|\^$%@_]
+SPECIAL_CHARACTER=[-+~?/=]
+ANY_CHARACTER={ALPHABETIC_CHARACTER}|{NUMERIC_CHARACTER}|{GRAPHIC_CHARACTER}|{SPECIAL_CHARACTER}
+WORD_CHARACTER_NOT_DOUBLE_ALPHABETIC={ALPHABETIC_CHARACTER}|{WORD_CHARACTER_NOT_ALPHABETIC}|{NUMERIC_CHARACTER}|{GRAPHIC_CHARACTER}|{SPECIAL_CHARACTER}
+WORD_CHARACTER_NOT_ALPHABETIC={NUMERIC_CHARACTER}|{GRAPHIC_CHARACTER}|{SPECIAL_CHARACTER}
+//LEADING_GRAPHIC={GRAPHIC_CHARACTER}|{LEADING_GRAPHIC}{WORD_CHARACTER_NOT_ALPHABETIC}
+LEADING_GRAPHIC={GRAPHIC_CHARACTER}{WORD_CHARACTER_NOT_ALPHABETIC}*
+//LEADING_NUMERIC={NUMERIC_CHARACTER}|{NUMERIC_CHARACTER}{WORD_CHARACTER_NOT_DOUBLE_ALPHABETIC}
+LEADING_NUMERIC={NUMERIC_CHARACTER}{WORD_CHARACTER_NOT_DOUBLE_ALPHABETIC}*
+//LEADING_ALPHABETIC={ALPHABETIC_CHARACTER}|{LEADING_ALPHABETIC}{ANY_CHARACTER}
+LEADING_ALPHABETIC={ALPHABETIC_CHARACTER}{ANY_CHARACTER}*
+WORD={LEADING_ALPHABETIC}|{LEADING_NUMERIC}{ALPHABETIC_CHARACTER}{LEADING_ALPHABETIC}|{LEADING_GRAPHIC}{LEADING_ALPHABETIC}
 
-// The real definition is stricter. See http://opendylan.org/books/drm/Lexical_Syntax
-NAME={ALPHA_CHARACTER} {NAME_CHARACTER}* | {DIGIT} {NAME_CHARACTER}+ | {GRAPH_CHARACTER} {NAME_CHARACTER}+ | "\\" {OPERATOR}
-CLASS_NAME="<" {NAME_CHARACTER}* ">"
-CONSTANT_NAME="$" {NAME_CHARACTER}*
+UNARY_OPERATOR="~"
+UNARY_AND_BINARY_OPERATOR="-"
+BINARY_OPERATOR="+" | "*" | "/" | "^" | "~=" | "~==" | "<" | "<=" | ">" | ">=" | "&" | "|" | ":="
+
+OPERATOR_NAME="\\" {UNARY_OPERATOR} | "\\" {BINARY_OPERATOR} | "\\" {UNARY_AND_BINARY_OPERATOR} | "\\=" | "\\=="
+NAME={WORD} | "\\" {WORD} | {OPERATOR_NAME}
 
 CHARACTER="'" [^'] "'" | "'\\" [abefnrt0] "'"
 
@@ -63,8 +75,8 @@ SEPARATOR=[:]
 <YYINITIAL> {
     {END_OF_LINE_COMMENT}                           { return DylanTypes.COMMENT; }
     {CRLF}{CRLF}                                    { yybegin(DYLAN_CODE); return  DylanTypes.CRLF; }
-    {ALPHA_CHARACTER}{KEY_CHARACTER}*               { return DylanTypes.KEY; }
-    {SEPARATOR}                                     { yybegin(WAITING_VALUE); return DylanTypes.SEPARATOR; }
+    {ALPHABETIC_CHARACTER}{KEY_CHARACTER}*          { return DylanTypes.KEY; }
+    {SEPARATOR}                                     { yybegin(WAITING_VALUE); return DylanTypes.HEADER_SEPARATOR; }
     {WHITE_SPACE}+                                  { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
     {CRLF}                                          { return DylanTypes.CRLF; }
 }
@@ -72,7 +84,7 @@ SEPARATOR=[:]
 <WAITING_VALUE> {
     {CRLF}                                          { yybegin(YYINITIAL); return DylanTypes.CRLF; }
     {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
-    {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*       { yybegin(YYINITIAL); return DylanTypes.VALUE; }
+    {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*       { yybegin(YYINITIAL); return DylanTypes.HEADER_VALUE; }
 }
 
 // Dylan Code
@@ -82,69 +94,94 @@ SEPARATOR=[:]
 
     {NUMBER}                                        { return DylanTypes.NUMBER; }
 
-    {CHARACTER}                                     { return DylanTypes.CHARACTER; }
+    {CHARACTER}                                     { return DylanTypes.CHARACTER_LITERAL; }
     "\""                                            { yybegin(STRING); return DylanTypes.STRING; }
     "#\""                                           { yybegin(SYMBOL); return DylanTypes.SYMBOL; }
-    {NAME}":"                                       { return DylanTypes.SYMBOL; }
+    {WORD}":"                                       { return DylanTypes.SYMBOL; }
+
+    {NAME}":"{WORD}                                 { return DylanTypes.CONSTRAINED_NAME; }
+    {NAME}":"({BINARY_OPERATOR}|"=="|"=")           { return DylanTypes.CONSTRAINED_NAME; }
+    ":"{WORD}                                       { return DylanTypes.CONSTRAINED_NAME; }
+
+    "\\"{WORD}                                      { return DylanTypes.ESCAPED_WORD; }
+    {OPERATOR_NAME}                                 { return DylanTypes.OPERATOR_NAME; }
 
 
     // #-words
-    "#t"                                            { return DylanTypes.SHARP_WORD; }
-    "#f"                                            { return DylanTypes.SHARP_WORD; }
-    "#next"                                         { return DylanTypes.SHARP_WORD; }
-    "#rest"                                         { return DylanTypes.SHARP_WORD; }
-    "#key"                                          { return DylanTypes.SHARP_WORD; }
-    "#all-keys"                                     { return DylanTypes.SHARP_WORD; }
+    "#t"                                            { return DylanTypes.HASH_T; }
+    "#f"                                            { return DylanTypes.HASH_F; }
+    "#next"                                         { return DylanTypes.HASH_NEXT; }
+    "#rest"                                         { return DylanTypes.HASH_REST; }
+    "#key"                                          { return DylanTypes.HASH_KEY; }
+    "#all-keys"                                     { return DylanTypes.HASH_ALL_KEYS; }
 
     // Keywords
+    /*
     "above"                                         { return DylanTypes.KEYWORD; }
     "afterwards"                                    { return DylanTypes.KEYWORD; }
-    "begin"                                         { return DylanTypes.KEYWORD; }
+    */
+    "begin"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    /*
     "below"                                         { return DylanTypes.KEYWORD; }
     "by"                                            { return DylanTypes.KEYWORD; }
+    */
+    "case"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    /*
     "cleanup"                                       { return DylanTypes.KEYWORD; }
     "create"                                        { return DylanTypes.KEYWORD; }
-    "define"                                        { return DylanTypes.KEYWORD; }
-    "else"                                          { return DylanTypes.KEYWORD; }
-    "elseif"                                        { return DylanTypes.KEYWORD; }
-    "end"                                           { return DylanTypes.KEYWORD; }
+    */
+    "define"                                        { return DylanTypes.DEFINE; }
+    "else"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "elseif"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "end"                                           { return DylanTypes.END; }
+    /*
     "export"                                        { return DylanTypes.KEYWORD; }
     "finally"                                       { return DylanTypes.KEYWORD; }
-    "for"                                           { return DylanTypes.KEYWORD; }
-    "from"                                          { return DylanTypes.KEYWORD; }
-    "if"                                            { return DylanTypes.KEYWORD; }
-    "in"                                            { return DylanTypes.KEYWORD; }
-    "let"                                           { return DylanTypes.KEYWORD; }
-    "local"                                         { return DylanTypes.KEYWORD; }
-    "otherwise"                                     { return DylanTypes.KEYWORD; }
-    "rename"                                        { return DylanTypes.KEYWORD; }
-    "select"                                        { return DylanTypes.KEYWORD; }
-    "signal"                                        { return DylanTypes.KEYWORD; }
-    "then"                                          { return DylanTypes.KEYWORD; }
-    "to"                                            { return DylanTypes.KEYWORD; }
-    "unless"                                        { return DylanTypes.KEYWORD; }
-    "until"                                         { return DylanTypes.KEYWORD; }
-    "use"                                           { return DylanTypes.KEYWORD; }
-    "when"                                          { return DylanTypes.KEYWORD; }
-    "while"                                         { return DylanTypes.KEYWORD; }
+    */
+    "for"                                           { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    //"from"                                          { return DylanTypes.KEYWORD; }
+    "if"                                            { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    //"in"                                            { return DylanTypes.KEYWORD; }
+    "let"                                           { return DylanTypes.LET; }
+    "local"                                         { return DylanTypes.LOCAL; }
+    "otherwise"                                     { return DylanTypes.OTHERWISE; }
+    //"rename"                                        { return DylanTypes.KEYWORD; }
+    "select"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    //"signal"                                        { return DylanTypes.KEYWORD; }
+    //"then"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    //"to"                                            { return DylanTypes.KEYWORD; }
+    "unless"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    "until"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    //"use"                                           { return DylanTypes.KEYWORD; }
+    "when"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    "while"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
 
     // Builtins
+    /*
     "subclass"                                      { return DylanTypes.BUILTIN; }
     "abstract"                                      { return DylanTypes.BUILTIN; }
-    "block"                                         { return DylanTypes.BUILTIN; }
+    */
+    "block"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    /*
     "concrete"                                      { return DylanTypes.BUILTIN; }
-    "constant"                                      { return DylanTypes.BUILTIN; }
-    "class"                                         { return DylanTypes.BUILTIN; }
+    */
+    "constant"                                      { return DylanTypes.DEFINE_LIST_BEGIN_WORD; }
+    "class"                                         { return DylanTypes.DEFINE_BODY_BEGIN_WORD; }
+    /*
     "compiler-open"                                 { return DylanTypes.BUILTIN; }
     "compiler-sideways"                             { return DylanTypes.BUILTIN; }
-    "domain"                                        { return DylanTypes.BUILTIN; }
+    */
+    "domain"                                        { return DylanTypes.DEFINE_LIST_BEGIN_WORD; }
+    /*
     "dynamic"                                       { return DylanTypes.BUILTIN; }
     "each-subclass"                                 { return DylanTypes.BUILTIN; }
     "exception"                                     { return DylanTypes.BUILTIN; }
     "exclude"                                       { return DylanTypes.BUILTIN; }
-    "function"                                      { return DylanTypes.BUILTIN; }
-    "generic"                                       { return DylanTypes.BUILTIN; }
-    "handler"                                       { return DylanTypes.BUILTIN; }
+    */
+    "function"                                      { return DylanTypes.DEFINE_BODY_BEGIN_WORD; }
+    "generic"                                       { return DylanTypes.DEFINE_LIST_BEGIN_WORD; } // FIXME
+    "handler"                                       { return DylanTypes.HANDLER_T; }
+    /*
     "inherited"                                     { return DylanTypes.BUILTIN; }
     "inline"                                        { return DylanTypes.BUILTIN; }
     "inline-only"                                   { return DylanTypes.BUILTIN; }
@@ -153,8 +190,10 @@ SEPARATOR=[:]
     "import"                                        { return DylanTypes.BUILTIN; }
     "keyword"                                       { return DylanTypes.BUILTIN; }
     "library"                                       { return DylanTypes.BUILTIN; }
-    "macro"                                         { return DylanTypes.BUILTIN; }
-    "method"                                        { return DylanTypes.BUILTIN; }
+    */
+    "macro"                                         { return DylanTypes.MACRO_T; }
+    "method"                                        { return DylanTypes.DEFINE_BODY_BEGIN_WORD; } // FIXME
+/*
     "module"                                        { return DylanTypes.BUILTIN; }
     "open"                                          { return DylanTypes.BUILTIN; }
     "primary"                                       { return DylanTypes.BUILTIN; }
@@ -162,51 +201,44 @@ SEPARATOR=[:]
     "sealed"                                        { return DylanTypes.BUILTIN; }
     "sideways"                                      { return DylanTypes.BUILTIN; }
     "singleton"                                     { return DylanTypes.BUILTIN; }
-    "slot"                                          { return DylanTypes.BUILTIN; }
-    "thread"                                        { return DylanTypes.BUILTIN; }
-    "variable"                                      { return DylanTypes.BUILTIN; }
+    */
+    "slot"                                          { return DylanTypes.SLOT; }
+    //"thread"                                        { return DylanTypes.BUILTIN; }
+    "variable"                                      { return DylanTypes.DEFINE_LIST_BEGIN_WORD; }
+    /*
     "virtual"                                       { return DylanTypes.BUILTIN; }
+    */
 
     // Operators
-    "~"                                             { return DylanTypes.OPERATOR; }
-    "+"                                             { return DylanTypes.OPERATOR; }
-    "-"                                             { return DylanTypes.OPERATOR; }
-    "*"                                             { return DylanTypes.OPERATOR; }
-    "/"                                             { return DylanTypes.OPERATOR; }
-    "^"                                             { return DylanTypes.OPERATOR; }
-    "="                                             { return DylanTypes.OPERATOR; }
-    "=="                                            { return DylanTypes.OPERATOR; }
-    "~="                                            { return DylanTypes.OPERATOR; }
-    "~=="                                           { return DylanTypes.OPERATOR; }
-    "<"                                             { return DylanTypes.OPERATOR; }
-    "<="                                            { return DylanTypes.OPERATOR; }
-    ">"                                             { return DylanTypes.OPERATOR; }
-    ">="                                            { return DylanTypes.OPERATOR; }
-    "&"                                             { return DylanTypes.OPERATOR; }
-    "|"                                             { return DylanTypes.OPERATOR; }
-    ":="                                            { return DylanTypes.OPERATOR; }
+    {UNARY_OPERATOR}                                { return DylanTypes.UNARY_OPERATOR_ONLY; }
+    {BINARY_OPERATOR}                               { return DylanTypes.BINARY_OPERATOR_ONLY; }
+    "="                                             { return DylanTypes.EQUAL; } // FIXME
+    "=="                                            { return DylanTypes.EQUAL_EQUAL; } // FIXME
+    {UNARY_AND_BINARY_OPERATOR}                     { return DylanTypes.UNARY_AND_BINARY_OPERATOR; }
 
     // Punctuation
-    "("                                             { return DylanTypes.PUNCTUATION; }
-    ")"                                             { return DylanTypes.PUNCTUATION; }
-    "["                                             { return DylanTypes.PUNCTUATION; }
-    "]"                                             { return DylanTypes.PUNCTUATION; }
-    "{"                                             { return DylanTypes.PUNCTUATION; }
-    "}"                                             { return DylanTypes.PUNCTUATION; }
-    ","                                             { return DylanTypes.PUNCTUATION; }
-    "."                                             { return DylanTypes.PUNCTUATION; }
-    ";"                                             { return DylanTypes.PUNCTUATION; }
+    "("                                             { return DylanTypes.LPAREN; }
+    ")"                                             { return DylanTypes.RPAREN; }
+    "["                                             { return DylanTypes.LBRACKET; }
+    "]"                                             { return DylanTypes.RBRACKET; }
+    "{"                                             { return DylanTypes.LBRACE; }
+    "}"                                             { return DylanTypes.RBRACE; }
+    ","                                             { return DylanTypes.COMMA; }
+    "."                                             { return DylanTypes.DOT; }
+    ";"                                             { return DylanTypes.SEMICOLON; }
     //"="                                             { return DylanTypes.PUNCTUATION; }
-    "::"                                            { return DylanTypes.PUNCTUATION; }
+    "::"                                            { return DylanTypes.COLON_COLON; }
     //"=="                                            { return DylanTypes.PUNCTUATION; }
-    "=>"                                            { return DylanTypes.PUNCTUATION; }
-    "#("                                            { return DylanTypes.PUNCTUATION; }
-    "#["                                            { return DylanTypes.PUNCTUATION; }
-    "?"                                             { return DylanTypes.PUNCTUATION; }
-    "??"                                            { return DylanTypes.PUNCTUATION; }
-    "..."                                           { return DylanTypes.PUNCTUATION; }
+    "=>"                                            { return DylanTypes.EQUAL_ARROW; }
+    "#("                                            { return DylanTypes.HASH_PAREN; }
+    "#["                                            { return DylanTypes.HASH_BRACKET; }
+    "?"                                             { return DylanTypes.QUERY; }
+    "??"                                            { return DylanTypes.QUERY_QUERY; }
+    "..."                                           { return DylanTypes.ELLIPSIS; }
+    "##"                                            { return DylanTypes.HASH_HASH; }
 
     // Functions
+    /*
     "abort"                                         { return DylanTypes.FUNCTION; }
     "abs"                                           { return DylanTypes.FUNCTION; }
     "add"                                           { return DylanTypes.FUNCTION; }
@@ -365,21 +397,19 @@ SEPARATOR=[:]
     "values"                                        { return DylanTypes.FUNCTION; }
     "vector"                                        { return DylanTypes.FUNCTION; }
     "zero?"                                         { return DylanTypes.FUNCTION; }
+    */
 
-    {NAME}                                          { return DylanTypes.IDENTIFIER; }
-    {CLASS_NAME}                                    { return DylanTypes.CLASS; }
-    {CONSTANT_NAME}                                 { return DylanTypes.CONSTANT; }
-
+    {WORD}                                          { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
 
     {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
-    {CRLF}                                          { return DylanTypes.CRLF; }
+    {CRLF}                                          { /* return DylanTypes.CRLF; */ }
 }
 
 // Comment block ( /* ... */ )
 <COMMENT_BLOCK> {
     "\*/"                                           { commentLevel--; if (commentLevel == 0) { yybegin(DYLAN_CODE);} return DylanTypes.COMMENT; }
     "/\*"                                           { commentLevel++; yybegin(COMMENT_BLOCK); return DylanTypes.COMMENT; }
-    {CRLF}                                          { return DylanTypes.CRLF; }
+    {CRLF}                                          { /* return DylanTypes.CRLF; */ }
     .                                               { return DylanTypes.COMMENT; }
 }
 

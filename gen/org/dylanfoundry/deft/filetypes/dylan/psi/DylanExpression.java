@@ -8,12 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanExpression extends PsiElement {
 
   @NotNull
-  DylanBinaryOperand getBinaryOperand();
+  List<DylanBinaryOperand> getBinaryOperandList();
 
-  @Nullable
-  DylanBinaryOperator getBinaryOperator();
-
-  @Nullable
-  DylanExpression getExpression();
+  @NotNull
+  List<DylanBinaryOperator> getBinaryOperatorList();
 
 }

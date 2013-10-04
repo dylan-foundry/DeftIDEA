@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanBracketedPattern extends PsiElement {
 
   @Nullable
-  PsiElement getPatternOpt();
+  DylanPattern getPattern();
 
 }

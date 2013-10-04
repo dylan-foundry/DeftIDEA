@@ -29,12 +29,6 @@ public class DylanBodyFragmentImpl extends ASTWrapperPsiElement implements Dylan
     return findChildByClass(DylanStatement.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getNonStatementBodyFragmentOpt() {
-    return findChildByType(NON_STATEMENT_BODY_FRAGMENT_OPT);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBodyFragment(this);
     else super.accept(visitor);

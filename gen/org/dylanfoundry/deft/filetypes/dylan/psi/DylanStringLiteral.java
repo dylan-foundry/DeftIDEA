@@ -7,7 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanStringLiteral extends PsiElement {
 
-  @Nullable
-  DylanStringLiteral getStringLiteral();
-
 }

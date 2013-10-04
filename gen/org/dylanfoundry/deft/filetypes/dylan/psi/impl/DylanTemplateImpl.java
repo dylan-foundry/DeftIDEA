@@ -18,15 +18,9 @@ public class DylanTemplateImpl extends ASTWrapperPsiElement implements DylanTemp
   }
 
   @Override
-  @Nullable
-  public DylanTemplate getTemplate() {
-    return findChildByClass(DylanTemplate.class);
-  }
-
-  @Override
   @NotNull
-  public DylanTemplateElement getTemplateElement() {
-    return findNotNullChildByClass(DylanTemplateElement.class);
+  public List<DylanTemplateElement> getTemplateElementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanTemplateElement.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

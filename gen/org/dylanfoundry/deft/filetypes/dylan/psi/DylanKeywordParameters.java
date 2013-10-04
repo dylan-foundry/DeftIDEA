@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanKeywordParameters extends PsiElement {
 
   @NotNull
-  DylanKeywordParameter getKeywordParameter();
-
-  @Nullable
-  DylanKeywordParameters getKeywordParameters();
+  List<DylanKeywordParameter> getKeywordParameterList();
 
 }

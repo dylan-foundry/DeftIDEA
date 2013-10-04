@@ -19,8 +19,8 @@ public class DylanBracketedPatternImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
-  public PsiElement getPatternOpt() {
-    return findChildByType(PATTERN_OPT);
+  public DylanPattern getPattern() {
+    return findChildByClass(DylanPattern.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

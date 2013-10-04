@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanPropertyList extends PsiElement {
 
   @NotNull
-  DylanProperty getProperty();
-
-  @Nullable
-  DylanPropertyList getPropertyList();
+  List<DylanProperty> getPropertyList();
 
 }

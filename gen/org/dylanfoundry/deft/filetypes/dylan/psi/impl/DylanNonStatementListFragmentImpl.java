@@ -19,14 +19,14 @@ public class DylanNonStatementListFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
-  public DylanSimpleFragment getSimpleFragment() {
-    return findChildByClass(DylanSimpleFragment.class);
+  public DylanListFragment getListFragment() {
+    return findChildByClass(DylanListFragment.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getListFragmentOpt() {
-    return findChildByType(LIST_FRAGMENT_OPT);
+  public DylanSimpleFragment getSimpleFragment() {
+    return findChildByClass(DylanSimpleFragment.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

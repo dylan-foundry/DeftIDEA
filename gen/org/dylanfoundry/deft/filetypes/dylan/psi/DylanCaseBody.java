@@ -7,28 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanCaseBody extends PsiElement {
 
-  @Nullable
-  DylanCaseTail getCaseTail();
+  @NotNull
+  DylanCaseConstituents getCaseConstituents();
 
-  @Nullable
-  DylanExpression getExpression();
-
-  @Nullable
-  DylanExpressions getExpressions();
-
-  @Nullable
-  DylanNonExpressionConstituent getNonExpressionConstituent();
-
-  @Nullable
-  DylanOperandTails getOperandTails();
-
-  @Nullable
-  DylanUnparenthesizedExpression getUnparenthesizedExpression();
-
-  @Nullable
-  PsiElement getCaseConstiuents();
-
-  @Nullable
-  PsiElement getCaseLabel();
+  @NotNull
+  DylanCaseLabel getCaseLabel();
 
 }

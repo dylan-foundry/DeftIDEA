@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanOperandTail extends PsiElement {
 
   @Nullable
-  DylanVariableName getVariableName();
+  DylanArguments getArguments();
 
   @Nullable
-  PsiElement getArgumentsOpt();
+  DylanVariableName getVariableName();
 
 }

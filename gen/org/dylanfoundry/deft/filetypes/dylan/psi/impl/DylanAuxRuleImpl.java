@@ -19,14 +19,14 @@ public class DylanAuxRuleImpl extends ASTWrapperPsiElement implements DylanAuxRu
 
   @Override
   @NotNull
-  public DylanRhs getRhs() {
-    return findNotNullChildByClass(DylanRhs.class);
+  public List<DylanPattern> getPatternList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanPattern.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getPatternOpt() {
-    return findNotNullChildByType(PATTERN_OPT);
+  public DylanRhs getRhs() {
+    return findNotNullChildByClass(DylanRhs.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

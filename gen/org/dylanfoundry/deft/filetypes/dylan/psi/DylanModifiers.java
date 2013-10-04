@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanModifiers extends PsiElement {
 
   @NotNull
-  DylanModifier getModifier();
-
-  @Nullable
-  DylanModifiers getModifiers();
+  List<DylanModifier> getModifierList();
 
 }

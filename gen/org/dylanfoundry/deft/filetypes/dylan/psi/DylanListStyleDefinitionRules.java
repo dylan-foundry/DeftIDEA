@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanListStyleDefinitionRules extends PsiElement {
 
   @NotNull
-  DylanListStyleDefinitionRule getListStyleDefinitionRule();
-
-  @Nullable
-  DylanListStyleDefinitionRules getListStyleDefinitionRules();
+  List<DylanListStyleDefinitionRule> getListStyleDefinitionRuleList();
 
 }

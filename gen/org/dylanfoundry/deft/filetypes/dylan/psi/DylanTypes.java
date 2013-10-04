@@ -29,6 +29,8 @@ public interface DylanTypes {
   IElementType BRACKETED_PATTERN = new DylanElementType("BRACKETED_PATTERN");
   IElementType BRACKETING_PUNCTUATION = new DylanElementType("BRACKETING_PUNCTUATION");
   IElementType CASE_BODY = new DylanElementType("CASE_BODY");
+  IElementType CASE_CONSTITUENTS = new DylanElementType("CASE_CONSTITUENTS");
+  IElementType CASE_LABEL = new DylanElementType("CASE_LABEL");
   IElementType CASE_TAIL = new DylanElementType("CASE_TAIL");
   IElementType CONDITION = new DylanElementType("CONDITION");
   IElementType CONSTANT = new DylanElementType("CONSTANT");
@@ -37,7 +39,7 @@ public interface DylanTypes {
   IElementType CONSTITUENT = new DylanElementType("CONSTITUENT");
   IElementType CONSTITUENTS = new DylanElementType("CONSTITUENTS");
   IElementType CORE_WORD = new DylanElementType("CORE_WORD");
-  IElementType DEFAULT = new DylanElementType("DEFAULT");
+  IElementType DEFAULT_VALUE = new DylanElementType("DEFAULT_VALUE");
   IElementType DEFINE_BODY_WORD = new DylanElementType("DEFINE_BODY_WORD");
   IElementType DEFINE_LIST_WORD = new DylanElementType("DEFINE_LIST_WORD");
   IElementType DEFINITION = new DylanElementType("DEFINITION");
@@ -58,6 +60,8 @@ public interface DylanTypes {
   IElementType HEADERS = new DylanElementType("HEADERS");
   IElementType HEADER_KEY = new DylanElementType("HEADER_KEY");
   IElementType HEADER_VALUE = new DylanElementType("HEADER_VALUE");
+  IElementType INIT_SPECIFICATION = new DylanElementType("INIT_SPECIFICATION");
+  IElementType INIT_SPECIFICATIONS = new DylanElementType("INIT_SPECIFICATIONS");
   IElementType KEYWORD_PARAMETER = new DylanElementType("KEYWORD_PARAMETER");
   IElementType KEYWORD_PARAMETERS = new DylanElementType("KEYWORD_PARAMETERS");
   IElementType KEY_PARAMETER_LIST = new DylanElementType("KEY_PARAMETER_LIST");
@@ -77,7 +81,6 @@ public interface DylanTypes {
   IElementType METHOD_NAME = new DylanElementType("METHOD_NAME");
   IElementType MODIFIER = new DylanElementType("MODIFIER");
   IElementType MODIFIERS = new DylanElementType("MODIFIERS");
-  IElementType NAME = new DylanElementType("NAME");
   IElementType NAME_NOT_END = new DylanElementType("NAME_NOT_END");
   IElementType NAME_PREFIX = new DylanElementType("NAME_PREFIX");
   IElementType NAME_STRING_OR_SYMBOL = new DylanElementType("NAME_STRING_OR_SYMBOL");
@@ -118,6 +121,7 @@ public interface DylanTypes {
   IElementType SEPARATOR = new DylanElementType("SEPARATOR");
   IElementType SIMPLE_FRAGMENT = new DylanElementType("SIMPLE_FRAGMENT");
   IElementType SIMPLE_PATTERN = new DylanElementType("SIMPLE_PATTERN");
+  IElementType SLOT_DECLARATION = new DylanElementType("SLOT_DECLARATION");
   IElementType SOURCE_RECORD = new DylanElementType("SOURCE_RECORD");
   IElementType SOURCE_RECORDS = new DylanElementType("SOURCE_RECORDS");
   IElementType STATEMENT = new DylanElementType("STATEMENT");
@@ -142,23 +146,15 @@ public interface DylanTypes {
   IElementType VARIABLES = new DylanElementType("VARIABLES");
   IElementType VARIABLE_LIST = new DylanElementType("VARIABLE_LIST");
   IElementType VARIABLE_NAME = new DylanElementType("VARIABLE_NAME");
+  IElementType WORD_NAME = new DylanElementType("WORD_NAME");
 
-  IElementType ARGUMENTS_OPT = new DylanTokenType("arguments_opt");
-  IElementType AUX_RULE_SETS_OPT = new DylanTokenType("aux_rule_sets_opt");
-  IElementType BASIC_FRAGMENT_OPT = new DylanTokenType("basic_fragment_opt");
-  IElementType BEGIN_WORD_OPT = new DylanTokenType("BEGIN_WORD_opt");
   IElementType BINARY_OPERATOR_ONLY = new DylanTokenType("BINARY_OPERATOR_ONLY");
-  IElementType BODY_FRAGMENT_OPT = new DylanTokenType("body_fragment_opt");
-  IElementType BODY_OPT = new DylanTokenType("body_opt");
-  IElementType CASE_CONSTIUENTS = new DylanTokenType("case_constiuents");
-  IElementType CASE_LABEL = new DylanTokenType("case_label");
   IElementType CHARACTER_LITERAL = new DylanTokenType("CHARACTER_LITERAL");
   IElementType COLON_COLON = new DylanTokenType("COLON_COLON");
   IElementType COMMA = new DylanTokenType("COMMA");
-  IElementType CONSTANTS_OPT = new DylanTokenType("constants_opt");
+  IElementType COMMENT = new DylanTokenType("COMMENT");
   IElementType CONSTRAINED_NAME = new DylanTokenType("CONSTRAINED_NAME");
   IElementType CRLF = new DylanTokenType("CRLF");
-  IElementType DEFAULT_OPT = new DylanTokenType("default_opt");
   IElementType DEFINE = new DylanTokenType("DEFINE");
   IElementType DEFINE_BODY_BEGIN_WORD = new DylanTokenType("DEFINE_BODY_BEGIN_WORD");
   IElementType DEFINE_BODY_FUNCTION_WORD = new DylanTokenType("DEFINE_BODY_FUNCTION_WORD");
@@ -171,10 +167,9 @@ public interface DylanTypes {
   IElementType END = new DylanTokenType("END");
   IElementType EQUAL = new DylanTokenType("EQUAL");
   IElementType EQUAL_ARROW = new DylanTokenType("EQUAL_ARROW");
-  IElementType EQUAL_ARROW_OPT = new DylanTokenType("EQUAL_ARROW_opt");
   IElementType EQUAL_EQUAL = new DylanTokenType("EQUAL_EQUAL");
   IElementType ESCAPED_WORD = new DylanTokenType("ESCAPED_WORD");
-  IElementType HANDLER = new DylanTokenType("HANDLER");
+  IElementType HANDLER_T = new DylanTokenType("HANDLER_T");
   IElementType HASH_ALL_KEYS = new DylanTokenType("HASH_ALL_KEYS");
   IElementType HASH_BRACKET = new DylanTokenType("HASH_BRACKET");
   IElementType HASH_F = new DylanTokenType("HASH_F");
@@ -189,56 +184,36 @@ public interface DylanTypes {
   IElementType LBRACE = new DylanTokenType("LBRACE");
   IElementType LBRACKET = new DylanTokenType("LBRACKET");
   IElementType LET = new DylanTokenType("LET");
-  IElementType LIST_FRAGMENT_OPT = new DylanTokenType("list_fragment_opt");
   IElementType LOCAL = new DylanTokenType("LOCAL");
   IElementType LPAREN = new DylanTokenType("LPAREN");
-  IElementType MACRO = new DylanTokenType("MACRO");
-  IElementType MACRO_NAME_OPT = new DylanTokenType("macro_name_opt");
-  IElementType MACRO_OPT = new DylanTokenType("MACRO_opt");
-  IElementType METHOD_NAME_OPT = new DylanTokenType("method_name_opt");
+  IElementType MACRO_T = new DylanTokenType("MACRO_T");
   IElementType MINUS = new DylanTokenType("MINUS");
-  IElementType MODIFIERS_OPT = new DylanTokenType("modifiers_opt");
-  IElementType NAME_PREFIX_OPT = new DylanTokenType("name_prefix_opt");
-  IElementType NAME_SUFFIX_OPT = new DylanTokenType("name_suffix_opt");
   IElementType NONDEFINING_BEGIN_WORD = new DylanTokenType("NONDEFINING_BEGIN_WORD");
   IElementType NONDEFINING_FUNCTION_WORD = new DylanTokenType("NONDEFINING_FUNCTION_WORD");
   IElementType NONDEFINING_NONEXPRESSION_WORD = new DylanTokenType("NONDEFINING_NONEXPRESSION_WORD");
-  IElementType NON_STATEMENT_BASIC_FRAGMENT_OPT = new DylanTokenType("non_statement_basic_fragment_opt");
-  IElementType NON_STATEMENT_BODY_FRAGMENT_OPT = new DylanTokenType("non_statement_body_fragment_opt");
-  IElementType NON_STATEMENT_LIST_FRAGMENT_OPT = new DylanTokenType("non_statement_list_fragment_opt");
   IElementType NUMBER = new DylanTokenType("NUMBER");
   IElementType OPERATOR_NAME = new DylanTokenType("OPERATOR_NAME");
   IElementType OTHERWISE = new DylanTokenType("OTHERWISE");
-  IElementType PARAMETERS_OPT = new DylanTokenType("parameters_opt");
   IElementType PARSED_DEFINITION = new DylanTokenType("PARSED_DEFINITION");
   IElementType PARSED_FUNCTION_CALL = new DylanTokenType("PARSED_FUNCTION_CALL");
   IElementType PARSED_LIST_CONSTANT = new DylanTokenType("PARSED_LIST_CONSTANT");
   IElementType PARSED_LOCAL_DECLARATION = new DylanTokenType("PARSED_LOCAL_DECLARATION");
   IElementType PARSED_MACRO_CALL = new DylanTokenType("PARSED_MACRO_CALL");
   IElementType PARSED_VECTOR_CONSTANT = new DylanTokenType("PARSED_VECTOR_CONSTANT");
-  IElementType PATTERN_KEYWORDS_OPT = new DylanTokenType("pattern_keywords_opt");
-  IElementType PATTERN_OPT = new DylanTokenType("pattern_opt");
   IElementType QUERY = new DylanTokenType("QUERY");
   IElementType QUERY_EQUAL = new DylanTokenType("QUERY_EQUAL");
   IElementType QUERY_QUERY = new DylanTokenType("QUERY_QUERY");
   IElementType RBRACE = new DylanTokenType("RBRACE");
   IElementType RBRACKET = new DylanTokenType("RBRACKET");
   IElementType RPAREN = new DylanTokenType("RPAREN");
-  IElementType SEMICOLON = new DylanTokenType("SEMICOLON");
-  IElementType SEMICOLON_FRAGMENT_OPT = new DylanTokenType("semicolon_fragment_opt");
-  IElementType SEMICOLON_OPT = new DylanTokenType("semicolon_opt");
+  IElementType SEMICOLON = new DylanTokenType("semicolon");
   IElementType SEPARATOR = new DylanTokenType("SEPARATOR");
-  IElementType SEPARATOR_OPT = new DylanTokenType("separator_opt");
+  IElementType SLOT = new DylanTokenType("SLOT");
   IElementType STRING = new DylanTokenType("STRING");
   IElementType SYMBOL = new DylanTokenType("SYMBOL");
-  IElementType SYMBOL_OPT = new DylanTokenType("SYMBOL_opt");
-  IElementType TEMPLATE_OPT = new DylanTokenType("template_opt");
   IElementType UNARY_AND_BINARY_OPERATOR = new DylanTokenType("UNARY_AND_BINARY_OPERATOR");
   IElementType UNARY_OPERATOR_ONLY = new DylanTokenType("UNARY_OPERATOR_ONLY");
-  IElementType UNARY_OPERATOR_OPT = new DylanTokenType("unary_operator_opt");
   IElementType VALUE = new DylanTokenType("VALUE");
-  IElementType VALUES_LIST_OPT = new DylanTokenType("values_list_opt");
-  IElementType VARIABLE_NAME_OPT = new DylanTokenType("variable_name_opt");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
@@ -306,6 +281,12 @@ public interface DylanTypes {
       else if (type == CASE_BODY) {
         return new DylanCaseBodyImpl(node);
       }
+      else if (type == CASE_CONSTITUENTS) {
+        return new DylanCaseConstituentsImpl(node);
+      }
+      else if (type == CASE_LABEL) {
+        return new DylanCaseLabelImpl(node);
+      }
       else if (type == CASE_TAIL) {
         return new DylanCaseTailImpl(node);
       }
@@ -330,8 +311,8 @@ public interface DylanTypes {
       else if (type == CORE_WORD) {
         return new DylanCoreWordImpl(node);
       }
-      else if (type == DEFAULT) {
-        return new DylanDefaultImpl(node);
+      else if (type == DEFAULT_VALUE) {
+        return new DylanDefaultValueImpl(node);
       }
       else if (type == DEFINE_BODY_WORD) {
         return new DylanDefineBodyWordImpl(node);
@@ -393,6 +374,12 @@ public interface DylanTypes {
       else if (type == HEADER_VALUE) {
         return new DylanHeaderValueImpl(node);
       }
+      else if (type == INIT_SPECIFICATION) {
+        return new DylanInitSpecificationImpl(node);
+      }
+      else if (type == INIT_SPECIFICATIONS) {
+        return new DylanInitSpecificationsImpl(node);
+      }
       else if (type == KEYWORD_PARAMETER) {
         return new DylanKeywordParameterImpl(node);
       }
@@ -449,9 +436,6 @@ public interface DylanTypes {
       }
       else if (type == MODIFIERS) {
         return new DylanModifiersImpl(node);
-      }
-      else if (type == NAME) {
-        return new DylanNameImpl(node);
       }
       else if (type == NAME_NOT_END) {
         return new DylanNameNotEndImpl(node);
@@ -573,6 +557,9 @@ public interface DylanTypes {
       else if (type == SIMPLE_PATTERN) {
         return new DylanSimplePatternImpl(node);
       }
+      else if (type == SLOT_DECLARATION) {
+        return new DylanSlotDeclarationImpl(node);
+      }
       else if (type == SOURCE_RECORD) {
         return new DylanSourceRecordImpl(node);
       }
@@ -644,6 +631,9 @@ public interface DylanTypes {
       }
       else if (type == VARIABLE_NAME) {
         return new DylanVariableNameImpl(node);
+      }
+      else if (type == WORD_NAME) {
+        return new DylanWordNameImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

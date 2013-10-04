@@ -29,12 +29,6 @@ public class DylanBasicFragmentImpl extends ASTWrapperPsiElement implements Dyla
     return findChildByClass(DylanStatement.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getNonStatementBasicFragmentOpt() {
-    return findChildByType(NON_STATEMENT_BASIC_FRAGMENT_OPT);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBasicFragment(this);
     else super.accept(visitor);

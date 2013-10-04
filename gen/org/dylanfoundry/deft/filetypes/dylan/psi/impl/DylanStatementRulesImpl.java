@@ -19,14 +19,8 @@ public class DylanStatementRulesImpl extends ASTWrapperPsiElement implements Dyl
 
   @Override
   @NotNull
-  public DylanStatementRule getStatementRule() {
-    return findNotNullChildByClass(DylanStatementRule.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanStatementRules getStatementRules() {
-    return findChildByClass(DylanStatementRules.class);
+  public List<DylanStatementRule> getStatementRuleList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanStatementRule.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

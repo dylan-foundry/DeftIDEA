@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanCaseTail extends PsiElement {
 
-  @Nullable
-  PsiElement getCaseConstiuents();
+  @NotNull
+  DylanCaseConstituents getCaseConstituents();
 
   @Nullable
-  PsiElement getCaseLabel();
+  DylanCaseLabel getCaseLabel();
 
 }

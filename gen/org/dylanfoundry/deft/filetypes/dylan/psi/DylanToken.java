@@ -11,12 +11,12 @@ public interface DylanToken extends PsiElement {
   DylanHashWord getHashWord();
 
   @Nullable
-  DylanName getName();
-
-  @Nullable
   DylanOperator getOperator();
 
   @Nullable
   DylanPunctuation getPunctuation();
+
+  @Nullable
+  DylanWordName getWordName();
 
 }

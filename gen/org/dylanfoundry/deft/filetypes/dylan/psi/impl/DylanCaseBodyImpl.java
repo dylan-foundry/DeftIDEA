@@ -18,51 +18,15 @@ public class DylanCaseBodyImpl extends ASTWrapperPsiElement implements DylanCase
   }
 
   @Override
-  @Nullable
-  public DylanCaseTail getCaseTail() {
-    return findChildByClass(DylanCaseTail.class);
+  @NotNull
+  public DylanCaseConstituents getCaseConstituents() {
+    return findNotNullChildByClass(DylanCaseConstituents.class);
   }
 
   @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanExpressions getExpressions() {
-    return findChildByClass(DylanExpressions.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanNonExpressionConstituent getNonExpressionConstituent() {
-    return findChildByClass(DylanNonExpressionConstituent.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperandTails getOperandTails() {
-    return findChildByClass(DylanOperandTails.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnparenthesizedExpression getUnparenthesizedExpression() {
-    return findChildByClass(DylanUnparenthesizedExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getCaseConstiuents() {
-    return findChildByType(CASE_CONSTIUENTS);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getCaseLabel() {
-    return findChildByType(CASE_LABEL);
+  @NotNull
+  public DylanCaseLabel getCaseLabel() {
+    return findNotNullChildByClass(DylanCaseLabel.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

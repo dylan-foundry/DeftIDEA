@@ -18,15 +18,9 @@ public class DylanOperandTailsImpl extends ASTWrapperPsiElement implements Dylan
   }
 
   @Override
-  @Nullable
-  public DylanOperandTail getOperandTail() {
-    return findChildByClass(DylanOperandTail.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperandTails getOperandTails() {
-    return findChildByClass(DylanOperandTails.class);
+  @NotNull
+  public List<DylanOperandTail> getOperandTailList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanOperandTail.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

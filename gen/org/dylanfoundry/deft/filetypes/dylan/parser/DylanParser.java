@@ -86,6 +86,12 @@ public class DylanParser implements PsiParser {
     else if (root_ == CASE_BODY) {
       result_ = case_body(builder_, level_ + 1);
     }
+    else if (root_ == CASE_CONSTITUENTS) {
+      result_ = case_constituents(builder_, level_ + 1);
+    }
+    else if (root_ == CASE_LABEL) {
+      result_ = case_label(builder_, level_ + 1);
+    }
     else if (root_ == CASE_TAIL) {
       result_ = case_tail(builder_, level_ + 1);
     }
@@ -110,8 +116,8 @@ public class DylanParser implements PsiParser {
     else if (root_ == CORE_WORD) {
       result_ = core_word(builder_, level_ + 1);
     }
-    else if (root_ == DEFAULT) {
-      result_ = default(builder_, level_ + 1);
+    else if (root_ == DEFAULT_VALUE) {
+      result_ = default_value(builder_, level_ + 1);
     }
     else if (root_ == DEFINE_BODY_WORD) {
       result_ = define_body_word(builder_, level_ + 1);
@@ -173,6 +179,12 @@ public class DylanParser implements PsiParser {
     else if (root_ == HEADERS) {
       result_ = headers(builder_, level_ + 1);
     }
+    else if (root_ == INIT_SPECIFICATION) {
+      result_ = init_specification(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_SPECIFICATIONS) {
+      result_ = init_specifications(builder_, level_ + 1);
+    }
     else if (root_ == KEY_PARAMETER_LIST) {
       result_ = key_parameter_list(builder_, level_ + 1);
     }
@@ -229,9 +241,6 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == MODIFIERS) {
       result_ = modifiers(builder_, level_ + 1);
-    }
-    else if (root_ == NAME) {
-      result_ = name(builder_, level_ + 1);
     }
     else if (root_ == NAME_NOT_END) {
       result_ = name_not_end(builder_, level_ + 1);
@@ -353,6 +362,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == SIMPLE_PATTERN) {
       result_ = simple_pattern(builder_, level_ + 1);
     }
+    else if (root_ == SLOT_DECLARATION) {
+      result_ = slot_declaration(builder_, level_ + 1);
+    }
     else if (root_ == SOURCE_RECORD) {
       result_ = source_record(builder_, level_ + 1);
     }
@@ -425,6 +437,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == VARIABLES) {
       result_ = variables(builder_, level_ + 1);
     }
+    else if (root_ == WORD_NAME) {
+      result_ = word_name(builder_, level_ + 1);
+    }
     else {
       Marker marker_ = builder_.mark();
       enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, null);
@@ -443,8 +458,6 @@ public class DylanParser implements PsiParser {
   // SYMBOL expression | expression_no_symbol | SYMBOL
   public static boolean argument(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "argument")) return false;
-    if (!nextTokenIs(builder_, SYMBOL) && !nextTokenIs(builder_, UNARY_OPERATOR_OPT)
-        && replaceVariants(builder_, 2, "<argument>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<argument>");
@@ -478,16 +491,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // argument | arguments COMMA argument
+  // argument (COMMA argument)*
   public static boolean arguments(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "arguments")) return false;
-    if (!nextTokenIs(builder_, SYMBOL) && !nextTokenIs(builder_, UNARY_OPERATOR_OPT)
-        && replaceVariants(builder_, 2, "<arguments>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<arguments>");
     result_ = argument(builder_, level_ + 1);
-    if (!result_) result_ = arguments_1(builder_, level_ + 1);
+    result_ = result_ && arguments_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(ARGUMENTS);
     }
@@ -498,13 +509,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // arguments COMMA argument
+  // (COMMA argument)*
   private static boolean arguments_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "arguments_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!arguments_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "arguments_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA argument
+  private static boolean arguments_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "arguments_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = arguments(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && argument(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -516,19 +542,46 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACE pattern_opt RBRACE EQUAL_ARROW rhs
+  // LBRACE pattern+ RBRACE EQUAL_ARROW rhs
   public static boolean aux_rule(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rule")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACE, PATTERN_OPT, RBRACE, EQUAL_ARROW);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && aux_rule_1(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RBRACE, EQUAL_ARROW);
     result_ = result_ && rhs(builder_, level_ + 1);
     if (result_) {
       marker_.done(AUX_RULE);
     }
     else {
       marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // pattern+
+  private static boolean aux_rule_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "aux_rule_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = pattern(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!pattern(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "aux_rule_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
     }
     return result_;
   }
@@ -552,14 +605,23 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // aux_rule_set | aux_rule_sets aux_rule_set
+  // aux_rule_set+
   public static boolean aux_rule_sets(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rule_sets")) return false;
     if (!nextTokenIs(builder_, SYMBOL)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = aux_rule_set(builder_, level_ + 1);
-    if (!result_) result_ = aux_rule_sets_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!aux_rule_set(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "aux_rule_sets");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(AUX_RULE_SETS);
     }
@@ -569,31 +631,24 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // aux_rule_sets aux_rule_set
-  private static boolean aux_rule_sets_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "aux_rule_sets_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = aux_rule_sets(builder_, level_ + 1);
-    result_ = result_ && aux_rule_set(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // aux_rule | aux_rules aux_rule
+  // aux_rule+
   public static boolean aux_rules(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rules")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = aux_rule(builder_, level_ + 1);
-    if (!result_) result_ = aux_rules_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!aux_rule(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "aux_rules");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(AUX_RULES);
     }
@@ -603,24 +658,8 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // aux_rules aux_rule
-  private static boolean aux_rules_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "aux_rules_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = aux_rules(builder_, level_ + 1);
-    result_ = result_ && aux_rule(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // non_statement_basic_fragment | statement non_statement_basic_fragment_opt
+  // non_statement_basic_fragment | statement non_statement_basic_fragment?
   public static boolean basic_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "basic_fragment")) return false;
     boolean result_ = false;
@@ -638,13 +677,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // statement non_statement_basic_fragment_opt
+  // statement non_statement_basic_fragment?
   private static boolean basic_fragment_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "basic_fragment_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = statement(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, NON_STATEMENT_BASIC_FRAGMENT_OPT);
+    result_ = result_ && basic_fragment_1_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -652,6 +691,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // non_statement_basic_fragment?
+  private static boolean basic_fragment_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "basic_fragment_1_1")) return false;
+    non_statement_basic_fragment(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -678,8 +724,6 @@ public class DylanParser implements PsiParser {
   // SYMBOL | binary_operand_no_symbol
   public static boolean binary_operand(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binary_operand")) return false;
-    if (!nextTokenIs(builder_, SYMBOL) && !nextTokenIs(builder_, UNARY_OPERATOR_OPT)
-        && replaceVariants(builder_, 2, "<binary operand>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<binary operand>");
@@ -696,13 +740,13 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // unary_operator_opt operand
+  // unary_operator? operand
   public static boolean binary_operand_no_symbol(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binary_operand_no_symbol")) return false;
-    if (!nextTokenIs(builder_, UNARY_OPERATOR_OPT)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, UNARY_OPERATOR_OPT);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<binary operand no symbol>");
+    result_ = binary_operand_no_symbol_0(builder_, level_ + 1);
     result_ = result_ && operand(builder_, level_ + 1);
     if (result_) {
       marker_.done(BINARY_OPERAND_NO_SYMBOL);
@@ -710,20 +754,28 @@ public class DylanParser implements PsiParser {
     else {
       marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
+  // unary_operator?
+  private static boolean binary_operand_no_symbol_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "binary_operand_no_symbol_0")) return false;
+    unary_operator(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+  // BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL
   public static boolean binary_operator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binary_operator")) return false;
-    if (!nextTokenIs(builder_, BINARY_OPERATOR_ONLY) && !nextTokenIs(builder_, UNARY_AND_BINARY_OPERATOR)
-        && replaceVariants(builder_, 2, "<binary operator>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<binary operator>");
     result_ = consumeToken(builder_, BINARY_OPERATOR_ONLY);
     if (!result_) result_ = consumeToken(builder_, UNARY_AND_BINARY_OPERATOR);
+    if (!result_) result_ = consumeToken(builder_, EQUAL);
+    if (!result_) result_ = consumeToken(builder_, EQUAL_EQUAL);
     if (result_) {
       marker_.done(BINARY_OPERATOR);
     }
@@ -735,9 +787,9 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // pattern_variable COLON_COLON pattern_variable
+  // pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
+  //     | pattern_variable COLON_COLON pattern_variable
   //     | pattern_variable EQUAL pattern_variable
-  //     | pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
   public static boolean binding_pattern(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binding_pattern")) return false;
     if (!nextTokenIs(builder_, ELLIPSIS) && !nextTokenIs(builder_, QUERY)
@@ -758,9 +810,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // pattern_variable COLON_COLON pattern_variable
+  // pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
   private static boolean binding_pattern_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binding_pattern_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = pattern_variable(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COLON_COLON);
+    result_ = result_ && pattern_variable(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EQUAL);
+    result_ = result_ && pattern_variable(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // pattern_variable COLON_COLON pattern_variable
+  private static boolean binding_pattern_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "binding_pattern_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = pattern_variable(builder_, level_ + 1);
@@ -776,30 +847,11 @@ public class DylanParser implements PsiParser {
   }
 
   // pattern_variable EQUAL pattern_variable
-  private static boolean binding_pattern_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "binding_pattern_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = pattern_variable(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, EQUAL);
-    result_ = result_ && pattern_variable(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
   private static boolean binding_pattern_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binding_pattern_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = pattern_variable(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COLON_COLON);
-    result_ = result_ && pattern_variable(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, EQUAL);
     result_ = result_ && pattern_variable(builder_, level_ + 1);
     if (!result_) {
@@ -892,7 +944,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // non_statement_body_fragment | statement non_statement_body_fragment_opt
+  // non_statement_body_fragment | statement non_statement_body_fragment?
   public static boolean body_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "body_fragment")) return false;
     boolean result_ = false;
@@ -910,13 +962,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // statement non_statement_body_fragment_opt
+  // statement non_statement_body_fragment?
   private static boolean body_fragment_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "body_fragment_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = statement(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, NON_STATEMENT_BODY_FRAGMENT_OPT);
+    result_ = result_ && body_fragment_1_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -926,8 +978,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // non_statement_body_fragment?
+  private static boolean body_fragment_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "body_fragment_1_1")) return false;
+    non_statement_body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // LBRACE DEFINE pattern semicolon_opt END RBRACE EQUAL_ARROW rhs
+  // LBRACE DEFINE pattern SEMICOLON? END RBRACE EQUAL_ARROW rhs
   public static boolean body_style_definition_rule(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "body_style_definition_rule")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
@@ -935,7 +994,8 @@ public class DylanParser implements PsiParser {
     Marker marker_ = builder_.mark();
     result_ = consumeTokens(builder_, 0, LBRACE, DEFINE);
     result_ = result_ && pattern(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, SEMICOLON_OPT, END, RBRACE, EQUAL_ARROW);
+    result_ = result_ && body_style_definition_rule_3(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, END, RBRACE, EQUAL_ARROW);
     result_ = result_ && rhs(builder_, level_ + 1);
     if (result_) {
       marker_.done(BODY_STYLE_DEFINITION_RULE);
@@ -946,16 +1006,31 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // SEMICOLON?
+  private static boolean body_style_definition_rule_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "body_style_definition_rule_3")) return false;
+    consumeToken(builder_, SEMICOLON);
+    return true;
+  }
+
   /* ********************************************************** */
-  // body_style_definition_rule
-  //     | body_style_definition_rules body_style_definition_rule
+  // body_style_definition_rule+
   public static boolean body_style_definition_rules(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "body_style_definition_rules")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = body_style_definition_rule(builder_, level_ + 1);
-    if (!result_) result_ = body_style_definition_rules_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!body_style_definition_rule(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "body_style_definition_rules");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(BODY_STYLE_DEFINITION_RULES);
     }
@@ -965,26 +1040,10 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // body_style_definition_rules body_style_definition_rule
-  private static boolean body_style_definition_rules_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "body_style_definition_rules_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = body_style_definition_rules(builder_, level_ + 1);
-    result_ = result_ && body_style_definition_rule(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // LPAREN body_fragment_opt RPAREN
-  //     | LBRACKET body_fragment_opt RBRACKET
-  //     | LBRACE body_fragment_opt RBRACE
+  // LPAREN body_fragment? RPAREN
+  //     | LBRACKET body_fragment? RBRACKET
+  //     | LBRACE body_fragment? RBRACE
   public static boolean bracketed_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_fragment")) return false;
     boolean result_ = false;
@@ -1003,12 +1062,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN body_fragment_opt RPAREN
+  // LPAREN body_fragment? RPAREN
   private static boolean bracketed_fragment_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_fragment_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, BODY_FRAGMENT_OPT, RPAREN);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && bracketed_fragment_0_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1018,12 +1079,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACKET body_fragment_opt RBRACKET
+  // body_fragment?
+  private static boolean bracketed_fragment_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "bracketed_fragment_0_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACKET body_fragment? RBRACKET
   private static boolean bracketed_fragment_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_fragment_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACKET, BODY_FRAGMENT_OPT, RBRACKET);
+    result_ = consumeToken(builder_, LBRACKET);
+    result_ = result_ && bracketed_fragment_1_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1033,12 +1103,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACE body_fragment_opt RBRACE
+  // body_fragment?
+  private static boolean bracketed_fragment_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "bracketed_fragment_1_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACE body_fragment? RBRACE
   private static boolean bracketed_fragment_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_fragment_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACE, BODY_FRAGMENT_OPT, RBRACE);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && bracketed_fragment_2_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1048,10 +1127,17 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // body_fragment?
+  private static boolean bracketed_fragment_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "bracketed_fragment_2_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // LPAREN pattern_opt RPAREN
-  //     | LBRACKET pattern_opt RBRACKET
-  //     | LBRACE pattern_opt RBRACE
+  // LPAREN pattern? RPAREN
+  //     | LBRACKET pattern? RBRACKET
+  //     | LBRACE pattern? RBRACE
   public static boolean bracketed_pattern(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_pattern")) return false;
     boolean result_ = false;
@@ -1070,12 +1156,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN pattern_opt RPAREN
+  // LPAREN pattern? RPAREN
   private static boolean bracketed_pattern_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_pattern_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, PATTERN_OPT, RPAREN);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && bracketed_pattern_0_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1085,12 +1173,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACKET pattern_opt RBRACKET
+  // pattern?
+  private static boolean bracketed_pattern_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "bracketed_pattern_0_1")) return false;
+    pattern(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACKET pattern? RBRACKET
   private static boolean bracketed_pattern_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_pattern_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACKET, PATTERN_OPT, RBRACKET);
+    result_ = consumeToken(builder_, LBRACKET);
+    result_ = result_ && bracketed_pattern_1_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1100,12 +1197,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACE pattern_opt RBRACE
+  // pattern?
+  private static boolean bracketed_pattern_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "bracketed_pattern_1_1")) return false;
+    pattern(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACE pattern? RBRACE
   private static boolean bracketed_pattern_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_pattern_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACE, PATTERN_OPT, RBRACE);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && bracketed_pattern_2_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1113,6 +1219,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // pattern?
+  private static boolean bracketed_pattern_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "bracketed_pattern_2_1")) return false;
+    pattern(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1141,33 +1254,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // case_label case_constiuents
-  // case_label
-  //       unparenthesized_expression EQUAL_ARROW
-  //     | unparenthesized_expression COMMA expressions EQUAL_ARROW
-  //     | LPAREN expression RPAREN operand_tails EQUAL_ARROW
-  //     | LPAREN expression RPAREN operand_tails COMMA expressions EQUAL_ARROW
-  //     | LPAREN expression COMMA expressions RPAREN EQUAL_ARROW
-  //     | OTHERWISE EQUAL_ARROW_opt
-  // case_constiuents
-  //       case_tail
-  //     | LPAREN expression RPAREN case_tail
-  //     | unparenthesized_expression case_tail
-  //     | non_expression_constituent case_tail
+  // case_label case_constituents
   public static boolean case_body(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "case_body")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<case body>");
-    result_ = case_body_0(builder_, level_ + 1);
-    if (!result_) result_ = case_body_1(builder_, level_ + 1);
-    if (!result_) result_ = case_body_2(builder_, level_ + 1);
-    if (!result_) result_ = case_body_3(builder_, level_ + 1);
-    if (!result_) result_ = case_body_4(builder_, level_ + 1);
-    if (!result_) result_ = case_body_5(builder_, level_ + 1);
-    if (!result_) result_ = case_body_6(builder_, level_ + 1);
-    if (!result_) result_ = case_body_7(builder_, level_ + 1);
-    if (!result_) result_ = case_body_8(builder_, level_ + 1);
+    result_ = case_label(builder_, level_ + 1);
+    result_ = result_ && case_constituents(builder_, level_ + 1);
     if (result_) {
       marker_.done(CASE_BODY);
     }
@@ -1178,15 +1272,135 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // case_label case_constiuents
-  // case_label
-  //       unparenthesized_expression EQUAL_ARROW
-  private static boolean case_body_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_0")) return false;
+  /* ********************************************************** */
+  // case_tail
+  //     | LPAREN expression RPAREN case_tail?
+  //     | unparenthesized_expression case_tail?
+  //     | non_expression_constituent case_tail?
+  public static boolean case_constituents(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, CASE_LABEL, CASE_CONSTIUENTS, CASE_LABEL);
-    result_ = result_ && unparenthesized_expression(builder_, level_ + 1);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<case constituents>");
+    result_ = case_tail(builder_, level_ + 1);
+    if (!result_) result_ = case_constituents_1(builder_, level_ + 1);
+    if (!result_) result_ = case_constituents_2(builder_, level_ + 1);
+    if (!result_) result_ = case_constituents_3(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(CASE_CONSTITUENTS);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // LPAREN expression RPAREN case_tail?
+  private static boolean case_constituents_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && expression(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
+    result_ = result_ && case_constituents_1_3(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // case_tail?
+  private static boolean case_constituents_1_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents_1_3")) return false;
+    case_tail(builder_, level_ + 1);
+    return true;
+  }
+
+  // unparenthesized_expression case_tail?
+  private static boolean case_constituents_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents_2")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = unparenthesized_expression(builder_, level_ + 1);
+    result_ = result_ && case_constituents_2_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // case_tail?
+  private static boolean case_constituents_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents_2_1")) return false;
+    case_tail(builder_, level_ + 1);
+    return true;
+  }
+
+  // non_expression_constituent case_tail?
+  private static boolean case_constituents_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents_3")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = non_expression_constituent(builder_, level_ + 1);
+    result_ = result_ && case_constituents_3_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // case_tail?
+  private static boolean case_constituents_3_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_constituents_3_1")) return false;
+    case_tail(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // unparenthesized_expression EQUAL_ARROW
+  //     | unparenthesized_expression COMMA expressions EQUAL_ARROW
+  //     | LPAREN expression RPAREN operand_tails EQUAL_ARROW
+  //     | LPAREN expression RPAREN operand_tails COMMA expressions EQUAL_ARROW
+  //     | LPAREN expression COMMA expressions RPAREN EQUAL_ARROW
+  //     | OTHERWISE EQUAL_ARROW?
+  public static boolean case_label(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<case label>");
+    result_ = case_label_0(builder_, level_ + 1);
+    if (!result_) result_ = case_label_1(builder_, level_ + 1);
+    if (!result_) result_ = case_label_2(builder_, level_ + 1);
+    if (!result_) result_ = case_label_3(builder_, level_ + 1);
+    if (!result_) result_ = case_label_4(builder_, level_ + 1);
+    if (!result_) result_ = case_label_5(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(CASE_LABEL);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // unparenthesized_expression EQUAL_ARROW
+  private static boolean case_label_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = unparenthesized_expression(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, EQUAL_ARROW);
     if (!result_) {
       marker_.rollbackTo();
@@ -1198,8 +1412,8 @@ public class DylanParser implements PsiParser {
   }
 
   // unparenthesized_expression COMMA expressions EQUAL_ARROW
-  private static boolean case_body_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_1")) return false;
+  private static boolean case_label_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = unparenthesized_expression(builder_, level_ + 1);
@@ -1216,8 +1430,8 @@ public class DylanParser implements PsiParser {
   }
 
   // LPAREN expression RPAREN operand_tails EQUAL_ARROW
-  private static boolean case_body_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_2")) return false;
+  private static boolean case_label_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, LPAREN);
@@ -1235,8 +1449,8 @@ public class DylanParser implements PsiParser {
   }
 
   // LPAREN expression RPAREN operand_tails COMMA expressions EQUAL_ARROW
-  private static boolean case_body_3(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_3")) return false;
+  private static boolean case_label_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_3")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, LPAREN);
@@ -1256,8 +1470,8 @@ public class DylanParser implements PsiParser {
   }
 
   // LPAREN expression COMMA expressions RPAREN EQUAL_ARROW
-  private static boolean case_body_4(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_4")) return false;
+  private static boolean case_label_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_4")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, LPAREN);
@@ -1274,15 +1488,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // OTHERWISE EQUAL_ARROW_opt
-  // case_constiuents
-  //       case_tail
-  private static boolean case_body_5(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_5")) return false;
+  // OTHERWISE EQUAL_ARROW?
+  private static boolean case_label_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_5")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, OTHERWISE, EQUAL_ARROW_OPT, CASE_CONSTIUENTS);
-    result_ = result_ && case_tail(builder_, level_ + 1);
+    result_ = consumeToken(builder_, OTHERWISE);
+    result_ = result_ && case_label_5_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1292,87 +1504,39 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN expression RPAREN case_tail
-  private static boolean case_body_6(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_6")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, LPAREN);
-    result_ = result_ && expression(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAREN);
-    result_ = result_ && case_tail(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // unparenthesized_expression case_tail
-  private static boolean case_body_7(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_7")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = unparenthesized_expression(builder_, level_ + 1);
-    result_ = result_ && case_tail(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // non_expression_constituent case_tail
-  private static boolean case_body_8(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_body_8")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = non_expression_constituent(builder_, level_ + 1);
-    result_ = result_ && case_tail(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
+  // EQUAL_ARROW?
+  private static boolean case_label_5_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_label_5_1")) return false;
+    consumeToken(builder_, EQUAL_ARROW);
+    return true;
   }
 
   /* ********************************************************** */
-  // | SEMICOLON case_constiuents
-  //     | SEMICOLON case_label case_constiuents
+  // SEMICOLON case_constituents
+  //     | SEMICOLON case_label case_constituents
   public static boolean case_tail(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "case_tail")) return false;
+    if (!nextTokenIs(builder_, SEMICOLON)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<case tail>");
     result_ = case_tail_0(builder_, level_ + 1);
     if (!result_) result_ = case_tail_1(builder_, level_ + 1);
-    if (!result_) result_ = case_tail_2(builder_, level_ + 1);
     if (result_) {
       marker_.done(CASE_TAIL);
     }
     else {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
+  // SEMICOLON case_constituents
   private static boolean case_tail_0(PsiBuilder builder_, int level_) {
-    return true;
-  }
-
-  // SEMICOLON case_constiuents
-  private static boolean case_tail_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_tail_1")) return false;
+    if (!recursion_guard_(builder_, level_, "case_tail_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, SEMICOLON, CASE_CONSTIUENTS);
+    result_ = consumeToken(builder_, SEMICOLON);
+    result_ = result_ && case_constituents(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1382,12 +1546,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // SEMICOLON case_label case_constiuents
-  private static boolean case_tail_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "case_tail_2")) return false;
+  // SEMICOLON case_label case_constituents
+  private static boolean case_tail_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_tail_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, SEMICOLON, CASE_LABEL, CASE_CONSTIUENTS);
+    result_ = consumeToken(builder_, SEMICOLON);
+    result_ = result_ && case_label(builder_, level_ + 1);
+    result_ = result_ && case_constituents(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1481,8 +1647,8 @@ public class DylanParser implements PsiParser {
   //     | STRING
   //     | SYMBOL
   //     | HASH_PAREN constants DOT constant RPAREN
-  //     | HASH_PAREN constants_opt RPAREN
-  //     | HASH_BRACKET constants_opt RBRACKET
+  //     | HASH_PAREN constants? RPAREN
+  //     | HASH_BRACKET constants? RBRACKET
   //     | PARSED_LIST_CONSTANT
   //     | PARSED_VECTOR_CONSTANT
   public static boolean constant_fragment(PsiBuilder builder_, int level_) {
@@ -1528,12 +1694,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_PAREN constants_opt RPAREN
+  // HASH_PAREN constants? RPAREN
   private static boolean constant_fragment_5(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constant_fragment_5")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_PAREN, CONSTANTS_OPT, RPAREN);
+    result_ = consumeToken(builder_, HASH_PAREN);
+    result_ = result_ && constant_fragment_5_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1543,12 +1711,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_BRACKET constants_opt RBRACKET
+  // constants?
+  private static boolean constant_fragment_5_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constant_fragment_5_1")) return false;
+    constants(builder_, level_ + 1);
+    return true;
+  }
+
+  // HASH_BRACKET constants? RBRACKET
   private static boolean constant_fragment_6(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constant_fragment_6")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_BRACKET, CONSTANTS_OPT, RBRACKET);
+    result_ = consumeToken(builder_, HASH_BRACKET);
+    result_ = result_ && constant_fragment_6_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1558,15 +1735,22 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // constants?
+  private static boolean constant_fragment_6_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constant_fragment_6_1")) return false;
+    constants(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // constant | constants COMMA constant
+  // constant (COMMA constant)*
   public static boolean constants(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constants")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<constants>");
     result_ = constant(builder_, level_ + 1);
-    if (!result_) result_ = constants_1(builder_, level_ + 1);
+    result_ = result_ && constants_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(CONSTANTS);
     }
@@ -1577,13 +1761,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // constants COMMA constant
+  // (COMMA constant)*
   private static boolean constants_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constants_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!constants_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "constants_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA constant
+  private static boolean constants_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constants_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = constants(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && constant(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1614,14 +1813,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // constituent | constituent SEMICOLON constituent
+  // constituent (SEMICOLON constituent)* | COMMENT
   public static boolean constituents(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constituents")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<constituents>");
-    result_ = constituent(builder_, level_ + 1);
-    if (!result_) result_ = constituents_1(builder_, level_ + 1);
+    result_ = constituents_0(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, COMMENT);
     if (result_) {
       marker_.done(CONSTITUENTS);
     }
@@ -1632,13 +1831,44 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // constituent SEMICOLON constituent
-  private static boolean constituents_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "constituents_1")) return false;
+  // constituent (SEMICOLON constituent)*
+  private static boolean constituents_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constituents_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = constituent(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEMICOLON);
+    result_ = result_ && constituents_0_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // (SEMICOLON constituent)*
+  private static boolean constituents_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constituents_0_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!constituents_0_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "constituents_0_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // SEMICOLON constituent
+  private static boolean constituents_0_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constituents_0_1_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, SEMICOLON);
     result_ = result_ && constituent(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1670,15 +1900,15 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // EQUAL expression
-  public static boolean default(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "default")) return false;
+  public static boolean default_value(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "default_value")) return false;
     if (!nextTokenIs(builder_, EQUAL)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, EQUAL);
     result_ = result_ && expression(builder_, level_ + 1);
     if (result_) {
-      marker_.done(DEFAULT);
+      marker_.done(DEFAULT_VALUE);
     }
     else {
       marker_.rollbackTo();
@@ -1727,7 +1957,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // definition_macro_call | DEFINE MACRO macro_definition | PARSED_DEFINITION
+  // definition_macro_call | DEFINE MACRO_T macro_definition | PARSED_DEFINITION
   public static boolean definition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition")) return false;
     if (!nextTokenIs(builder_, DEFINE) && !nextTokenIs(builder_, PARSED_DEFINITION)
@@ -1748,12 +1978,12 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // DEFINE MACRO macro_definition
+  // DEFINE MACRO_T macro_definition
   private static boolean definition_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, MACRO);
+    result_ = consumeTokens(builder_, 0, DEFINE, MACRO_T);
     result_ = result_ && macro_definition(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1765,8 +1995,8 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers_opt define_body_word body_fragment_opt definition_tail
-  //     | DEFINE modifiers_opt define_list_word list_fragment_opt
+  // DEFINE modifiers? define_body_word body_fragment? definition_tail
+  //     | DEFINE modifiers? define_list_word list_fragment?
   public static boolean definition_macro_call(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_macro_call")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -1783,14 +2013,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // DEFINE modifiers_opt define_body_word body_fragment_opt definition_tail
+  // DEFINE modifiers? define_body_word body_fragment? definition_tail
   private static boolean definition_macro_call_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_macro_call_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, MODIFIERS_OPT);
+    result_ = consumeToken(builder_, DEFINE);
+    result_ = result_ && definition_macro_call_0_1(builder_, level_ + 1);
     result_ = result_ && define_body_word(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, BODY_FRAGMENT_OPT);
+    result_ = result_ && definition_macro_call_0_3(builder_, level_ + 1);
     result_ = result_ && definition_tail(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1801,14 +2032,29 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // DEFINE modifiers_opt define_list_word list_fragment_opt
+  // modifiers?
+  private static boolean definition_macro_call_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_macro_call_0_1")) return false;
+    modifiers(builder_, level_ + 1);
+    return true;
+  }
+
+  // body_fragment?
+  private static boolean definition_macro_call_0_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_macro_call_0_3")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // DEFINE modifiers? define_list_word list_fragment?
   private static boolean definition_macro_call_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_macro_call_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, MODIFIERS_OPT);
+    result_ = consumeToken(builder_, DEFINE);
+    result_ = result_ && definition_macro_call_1_1(builder_, level_ + 1);
     result_ = result_ && define_list_word(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, LIST_FRAGMENT_OPT);
+    result_ = result_ && definition_macro_call_1_3(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -1818,16 +2064,30 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // modifiers?
+  private static boolean definition_macro_call_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_macro_call_1_1")) return false;
+    modifiers(builder_, level_ + 1);
+    return true;
+  }
+
+  // list_fragment?
+  private static boolean definition_macro_call_1_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_macro_call_1_3")) return false;
+    list_fragment(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // END | END macro_name | END define_body_word macro_name
+  // END define_body_word macro_name | END macro_name | END
   public static boolean definition_tail(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_tail")) return false;
     if (!nextTokenIs(builder_, END)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, END);
+    result_ = definition_tail_0(builder_, level_ + 1);
     if (!result_) result_ = definition_tail_1(builder_, level_ + 1);
-    if (!result_) result_ = definition_tail_2(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, END);
     if (result_) {
       marker_.done(DEFINITION_TAIL);
     }
@@ -1837,12 +2097,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // END macro_name
-  private static boolean definition_tail_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_tail_1")) return false;
+  // END define_body_word macro_name
+  private static boolean definition_tail_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_tail_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, END);
+    result_ = result_ && define_body_word(builder_, level_ + 1);
     result_ = result_ && macro_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1853,13 +2114,12 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // END define_body_word macro_name
-  private static boolean definition_tail_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_tail_2")) return false;
+  // END macro_name
+  private static boolean definition_tail_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_tail_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, END);
-    result_ = result_ && define_body_word(builder_, level_ + 1);
     result_ = result_ && macro_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1888,13 +2148,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // END BEGIN_WORD_opt
+  // END begin_word?
   public static boolean end_clause(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "end_clause")) return false;
     if (!nextTokenIs(builder_, END)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, END, BEGIN_WORD_OPT);
+    result_ = consumeToken(builder_, END);
+    result_ = result_ && end_clause_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(END_CLAUSE);
     }
@@ -1902,6 +2163,13 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     return result_;
+  }
+
+  // begin_word?
+  private static boolean end_clause_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "end_clause_1")) return false;
+    begin_word(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1926,16 +2194,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // binary_operand | expression binary_operator binary_operand
+  // binary_operand (binary_operator binary_operand)*
   public static boolean expression(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expression")) return false;
-    if (!nextTokenIs(builder_, SYMBOL) && !nextTokenIs(builder_, UNARY_OPERATOR_OPT)
-        && replaceVariants(builder_, 2, "<expression>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<expression>");
     result_ = binary_operand(builder_, level_ + 1);
-    if (!result_) result_ = expression_1(builder_, level_ + 1);
+    result_ = result_ && expression_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(EXPRESSION);
     }
@@ -1946,13 +2212,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // expression binary_operator binary_operand
+  // (binary_operator binary_operand)*
   private static boolean expression_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expression_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!expression_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "expression_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // binary_operator binary_operand
+  private static boolean expression_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "expression_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = expression(builder_, level_ + 1);
-    result_ = result_ && binary_operator(builder_, level_ + 1);
+    result_ = binary_operator(builder_, level_ + 1);
     result_ = result_ && binary_operand(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -1964,26 +2245,27 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // binary_operand_no_symbol | binary_operand_no_symbol binary_operator binary_operand
+  // binary_operand_no_symbol binary_operator binary_operand | binary_operand_no_symbol
   public static boolean expression_no_symbol(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expression_no_symbol")) return false;
-    if (!nextTokenIs(builder_, UNARY_OPERATOR_OPT)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = binary_operand_no_symbol(builder_, level_ + 1);
-    if (!result_) result_ = expression_no_symbol_1(builder_, level_ + 1);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<expression no symbol>");
+    result_ = expression_no_symbol_0(builder_, level_ + 1);
+    if (!result_) result_ = binary_operand_no_symbol(builder_, level_ + 1);
     if (result_) {
       marker_.done(EXPRESSION_NO_SYMBOL);
     }
     else {
       marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
   // binary_operand_no_symbol binary_operator binary_operand
-  private static boolean expression_no_symbol_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "expression_no_symbol_1")) return false;
+  private static boolean expression_no_symbol_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "expression_no_symbol_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = binary_operand_no_symbol(builder_, level_ + 1);
@@ -1999,16 +2281,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // expression | expressions COMMA expression
+  // expression (COMMA expression)*
   public static boolean expressions(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expressions")) return false;
-    if (!nextTokenIs(builder_, SYMBOL) && !nextTokenIs(builder_, UNARY_OPERATOR_OPT)
-        && replaceVariants(builder_, 2, "<expressions>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<expressions>");
     result_ = expression(builder_, level_ + 1);
-    if (!result_) result_ = expressions_1(builder_, level_ + 1);
+    result_ = result_ && expressions_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(EXPRESSIONS);
     }
@@ -2019,13 +2299,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // expressions COMMA expression
+  // (COMMA expression)*
   private static boolean expressions_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expressions_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!expressions_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "expressions_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA expression
+  private static boolean expressions_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "expressions_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = expressions(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && expression(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -2037,14 +2332,16 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // function_word LPAREN body_fragment_opt RPAREN
+  // function_word LPAREN body_fragment? RPAREN
   public static boolean function_macro_call(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "function_macro_call")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<function macro call>");
     result_ = function_word(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, LPAREN, BODY_FRAGMENT_OPT, RPAREN);
+    result_ = result_ && consumeToken(builder_, LPAREN);
+    result_ = result_ && function_macro_call_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (result_) {
       marker_.done(FUNCTION_MACRO_CALL);
     }
@@ -2055,8 +2352,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // body_fragment?
+  private static boolean function_macro_call_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_macro_call_2")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // LBRACE macro_name LPAREN pattern_opt RPAREN RBRACE EQUAL_ARROW rhs
+  // LBRACE macro_name LPAREN pattern? RPAREN RBRACE EQUAL_ARROW rhs
   public static boolean function_rule(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "function_rule")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
@@ -2064,7 +2368,9 @@ public class DylanParser implements PsiParser {
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, LBRACE);
     result_ = result_ && macro_name(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, LPAREN, PATTERN_OPT, RPAREN, RBRACE, EQUAL_ARROW);
+    result_ = result_ && consumeToken(builder_, LPAREN);
+    result_ = result_ && function_rule_3(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAREN, RBRACE, EQUAL_ARROW);
     result_ = result_ && rhs(builder_, level_ + 1);
     if (result_) {
       marker_.done(FUNCTION_RULE);
@@ -2075,37 +2381,36 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // pattern?
+  private static boolean function_rule_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_rule_3")) return false;
+    pattern(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // function_rule
-  //     | function_rules function_rule
+  // function_rule+
   public static boolean function_rules(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "function_rules")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = function_rule(builder_, level_ + 1);
-    if (!result_) result_ = function_rules_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!function_rule(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "function_rules");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(FUNCTION_RULES);
     }
     else {
       marker_.rollbackTo();
-    }
-    return result_;
-  }
-
-  // function_rules function_rule
-  private static boolean function_rules_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "function_rules_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = function_rules(builder_, level_ + 1);
-    result_ = result_ && function_rule(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
     }
     return result_;
   }
@@ -2134,8 +2439,6 @@ public class DylanParser implements PsiParser {
   // expression
   public static boolean handler(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "handler")) return false;
-    if (!nextTokenIs(builder_, SYMBOL) && !nextTokenIs(builder_, UNARY_OPERATOR_OPT)
-        && replaceVariants(builder_, 2, "<handler>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<handler>");
@@ -2249,19 +2552,80 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // HASH_KEY
-  //     | HASH_KEY COMMA HASH_ALL_KEYS
-  //     | HASH_KEY keyword_parameters
+  // SYMBOL expression
+  public static boolean init_specification(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_specification")) return false;
+    if (!nextTokenIs(builder_, SYMBOL)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, SYMBOL);
+    result_ = result_ && expression(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_SPECIFICATION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // (COMMA init_specification)+
+  public static boolean init_specifications(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_specifications")) return false;
+    if (!nextTokenIs(builder_, COMMA)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = init_specifications_0(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!init_specifications_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "init_specifications");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    if (result_) {
+      marker_.done(INIT_SPECIFICATIONS);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // COMMA init_specification
+  private static boolean init_specifications_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_specifications_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && init_specification(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // HASH_KEY COMMA HASH_ALL_KEYS
   //     | HASH_KEY keyword_parameters COMMA HASH_ALL_KEYS
+  //     | HASH_KEY keyword_parameters
+  //     | HASH_KEY
   public static boolean key_parameter_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "key_parameter_list")) return false;
     if (!nextTokenIs(builder_, HASH_KEY)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH_KEY);
+    result_ = key_parameter_list_0(builder_, level_ + 1);
     if (!result_) result_ = key_parameter_list_1(builder_, level_ + 1);
     if (!result_) result_ = key_parameter_list_2(builder_, level_ + 1);
-    if (!result_) result_ = key_parameter_list_3(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, HASH_KEY);
     if (result_) {
       marker_.done(KEY_PARAMETER_LIST);
     }
@@ -2272,11 +2636,28 @@ public class DylanParser implements PsiParser {
   }
 
   // HASH_KEY COMMA HASH_ALL_KEYS
+  private static boolean key_parameter_list_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "key_parameter_list_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeTokens(builder_, 0, HASH_KEY, COMMA, HASH_ALL_KEYS);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // HASH_KEY keyword_parameters COMMA HASH_ALL_KEYS
   private static boolean key_parameter_list_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "key_parameter_list_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_KEY, COMMA, HASH_ALL_KEYS);
+    result_ = consumeToken(builder_, HASH_KEY);
+    result_ = result_ && keyword_parameters(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, COMMA, HASH_ALL_KEYS);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -2302,68 +2683,81 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_KEY keyword_parameters COMMA HASH_ALL_KEYS
-  private static boolean key_parameter_list_3(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "key_parameter_list_3")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH_KEY);
-    result_ = result_ && keyword_parameters(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, COMMA, HASH_ALL_KEYS);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // SYMBOL_opt variable default_opt
+  // SYMBOL? variable default_value?
   public static boolean keyword_parameter(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "keyword_parameter")) return false;
-    if (!nextTokenIs(builder_, SYMBOL_OPT)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, SYMBOL_OPT);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<keyword parameter>");
+    result_ = keyword_parameter_0(builder_, level_ + 1);
     result_ = result_ && variable(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, DEFAULT_OPT);
+    result_ = result_ && keyword_parameter_2(builder_, level_ + 1);
     if (result_) {
       marker_.done(KEYWORD_PARAMETER);
     }
     else {
       marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
+  // SYMBOL?
+  private static boolean keyword_parameter_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "keyword_parameter_0")) return false;
+    consumeToken(builder_, SYMBOL);
+    return true;
+  }
+
+  // default_value?
+  private static boolean keyword_parameter_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "keyword_parameter_2")) return false;
+    default_value(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // keyword_parameter
-  //     | keyword_parameters COMMA keyword_parameter
+  // keyword_parameter (COMMA keyword_parameter)*
   public static boolean keyword_parameters(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "keyword_parameters")) return false;
-    if (!nextTokenIs(builder_, SYMBOL_OPT)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<keyword parameters>");
     result_ = keyword_parameter(builder_, level_ + 1);
-    if (!result_) result_ = keyword_parameters_1(builder_, level_ + 1);
+    result_ = result_ && keyword_parameters_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(KEYWORD_PARAMETERS);
     }
     else {
       marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
-  // keyword_parameters COMMA keyword_parameter
+  // (COMMA keyword_parameter)*
   private static boolean keyword_parameters_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "keyword_parameters_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!keyword_parameters_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "keyword_parameters_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA keyword_parameter
+  private static boolean keyword_parameters_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "keyword_parameters_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = keyword_parameters(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && keyword_parameter(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -2411,7 +2805,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // non_statement_list_fragment | statement non_statement_list_fragment_opt
+  // non_statement_list_fragment | statement non_statement_list_fragment?
   public static boolean list_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "list_fragment")) return false;
     boolean result_ = false;
@@ -2429,13 +2823,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // statement non_statement_list_fragment_opt
+  // statement non_statement_list_fragment?
   private static boolean list_fragment_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "list_fragment_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = statement(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, NON_STATEMENT_LIST_FRAGMENT_OPT);
+    result_ = result_ && list_fragment_1_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -2443,6 +2837,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // non_statement_list_fragment?
+  private static boolean list_fragment_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "list_fragment_1_1")) return false;
+    non_statement_list_fragment(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -2466,36 +2867,28 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // list_style_definition_rule
-  //     | list_style_definition_rules list_style_definition_rule
+  // list_style_definition_rule+
   public static boolean list_style_definition_rules(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "list_style_definition_rules")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = list_style_definition_rule(builder_, level_ + 1);
-    if (!result_) result_ = list_style_definition_rules_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!list_style_definition_rule(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "list_style_definition_rules");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(LIST_STYLE_DEFINITION_RULES);
     }
     else {
       marker_.rollbackTo();
-    }
-    return result_;
-  }
-
-  // list_style_definition_rules list_style_definition_rule
-  private static boolean list_style_definition_rules_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "list_style_definition_rules_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = list_style_definition_rules(builder_, level_ + 1);
-    result_ = result_ && list_style_definition_rule(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
     }
     return result_;
   }
@@ -2507,8 +2900,8 @@ public class DylanParser implements PsiParser {
   //     | HASH_T
   //     | HASH_F
   //     | HASH_PAREN constants DOT constant RPAREN
-  //     | HASH_PAREN constants_opt RPAREN
-  //     | HASH_BRACKET constants_opt RBRACKET
+  //     | HASH_PAREN constants? RPAREN
+  //     | HASH_BRACKET constants? RBRACKET
   //     | PARSED_LIST_CONSTANT
   //     | PARSED_VECTOR_CONSTANT
   public static boolean literal(PsiBuilder builder_, int level_) {
@@ -2555,12 +2948,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_PAREN constants_opt RPAREN
+  // HASH_PAREN constants? RPAREN
   private static boolean literal_6(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "literal_6")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_PAREN, CONSTANTS_OPT, RPAREN);
+    result_ = consumeToken(builder_, HASH_PAREN);
+    result_ = result_ && literal_6_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -2570,12 +2965,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_BRACKET constants_opt RBRACKET
+  // constants?
+  private static boolean literal_6_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "literal_6_1")) return false;
+    constants(builder_, level_ + 1);
+    return true;
+  }
+
+  // HASH_BRACKET constants? RBRACKET
   private static boolean literal_7(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "literal_7")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_BRACKET, CONSTANTS_OPT, RBRACKET);
+    result_ = consumeToken(builder_, HASH_BRACKET);
+    result_ = result_ && literal_7_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -2585,9 +2989,16 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // constants?
+  private static boolean literal_7_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "literal_7_1")) return false;
+    constants(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
   // LET bindings
-  //     | LET HANDLER condition EQUAL handler
+  //     | LET HANDLER_T condition EQUAL handler
   //     | LOCAL local_methods
   //     | PARSED_LOCAL_DECLARATION
   public static boolean local_declaration(PsiBuilder builder_, int level_) {
@@ -2625,12 +3036,12 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LET HANDLER condition EQUAL handler
+  // LET HANDLER_T condition EQUAL handler
   private static boolean local_declaration_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "local_declaration_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LET, HANDLER);
+    result_ = consumeTokens(builder_, 0, LET, HANDLER_T);
     result_ = result_ && condition(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, EQUAL);
     result_ = result_ && handler(builder_, level_ + 1);
@@ -2660,14 +3071,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // method_definition | local_methods COMMA method_definition
+  // method_definition (COMMA method_definition)*
   public static boolean local_methods(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "local_methods")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<local methods>");
     result_ = method_definition(builder_, level_ + 1);
-    if (!result_) result_ = local_methods_1(builder_, level_ + 1);
+    result_ = result_ && local_methods_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(LOCAL_METHODS);
     }
@@ -2678,13 +3089,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // local_methods COMMA method_definition
+  // (COMMA method_definition)*
   private static boolean local_methods_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "local_methods_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!local_methods_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "local_methods_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA method_definition
+  private static boolean local_methods_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "local_methods_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = local_methods(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && method_definition(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -2717,7 +3143,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // macro_name main_rule_set aux_rule_sets_opt END MACRO_opt macro_name_opt
+  // macro_name main_rule_set aux_rule_sets? END MACRO_T? macro_name?
   public static boolean macro_definition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "macro_definition")) return false;
     boolean result_ = false;
@@ -2725,7 +3151,10 @@ public class DylanParser implements PsiParser {
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<macro definition>");
     result_ = macro_name(builder_, level_ + 1);
     result_ = result_ && main_rule_set(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, AUX_RULE_SETS_OPT, END, MACRO_OPT, MACRO_NAME_OPT);
+    result_ = result_ && macro_definition_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, END);
+    result_ = result_ && macro_definition_4(builder_, level_ + 1);
+    result_ = result_ && macro_definition_5(builder_, level_ + 1);
     if (result_) {
       marker_.done(MACRO_DEFINITION);
     }
@@ -2734,6 +3163,27 @@ public class DylanParser implements PsiParser {
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
+  }
+
+  // aux_rule_sets?
+  private static boolean macro_definition_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_definition_2")) return false;
+    aux_rule_sets(builder_, level_ + 1);
+    return true;
+  }
+
+  // MACRO_T?
+  private static boolean macro_definition_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_definition_4")) return false;
+    consumeToken(builder_, MACRO_T);
+    return true;
+  }
+
+  // macro_name?
+  private static boolean macro_definition_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_definition_5")) return false;
+    macro_name(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -2780,14 +3230,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // pattern semicolon_opt | semicolon_opt
+  // pattern SEMICOLON? | SEMICOLON?
   public static boolean maybe_pattern_and_semicolon(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "maybe_pattern_and_semicolon")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<maybe pattern and semicolon>");
     result_ = maybe_pattern_and_semicolon_0(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, SEMICOLON_OPT);
+    if (!result_) result_ = maybe_pattern_and_semicolon_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(MAYBE_PATTERN_AND_SEMICOLON);
     }
@@ -2798,13 +3248,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // pattern semicolon_opt
+  // pattern SEMICOLON?
   private static boolean maybe_pattern_and_semicolon_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "maybe_pattern_and_semicolon_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = pattern(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEMICOLON_OPT);
+    result_ = result_ && maybe_pattern_and_semicolon_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -2814,8 +3264,22 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // SEMICOLON?
+  private static boolean maybe_pattern_and_semicolon_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "maybe_pattern_and_semicolon_0_1")) return false;
+    consumeToken(builder_, SEMICOLON);
+    return true;
+  }
+
+  // SEMICOLON?
+  private static boolean maybe_pattern_and_semicolon_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "maybe_pattern_and_semicolon_1")) return false;
+    consumeToken(builder_, SEMICOLON);
+    return true;
+  }
+
   /* ********************************************************** */
-  // method_name parameter_list body_opt END method_name_opt
+  // method_name parameter_list body? END method_name?
   public static boolean method_definition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "method_definition")) return false;
     boolean result_ = false;
@@ -2823,7 +3287,9 @@ public class DylanParser implements PsiParser {
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<method definition>");
     result_ = method_name(builder_, level_ + 1);
     result_ = result_ && parameter_list(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, BODY_OPT, END, METHOD_NAME_OPT);
+    result_ = result_ && method_definition_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, END);
+    result_ = result_ && method_definition_4(builder_, level_ + 1);
     if (result_) {
       marker_.done(METHOD_DEFINITION);
     }
@@ -2834,15 +3300,29 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // body?
+  private static boolean method_definition_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "method_definition_2")) return false;
+    body(builder_, level_ + 1);
+    return true;
+  }
+
+  // method_name?
+  private static boolean method_definition_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "method_definition_4")) return false;
+    method_name(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // macro_name variable_name_opt
+  // macro_name variable_name?
   public static boolean method_name(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "method_name")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<method name>");
     result_ = macro_name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, VARIABLE_NAME_OPT);
+    result_ = result_ && method_name_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(METHOD_NAME);
     }
@@ -2851,6 +3331,13 @@ public class DylanParser implements PsiParser {
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
+  }
+
+  // variable_name?
+  private static boolean method_name_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "method_name_1")) return false;
+    variable_name(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -2872,51 +3359,25 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // modifier | modifiers modifier
+  // modifier+
   public static boolean modifiers(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "modifiers")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<modifiers>");
     result_ = modifier(builder_, level_ + 1);
-    if (!result_) result_ = modifiers_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!modifier(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "modifiers");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(MODIFIERS);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
-    return result_;
-  }
-
-  // modifiers modifier
-  private static boolean modifiers_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "modifiers_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = modifiers(builder_, level_ + 1);
-    result_ = result_ && modifier(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // reserved_word | unreserved_name
-  public static boolean name(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "name")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<name>");
-    result_ = reserved_word(builder_, level_ + 1);
-    if (!result_) result_ = unreserved_name(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(NAME);
     }
     else {
       marker_.rollbackTo();
@@ -2962,13 +3423,13 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // name | STRING | SYMBOL
+  // word_name | STRING | SYMBOL
   public static boolean name_string_or_symbol(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "name_string_or_symbol")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<name string or symbol>");
-    result_ = name(builder_, level_ + 1);
+    result_ = word_name(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, STRING);
     if (!result_) result_ = consumeToken(builder_, SYMBOL);
     if (result_) {
@@ -2999,8 +3460,8 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // HASH_NEXT variable_name
-  //     | HASH_NEXT variable_name COMMA rest_key_parameter_list
+  // HASH_NEXT variable_name COMMA rest_key_parameter_list
+  //     | HASH_NEXT variable_name
   //     | rest_key_parameter_list
   public static boolean next_rest_key_parameter_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "next_rest_key_parameter_list")) return false;
@@ -3020,13 +3481,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_NEXT variable_name
+  // HASH_NEXT variable_name COMMA rest_key_parameter_list
   private static boolean next_rest_key_parameter_list_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "next_rest_key_parameter_list_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, HASH_NEXT);
     result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = result_ && rest_key_parameter_list(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3036,15 +3499,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_NEXT variable_name COMMA rest_key_parameter_list
+  // HASH_NEXT variable_name
   private static boolean next_rest_key_parameter_list_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "next_rest_key_parameter_list_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, HASH_NEXT);
     result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
-    result_ = result_ && rest_key_parameter_list(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3097,17 +3558,17 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE | HANDLER | LET | LOCAL | MACRO | OTHERWISE
+  // DEFINE | HANDLER_T | LET | LOCAL | MACRO_T | OTHERWISE
   public static boolean non_end_core_word(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_end_core_word")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<non end core word>");
     result_ = consumeToken(builder_, DEFINE);
-    if (!result_) result_ = consumeToken(builder_, HANDLER);
+    if (!result_) result_ = consumeToken(builder_, HANDLER_T);
     if (!result_) result_ = consumeToken(builder_, LET);
     if (!result_) result_ = consumeToken(builder_, LOCAL);
-    if (!result_) result_ = consumeToken(builder_, MACRO);
+    if (!result_) result_ = consumeToken(builder_, MACRO_T);
     if (!result_) result_ = consumeToken(builder_, OTHERWISE);
     if (result_) {
       marker_.done(NON_END_CORE_WORD);
@@ -3139,14 +3600,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // simple_fragment basic_fragment_opt
+  // simple_fragment basic_fragment?
   public static boolean non_statement_basic_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_basic_fragment")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<non statement basic fragment>");
     result_ = simple_fragment(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, BASIC_FRAGMENT_OPT);
+    result_ = result_ && non_statement_basic_fragment_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(NON_STATEMENT_BASIC_FRAGMENT);
     }
@@ -3157,12 +3618,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // basic_fragment?
+  private static boolean non_statement_basic_fragment_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_basic_fragment_1")) return false;
+    basic_fragment(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // definition semicolon_fragment_opt
-  //     | local_declaration semicolon_fragment_opt
-  //     | simple_fragment body_fragment_opt
-  //     | COMMA body_fragment_opt
-  //     | SEMICOLON body_fragment_opt
+  // definition semicolon_fragment?
+  //     | local_declaration semicolon_fragment?
+  //     | slot_declaration semicolon_fragment? // FIXME
+  //     | simple_fragment body_fragment?
+  //     | COMMA body_fragment?
+  //     | SEMICOLON body_fragment?
   public static boolean non_statement_body_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment")) return false;
     boolean result_ = false;
@@ -3173,6 +3642,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = non_statement_body_fragment_2(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment_3(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment_4(builder_, level_ + 1);
+    if (!result_) result_ = non_statement_body_fragment_5(builder_, level_ + 1);
     if (result_) {
       marker_.done(NON_STATEMENT_BODY_FRAGMENT);
     }
@@ -3183,13 +3653,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // definition semicolon_fragment_opt
+  // definition semicolon_fragment?
   private static boolean non_statement_body_fragment_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = definition(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEMICOLON_FRAGMENT_OPT);
+    result_ = result_ && non_statement_body_fragment_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3199,13 +3669,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // local_declaration semicolon_fragment_opt
+  // semicolon_fragment?
+  private static boolean non_statement_body_fragment_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_0_1")) return false;
+    semicolon_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // local_declaration semicolon_fragment?
   private static boolean non_statement_body_fragment_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = local_declaration(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEMICOLON_FRAGMENT_OPT);
+    result_ = result_ && non_statement_body_fragment_1_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3215,13 +3692,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // simple_fragment body_fragment_opt
+  // semicolon_fragment?
+  private static boolean non_statement_body_fragment_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_1_1")) return false;
+    semicolon_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // slot_declaration semicolon_fragment?
   private static boolean non_statement_body_fragment_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = simple_fragment(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, BODY_FRAGMENT_OPT);
+    result_ = slot_declaration(builder_, level_ + 1);
+    result_ = result_ && non_statement_body_fragment_2_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3231,12 +3715,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // COMMA body_fragment_opt
+  // semicolon_fragment?
+  private static boolean non_statement_body_fragment_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_2_1")) return false;
+    semicolon_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // simple_fragment body_fragment?
   private static boolean non_statement_body_fragment_3(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_3")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, COMMA, BODY_FRAGMENT_OPT);
+    result_ = simple_fragment(builder_, level_ + 1);
+    result_ = result_ && non_statement_body_fragment_3_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3246,12 +3738,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // SEMICOLON body_fragment_opt
+  // body_fragment?
+  private static boolean non_statement_body_fragment_3_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_3_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // COMMA body_fragment?
   private static boolean non_statement_body_fragment_4(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_4")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, SEMICOLON, BODY_FRAGMENT_OPT);
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && non_statement_body_fragment_4_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3261,8 +3761,38 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // body_fragment?
+  private static boolean non_statement_body_fragment_4_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_4_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // SEMICOLON body_fragment?
+  private static boolean non_statement_body_fragment_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_5")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, SEMICOLON);
+    result_ = result_ && non_statement_body_fragment_5_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // body_fragment?
+  private static boolean non_statement_body_fragment_5_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_body_fragment_5_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // simple_fragment list_fragment_opt | COMMA list_fragment_opt
+  // simple_fragment list_fragment? | COMMA list_fragment?
   public static boolean non_statement_list_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_list_fragment")) return false;
     boolean result_ = false;
@@ -3280,13 +3810,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // simple_fragment list_fragment_opt
+  // simple_fragment list_fragment?
   private static boolean non_statement_list_fragment_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_list_fragment_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = simple_fragment(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, LIST_FRAGMENT_OPT);
+    result_ = result_ && non_statement_list_fragment_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3296,12 +3826,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // COMMA list_fragment_opt
+  // list_fragment?
+  private static boolean non_statement_list_fragment_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_list_fragment_0_1")) return false;
+    list_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // COMMA list_fragment?
   private static boolean non_statement_list_fragment_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_list_fragment_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, COMMA, LIST_FRAGMENT_OPT);
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && non_statement_list_fragment_1_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3309,6 +3847,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // list_fragment?
+  private static boolean non_statement_list_fragment_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "non_statement_list_fragment_1_1")) return false;
+    list_fragment(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -3371,14 +3916,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // operand operand_tail | leaf
+  // leaf operand_tail*
   public static boolean operand(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<operand>");
-    result_ = operand_0(builder_, level_ + 1);
-    if (!result_) result_ = leaf(builder_, level_ + 1);
+    result_ = leaf(builder_, level_ + 1);
+    result_ = result_ && operand_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(OPERAND);
     }
@@ -3389,24 +3934,24 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // operand operand_tail
-  private static boolean operand_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "operand_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = operand(builder_, level_ + 1);
-    result_ = result_ && operand_tail(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
+  // operand_tail*
+  private static boolean operand_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "operand_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!operand_tail(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "operand_1");
+        break;
+      }
+      offset_ = next_offset_;
     }
-    else {
-      marker_.drop();
-    }
-    return result_;
+    return true;
   }
 
   /* ********************************************************** */
-  // LPAREN arguments_opt RPAREN | LBRACKET arguments_opt RBRACKET | DOT variable_name
+  // LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name
   public static boolean operand_tail(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand_tail")) return false;
     boolean result_ = false;
@@ -3425,12 +3970,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN arguments_opt RPAREN
+  // LPAREN arguments? RPAREN
   private static boolean operand_tail_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand_tail_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, ARGUMENTS_OPT, RPAREN);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && operand_tail_0_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3440,12 +3987,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACKET arguments_opt RBRACKET
+  // arguments?
+  private static boolean operand_tail_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "operand_tail_0_1")) return false;
+    arguments(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACKET arguments? RBRACKET
   private static boolean operand_tail_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand_tail_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACKET, ARGUMENTS_OPT, RBRACKET);
+    result_ = consumeToken(builder_, LBRACKET);
+    result_ = result_ && operand_tail_1_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3453,6 +4009,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // arguments?
+  private static boolean operand_tail_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "operand_tail_1_1")) return false;
+    arguments(builder_, level_ + 1);
+    return true;
   }
 
   // DOT variable_name
@@ -3472,46 +4035,28 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // | operand_tails operand_tail
+  // operand_tail*
   public static boolean operand_tails(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand_tails")) return false;
-    boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<operand tails>");
-    result_ = operand_tails_0(builder_, level_ + 1);
-    if (!result_) result_ = operand_tails_1(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(OPERAND_TAILS);
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!operand_tail(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "operand_tails");
+        break;
+      }
+      offset_ = next_offset_;
     }
-    else {
-      marker_.rollbackTo();
-    }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
-    return result_;
-  }
-
-  private static boolean operand_tails_0(PsiBuilder builder_, int level_) {
+    marker_.done(OPERAND_TAILS);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
     return true;
   }
 
-  // operand_tails operand_tail
-  private static boolean operand_tails_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "operand_tails_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = operand_tails(builder_, level_ + 1);
-    result_ = result_ && operand_tail(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // BINARY_OPERATOR_ONLY | UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+  // BINARY_OPERATOR_ONLY | UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL
   public static boolean operator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operator")) return false;
     boolean result_ = false;
@@ -3520,6 +4065,8 @@ public class DylanParser implements PsiParser {
     result_ = consumeToken(builder_, BINARY_OPERATOR_ONLY);
     if (!result_) result_ = consumeToken(builder_, UNARY_OPERATOR_ONLY);
     if (!result_) result_ = consumeToken(builder_, UNARY_AND_BINARY_OPERATOR);
+    if (!result_) result_ = consumeToken(builder_, EQUAL);
+    if (!result_) result_ = consumeToken(builder_, EQUAL_EQUAL);
     if (result_) {
       marker_.done(OPERATOR);
     }
@@ -3550,9 +4097,9 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // LPAREN parameters_opt RPAREN semicolon_opt
-  //     | LPAREN parameters_opt RPAREN EQUAL_ARROW variable SEMICOLON
-  //     | LPAREN parameters_opt RPAREN EQUAL_ARROW LPAREN values_list_opt RPAREN semicolon_opt
+  // LPAREN parameters? RPAREN EQUAL_ARROW variable SEMICOLON
+  //     | LPAREN parameters? RPAREN EQUAL_ARROW LPAREN values_list? RPAREN semicolon?
+  //     | LPAREN parameters? RPAREN SEMICOLON?
   public static boolean parameter_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "parameter_list")) return false;
     if (!nextTokenIs(builder_, LPAREN)) return false;
@@ -3570,27 +4117,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN parameters_opt RPAREN semicolon_opt
+  // LPAREN parameters? RPAREN EQUAL_ARROW variable SEMICOLON
   private static boolean parameter_list_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "parameter_list_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, PARAMETERS_OPT, RPAREN, SEMICOLON_OPT);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // LPAREN parameters_opt RPAREN EQUAL_ARROW variable SEMICOLON
-  private static boolean parameter_list_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "parameter_list_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, PARAMETERS_OPT, RPAREN, EQUAL_ARROW);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && parameter_list_0_1(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAREN, EQUAL_ARROW);
     result_ = result_ && variable(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, SEMICOLON);
     if (!result_) {
@@ -3602,12 +4136,24 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN parameters_opt RPAREN EQUAL_ARROW LPAREN values_list_opt RPAREN semicolon_opt
-  private static boolean parameter_list_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "parameter_list_2")) return false;
+  // parameters?
+  private static boolean parameter_list_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_0_1")) return false;
+    parameters(builder_, level_ + 1);
+    return true;
+  }
+
+  // LPAREN parameters? RPAREN EQUAL_ARROW LPAREN values_list? RPAREN semicolon?
+  private static boolean parameter_list_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, PARAMETERS_OPT, RPAREN, EQUAL_ARROW, LPAREN, VALUES_LIST_OPT, RPAREN, SEMICOLON_OPT);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && parameter_list_1_1(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAREN, EQUAL_ARROW, LPAREN);
+    result_ = result_ && parameter_list_1_5(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
+    result_ = result_ && parameter_list_1_7(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3617,17 +4163,70 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // parameters?
+  private static boolean parameter_list_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_1_1")) return false;
+    parameters(builder_, level_ + 1);
+    return true;
+  }
+
+  // values_list?
+  private static boolean parameter_list_1_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_1_5")) return false;
+    values_list(builder_, level_ + 1);
+    return true;
+  }
+
+  // semicolon?
+  private static boolean parameter_list_1_7(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_1_7")) return false;
+    consumeToken(builder_, SEMICOLON);
+    return true;
+  }
+
+  // LPAREN parameters? RPAREN SEMICOLON?
+  private static boolean parameter_list_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_2")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && parameter_list_2_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
+    result_ = result_ && parameter_list_2_3(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // parameters?
+  private static boolean parameter_list_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_2_1")) return false;
+    parameters(builder_, level_ + 1);
+    return true;
+  }
+
+  // SEMICOLON?
+  private static boolean parameter_list_2_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameter_list_2_3")) return false;
+    consumeToken(builder_, SEMICOLON);
+    return true;
+  }
+
   /* ********************************************************** */
-  // required_parameters
-  //     | required_parameters COMMA next_rest_key_parameter_list
+  // required_parameters COMMA next_rest_key_parameter_list
+  //     | required_parameters
   //     | next_rest_key_parameter_list
   public static boolean parameters(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "parameters")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<parameters>");
-    result_ = required_parameters(builder_, level_ + 1);
-    if (!result_) result_ = parameters_1(builder_, level_ + 1);
+    result_ = parameters_0(builder_, level_ + 1);
+    if (!result_) result_ = required_parameters(builder_, level_ + 1);
     if (!result_) result_ = next_rest_key_parameter_list(builder_, level_ + 1);
     if (result_) {
       marker_.done(PARAMETERS);
@@ -3640,8 +4239,8 @@ public class DylanParser implements PsiParser {
   }
 
   // required_parameters COMMA next_rest_key_parameter_list
-  private static boolean parameters_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "parameters_1")) return false;
+  private static boolean parameters_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "parameters_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = required_parameters(builder_, level_ + 1);
@@ -3657,14 +4256,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // pattern_list | pattern SEMICOLON pattern_list
+  // pattern_list (SEMICOLON pattern_list)*
   public static boolean pattern(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<pattern>");
     result_ = pattern_list(builder_, level_ + 1);
-    if (!result_) result_ = pattern_1(builder_, level_ + 1);
+    result_ = result_ && pattern_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(PATTERN);
     }
@@ -3675,13 +4274,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // pattern SEMICOLON pattern_list
+  // (SEMICOLON pattern_list)*
   private static boolean pattern_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!pattern_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "pattern_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // SEMICOLON pattern_list
+  private static boolean pattern_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = pattern(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEMICOLON);
+    result_ = consumeToken(builder_, SEMICOLON);
     result_ = result_ && pattern_list(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -3693,10 +4307,10 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // QUERY name default_opt
-  //     | QUERY CONSTRAINED_NAME default_opt
-  //     | QUERY_QUERY name default_opt
-  //     | QUERY_QUERY CONSTRAINED_NAME default_opt
+  // QUERY word_name default_value?
+  //     | QUERY CONSTRAINED_NAME default_value?
+  //     | QUERY_QUERY word_name default_value?
+  //     | QUERY_QUERY CONSTRAINED_NAME default_value?
   public static boolean pattern_keyword(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_keyword")) return false;
     if (!nextTokenIs(builder_, QUERY) && !nextTokenIs(builder_, QUERY_QUERY)
@@ -3718,14 +4332,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY name default_opt
+  // QUERY word_name default_value?
   private static boolean pattern_keyword_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_keyword_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, QUERY);
-    result_ = result_ && name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, DEFAULT_OPT);
+    result_ = result_ && word_name(builder_, level_ + 1);
+    result_ = result_ && pattern_keyword_0_2(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3735,12 +4349,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY CONSTRAINED_NAME default_opt
+  // default_value?
+  private static boolean pattern_keyword_0_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_keyword_0_2")) return false;
+    default_value(builder_, level_ + 1);
+    return true;
+  }
+
+  // QUERY CONSTRAINED_NAME default_value?
   private static boolean pattern_keyword_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_keyword_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, QUERY, CONSTRAINED_NAME, DEFAULT_OPT);
+    result_ = consumeTokens(builder_, 0, QUERY, CONSTRAINED_NAME);
+    result_ = result_ && pattern_keyword_1_2(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3750,14 +4372,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY_QUERY name default_opt
+  // default_value?
+  private static boolean pattern_keyword_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_keyword_1_2")) return false;
+    default_value(builder_, level_ + 1);
+    return true;
+  }
+
+  // QUERY_QUERY word_name default_value?
   private static boolean pattern_keyword_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_keyword_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, QUERY_QUERY);
-    result_ = result_ && name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, DEFAULT_OPT);
+    result_ = result_ && word_name(builder_, level_ + 1);
+    result_ = result_ && pattern_keyword_2_2(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3767,12 +4396,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY_QUERY CONSTRAINED_NAME default_opt
+  // default_value?
+  private static boolean pattern_keyword_2_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_keyword_2_2")) return false;
+    default_value(builder_, level_ + 1);
+    return true;
+  }
+
+  // QUERY_QUERY CONSTRAINED_NAME default_value?
   private static boolean pattern_keyword_3(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_keyword_3")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, QUERY_QUERY, CONSTRAINED_NAME, DEFAULT_OPT);
+    result_ = consumeTokens(builder_, 0, QUERY_QUERY, CONSTRAINED_NAME);
+    result_ = result_ && pattern_keyword_3_2(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3782,18 +4419,25 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // default_value?
+  private static boolean pattern_keyword_3_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_keyword_3_2")) return false;
+    default_value(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
   // HASH_ALL_KEYS
-  //     | pattern_keyword
   //     | pattern_keyword COMMA pattern_keywords
+  //     | pattern_keyword
   public static boolean pattern_keywords(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_keywords")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<pattern keywords>");
     result_ = consumeToken(builder_, HASH_ALL_KEYS);
+    if (!result_) result_ = pattern_keywords_1(builder_, level_ + 1);
     if (!result_) result_ = pattern_keyword(builder_, level_ + 1);
-    if (!result_) result_ = pattern_keywords_2(builder_, level_ + 1);
     if (result_) {
       marker_.done(PATTERN_KEYWORDS);
     }
@@ -3805,8 +4449,8 @@ public class DylanParser implements PsiParser {
   }
 
   // pattern_keyword COMMA pattern_keywords
-  private static boolean pattern_keywords_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "pattern_keywords_2")) return false;
+  private static boolean pattern_keywords_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_keywords_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = pattern_keyword(builder_, level_ + 1);
@@ -3822,16 +4466,16 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // pattern_sequence
-  //     | pattern_sequence COMMA pattern_list
+  // pattern_sequence COMMA pattern_list
+  //     | pattern_sequence
   //     | property_list_pattern
   public static boolean pattern_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_list")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<pattern list>");
-    result_ = pattern_sequence(builder_, level_ + 1);
-    if (!result_) result_ = pattern_list_1(builder_, level_ + 1);
+    result_ = pattern_list_0(builder_, level_ + 1);
+    if (!result_) result_ = pattern_sequence(builder_, level_ + 1);
     if (!result_) result_ = property_list_pattern(builder_, level_ + 1);
     if (result_) {
       marker_.done(PATTERN_LIST);
@@ -3844,8 +4488,8 @@ public class DylanParser implements PsiParser {
   }
 
   // pattern_sequence COMMA pattern_list
-  private static boolean pattern_list_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "pattern_list_1")) return false;
+  private static boolean pattern_list_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "pattern_list_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = pattern_sequence(builder_, level_ + 1);
@@ -3861,15 +4505,23 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // simple_pattern
-  //     | pattern_sequence simple_pattern
+  // simple_pattern+
   public static boolean pattern_sequence(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_sequence")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<pattern sequence>");
     result_ = simple_pattern(builder_, level_ + 1);
-    if (!result_) result_ = pattern_sequence_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!simple_pattern(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "pattern_sequence");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(PATTERN_SEQUENCE);
     }
@@ -3880,25 +4532,9 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // pattern_sequence simple_pattern
-  private static boolean pattern_sequence_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "pattern_sequence_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = pattern_sequence(builder_, level_ + 1);
-    result_ = result_ && simple_pattern(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // QUERY name
-  //     | QUERY CONSTRAINED_NAME
+  // QUERY CONSTRAINED_NAME
+  //     | QUERY word_name
   //     | ELLIPSIS
   public static boolean pattern_variable(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_variable")) return false;
@@ -3920,13 +4556,12 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY name
+  // QUERY CONSTRAINED_NAME
   private static boolean pattern_variable_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_variable_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, QUERY);
-    result_ = result_ && name(builder_, level_ + 1);
+    result_ = consumeTokens(builder_, 0, QUERY, CONSTRAINED_NAME);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3936,12 +4571,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY CONSTRAINED_NAME
+  // QUERY word_name
   private static boolean pattern_variable_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "pattern_variable_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, QUERY, CONSTRAINED_NAME);
+    result_ = consumeToken(builder_, QUERY);
+    result_ = result_ && word_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3970,14 +4606,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // property | property_list COMMA property
+  // property (COMMA property)*
   public static boolean property_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list")) return false;
     if (!nextTokenIs(builder_, SYMBOL)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = property(builder_, level_ + 1);
-    if (!result_) result_ = property_list_1(builder_, level_ + 1);
+    result_ = result_ && property_list_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(PROPERTY_LIST);
     }
@@ -3987,13 +4623,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // property_list COMMA property
+  // (COMMA property)*
   private static boolean property_list_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!property_list_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "property_list_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA property
+  private static boolean property_list_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "property_list_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = property_list(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && property(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -4005,9 +4656,9 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // HASH_REST pattern_variable
-  //     | HASH_KEY pattern_keywords_opt
-  //     | HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords_opt
+  // HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords?
+  //     | HASH_REST pattern_variable
+  //     | HASH_KEY pattern_keywords?
   public static boolean property_list_pattern(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list_pattern")) return false;
     if (!nextTokenIs(builder_, HASH_KEY) && !nextTokenIs(builder_, HASH_REST)
@@ -4028,13 +4679,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_REST pattern_variable
+  // HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords?
   private static boolean property_list_pattern_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list_pattern_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, HASH_REST);
     result_ = result_ && pattern_variable(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, COMMA, HASH_KEY);
+    result_ = result_ && property_list_pattern_0_4(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4044,12 +4697,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_KEY pattern_keywords_opt
+  // pattern_keywords?
+  private static boolean property_list_pattern_0_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "property_list_pattern_0_4")) return false;
+    pattern_keywords(builder_, level_ + 1);
+    return true;
+  }
+
+  // HASH_REST pattern_variable
   private static boolean property_list_pattern_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list_pattern_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_KEY, PATTERN_KEYWORDS_OPT);
+    result_ = consumeToken(builder_, HASH_REST);
+    result_ = result_ && pattern_variable(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4059,14 +4720,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords_opt
+  // HASH_KEY pattern_keywords?
   private static boolean property_list_pattern_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list_pattern_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH_REST);
-    result_ = result_ && pattern_variable(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, COMMA, HASH_KEY, PATTERN_KEYWORDS_OPT);
+    result_ = consumeToken(builder_, HASH_KEY);
+    result_ = result_ && property_list_pattern_2_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4074,6 +4734,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // pattern_keywords?
+  private static boolean property_list_pattern_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "property_list_pattern_2_1")) return false;
+    pattern_keywords(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -4133,15 +4800,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // required_parameter
-  //     | required_parameters COMMA required_parameter
+  // required_parameter (COMMA required_parameter)*
   public static boolean required_parameters(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "required_parameters")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<required parameters>");
     result_ = required_parameter(builder_, level_ + 1);
-    if (!result_) result_ = required_parameters_1(builder_, level_ + 1);
+    result_ = result_ && required_parameters_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(REQUIRED_PARAMETERS);
     }
@@ -4152,13 +4818,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // required_parameters COMMA required_parameter
+  // (COMMA required_parameter)*
   private static boolean required_parameters_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "required_parameters_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!required_parameters_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "required_parameters_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA required_parameter
+  private static boolean required_parameters_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "required_parameters_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = required_parameters(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && required_parameter(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -4192,8 +4873,8 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // HASH_REST variable_name
-  //     | HASH_REST variable_name COMMA key_parameter_list
+  // HASH_REST variable_name COMMA key_parameter_list
+  //     | HASH_REST variable_name
   //     | key_parameter_list
   public static boolean rest_key_parameter_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "rest_key_parameter_list")) return false;
@@ -4215,25 +4896,9 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_REST variable_name
+  // HASH_REST variable_name COMMA key_parameter_list
   private static boolean rest_key_parameter_list_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "rest_key_parameter_list_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH_REST);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // HASH_REST variable_name COMMA key_parameter_list
-  private static boolean rest_key_parameter_list_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "rest_key_parameter_list_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, HASH_REST);
@@ -4249,14 +4914,33 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // HASH_REST variable_name
+  private static boolean rest_key_parameter_list_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "rest_key_parameter_list_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, HASH_REST);
+    result_ = result_ && variable_name(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
   /* ********************************************************** */
-  // LBRACE template_opt RBRACE semicolon_opt
+  // LBRACE template? RBRACE SEMICOLON?
   public static boolean rhs(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "rhs")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACE, TEMPLATE_OPT, RBRACE, SEMICOLON_OPT);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && rhs_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
+    result_ = result_ && rhs_3(builder_, level_ + 1);
     if (result_) {
       marker_.done(RHS);
     }
@@ -4266,14 +4950,29 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // template?
+  private static boolean rhs_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "rhs_1")) return false;
+    template(builder_, level_ + 1);
+    return true;
+  }
+
+  // SEMICOLON?
+  private static boolean rhs_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "rhs_3")) return false;
+    consumeToken(builder_, SEMICOLON);
+    return true;
+  }
+
   /* ********************************************************** */
-  // SEMICOLON body_fragment_opt
+  // SEMICOLON body_fragment?
   public static boolean semicolon_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "semicolon_fragment")) return false;
     if (!nextTokenIs(builder_, SEMICOLON)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, SEMICOLON, BODY_FRAGMENT_OPT);
+    result_ = consumeToken(builder_, SEMICOLON);
+    result_ = result_ && semicolon_fragment_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(SEMICOLON_FRAGMENT);
     }
@@ -4281,6 +4980,13 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     return result_;
+  }
+
+  // body_fragment?
+  private static boolean semicolon_fragment_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "semicolon_fragment_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -4382,19 +5088,100 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // body?
-  public static boolean source_record(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "source_record")) return false;
+  // (modifiers|DEFINE_LIST_BEGIN_WORD)? SLOT variable (EQUAL expression)? init_specifications?
+  public static boolean slot_declaration(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declaration")) return false;
+    boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<source record>");
-    body(builder_, level_ + 1);
-    marker_.done(SOURCE_RECORD);
-    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot declaration>");
+    result_ = slot_declaration_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, SLOT);
+    result_ = result_ && variable(builder_, level_ + 1);
+    result_ = result_ && slot_declaration_3(builder_, level_ + 1);
+    result_ = result_ && slot_declaration_4(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(SLOT_DECLARATION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // (modifiers|DEFINE_LIST_BEGIN_WORD)?
+  private static boolean slot_declaration_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declaration_0")) return false;
+    slot_declaration_0_0(builder_, level_ + 1);
+    return true;
+  }
+
+  // modifiers|DEFINE_LIST_BEGIN_WORD
+  private static boolean slot_declaration_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declaration_0_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = modifiers(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, DEFINE_LIST_BEGIN_WORD);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // (EQUAL expression)?
+  private static boolean slot_declaration_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declaration_3")) return false;
+    slot_declaration_3_0(builder_, level_ + 1);
+    return true;
+  }
+
+  // EQUAL expression
+  private static boolean slot_declaration_3_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declaration_3_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, EQUAL);
+    result_ = result_ && expression(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // init_specifications?
+  private static boolean slot_declaration_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declaration_4")) return false;
+    init_specifications(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
-  // source_record | variable | expression | name | token | body? | case_body? | macro
+  // body
+  public static boolean source_record(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "source_record")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<source record>");
+    result_ = body(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(SOURCE_RECORD);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // source_record | variable | expression | word_name | token | case_body | macro
   public static boolean source_records(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "source_records")) return false;
     boolean result_ = false;
@@ -4403,10 +5190,9 @@ public class DylanParser implements PsiParser {
     result_ = source_record(builder_, level_ + 1);
     if (!result_) result_ = variable(builder_, level_ + 1);
     if (!result_) result_ = expression(builder_, level_ + 1);
-    if (!result_) result_ = name(builder_, level_ + 1);
+    if (!result_) result_ = word_name(builder_, level_ + 1);
     if (!result_) result_ = token(builder_, level_ + 1);
-    if (!result_) result_ = source_records_5(builder_, level_ + 1);
-    if (!result_) result_ = source_records_6(builder_, level_ + 1);
+    if (!result_) result_ = case_body(builder_, level_ + 1);
     if (!result_) result_ = macro(builder_, level_ + 1);
     if (result_) {
       marker_.done(SOURCE_RECORDS);
@@ -4418,29 +5204,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // body?
-  private static boolean source_records_5(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "source_records_5")) return false;
-    body(builder_, level_ + 1);
-    return true;
-  }
-
-  // case_body?
-  private static boolean source_records_6(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "source_records_6")) return false;
-    case_body(builder_, level_ + 1);
-    return true;
-  }
-
   /* ********************************************************** */
-  // begin_word body_fragment_opt end_clause
+  // begin_word body_fragment? end_clause
   public static boolean statement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "statement")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<statement>");
     result_ = begin_word(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, BODY_FRAGMENT_OPT);
+    result_ = result_ && statement_1(builder_, level_ + 1);
     result_ = result_ && end_clause(builder_, level_ + 1);
     if (result_) {
       marker_.done(STATEMENT);
@@ -4450,6 +5222,13 @@ public class DylanParser implements PsiParser {
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
+  }
+
+  // body_fragment?
+  private static boolean statement_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "statement_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -4474,15 +5253,23 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // statement_rule
-  //     | statement_rules statement_rule
+  // statement_rule+
   public static boolean statement_rules(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "statement_rules")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = statement_rule(builder_, level_ + 1);
-    if (!result_) result_ = statement_rules_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!statement_rule(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "statement_rules");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(STATEMENT_RULES);
     }
@@ -4492,31 +5279,24 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // statement_rules statement_rule
-  private static boolean statement_rules_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "statement_rules_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = statement_rules(builder_, level_ + 1);
-    result_ = result_ && statement_rule(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // STRING | string_literal STRING
+  // STRING+
   public static boolean string_literal(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "string_literal")) return false;
     if (!nextTokenIs(builder_, STRING)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, STRING);
-    if (!result_) result_ = string_literal_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!consumeToken(builder_, STRING)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "string_literal");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(STRING_LITERAL);
     }
@@ -4526,27 +5306,11 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // string_literal STRING
-  private static boolean string_literal_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "string_literal_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = string_literal(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, STRING);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // name_prefix_opt QUERY name_string_or_symbol name_suffix_opt
-  //     | QUERY_QUERY name separator_opt ELLIPSIS
+  // name_prefix? QUERY name_string_or_symbol name_suffix?
+  //     | QUERY_QUERY word_name separator? ELLIPSIS
   //     | ELLIPSIS
-  //     | QUERY_EQUAL name
+  //     | QUERY_EQUAL word_name
   public static boolean substitution(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "substitution")) return false;
     boolean result_ = false;
@@ -4566,14 +5330,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // name_prefix_opt QUERY name_string_or_symbol name_suffix_opt
+  // name_prefix? QUERY name_string_or_symbol name_suffix?
   private static boolean substitution_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "substitution_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, NAME_PREFIX_OPT, QUERY);
+    result_ = substitution_0_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, QUERY);
     result_ = result_ && name_string_or_symbol(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, NAME_SUFFIX_OPT);
+    result_ = result_ && substitution_0_3(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4583,14 +5348,29 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY_QUERY name separator_opt ELLIPSIS
+  // name_prefix?
+  private static boolean substitution_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "substitution_0_0")) return false;
+    name_prefix(builder_, level_ + 1);
+    return true;
+  }
+
+  // name_suffix?
+  private static boolean substitution_0_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "substitution_0_3")) return false;
+    name_suffix(builder_, level_ + 1);
+    return true;
+  }
+
+  // QUERY_QUERY word_name separator? ELLIPSIS
   private static boolean substitution_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "substitution_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, QUERY_QUERY);
-    result_ = result_ && name(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, SEPARATOR_OPT, ELLIPSIS);
+    result_ = result_ && word_name(builder_, level_ + 1);
+    result_ = result_ && substitution_1_2(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, ELLIPSIS);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4600,13 +5380,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // QUERY_EQUAL name
+  // separator?
+  private static boolean substitution_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "substitution_1_2")) return false;
+    separator(builder_, level_ + 1);
+    return true;
+  }
+
+  // QUERY_EQUAL word_name
   private static boolean substitution_3(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "substitution_3")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, QUERY_EQUAL);
-    result_ = result_ && name(builder_, level_ + 1);
+    result_ = result_ && word_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4617,15 +5404,23 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // template_element
-  //     | template template_element
+  // template_element+
   public static boolean template(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<template>");
     result_ = template_element(builder_, level_ + 1);
-    if (!result_) result_ = template_1(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!template_element(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "template");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     if (result_) {
       marker_.done(TEMPLATE);
     }
@@ -4636,24 +5431,8 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // template template_element
-  private static boolean template_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "template_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = template(builder_, level_ + 1);
-    result_ = result_ && template_element(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
   /* ********************************************************** */
-  // name
+  // word_name
   //     | SYMBOL
   //     | NUMBER
   //     | CHARACTER_LITERAL
@@ -4664,11 +5443,11 @@ public class DylanParser implements PsiParser {
   //     | DOT
   //     | COLON_COLON
   //     | EQUAL_ARROW
-  //     | LPAREN template_opt RPAREN
-  //     | LBRACKET template_opt RBRACKET
-  //     | LBRACE template_opt RBRACE
-  //     | HASH_PAREN template_opt RPAREN
-  //     | HASH_BRACKET template_opt RBRACKET
+  //     | LPAREN template? RPAREN
+  //     | LBRACKET template? RBRACKET
+  //     | LBRACE template? RBRACE
+  //     | HASH_PAREN template? RPAREN
+  //     | HASH_BRACKET template? RBRACKET
   //     | PARSED_LIST_CONSTANT
   //     | PARSED_VECTOR_CONSTANT
   //     | substitution
@@ -4677,7 +5456,7 @@ public class DylanParser implements PsiParser {
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<template element>");
-    result_ = name(builder_, level_ + 1);
+    result_ = word_name(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, SYMBOL);
     if (!result_) result_ = consumeToken(builder_, NUMBER);
     if (!result_) result_ = consumeToken(builder_, CHARACTER_LITERAL);
@@ -4706,12 +5485,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN template_opt RPAREN
+  // LPAREN template? RPAREN
   private static boolean template_element_11(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element_11")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LPAREN, TEMPLATE_OPT, RPAREN);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && template_element_11_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4721,12 +5502,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACKET template_opt RBRACKET
+  // template?
+  private static boolean template_element_11_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "template_element_11_1")) return false;
+    template(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACKET template? RBRACKET
   private static boolean template_element_12(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element_12")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACKET, TEMPLATE_OPT, RBRACKET);
+    result_ = consumeToken(builder_, LBRACKET);
+    result_ = result_ && template_element_12_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4736,12 +5526,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LBRACE template_opt RBRACE
+  // template?
+  private static boolean template_element_12_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "template_element_12_1")) return false;
+    template(builder_, level_ + 1);
+    return true;
+  }
+
+  // LBRACE template? RBRACE
   private static boolean template_element_13(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element_13")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, LBRACE, TEMPLATE_OPT, RBRACE);
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && template_element_13_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4751,12 +5550,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_PAREN template_opt RPAREN
+  // template?
+  private static boolean template_element_13_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "template_element_13_1")) return false;
+    template(builder_, level_ + 1);
+    return true;
+  }
+
+  // HASH_PAREN template? RPAREN
   private static boolean template_element_14(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element_14")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_PAREN, TEMPLATE_OPT, RPAREN);
+    result_ = consumeToken(builder_, HASH_PAREN);
+    result_ = result_ && template_element_14_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4766,12 +5574,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // HASH_BRACKET template_opt RBRACKET
+  // template?
+  private static boolean template_element_14_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "template_element_14_1")) return false;
+    template(builder_, level_ + 1);
+    return true;
+  }
+
+  // HASH_BRACKET template? RBRACKET
   private static boolean template_element_15(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element_15")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, HASH_BRACKET, TEMPLATE_OPT, RBRACKET);
+    result_ = consumeToken(builder_, HASH_BRACKET);
+    result_ = result_ && template_element_15_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4781,14 +5598,21 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  // template?
+  private static boolean template_element_15_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "template_element_15_1")) return false;
+    template(builder_, level_ + 1);
+    return true;
+  }
+
   /* ********************************************************** */
-  // name | SYMBOL | NUMBER | CHARACTER_LITERAL | STRING | operator | punctuation | hash_word
+  // word_name | SYMBOL | NUMBER | CHARACTER_LITERAL | STRING | operator | punctuation | hash_word
   public static boolean token(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "token")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<token>");
-    result_ = name(builder_, level_ + 1);
+    result_ = word_name(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, SYMBOL);
     if (!result_) result_ = consumeToken(builder_, NUMBER);
     if (!result_) result_ = consumeToken(builder_, CHARACTER_LITERAL);
@@ -4864,14 +5688,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // unparenthesized_binary_operand | unparenthesized_expression binary_operator binary_operand
+  // unparenthesized_binary_operand (binary_operator binary_operand)*
   public static boolean unparenthesized_expression(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "unparenthesized_expression")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<unparenthesized expression>");
     result_ = unparenthesized_binary_operand(builder_, level_ + 1);
-    if (!result_) result_ = unparenthesized_expression_1(builder_, level_ + 1);
+    result_ = result_ && unparenthesized_expression_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(UNPARENTHESIZED_EXPRESSION);
     }
@@ -4882,13 +5706,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // unparenthesized_expression binary_operator binary_operand
+  // (binary_operator binary_operand)*
   private static boolean unparenthesized_expression_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "unparenthesized_expression_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!unparenthesized_expression_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "unparenthesized_expression_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // binary_operator binary_operand
+  private static boolean unparenthesized_expression_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unparenthesized_expression_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = unparenthesized_expression(builder_, level_ + 1);
-    result_ = result_ && binary_operator(builder_, level_ + 1);
+    result_ = binary_operator(builder_, level_ + 1);
     result_ = result_ && binary_operand(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -4928,14 +5767,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // unparenthesized_operand operand_tail | unparenthesized_leaf
+  // unparenthesized_leaf operand_tail*
   public static boolean unparenthesized_operand(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "unparenthesized_operand")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<unparenthesized operand>");
-    result_ = unparenthesized_operand_0(builder_, level_ + 1);
-    if (!result_) result_ = unparenthesized_leaf(builder_, level_ + 1);
+    result_ = unparenthesized_leaf(builder_, level_ + 1);
+    result_ = result_ && unparenthesized_operand_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(UNPARENTHESIZED_OPERAND);
     }
@@ -4946,20 +5785,20 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // unparenthesized_operand operand_tail
-  private static boolean unparenthesized_operand_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "unparenthesized_operand_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = unparenthesized_operand(builder_, level_ + 1);
-    result_ = result_ && operand_tail(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
+  // operand_tail*
+  private static boolean unparenthesized_operand_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unparenthesized_operand_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!operand_tail(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "unparenthesized_operand_1");
+        break;
+      }
+      offset_ = next_offset_;
     }
-    else {
-      marker_.drop();
-    }
-    return result_;
+    return true;
   }
 
   /* ********************************************************** */
@@ -5061,16 +5900,16 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variables
-  //     | variables COMMA HASH_REST variable
+  // variables COMMA HASH_REST variable
+  //     | variables
   //     | HASH_REST variable
   public static boolean values_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values_list")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<values list>");
-    result_ = variables(builder_, level_ + 1);
-    if (!result_) result_ = values_list_1(builder_, level_ + 1);
+    result_ = values_list_0(builder_, level_ + 1);
+    if (!result_) result_ = variables(builder_, level_ + 1);
     if (!result_) result_ = values_list_2(builder_, level_ + 1);
     if (result_) {
       marker_.done(VALUES_LIST);
@@ -5083,8 +5922,8 @@ public class DylanParser implements PsiParser {
   }
 
   // variables COMMA HASH_REST variable
-  private static boolean values_list_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "values_list_1")) return false;
+  private static boolean values_list_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "values_list_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variables(builder_, level_ + 1);
@@ -5116,14 +5955,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variable_name | variable_name COLON_COLON operand
+  // variable_name COLON_COLON operand | variable_name
   public static boolean variable(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variable")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<variable>");
-    result_ = variable_name(builder_, level_ + 1);
-    if (!result_) result_ = variable_1(builder_, level_ + 1);
+    result_ = variable_0(builder_, level_ + 1);
+    if (!result_) result_ = variable_name(builder_, level_ + 1);
     if (result_) {
       marker_.done(VARIABLE);
     }
@@ -5135,8 +5974,8 @@ public class DylanParser implements PsiParser {
   }
 
   // variable_name COLON_COLON operand
-  private static boolean variable_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "variable_1")) return false;
+  private static boolean variable_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "variable_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variable_name(builder_, level_ + 1);
@@ -5152,14 +5991,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variables | variables COMMA HASH_REST variable_name | HASH_REST variable_name
+  // variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name
   public static boolean variable_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variable_list")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<variable list>");
-    result_ = variables(builder_, level_ + 1);
-    if (!result_) result_ = variable_list_1(builder_, level_ + 1);
+    result_ = variable_list_0(builder_, level_ + 1);
+    if (!result_) result_ = variables(builder_, level_ + 1);
     if (!result_) result_ = variable_list_2(builder_, level_ + 1);
     if (result_) {
       marker_.done(VARIABLE_LIST);
@@ -5172,8 +6011,8 @@ public class DylanParser implements PsiParser {
   }
 
   // variables COMMA HASH_REST variable_name
-  private static boolean variable_list_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "variable_list_1")) return false;
+  private static boolean variable_list_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "variable_list_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variables(builder_, level_ + 1);
@@ -5223,14 +6062,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variable | variables COMMA variable
+  // variable (COMMA variable)*
   public static boolean variables(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variables")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<variables>");
     result_ = variable(builder_, level_ + 1);
-    if (!result_) result_ = variables_1(builder_, level_ + 1);
+    result_ = result_ && variables_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(VARIABLES);
     }
@@ -5241,13 +6080,28 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // variables COMMA variable
+  // (COMMA variable)*
   private static boolean variables_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variables_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!variables_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "variables_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA variable
+  private static boolean variables_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "variables_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = variables(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = consumeToken(builder_, COMMA);
     result_ = result_ && variable(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -5255,6 +6109,25 @@ public class DylanParser implements PsiParser {
     else {
       marker_.drop();
     }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // reserved_word | unreserved_name
+  public static boolean word_name(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "word_name")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<word name>");
+    result_ = reserved_word(builder_, level_ + 1);
+    if (!result_) result_ = unreserved_name(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(WORD_NAME);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 

@@ -19,14 +19,8 @@ public class DylanArgumentsImpl extends ASTWrapperPsiElement implements DylanArg
 
   @Override
   @NotNull
-  public DylanArgument getArgument() {
-    return findNotNullChildByClass(DylanArgument.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanArguments getArguments() {
-    return findChildByClass(DylanArguments.class);
+  public List<DylanArgument> getArgumentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanArgument.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

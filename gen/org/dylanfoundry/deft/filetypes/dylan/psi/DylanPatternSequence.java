@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanPatternSequence extends PsiElement {
 
-  @Nullable
-  DylanPatternSequence getPatternSequence();
-
   @NotNull
-  DylanSimplePattern getSimplePattern();
+  List<DylanSimplePattern> getSimplePatternList();
 
 }

@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanPropertyListPattern extends PsiElement {
 
   @Nullable
-  DylanPatternVariable getPatternVariable();
+  DylanPatternKeywords getPatternKeywords();
 
   @Nullable
-  PsiElement getPatternKeywordsOpt();
+  DylanPatternVariable getPatternVariable();
 
 }

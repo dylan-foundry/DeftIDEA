@@ -7,13 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanUnparenthesizedOperand extends PsiElement {
 
-  @Nullable
-  DylanOperandTail getOperandTail();
+  @NotNull
+  List<DylanOperandTail> getOperandTailList();
 
-  @Nullable
+  @NotNull
   DylanUnparenthesizedLeaf getUnparenthesizedLeaf();
-
-  @Nullable
-  DylanUnparenthesizedOperand getUnparenthesizedOperand();
 
 }

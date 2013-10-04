@@ -19,14 +19,8 @@ public class DylanModifiersImpl extends ASTWrapperPsiElement implements DylanMod
 
   @Override
   @NotNull
-  public DylanModifier getModifier() {
-    return findNotNullChildByClass(DylanModifier.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanModifiers getModifiers() {
-    return findChildByClass(DylanModifiers.class);
+  public List<DylanModifier> getModifierList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanModifier.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

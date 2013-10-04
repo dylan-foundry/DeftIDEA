@@ -19,14 +19,8 @@ public class DylanAuxRuleSetsImpl extends ASTWrapperPsiElement implements DylanA
 
   @Override
   @NotNull
-  public DylanAuxRuleSet getAuxRuleSet() {
-    return findNotNullChildByClass(DylanAuxRuleSet.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanAuxRuleSets getAuxRuleSets() {
-    return findChildByClass(DylanAuxRuleSets.class);
+  public List<DylanAuxRuleSet> getAuxRuleSetList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanAuxRuleSet.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

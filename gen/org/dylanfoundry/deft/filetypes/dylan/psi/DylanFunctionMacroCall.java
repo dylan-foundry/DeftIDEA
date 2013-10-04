@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanFunctionMacroCall extends PsiElement {
 
-  @NotNull
-  DylanFunctionWord getFunctionWord();
+  @Nullable
+  DylanBodyFragment getBodyFragment();
 
   @NotNull
-  PsiElement getBodyFragmentOpt();
+  DylanFunctionWord getFunctionWord();
 
 }

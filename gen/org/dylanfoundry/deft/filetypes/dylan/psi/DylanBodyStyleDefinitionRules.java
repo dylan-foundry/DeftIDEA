@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanBodyStyleDefinitionRules extends PsiElement {
 
   @NotNull
-  DylanBodyStyleDefinitionRule getBodyStyleDefinitionRule();
-
-  @Nullable
-  DylanBodyStyleDefinitionRules getBodyStyleDefinitionRules();
+  List<DylanBodyStyleDefinitionRule> getBodyStyleDefinitionRuleList();
 
 }

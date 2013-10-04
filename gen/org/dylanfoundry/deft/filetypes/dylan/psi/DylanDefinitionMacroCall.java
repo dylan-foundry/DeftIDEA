@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanDefinitionMacroCall extends PsiElement {
 
   @Nullable
+  DylanBodyFragment getBodyFragment();
+
+  @Nullable
   DylanDefineBodyWord getDefineBodyWord();
 
   @Nullable
@@ -17,12 +20,9 @@ public interface DylanDefinitionMacroCall extends PsiElement {
   DylanDefinitionTail getDefinitionTail();
 
   @Nullable
-  PsiElement getBodyFragmentOpt();
+  DylanListFragment getListFragment();
 
   @Nullable
-  PsiElement getListFragmentOpt();
-
-  @Nullable
-  PsiElement getModifiersOpt();
+  DylanModifiers getModifiers();
 
 }

@@ -19,14 +19,8 @@ public class DylanFunctionRulesImpl extends ASTWrapperPsiElement implements Dyla
 
   @Override
   @NotNull
-  public DylanFunctionRule getFunctionRule() {
-    return findNotNullChildByClass(DylanFunctionRule.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanFunctionRules getFunctionRules() {
-    return findChildByClass(DylanFunctionRules.class);
+  public List<DylanFunctionRule> getFunctionRuleList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanFunctionRule.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

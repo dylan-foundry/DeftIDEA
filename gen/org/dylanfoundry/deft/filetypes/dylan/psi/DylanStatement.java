@@ -10,10 +10,10 @@ public interface DylanStatement extends PsiElement {
   @NotNull
   DylanBeginWord getBeginWord();
 
-  @NotNull
-  DylanEndClause getEndClause();
+  @Nullable
+  DylanBodyFragment getBodyFragment();
 
   @NotNull
-  PsiElement getBodyFragmentOpt();
+  DylanEndClause getEndClause();
 
 }

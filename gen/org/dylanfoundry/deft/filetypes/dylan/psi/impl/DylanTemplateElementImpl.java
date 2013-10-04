@@ -25,12 +25,6 @@ public class DylanTemplateElementImpl extends ASTWrapperPsiElement implements Dy
 
   @Override
   @Nullable
-  public DylanName getName() {
-    return findChildByClass(DylanName.class);
-  }
-
-  @Override
-  @Nullable
   public DylanSeparator getSeparator() {
     return findChildByClass(DylanSeparator.class);
   }
@@ -43,8 +37,14 @@ public class DylanTemplateElementImpl extends ASTWrapperPsiElement implements Dy
 
   @Override
   @Nullable
-  public PsiElement getTemplateOpt() {
-    return findChildByType(TEMPLATE_OPT);
+  public DylanTemplate getTemplate() {
+    return findChildByClass(DylanTemplate.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanWordName getWordName() {
+    return findChildByClass(DylanWordName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

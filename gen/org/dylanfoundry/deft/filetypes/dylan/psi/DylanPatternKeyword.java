@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanPatternKeyword extends PsiElement {
 
   @Nullable
-  DylanName getName();
+  DylanDefaultValue getDefaultValue();
 
   @Nullable
-  PsiElement getDefaultOpt();
+  DylanWordName getWordName();
 
 }

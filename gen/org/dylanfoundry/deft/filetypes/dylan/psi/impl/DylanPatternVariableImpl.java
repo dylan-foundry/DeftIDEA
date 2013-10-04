@@ -19,8 +19,8 @@ public class DylanPatternVariableImpl extends ASTWrapperPsiElement implements Dy
 
   @Override
   @Nullable
-  public DylanName getName() {
-    return findChildByClass(DylanName.class);
+  public DylanWordName getWordName() {
+    return findChildByClass(DylanWordName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

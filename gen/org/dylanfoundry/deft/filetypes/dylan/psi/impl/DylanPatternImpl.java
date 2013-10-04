@@ -18,15 +18,9 @@ public class DylanPatternImpl extends ASTWrapperPsiElement implements DylanPatte
   }
 
   @Override
-  @Nullable
-  public DylanPattern getPattern() {
-    return findChildByClass(DylanPattern.class);
-  }
-
-  @Override
   @NotNull
-  public DylanPatternList getPatternList() {
-    return findNotNullChildByClass(DylanPatternList.class);
+  public List<DylanPatternList> getPatternListList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanPatternList.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

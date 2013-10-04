@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanAuxRules extends PsiElement {
 
   @NotNull
-  DylanAuxRule getAuxRule();
-
-  @Nullable
-  DylanAuxRules getAuxRules();
+  List<DylanAuxRule> getAuxRuleList();
 
 }

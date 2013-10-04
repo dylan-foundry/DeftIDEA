@@ -10,10 +10,10 @@ public interface DylanFunctionRule extends PsiElement {
   @NotNull
   DylanMacroName getMacroName();
 
-  @NotNull
-  DylanRhs getRhs();
+  @Nullable
+  DylanPattern getPattern();
 
   @NotNull
-  PsiElement getPatternOpt();
+  DylanRhs getRhs();
 
 }

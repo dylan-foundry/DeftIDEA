@@ -19,14 +19,8 @@ public class DylanKeywordParametersImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @NotNull
-  public DylanKeywordParameter getKeywordParameter() {
-    return findNotNullChildByClass(DylanKeywordParameter.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanKeywordParameters getKeywordParameters() {
-    return findChildByClass(DylanKeywordParameters.class);
+  public List<DylanKeywordParameter> getKeywordParameterList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanKeywordParameter.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

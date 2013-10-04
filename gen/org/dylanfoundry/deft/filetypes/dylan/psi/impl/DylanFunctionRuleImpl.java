@@ -24,15 +24,15 @@ public class DylanFunctionRuleImpl extends ASTWrapperPsiElement implements Dylan
   }
 
   @Override
-  @NotNull
-  public DylanRhs getRhs() {
-    return findNotNullChildByClass(DylanRhs.class);
+  @Nullable
+  public DylanPattern getPattern() {
+    return findChildByClass(DylanPattern.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getPatternOpt() {
-    return findNotNullChildByType(PATTERN_OPT);
+  public DylanRhs getRhs() {
+    return findNotNullChildByClass(DylanRhs.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

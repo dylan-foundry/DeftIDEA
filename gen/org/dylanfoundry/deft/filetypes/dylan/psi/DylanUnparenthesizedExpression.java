@@ -7,16 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanUnparenthesizedExpression extends PsiElement {
 
-  @Nullable
-  DylanBinaryOperand getBinaryOperand();
+  @NotNull
+  List<DylanBinaryOperand> getBinaryOperandList();
 
-  @Nullable
-  DylanBinaryOperator getBinaryOperator();
+  @NotNull
+  List<DylanBinaryOperator> getBinaryOperatorList();
 
-  @Nullable
+  @NotNull
   DylanUnparenthesizedBinaryOperand getUnparenthesizedBinaryOperand();
-
-  @Nullable
-  DylanUnparenthesizedExpression getUnparenthesizedExpression();
 
 }

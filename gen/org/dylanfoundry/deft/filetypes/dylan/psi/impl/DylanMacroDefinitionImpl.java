@@ -18,27 +18,21 @@ public class DylanMacroDefinitionImpl extends ASTWrapperPsiElement implements Dy
   }
 
   @Override
+  @Nullable
+  public DylanAuxRuleSets getAuxRuleSets() {
+    return findChildByClass(DylanAuxRuleSets.class);
+  }
+
+  @Override
   @NotNull
-  public DylanMacroName getMacroName() {
-    return findNotNullChildByClass(DylanMacroName.class);
+  public List<DylanMacroName> getMacroNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanMacroName.class);
   }
 
   @Override
   @NotNull
   public DylanMainRuleSet getMainRuleSet() {
     return findNotNullChildByClass(DylanMainRuleSet.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getAuxRuleSetsOpt() {
-    return findNotNullChildByType(AUX_RULE_SETS_OPT);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getMacroNameOpt() {
-    return findNotNullChildByType(MACRO_NAME_OPT);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

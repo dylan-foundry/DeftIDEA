@@ -8,15 +8,15 @@ import com.intellij.psi.PsiElement;
 public interface DylanParameterList extends PsiElement {
 
   @Nullable
+  DylanParameters getParameters();
+
+  @Nullable
+  DylanValuesList getValuesList();
+
+  @Nullable
   DylanVariable getVariable();
 
   @Nullable
-  PsiElement getParametersOpt();
-
-  @Nullable
-  PsiElement getSemicolonOpt();
-
-  @Nullable
-  PsiElement getValuesListOpt();
+  PsiElement getSemicolon();
 
 }

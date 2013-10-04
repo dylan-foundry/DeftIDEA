@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanPatternVariable extends PsiElement {
 
   @Nullable
-  DylanName getName();
+  DylanWordName getWordName();
 
 }

@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanNonStatementBasicFragment extends PsiElement {
 
-  @NotNull
-  DylanSimpleFragment getSimpleFragment();
+  @Nullable
+  DylanBasicFragment getBasicFragment();
 
   @NotNull
-  PsiElement getBasicFragmentOpt();
+  DylanSimpleFragment getSimpleFragment();
 
 }

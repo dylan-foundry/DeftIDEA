@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanTemplate extends PsiElement {
 
-  @Nullable
-  DylanTemplate getTemplate();
-
   @NotNull
-  DylanTemplateElement getTemplateElement();
+  List<DylanTemplateElement> getTemplateElementList();
 
 }

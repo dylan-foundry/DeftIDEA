@@ -18,27 +18,21 @@ public class DylanUnparenthesizedExpressionImpl extends ASTWrapperPsiElement imp
   }
 
   @Override
-  @Nullable
-  public DylanBinaryOperand getBinaryOperand() {
-    return findChildByClass(DylanBinaryOperand.class);
+  @NotNull
+  public List<DylanBinaryOperand> getBinaryOperandList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanBinaryOperand.class);
   }
 
   @Override
-  @Nullable
-  public DylanBinaryOperator getBinaryOperator() {
-    return findChildByClass(DylanBinaryOperator.class);
+  @NotNull
+  public List<DylanBinaryOperator> getBinaryOperatorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanBinaryOperator.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DylanUnparenthesizedBinaryOperand getUnparenthesizedBinaryOperand() {
-    return findChildByClass(DylanUnparenthesizedBinaryOperand.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnparenthesizedExpression getUnparenthesizedExpression() {
-    return findChildByClass(DylanUnparenthesizedExpression.class);
+    return findNotNullChildByClass(DylanUnparenthesizedBinaryOperand.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

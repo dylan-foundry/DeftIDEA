@@ -18,21 +18,15 @@ public class DylanUnparenthesizedOperandImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
-  @Nullable
-  public DylanOperandTail getOperandTail() {
-    return findChildByClass(DylanOperandTail.class);
+  @NotNull
+  public List<DylanOperandTail> getOperandTailList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanOperandTail.class);
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DylanUnparenthesizedLeaf getUnparenthesizedLeaf() {
-    return findChildByClass(DylanUnparenthesizedLeaf.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnparenthesizedOperand getUnparenthesizedOperand() {
-    return findChildByClass(DylanUnparenthesizedOperand.class);
+    return findNotNullChildByClass(DylanUnparenthesizedLeaf.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanRhs extends PsiElement {
 
-  @NotNull
-  PsiElement getSemicolonOpt();
-
-  @NotNull
-  PsiElement getTemplateOpt();
+  @Nullable
+  DylanTemplate getTemplate();
 
 }

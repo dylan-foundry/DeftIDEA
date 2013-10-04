@@ -19,14 +19,14 @@ public class DylanOperandTailImpl extends ASTWrapperPsiElement implements DylanO
 
   @Override
   @Nullable
-  public DylanVariableName getVariableName() {
-    return findChildByClass(DylanVariableName.class);
+  public DylanArguments getArguments() {
+    return findChildByClass(DylanArguments.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getArgumentsOpt() {
-    return findChildByType(ARGUMENTS_OPT);
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanSourceRecords extends PsiElement {
 
   @Nullable
-  DylanBody getBody();
-
-  @Nullable
   DylanCaseBody getCaseBody();
 
   @Nullable
@@ -20,9 +17,6 @@ public interface DylanSourceRecords extends PsiElement {
   DylanMacro getMacro();
 
   @Nullable
-  DylanName getName();
-
-  @Nullable
   DylanSourceRecord getSourceRecord();
 
   @Nullable
@@ -30,5 +24,8 @@ public interface DylanSourceRecords extends PsiElement {
 
   @Nullable
   DylanVariable getVariable();
+
+  @Nullable
+  DylanWordName getWordName();
 
 }

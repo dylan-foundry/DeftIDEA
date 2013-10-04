@@ -18,15 +18,15 @@ public class DylanKeywordParameterImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @NotNull
-  public DylanVariable getVariable() {
-    return findNotNullChildByClass(DylanVariable.class);
+  @Nullable
+  public DylanDefaultValue getDefaultValue() {
+    return findChildByClass(DylanDefaultValue.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getDefaultOpt() {
-    return findNotNullChildByType(DEFAULT_OPT);
+  public DylanVariable getVariable() {
+    return findNotNullChildByClass(DylanVariable.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

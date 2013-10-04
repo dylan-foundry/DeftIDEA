@@ -29,12 +29,6 @@ public class DylanListFragmentImpl extends ASTWrapperPsiElement implements Dylan
     return findChildByClass(DylanStatement.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getNonStatementListFragmentOpt() {
-    return findChildByType(NON_STATEMENT_LIST_FRAGMENT_OPT);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitListFragment(this);
     else super.accept(visitor);

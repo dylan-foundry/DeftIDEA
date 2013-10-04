@@ -8,18 +8,18 @@ import com.intellij.psi.PsiElement;
 public interface DylanSubstitution extends PsiElement {
 
   @Nullable
-  DylanName getName();
+  DylanNamePrefix getNamePrefix();
 
   @Nullable
   DylanNameStringOrSymbol getNameStringOrSymbol();
 
   @Nullable
-  PsiElement getNamePrefixOpt();
+  DylanNameSuffix getNameSuffix();
 
   @Nullable
-  PsiElement getNameSuffixOpt();
+  DylanSeparator getSeparator();
 
   @Nullable
-  PsiElement getSeparatorOpt();
+  DylanWordName getWordName();
 
 }

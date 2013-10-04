@@ -19,14 +19,14 @@ public class DylanPatternKeywordImpl extends ASTWrapperPsiElement implements Dyl
 
   @Override
   @Nullable
-  public DylanName getName() {
-    return findChildByClass(DylanName.class);
+  public DylanDefaultValue getDefaultValue() {
+    return findChildByClass(DylanDefaultValue.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getDefaultOpt() {
-    return findChildByType(DEFAULT_OPT);
+  public DylanWordName getWordName() {
+    return findChildByClass(DylanWordName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanNonStatementListFragment extends PsiElement {
 
   @Nullable
-  DylanSimpleFragment getSimpleFragment();
+  DylanListFragment getListFragment();
 
   @Nullable
-  PsiElement getListFragmentOpt();
+  DylanSimpleFragment getSimpleFragment();
 
 }

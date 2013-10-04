@@ -19,14 +19,8 @@ public class DylanVariablesImpl extends ASTWrapperPsiElement implements DylanVar
 
   @Override
   @NotNull
-  public DylanVariable getVariable() {
-    return findNotNullChildByClass(DylanVariable.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanVariables getVariables() {
-    return findChildByClass(DylanVariables.class);
+  public List<DylanVariable> getVariableList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariable.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

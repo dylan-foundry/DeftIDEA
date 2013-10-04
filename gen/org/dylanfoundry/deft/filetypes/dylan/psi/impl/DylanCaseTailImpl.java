@@ -18,15 +18,15 @@ public class DylanCaseTailImpl extends ASTWrapperPsiElement implements DylanCase
   }
 
   @Override
-  @Nullable
-  public PsiElement getCaseConstiuents() {
-    return findChildByType(CASE_CONSTIUENTS);
+  @NotNull
+  public DylanCaseConstituents getCaseConstituents() {
+    return findNotNullChildByClass(DylanCaseConstituents.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getCaseLabel() {
-    return findChildByType(CASE_LABEL);
+  public DylanCaseLabel getCaseLabel() {
+    return findChildByClass(DylanCaseLabel.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

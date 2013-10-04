@@ -19,14 +19,8 @@ public class DylanListStyleDefinitionRulesImpl extends ASTWrapperPsiElement impl
 
   @Override
   @NotNull
-  public DylanListStyleDefinitionRule getListStyleDefinitionRule() {
-    return findNotNullChildByClass(DylanListStyleDefinitionRule.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanListStyleDefinitionRules getListStyleDefinitionRules() {
-    return findChildByClass(DylanListStyleDefinitionRules.class);
+  public List<DylanListStyleDefinitionRule> getListStyleDefinitionRuleList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanListStyleDefinitionRule.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

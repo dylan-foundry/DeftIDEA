@@ -29,12 +29,6 @@ public class DylanBodyStyleDefinitionRuleImpl extends ASTWrapperPsiElement imple
     return findNotNullChildByClass(DylanRhs.class);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getSemicolonOpt() {
-    return findNotNullChildByType(SEMICOLON_OPT);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBodyStyleDefinitionRule(this);
     else super.accept(visitor);

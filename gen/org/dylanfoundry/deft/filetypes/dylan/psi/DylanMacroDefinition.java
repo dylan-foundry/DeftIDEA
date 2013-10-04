@@ -7,16 +7,13 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanMacroDefinition extends PsiElement {
 
+  @Nullable
+  DylanAuxRuleSets getAuxRuleSets();
+
   @NotNull
-  DylanMacroName getMacroName();
+  List<DylanMacroName> getMacroNameList();
 
   @NotNull
   DylanMainRuleSet getMainRuleSet();
-
-  @NotNull
-  PsiElement getAuxRuleSetsOpt();
-
-  @NotNull
-  PsiElement getMacroNameOpt();
 
 }

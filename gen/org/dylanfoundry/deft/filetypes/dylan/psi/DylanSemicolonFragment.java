@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanSemicolonFragment extends PsiElement {
 
-  @NotNull
-  PsiElement getBodyFragmentOpt();
+  @Nullable
+  DylanBodyFragment getBodyFragment();
 
 }

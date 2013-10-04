@@ -18,15 +18,15 @@ public class DylanNonStatementBasicFragmentImpl extends ASTWrapperPsiElement imp
   }
 
   @Override
-  @NotNull
-  public DylanSimpleFragment getSimpleFragment() {
-    return findNotNullChildByClass(DylanSimpleFragment.class);
+  @Nullable
+  public DylanBasicFragment getBasicFragment() {
+    return findChildByClass(DylanBasicFragment.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getBasicFragmentOpt() {
-    return findNotNullChildByType(BASIC_FRAGMENT_OPT);
+  public DylanSimpleFragment getSimpleFragment() {
+    return findNotNullChildByClass(DylanSimpleFragment.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

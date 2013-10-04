@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanConstants extends PsiElement {
 
   @NotNull
-  DylanConstant getConstant();
-
-  @Nullable
-  DylanConstants getConstants();
+  List<DylanConstant> getConstantList();
 
 }

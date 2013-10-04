@@ -7,10 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanKeywordParameter extends PsiElement {
 
-  @NotNull
-  DylanVariable getVariable();
+  @Nullable
+  DylanDefaultValue getDefaultValue();
 
   @NotNull
-  PsiElement getDefaultOpt();
+  DylanVariable getVariable();
 
 }

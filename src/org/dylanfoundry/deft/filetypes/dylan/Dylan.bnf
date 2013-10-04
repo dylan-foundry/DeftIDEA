@@ -26,9 +26,10 @@ values ::= (header_value? CRLF)*
 
 header_value ::= VALUE
 
-source_records ::= source_record | variable | expression | name | token | body? | case_body? | macro
+//source_records ::= source_record | variable | expression | name | token | body? | case_body? | macro
+source_records ::= source_record | variable | expression | word_name | token | case_body | macro
 
-token ::= name | SYMBOL | NUMBER | CHARACTER_LITERAL | STRING | operator | punctuation | hash_word
+token ::= word_name | SYMBOL | NUMBER | CHARACTER_LITERAL | STRING | operator | punctuation | hash_word
 
 punctuation ::= bracketing_punctuation | non_bracketing_punctuation
 
@@ -51,7 +52,7 @@ non_bracketing_punctuation ::=
 
 core_word ::= non_end_core_word | END
 
-non_end_core_word ::= DEFINE | HANDLER | LET | LOCAL | MACRO | OTHERWISE
+non_end_core_word ::= DEFINE | HANDLER_T | LET | LOCAL | MACRO_T | OTHERWISE
 
 nondefining_word ::= NONDEFINING_BEGIN_WORD | NONDEFINING_FUNCTION_WORD | NONDEFINING_NONEXPRESSION_WORD
 
@@ -69,7 +70,7 @@ reserved_word ::= core_word | NONDEFINING_FUNCTION_WORD | NONDEFINING_BEGIN_WORD
 
 unreserved_word ::= NONDEFINING_NONEXPRESSION_WORD
 
-name ::= reserved_word | unreserved_name
+word_name ::= reserved_word | unreserved_name
 
 escaped_name ::= ESCAPED_WORD | OPERATOR_NAME
 
@@ -85,19 +86,20 @@ name_not_end ::= macro_name | non_end_core_word
 
 hash_word ::= HASH_T | HASH_F | HASH_NEXT | HASH_REST | HASH_KEY | HASH_ALL_KEYS | HASH_INCLUDE
 
-operator ::= BINARY_OPERATOR_ONLY | UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+operator ::= BINARY_OPERATOR_ONLY | UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL
 
 unary_operator ::= UNARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
 
-binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR
+binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL
 
 /* Program Structure, page 414 */
 
-source_record ::= body?
+// FIXME: original is body?
+source_record ::= body
 
 body ::= constituents SEMICOLON?
 
-constituents ::= constituent | constituent SEMICOLON constituent
+constituents ::= constituent (SEMICOLON constituent)* | COMMENT
 
 constituent ::= non_expression_constituent | expression
 
@@ -107,7 +109,7 @@ macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO
 
 /* Property Lists, page 414 */
 
-property_list ::= property | property_list COMMA property
+property_list ::= property (COMMA property)*
 
 property ::= SYMBOL value
 
@@ -115,24 +117,25 @@ value ::= basic_fragment
 
 /* Fragments, page 415-416 */
 
-body_fragment ::= non_statement_body_fragment | statement non_statement_body_fragment_opt
+body_fragment ::= non_statement_body_fragment | statement non_statement_body_fragment?
 
-list_fragment ::= non_statement_list_fragment | statement non_statement_list_fragment_opt
+list_fragment ::= non_statement_list_fragment | statement non_statement_list_fragment?
 
-basic_fragment ::= non_statement_basic_fragment | statement non_statement_basic_fragment_opt
+basic_fragment ::= non_statement_basic_fragment | statement non_statement_basic_fragment?
 
 non_statement_body_fragment ::=
-      definition semicolon_fragment_opt
-    | local_declaration semicolon_fragment_opt
-    | simple_fragment body_fragment_opt
-    | COMMA body_fragment_opt
-    | SEMICOLON body_fragment_opt
+      definition semicolon_fragment?
+    | local_declaration semicolon_fragment?
+    | slot_declaration semicolon_fragment? // FIXME
+    | simple_fragment body_fragment?
+    | COMMA body_fragment?
+    | SEMICOLON body_fragment?
 
-semicolon_fragment ::= SEMICOLON body_fragment_opt
+semicolon_fragment ::= SEMICOLON body_fragment?
 
-non_statement_list_fragment ::= simple_fragment list_fragment_opt | COMMA list_fragment_opt
+non_statement_list_fragment ::= simple_fragment list_fragment? | COMMA list_fragment?
 
-non_statement_basic_fragment ::= simple_fragment basic_fragment_opt
+non_statement_basic_fragment ::= simple_fragment basic_fragment?
 
 simple_fragment ::=
       variable_name
@@ -154,9 +157,9 @@ simple_fragment ::=
     | PARSED_MACRO_CALL
 
 bracketed_fragment ::=
-      LPAREN body_fragment_opt RPAREN
-    | LBRACKET body_fragment_opt RBRACKET
-    | LBRACE body_fragment_opt RBRACE
+      LPAREN body_fragment? RPAREN
+    | LBRACKET body_fragment? RBRACKET
+    | LBRACE body_fragment? RBRACE
 
 constant_fragment ::=
       NUMBER
@@ -164,32 +167,41 @@ constant_fragment ::=
     | STRING
     | SYMBOL
     | HASH_PAREN constants DOT constant RPAREN
-    | HASH_PAREN constants_opt RPAREN
-    | HASH_BRACKET constants_opt RBRACKET
+    | HASH_PAREN constants? RPAREN
+    | HASH_BRACKET constants? RBRACKET
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
 
 /* Definitions, page 416 */
 
-definition ::= definition_macro_call | DEFINE MACRO macro_definition | PARSED_DEFINITION
+definition ::= definition_macro_call | DEFINE MACRO_T macro_definition | PARSED_DEFINITION
 
 definition_macro_call ::=
-      DEFINE modifiers_opt define_body_word body_fragment_opt definition_tail
-    | DEFINE modifiers_opt define_list_word list_fragment_opt
+      DEFINE modifiers? define_body_word body_fragment? definition_tail
+    | DEFINE modifiers? define_list_word list_fragment?
 
 modifier ::= nondefining_name
 
-modifiers ::= modifier | modifiers modifier
+modifiers ::= modifier+
 
-definition_tail ::= END | END macro_name | END define_body_word macro_name
+definition_tail ::= END define_body_word macro_name | END macro_name | END
 
 /* Local Declarations, page 417 */
 
 local_declaration ::=
       LET bindings
-    | LET HANDLER condition EQUAL handler
+    | LET HANDLER_T condition EQUAL handler
     | LOCAL local_methods
     | PARSED_LOCAL_DECLARATION
+
+// FIXME: This is not present in the original yacc file.
+// Ugly hack to include the 'constant' slot modifier
+slot_declaration ::=
+     (modifiers|DEFINE_LIST_BEGIN_WORD)? SLOT variable (EQUAL expression)? init_specifications?
+
+init_specifications ::= (COMMA init_specification)+
+
+init_specification ::= SYMBOL expression
 
 condition ::=
       unparenthesized_operand
@@ -198,43 +210,45 @@ condition ::=
 
 handler ::= expression
 
-local_methods ::= method_definition | local_methods COMMA method_definition
+local_methods ::= method_definition (COMMA method_definition)*
 
 bindings ::= variable EQUAL expression | LPAREN variable_list RPAREN EQUAL expression
 
-variable_list ::= variables | variables COMMA HASH_REST variable_name | HASH_REST variable_name
+variable_list ::= variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name
 
-variables ::= variable | variables COMMA variable
+variables ::= variable (COMMA variable)*
 
-variable ::= variable_name | variable_name COLON_COLON operand
+variable ::= variable_name COLON_COLON operand | variable_name
 
 variable_name ::= ordinary_name
 
 /* Expression, page 418-419 */
 
-expressions ::= expression | expressions COMMA expression
+expressions ::= expression (COMMA expression)*
 
-expression ::= binary_operand | expression binary_operator binary_operand
+expression ::= binary_operand (binary_operator binary_operand)*
 
-expression_no_symbol ::= binary_operand_no_symbol | binary_operand_no_symbol binary_operator binary_operand
+expression_no_symbol ::= binary_operand_no_symbol binary_operator binary_operand | binary_operand_no_symbol
 
-unparenthesized_expression ::= unparenthesized_binary_operand | unparenthesized_expression binary_operator binary_operand
+unparenthesized_expression ::= unparenthesized_binary_operand (binary_operator binary_operand)*
 
-binary_operand_no_symbol ::= unary_operator_opt operand
+binary_operand_no_symbol ::= unary_operator? operand
 
 binary_operand ::= SYMBOL | binary_operand_no_symbol
 
 unparenthesized_binary_operand ::= SYMBOL | unparenthesized_operand | unary_operator operand
 
-operand ::= operand operand_tail | leaf
+//operand ::= operand operand_tail | leaf
+operand ::= leaf operand_tail*
 
-unparenthesized_operand ::= unparenthesized_operand operand_tail | unparenthesized_leaf
+//unparenthesized_operand ::= unparenthesized_operand operand_tail | unparenthesized_leaf
+unparenthesized_operand ::= unparenthesized_leaf operand_tail*
 
-operand_tail ::= LPAREN arguments_opt RPAREN | LBRACKET arguments_opt RBRACKET | DOT variable_name
+operand_tail ::= LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name
 
-operand_tails ::= | operand_tails operand_tail
+operand_tails ::= operand_tail*
 
-function_macro_call ::= function_word LPAREN body_fragment_opt RPAREN
+function_macro_call ::= function_word LPAREN body_fragment? RPAREN
 
 leaf ::= LPAREN expression RPAREN | unparenthesized_leaf
 
@@ -246,7 +260,7 @@ unparenthesized_leaf ::=
     | PARSED_FUNCTION_CALL
     | PARSED_MACRO_CALL
 
-arguments ::= argument | arguments COMMA argument
+arguments ::= argument (COMMA argument)*
 
 argument ::= SYMBOL expression | expression_no_symbol | SYMBOL
 
@@ -257,22 +271,22 @@ literal ::=
     | HASH_T
     | HASH_F
     | HASH_PAREN constants DOT constant RPAREN
-    | HASH_PAREN constants_opt RPAREN
-    | HASH_BRACKET constants_opt RBRACKET
+    | HASH_PAREN constants? RPAREN
+    | HASH_BRACKET constants? RBRACKET
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
 
-string_literal ::= STRING | string_literal STRING
+string_literal ::= STRING+
 
-constants ::= constant | constants COMMA constant
+constants ::= constant (COMMA constant)*
 
 constant ::= literal | SYMBOL
 
 /* Statements, page 419 */
 
-statement ::= begin_word body_fragment_opt end_clause
+statement ::= begin_word body_fragment? end_clause
 
-end_clause ::= END BEGIN_WORD_opt
+end_clause ::= END begin_word?
 
 /*
  * The parsing of case bodies is changed in structure
@@ -285,29 +299,42 @@ end_clause ::= END BEGIN_WORD_opt
  * is probably LALR(2), but don't ask me to prove it.)
  */
 
-case_body ::= case_label case_constiuents
+case_body ::= case_label case_constituents
 
-case_label
+case_label ::=
       unparenthesized_expression EQUAL_ARROW
     | unparenthesized_expression COMMA expressions EQUAL_ARROW
     | LPAREN expression RPAREN operand_tails EQUAL_ARROW
     | LPAREN expression RPAREN operand_tails COMMA expressions EQUAL_ARROW
     | LPAREN expression COMMA expressions RPAREN EQUAL_ARROW
-    | OTHERWISE EQUAL_ARROW_opt
+    | OTHERWISE EQUAL_ARROW?
 
-case_constiuents
+/*
+FIXME
+case_constituents ::=
       case_tail
     | LPAREN expression RPAREN case_tail
     | unparenthesized_expression case_tail
     | non_expression_constituent case_tail
 
 case_tail ::=
-    | SEMICOLON case_constiuents
-    | SEMICOLON case_label case_constiuents
+    | SEMICOLON case_constituents
+    | SEMICOLON case_label case_constituents
+*/
+
+case_constituents ::=
+      case_tail
+    | LPAREN expression RPAREN case_tail?
+    | unparenthesized_expression case_tail?
+    | non_expression_constituent case_tail?
+
+case_tail ::=
+      SEMICOLON case_constituents
+    | SEMICOLON case_label case_constituents
 
 /* Methods, pages 420-421 */
 
-method_definition ::= method_name parameter_list body_opt END method_name_opt
+method_definition ::= method_name parameter_list body? END method_name?
 
 /*
  * The hack for dealing with the word ``method'' is in
@@ -324,59 +351,55 @@ method_definition ::= method_name parameter_list body_opt END method_name_opt
  * I feel unclean.
  */
 
-method_name ::= macro_name variable_name_opt
+method_name ::= macro_name variable_name?
 
 parameter_list ::=
-      LPAREN parameters_opt RPAREN semicolon_opt
-    | LPAREN parameters_opt RPAREN EQUAL_ARROW variable SEMICOLON
-    | LPAREN parameters_opt RPAREN EQUAL_ARROW LPAREN values_list_opt RPAREN semicolon_opt
+      LPAREN parameters? RPAREN EQUAL_ARROW variable SEMICOLON
+    | LPAREN parameters? RPAREN EQUAL_ARROW LPAREN values_list? RPAREN semicolon?
+    | LPAREN parameters? RPAREN SEMICOLON?
 
 parameters ::=
-      required_parameters
-    | required_parameters COMMA next_rest_key_parameter_list
+      required_parameters COMMA next_rest_key_parameter_list
+    | required_parameters
     | next_rest_key_parameter_list
 
 next_rest_key_parameter_list ::=
-      HASH_NEXT variable_name
-    | HASH_NEXT variable_name COMMA rest_key_parameter_list
+      HASH_NEXT variable_name COMMA rest_key_parameter_list
+    | HASH_NEXT variable_name
     | rest_key_parameter_list
 
 rest_key_parameter_list ::=
-      HASH_REST variable_name
-    | HASH_REST variable_name COMMA key_parameter_list
+      HASH_REST variable_name COMMA key_parameter_list
+    | HASH_REST variable_name
     | key_parameter_list
 
 key_parameter_list ::=
-      HASH_KEY
-    | HASH_KEY COMMA HASH_ALL_KEYS
-    | HASH_KEY keyword_parameters
+      HASH_KEY COMMA HASH_ALL_KEYS
     | HASH_KEY keyword_parameters COMMA HASH_ALL_KEYS
+    | HASH_KEY keyword_parameters
+    | HASH_KEY
 
-required_parameters ::=
-      required_parameter
-    | required_parameters COMMA required_parameter
+required_parameters ::= required_parameter (COMMA required_parameter)*
 
 required_parameter ::=
       variable
     | variable_name EQUAL_EQUAL expression
 
-keyword_parameters ::=
-      keyword_parameter
-    | keyword_parameters COMMA keyword_parameter
+keyword_parameters ::= keyword_parameter (COMMA keyword_parameter)*
 
-keyword_parameter ::= SYMBOL_opt variable default_opt
+keyword_parameter ::= SYMBOL? variable default_value?
 
-default ::= EQUAL expression
+default_value ::= EQUAL expression
 
 values_list ::=
-      variables
-    | variables COMMA HASH_REST variable
+      variables COMMA HASH_REST variable
+    | variables
     | HASH_REST variable
 
 /* Macro Definitions, page 421 */
 
 macro_definition ::=
-    macro_name main_rule_set aux_rule_sets_opt END MACRO_opt macro_name_opt
+    macro_name main_rule_set aux_rule_sets? END MACRO_T? macro_name?
 
 main_rule_set ::=
       body_style_definition_rules
@@ -384,21 +407,13 @@ main_rule_set ::=
     | statement_rules
     | function_rules
 
-body_style_definition_rules ::=
-      body_style_definition_rule
-    | body_style_definition_rules body_style_definition_rule
+body_style_definition_rules ::= body_style_definition_rule+
 
-list_style_definition_rules ::=
-      list_style_definition_rule
-    | list_style_definition_rules list_style_definition_rule
+list_style_definition_rules ::= list_style_definition_rule+
 
-statement_rules ::=
-      statement_rule
-    | statement_rules statement_rule
+statement_rules ::= statement_rule+
 
-function_rules ::=
-      function_rule
-    | function_rules function_rule
+function_rules ::= function_rule+
 
 /*
  * The following two rules are altered in substance from
@@ -416,15 +431,15 @@ function_rules ::=
  * to leave these rules as simple as possible.
  */
 
-body_style_definition_rule ::= LBRACE DEFINE pattern semicolon_opt END RBRACE EQUAL_ARROW rhs
+body_style_definition_rule ::= LBRACE DEFINE pattern SEMICOLON? END RBRACE EQUAL_ARROW rhs
 
 list_style_definition_rule ::= LBRACE DEFINE pattern RBRACE EQUAL_ARROW rhs
 
-rhs ::= LBRACE template_opt RBRACE semicolon_opt
+rhs ::= LBRACE template? RBRACE SEMICOLON?
 
 statement_rule ::= LBRACE macro_name maybe_pattern_and_semicolon END RBRACE EQUAL_ARROW rhs
 
-function_rule ::= LBRACE macro_name LPAREN pattern_opt RPAREN RBRACE EQUAL_ARROW rhs
+function_rule ::= LBRACE macro_name LPAREN pattern? RPAREN RBRACE EQUAL_ARROW rhs
 
 /* definition_head ::=
       modifier_pattern
@@ -436,18 +451,16 @@ function_rule ::= LBRACE macro_name LPAREN pattern_opt RPAREN RBRACE EQUAL_ARROW
 
 /* Patterns, pages 421-423 */
 
-maybe_pattern_and_semicolon ::= pattern semicolon_opt | semicolon_opt
+maybe_pattern_and_semicolon ::= pattern SEMICOLON? | SEMICOLON?
 
-pattern ::= pattern_list | pattern SEMICOLON pattern_list
+pattern ::= pattern_list (SEMICOLON pattern_list)*
 
 pattern_list ::=
-      pattern_sequence
-    | pattern_sequence COMMA pattern_list
+      pattern_sequence COMMA pattern_list
+    | pattern_sequence
     | property_list_pattern
 
-pattern_sequence ::=
-      simple_pattern
-    | pattern_sequence simple_pattern
+pattern_sequence ::= simple_pattern+
 
 simple_pattern ::=
       name_not_end
@@ -457,44 +470,42 @@ simple_pattern ::=
     | pattern_variable
 
 bracketed_pattern ::=
-      LPAREN pattern_opt RPAREN
-    | LBRACKET pattern_opt RBRACKET
-    | LBRACE pattern_opt RBRACE
+      LPAREN pattern? RPAREN
+    | LBRACKET pattern? RBRACKET
+    | LBRACE pattern? RBRACE
 
 binding_pattern ::=
-      pattern_variable COLON_COLON pattern_variable
+      pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
+    | pattern_variable COLON_COLON pattern_variable
     | pattern_variable EQUAL pattern_variable
-    | pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
 
 pattern_variable ::=
-      QUERY name
-    | QUERY CONSTRAINED_NAME
+      QUERY CONSTRAINED_NAME
+    | QUERY word_name
     | ELLIPSIS
 
 property_list_pattern ::=
-      HASH_REST pattern_variable
-    | HASH_KEY pattern_keywords_opt
-    | HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords_opt
+      HASH_REST pattern_variable COMMA HASH_KEY pattern_keywords?
+    | HASH_REST pattern_variable
+    | HASH_KEY pattern_keywords?
 
 pattern_keywords ::=
       HASH_ALL_KEYS
-    | pattern_keyword
     | pattern_keyword COMMA pattern_keywords
+    | pattern_keyword
 
 pattern_keyword ::=
-      QUERY name default_opt
-    | QUERY CONSTRAINED_NAME default_opt
-    | QUERY_QUERY name default_opt
-    | QUERY_QUERY CONSTRAINED_NAME default_opt
+      QUERY word_name default_value?
+    | QUERY CONSTRAINED_NAME default_value?
+    | QUERY_QUERY word_name default_value?
+    | QUERY_QUERY CONSTRAINED_NAME default_value?
 
 /* Templates, pages 423-424 */
 
-template ::=
-      template_element
-    | template template_element
+template ::= template_element+
 
 template_element ::=
-      name
+      word_name
     | SYMBOL
     | NUMBER
     | CHARACTER_LITERAL
@@ -505,11 +516,11 @@ template_element ::=
     | DOT
     | COLON_COLON
     | EQUAL_ARROW
-    | LPAREN template_opt RPAREN
-    | LBRACKET template_opt RBRACKET
-    | LBRACE template_opt RBRACE
-    | HASH_PAREN template_opt RPAREN
-    | HASH_BRACKET template_opt RBRACKET
+    | LPAREN template? RPAREN
+    | LBRACKET template? RBRACKET
+    | LBRACE template? RBRACE
+    | HASH_PAREN template? RPAREN
+    | HASH_BRACKET template? RBRACKET
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
     | substitution
@@ -521,24 +532,23 @@ separator ::=
     /* idle thought:  what about moving '.' to here? */
 
 substitution ::=
-      name_prefix_opt QUERY name_string_or_symbol name_suffix_opt
-    | QUERY_QUERY name separator_opt ELLIPSIS
+      name_prefix? QUERY name_string_or_symbol name_suffix?
+    | QUERY_QUERY word_name separator? ELLIPSIS
     | ELLIPSIS
-    | QUERY_EQUAL name
+    | QUERY_EQUAL word_name
 
 name_prefix ::= STRING HASH_HASH
 
 name_suffix ::= HASH_HASH STRING
 
-name_string_or_symbol ::= name | STRING | SYMBOL
+name_string_or_symbol ::= word_name | STRING | SYMBOL
 
 /* Auxiliary Rule Sets, page 424 */
 
-aux_rule_sets ::= aux_rule_set | aux_rule_sets aux_rule_set
+aux_rule_sets ::= aux_rule_set+
 
 aux_rule_set ::= SYMBOL aux_rules
 
-aux_rules ::= aux_rule | aux_rules aux_rule
+aux_rules ::= aux_rule+
 
-aux_rule ::= LBRACE pattern_opt RBRACE EQUAL_ARROW rhs
-
+aux_rule ::= LBRACE pattern+ RBRACE EQUAL_ARROW rhs

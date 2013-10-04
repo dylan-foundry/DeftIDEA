@@ -19,26 +19,26 @@ public class DylanParameterListImpl extends ASTWrapperPsiElement implements Dyla
 
   @Override
   @Nullable
+  public DylanParameters getParameters() {
+    return findChildByClass(DylanParameters.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanValuesList getValuesList() {
+    return findChildByClass(DylanValuesList.class);
+  }
+
+  @Override
+  @Nullable
   public DylanVariable getVariable() {
     return findChildByClass(DylanVariable.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getParametersOpt() {
-    return findChildByType(PARAMETERS_OPT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getSemicolonOpt() {
-    return findChildByType(SEMICOLON_OPT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getValuesListOpt() {
-    return findChildByType(VALUES_LIST_OPT);
+  public PsiElement getSemicolon() {
+    return findChildByType(SEMICOLON);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

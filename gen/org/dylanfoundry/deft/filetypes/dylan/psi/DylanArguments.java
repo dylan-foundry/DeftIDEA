@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanArguments extends PsiElement {
 
   @NotNull
-  DylanArgument getArgument();
-
-  @Nullable
-  DylanArguments getArguments();
+  List<DylanArgument> getArgumentList();
 
 }

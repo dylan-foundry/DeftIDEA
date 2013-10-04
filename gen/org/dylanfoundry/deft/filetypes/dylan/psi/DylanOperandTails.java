@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanOperandTails extends PsiElement {
 
-  @Nullable
-  DylanOperandTail getOperandTail();
-
-  @Nullable
-  DylanOperandTails getOperandTails();
+  @NotNull
+  List<DylanOperandTail> getOperandTailList();
 
 }

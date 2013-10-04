@@ -24,15 +24,15 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
   }
 
   @Override
-  @NotNull
-  public DylanEndClause getEndClause() {
-    return findNotNullChildByClass(DylanEndClause.class);
+  @Nullable
+  public DylanBodyFragment getBodyFragment() {
+    return findChildByClass(DylanBodyFragment.class);
   }
 
   @Override
   @NotNull
-  public PsiElement getBodyFragmentOpt() {
-    return findNotNullChildByType(BODY_FRAGMENT_OPT);
+  public DylanEndClause getEndClause() {
+    return findNotNullChildByClass(DylanEndClause.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -18,9 +18,9 @@ public class DylanSourceRecordImpl extends ASTWrapperPsiElement implements Dylan
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DylanBody getBody() {
-    return findChildByClass(DylanBody.class);
+    return findNotNullChildByClass(DylanBody.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

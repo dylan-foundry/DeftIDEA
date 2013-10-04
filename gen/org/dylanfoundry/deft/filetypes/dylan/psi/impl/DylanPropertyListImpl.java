@@ -19,14 +19,8 @@ public class DylanPropertyListImpl extends ASTWrapperPsiElement implements Dylan
 
   @Override
   @NotNull
-  public DylanProperty getProperty() {
-    return findNotNullChildByClass(DylanProperty.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanPropertyList getPropertyList() {
-    return findChildByClass(DylanPropertyList.class);
+  public List<DylanProperty> getPropertyList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanProperty.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

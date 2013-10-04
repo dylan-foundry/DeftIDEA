@@ -23,12 +23,6 @@ public class DylanMaybePatternAndSemicolonImpl extends ASTWrapperPsiElement impl
     return findChildByClass(DylanPattern.class);
   }
 
-  @Override
-  @Nullable
-  public PsiElement getSemicolonOpt() {
-    return findChildByType(SEMICOLON_OPT);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitMaybePatternAndSemicolon(this);
     else super.accept(visitor);

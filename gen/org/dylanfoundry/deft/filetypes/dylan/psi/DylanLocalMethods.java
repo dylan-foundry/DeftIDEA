@@ -7,10 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanLocalMethods extends PsiElement {
 
-  @Nullable
-  DylanLocalMethods getLocalMethods();
-
   @NotNull
-  DylanMethodDefinition getMethodDefinition();
+  List<DylanMethodDefinition> getMethodDefinitionList();
 
 }

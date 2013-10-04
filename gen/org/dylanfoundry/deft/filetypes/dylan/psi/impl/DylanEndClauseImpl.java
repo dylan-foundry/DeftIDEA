@@ -17,6 +17,12 @@ public class DylanEndClauseImpl extends ASTWrapperPsiElement implements DylanEnd
     super(node);
   }
 
+  @Override
+  @Nullable
+  public DylanBeginWord getBeginWord() {
+    return findChildByClass(DylanBeginWord.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitEndClause(this);
     else super.accept(visitor);

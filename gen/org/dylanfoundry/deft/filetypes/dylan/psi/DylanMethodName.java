@@ -10,7 +10,7 @@ public interface DylanMethodName extends PsiElement {
   @NotNull
   DylanMacroName getMacroName();
 
-  @NotNull
-  PsiElement getVariableNameOpt();
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

@@ -24,9 +24,9 @@ public class DylanBinaryOperandNoSymbolImpl extends ASTWrapperPsiElement impleme
   }
 
   @Override
-  @NotNull
-  public PsiElement getUnaryOperatorOpt() {
-    return findNotNullChildByType(UNARY_OPERATOR_OPT);
+  @Nullable
+  public DylanUnaryOperator getUnaryOperator() {
+    return findChildByClass(DylanUnaryOperator.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

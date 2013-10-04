@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanVariables extends PsiElement {
 
   @NotNull
-  DylanVariable getVariable();
-
-  @Nullable
-  DylanVariables getVariables();
+  List<DylanVariable> getVariableList();
 
 }

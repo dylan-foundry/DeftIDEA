@@ -19,20 +19,14 @@ public class DylanExpressionImpl extends ASTWrapperPsiElement implements DylanEx
 
   @Override
   @NotNull
-  public DylanBinaryOperand getBinaryOperand() {
-    return findNotNullChildByClass(DylanBinaryOperand.class);
+  public List<DylanBinaryOperand> getBinaryOperandList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanBinaryOperand.class);
   }
 
   @Override
-  @Nullable
-  public DylanBinaryOperator getBinaryOperator() {
-    return findChildByClass(DylanBinaryOperator.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
+  @NotNull
+  public List<DylanBinaryOperator> getBinaryOperatorList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanBinaryOperator.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
