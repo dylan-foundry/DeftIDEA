@@ -39,6 +39,7 @@
     <!-- Dylan files -->
     <lang.parserDefinition language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanParserDefinition"/>
     <lang.syntaxHighlighterFactory key="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanSyntaxHighlighterFactory"/>
+    <inspectionToolProvider implementation="org.dylanfoundry.deft.filetypes.dylan.inspections.InspectionProvider"/>
 
     <!-- Template Group -->
     <fileTemplateGroup implementation="org.dylanfoundry.deft.actions.DeftTemplatesFactory"/>

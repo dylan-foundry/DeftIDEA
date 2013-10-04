@@ -18,9 +18,13 @@ dylanFile ::= headers source_records
 
 headers ::= header*
 
-header ::= (KEY SEPARATOR values)
+header ::= (header_key SEPARATOR values)
 
-values ::= (VALUE? CRLF)*
+header_key ::= KEY
+
+values ::= (header_value? CRLF)*
+
+header_value ::= VALUE
 
 source_records ::= source_record*
 

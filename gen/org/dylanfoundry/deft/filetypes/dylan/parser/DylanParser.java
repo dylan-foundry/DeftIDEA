@@ -26,6 +26,12 @@ public class DylanParser implements PsiParser {
     if (root_ == HEADER) {
       result_ = header(builder_, level_ + 1);
     }
+    else if (root_ == HEADER_KEY) {
+      result_ = header_key(builder_, level_ + 1);
+    }
+    else if (root_ == HEADER_VALUE) {
+      result_ = header_value(builder_, level_ + 1);
+    }
     else if (root_ == HEADERS) {
       result_ = headers(builder_, level_ + 1);
     }
@@ -70,16 +76,51 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // KEY SEPARATOR values
+  // header_key SEPARATOR values
   public static boolean header(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "header")) return false;
     if (!nextTokenIs(builder_, KEY)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, KEY, SEPARATOR);
+    result_ = header_key(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, SEPARATOR);
     result_ = result_ && values(builder_, level_ + 1);
     if (result_) {
       marker_.done(HEADER);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // KEY
+  public static boolean header_key(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "header_key")) return false;
+    if (!nextTokenIs(builder_, KEY)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, KEY);
+    if (result_) {
+      marker_.done(HEADER_KEY);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // VALUE
+  public static boolean header_value(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "header_value")) return false;
+    if (!nextTokenIs(builder_, VALUE)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, VALUE);
+    if (result_) {
+      marker_.done(HEADER_VALUE);
     }
     else {
       marker_.rollbackTo();
@@ -178,7 +219,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (VALUE? CRLF)*
+  // (header_value? CRLF)*
   public static boolean values(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values")) return false;
     Marker marker_ = builder_.mark();
@@ -198,7 +239,7 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // VALUE? CRLF
+  // header_value? CRLF
   private static boolean values_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values_0")) return false;
     boolean result_ = false;
@@ -214,10 +255,10 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // VALUE?
+  // header_value?
   private static boolean values_0_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values_0_0")) return false;
-    consumeToken(builder_, VALUE);
+    header_value(builder_, level_ + 1);
     return true;
   }
 

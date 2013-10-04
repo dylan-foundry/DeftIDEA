@@ -11,6 +11,14 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitHeaderKey(@NotNull DylanHeaderKey o) {
+    visitPsiElement(o);
+  }
+
+  public void visitHeaderValue(@NotNull DylanHeaderValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitHeaders(@NotNull DylanHeaders o) {
     visitPsiElement(o);
   }

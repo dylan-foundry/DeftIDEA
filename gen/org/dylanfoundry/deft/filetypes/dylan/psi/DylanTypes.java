@@ -10,6 +10,8 @@ public interface DylanTypes {
 
   IElementType HEADER = new DylanElementType("HEADER");
   IElementType HEADERS = new DylanElementType("HEADERS");
+  IElementType HEADER_KEY = new DylanElementType("HEADER_KEY");
+  IElementType HEADER_VALUE = new DylanElementType("HEADER_VALUE");
   IElementType SOURCE_RECORD = new DylanElementType("SOURCE_RECORD");
   IElementType SOURCE_RECORDS = new DylanElementType("SOURCE_RECORDS");
   IElementType VALUES = new DylanElementType("VALUES");
@@ -41,6 +43,12 @@ public interface DylanTypes {
       }
       else if (type == HEADERS) {
         return new DylanHeadersImpl(node);
+      }
+      else if (type == HEADER_KEY) {
+        return new DylanHeaderKeyImpl(node);
+      }
+      else if (type == HEADER_VALUE) {
+        return new DylanHeaderValueImpl(node);
       }
       else if (type == SOURCE_RECORD) {
         return new DylanSourceRecordImpl(node);
