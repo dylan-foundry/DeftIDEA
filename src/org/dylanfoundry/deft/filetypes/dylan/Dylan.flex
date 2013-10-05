@@ -60,6 +60,9 @@ VALUE_CHARACTER=[^\n\r\f\\]
 KEY_CHARACTER=[a-zA-Z0-9\-]
 SEPARATOR=[:]
 
+STRING=\" (\.|[^\"])* \"
+SYMBOL="#"{STRING}
+
 %state WAITING_VALUE
 %state DYLAN_CODE
 %state COMMENT_BLOCK
@@ -68,6 +71,7 @@ SEPARATOR=[:]
 
 %{
     int commentLevel = 0;
+    boolean afterDefine = false;
 %}
 %%
 
@@ -84,7 +88,7 @@ SEPARATOR=[:]
 <WAITING_VALUE> {
     {CRLF}                                          { yybegin(YYINITIAL); return DylanTypes.CRLF; }
     {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
-    {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*       { yybegin(YYINITIAL); return DylanTypes.HEADER_VALUE; }
+    {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*       { yybegin(YYINITIAL); return DylanTypes.VALUE; }
 }
 
 // Dylan Code
@@ -95,8 +99,8 @@ SEPARATOR=[:]
     {NUMBER}                                        { return DylanTypes.NUMBER; }
 
     {CHARACTER}                                     { return DylanTypes.CHARACTER_LITERAL; }
-    "\""                                            { yybegin(STRING); return DylanTypes.STRING; }
-    "#\""                                           { yybegin(SYMBOL); return DylanTypes.SYMBOL; }
+    {STRING}                                        { return DylanTypes.STRING; }
+    {SYMBOL}                                        { return DylanTypes.SYMBOL; }
     {WORD}":"                                       { return DylanTypes.SYMBOL; }
 
     {NAME}":"{WORD}                                 { return DylanTypes.CONSTRAINED_NAME; }
@@ -120,24 +124,22 @@ SEPARATOR=[:]
     "above"                                         { return DylanTypes.KEYWORD; }
     "afterwards"                                    { return DylanTypes.KEYWORD; }
     */
+    "all"                                           { return DylanTypes.ALL; }
     "begin"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
     /*
     "below"                                         { return DylanTypes.KEYWORD; }
     "by"                                            { return DylanTypes.KEYWORD; }
     */
     "case"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
-    /*
-    "cleanup"                                       { return DylanTypes.KEYWORD; }
-    "create"                                        { return DylanTypes.KEYWORD; }
-    */
-    "define"                                        { return DylanTypes.DEFINE; }
+    "copy-down-method"                              { return DylanTypes.COPY_DOWN_METHOD; }
+    //"cleanup"                                       { return DylanTypes.KEYWORD; }
+    "create"                                        { return DylanTypes.CREATE; }
+    "define"                                        { afterDefine = true; return DylanTypes.DEFINE; }
     "else"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; }
     "elseif"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; }
     "end"                                           { return DylanTypes.END; }
-    /*
-    "export"                                        { return DylanTypes.KEYWORD; }
-    "finally"                                       { return DylanTypes.KEYWORD; }
-    */
+    "export"                                        { return DylanTypes.EXPORT; }
+    //"finally"                                       { return DylanTypes.KEYWORD; }
     "for"                                           { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
     //"from"                                          { return DylanTypes.KEYWORD; }
     "if"                                            { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
@@ -152,7 +154,7 @@ SEPARATOR=[:]
     //"to"                                            { return DylanTypes.KEYWORD; }
     "unless"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
     "until"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; }
-    //"use"                                           { return DylanTypes.KEYWORD; }
+    "use"                                           { return DylanTypes.USE; }
     "when"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
     "while"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
 
@@ -165,21 +167,21 @@ SEPARATOR=[:]
     /*
     "concrete"                                      { return DylanTypes.BUILTIN; }
     */
-    "constant"                                      { return DylanTypes.DEFINE_LIST_BEGIN_WORD; }
-    "class"                                         { return DylanTypes.DEFINE_BODY_BEGIN_WORD; }
+    "constant"                                      { return DylanTypes.CONSTANT_T; }
+    "class"                                         { return DylanTypes.CLASS; }
     /*
     "compiler-open"                                 { return DylanTypes.BUILTIN; }
     "compiler-sideways"                             { return DylanTypes.BUILTIN; }
     */
-    "domain"                                        { return DylanTypes.DEFINE_LIST_BEGIN_WORD; }
+    "domain"                                        { return DylanTypes.DOMAIN; }
     /*
     "dynamic"                                       { return DylanTypes.BUILTIN; }
     "each-subclass"                                 { return DylanTypes.BUILTIN; }
     "exception"                                     { return DylanTypes.BUILTIN; }
     "exclude"                                       { return DylanTypes.BUILTIN; }
     */
-    "function"                                      { return DylanTypes.DEFINE_BODY_BEGIN_WORD; }
-    "generic"                                       { return DylanTypes.DEFINE_LIST_BEGIN_WORD; } // FIXME
+    "function"                                      { if (afterDefine) return DylanTypes.DEFINE_BODY_FUNCTION_WORD; else return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    "generic"                                       { return DylanTypes.GENERIC; }
     "handler"                                       { return DylanTypes.HANDLER_T; }
     /*
     "inherited"                                     { return DylanTypes.BUILTIN; }
@@ -189,12 +191,12 @@ SEPARATOR=[:]
     "interface"                                     { return DylanTypes.BUILTIN; }
     "import"                                        { return DylanTypes.BUILTIN; }
     "keyword"                                       { return DylanTypes.BUILTIN; }
-    "library"                                       { return DylanTypes.BUILTIN; }
     */
+    "library"                                       { return DylanTypes.LIBRARY; }
     "macro"                                         { return DylanTypes.MACRO_T; }
-    "method"                                        { return DylanTypes.DEFINE_BODY_BEGIN_WORD; } // FIXME
-/*
-    "module"                                        { return DylanTypes.BUILTIN; }
+    "method"                                        { return DylanTypes.METHOD; }
+    "module"                                        { return DylanTypes.MODULE; }
+    /*
     "open"                                          { return DylanTypes.BUILTIN; }
     "primary"                                       { return DylanTypes.BUILTIN; }
     "required"                                      { return DylanTypes.BUILTIN; }
@@ -202,9 +204,10 @@ SEPARATOR=[:]
     "sideways"                                      { return DylanTypes.BUILTIN; }
     "singleton"                                     { return DylanTypes.BUILTIN; }
     */
+    "shared-symbols"                                { return DylanTypes.SHARED_SYMBOLS_T; }
     "slot"                                          { return DylanTypes.SLOT; }
     //"thread"                                        { return DylanTypes.BUILTIN; }
-    "variable"                                      { return DylanTypes.DEFINE_LIST_BEGIN_WORD; }
+    "variable"                                      { return DylanTypes.VARIABLE_T; }
     /*
     "virtual"                                       { return DylanTypes.BUILTIN; }
     */
@@ -217,7 +220,7 @@ SEPARATOR=[:]
     {UNARY_AND_BINARY_OPERATOR}                     { return DylanTypes.UNARY_AND_BINARY_OPERATOR; }
 
     // Punctuation
-    "("                                             { return DylanTypes.LPAREN; }
+    "("                                             { afterDefine = false; return DylanTypes.LPAREN; }
     ")"                                             { return DylanTypes.RPAREN; }
     "["                                             { return DylanTypes.LBRACKET; }
     "]"                                             { return DylanTypes.RBRACKET; }
@@ -411,18 +414,6 @@ SEPARATOR=[:]
     "/\*"                                           { commentLevel++; yybegin(COMMENT_BLOCK); return DylanTypes.COMMENT; }
     {CRLF}                                          { /* return DylanTypes.CRLF; */ }
     .                                               { return DylanTypes.COMMENT; }
-}
-
-<STRING> {
-    "\""                                            { yybegin(DYLAN_CODE); return DylanTypes.STRING; }
-    \\[abefnrt0]                                    { return DylanTypes.STRING; }
-    .                                               { return DylanTypes.STRING; }
-}
-
-<SYMBOL> {
-    "\""                                            { yybegin(DYLAN_CODE); return DylanTypes.SYMBOL; }
-    \\[abefnrt0]                                    { return DylanTypes.SYMBOL; }
-    .                                               { return DylanTypes.SYMBOL; }
 }
 
 {CRLF}                                              { yybegin(DYLAN_CODE); return DylanTypes.CRLF; }

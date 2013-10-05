@@ -7,7 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanVariableName extends PsiElement {
 
-  @NotNull
-  DylanOrdinaryName getOrdinaryName();
+  @Nullable
+  DylanEscapedName getEscapedName();
+
+  @Nullable
+  DylanNonexpressionWord getNonexpressionWord();
 
 }

@@ -25,8 +25,32 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
+  public DylanBracketedFragment getBracketedFragment() {
+    return findChildByClass(DylanBracketedFragment.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanConstantFragment getConstantFragment() {
+    return findChildByClass(DylanConstantFragment.class);
+  }
+
+  @Override
+  @Nullable
   public DylanDefinition getDefinition() {
     return findChildByClass(DylanDefinition.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanFunctionMacroCall getFunctionMacroCall() {
+    return findChildByClass(DylanFunctionMacroCall.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanHashWord getHashWord() {
+    return findChildByClass(DylanHashWord.class);
   }
 
   @Override
@@ -37,20 +61,20 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
+  public DylanOperator getOperator() {
+    return findChildByClass(DylanOperator.class);
+  }
+
+  @Override
+  @Nullable
   public DylanSemicolonFragment getSemicolonFragment() {
     return findChildByClass(DylanSemicolonFragment.class);
   }
 
   @Override
   @Nullable
-  public DylanSimpleFragment getSimpleFragment() {
-    return findChildByClass(DylanSimpleFragment.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanSlotDeclaration getSlotDeclaration() {
-    return findChildByClass(DylanSlotDeclaration.class);
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

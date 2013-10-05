@@ -19,8 +19,74 @@ public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDe
 
   @Override
   @Nullable
+  public DylanDefinitionClassDefiner getDefinitionClassDefiner() {
+    return findChildByClass(DylanDefinitionClassDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionConstantDefiner getDefinitionConstantDefiner() {
+    return findChildByClass(DylanDefinitionConstantDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionCopyDownMethodDefiner getDefinitionCopyDownMethodDefiner() {
+    return findChildByClass(DylanDefinitionCopyDownMethodDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionDomainDefiner getDefinitionDomainDefiner() {
+    return findChildByClass(DylanDefinitionDomainDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionGenericDefiner getDefinitionGenericDefiner() {
+    return findChildByClass(DylanDefinitionGenericDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionLibraryDefiner getDefinitionLibraryDefiner() {
+    return findChildByClass(DylanDefinitionLibraryDefiner.class);
+  }
+
+  @Override
+  @Nullable
   public DylanDefinitionMacroCall getDefinitionMacroCall() {
     return findChildByClass(DylanDefinitionMacroCall.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionMacroDefiner getDefinitionMacroDefiner() {
+    return findChildByClass(DylanDefinitionMacroDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionMethodDefiner getDefinitionMethodDefiner() {
+    return findChildByClass(DylanDefinitionMethodDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionModuleDefiner getDefinitionModuleDefiner() {
+    return findChildByClass(DylanDefinitionModuleDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionSharedSymbolsDefiner getDefinitionSharedSymbolsDefiner() {
+    return findChildByClass(DylanDefinitionSharedSymbolsDefiner.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanDefinitionVariableDefiner getDefinitionVariableDefiner() {
+    return findChildByClass(DylanDefinitionVariableDefiner.class);
   }
 
   @Override

@@ -18,9 +18,15 @@ public class DylanVariableNameImpl extends ASTWrapperPsiElement implements Dylan
   }
 
   @Override
-  @NotNull
-  public DylanOrdinaryName getOrdinaryName() {
-    return findNotNullChildByClass(DylanOrdinaryName.class);
+  @Nullable
+  public DylanEscapedName getEscapedName() {
+    return findChildByClass(DylanEscapedName.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanNonexpressionWord getNonexpressionWord() {
+    return findChildByClass(DylanNonexpressionWord.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

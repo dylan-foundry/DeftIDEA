@@ -19,8 +19,8 @@ public class DylanPropertyImpl extends ASTWrapperPsiElement implements DylanProp
 
   @Override
   @NotNull
-  public DylanValue getValue() {
-    return findNotNullChildByClass(DylanValue.class);
+  public DylanSymbolValue getSymbolValue() {
+    return findNotNullChildByClass(DylanSymbolValue.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

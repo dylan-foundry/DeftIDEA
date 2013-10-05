@@ -24,21 +24,27 @@ public class DylanSourceRecordsImpl extends ASTWrapperPsiElement implements Dyla
   }
 
   @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
+  @NotNull
+  public List<DylanDefinition> getDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanLocalDeclaration> getLocalDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   @Override
   @Nullable
   public DylanMacro getMacro() {
     return findChildByClass(DylanMacro.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanSourceRecord getSourceRecord() {
-    return findChildByClass(DylanSourceRecord.class);
   }
 
   @Override

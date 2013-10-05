@@ -11,10 +11,13 @@ public interface DylanCaseConstituents extends PsiElement {
   DylanCaseTail getCaseTail();
 
   @Nullable
+  DylanDefinition getDefinition();
+
+  @Nullable
   DylanExpression getExpression();
 
   @Nullable
-  DylanNonExpressionConstituent getNonExpressionConstituent();
+  DylanLocalDeclaration getLocalDeclaration();
 
   @Nullable
   DylanUnparenthesizedExpression getUnparenthesizedExpression();

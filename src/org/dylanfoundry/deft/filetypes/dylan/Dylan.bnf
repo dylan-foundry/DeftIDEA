@@ -18,7 +18,7 @@ dylanFile ::= headers source_records
 
 headers ::= header*
 
-header ::= (header_key SEPARATOR values)
+header ::= (header_key HEADER_SEPARATOR values)
 
 header_key ::= KEY
 
@@ -70,15 +70,15 @@ reserved_word ::= core_word | NONDEFINING_FUNCTION_WORD | NONDEFINING_BEGIN_WORD
 
 unreserved_word ::= NONDEFINING_NONEXPRESSION_WORD
 
-word_name ::= reserved_word | unreserved_name
-
 escaped_name ::= ESCAPED_WORD | OPERATOR_NAME
 
 unreserved_name ::= unreserved_word | escaped_name
 
+word_name ::= reserved_word | unreserved_name
+
 nondefining_name ::= nondefining_word | escaped_name
 
-ordinary_name ::= nonexpression_word | escaped_name
+private ordinary_name ::= nonexpression_word | escaped_name
 
 macro_name ::= nondefining_name | define_body_word | define_list_word
 
@@ -95,15 +95,15 @@ binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | E
 /* Program Structure, page 414 */
 
 // FIXME: original is body?
-source_record ::= body
+private source_record ::= body
 
-body ::= constituents SEMICOLON?
+private body ::= constituents SEMICOLON?
 
-constituents ::= constituent (SEMICOLON constituent)* | COMMENT
+private constituents ::= constituent (SEMICOLON constituent)* | COMMENT
 
-constituent ::= non_expression_constituent | expression
+private constituent ::= non_expression_constituent | expression
 
-non_expression_constituent ::= definition | local_declaration
+private non_expression_constituent ::= definition | local_declaration
 
 macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO_CALL
 
@@ -111,33 +111,32 @@ macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO
 
 property_list ::= property (COMMA property)*
 
-property ::= SYMBOL value
+property ::= SYMBOL symbol_value
 
-value ::= basic_fragment
+symbol_value ::= basic_fragment
 
 /* Fragments, page 415-416 */
 
 body_fragment ::= non_statement_body_fragment | statement non_statement_body_fragment?
 
-list_fragment ::= non_statement_list_fragment | statement non_statement_list_fragment?
+private list_fragment ::= non_statement_list_fragment | statement non_statement_list_fragment?
 
 basic_fragment ::= non_statement_basic_fragment | statement non_statement_basic_fragment?
 
 non_statement_body_fragment ::=
       definition semicolon_fragment?
     | local_declaration semicolon_fragment?
-    | slot_declaration semicolon_fragment? // FIXME
     | simple_fragment body_fragment?
     | COMMA body_fragment?
     | SEMICOLON body_fragment?
 
 semicolon_fragment ::= SEMICOLON body_fragment?
 
-non_statement_list_fragment ::= simple_fragment list_fragment? | COMMA list_fragment?
+private non_statement_list_fragment ::= simple_fragment list_fragment? | COMMA list_fragment?
 
 non_statement_basic_fragment ::= simple_fragment basic_fragment?
 
-simple_fragment ::=
+private simple_fragment ::=
       variable_name
     | constant_fragment
     | operator
@@ -174,7 +173,79 @@ constant_fragment ::=
 
 /* Definitions, page 416 */
 
-definition ::= definition_macro_call | DEFINE MACRO_T macro_definition | PARSED_DEFINITION
+definition ::=
+      definition_class_definer
+    | definition_constant_definer
+    | definition_copy_down_method_definer
+    | definition_domain_definer
+    | definition_generic_definer
+    | definition_library_definer
+    | definition_module_definer
+    | definition_macro_definer
+    | definition_method_definer
+    | definition_shared_symbols_definer
+    | definition_variable_definer
+    | definition_macro_call
+    | DEFINE MACRO_T macro_definition
+    | PARSED_DEFINITION
+
+definition_class_definer ::= DEFINE modifiers? CLASS variable_name LPAREN supers? RPAREN slot_declarations? class_definition_tail
+
+class_definition_tail ::= END CLASS variable_name? | END variable_name?
+
+supers ::= variable_name (COMMA variable_name)*
+
+slot_declarations ::= slot_declaration*
+
+// FIXME: This is not present in the original yacc file.
+// Ugly hack to include the 'constant' slot modifier
+slot_declaration ::=
+     (modifiers|CONSTANT_T)? SLOT variable (EQUAL expression)? init_specifications? semicolon_fragment
+
+init_specifications ::= (COMMA init_specification)+
+
+init_specification ::= SYMBOL expression
+
+definition_constant_definer ::= DEFINE modifiers? CONSTANT_T list_fragment?
+
+definition_copy_down_method_definer ::= DEFINE modifiers? COPY_DOWN_METHOD variable_name list_fragment?
+
+definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_fragment
+
+definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_fragment
+
+definition_library_definer ::= DEFINE modifiers? LIBRARY variable_name namespace_clauses? library_definition_tail
+
+library_definition_tail ::= END LIBRARY variable_name?| END variable_name?
+
+definition_module_definer ::= DEFINE modifiers? MODULE variable_name namespace_clauses? module_definition_tail
+
+module_definition_tail ::= END MODULE variable_name? | END variable_name?
+
+namespace_clauses ::= (namespace_clause semicolon_fragment?)*
+
+namespace_clause ::=
+      USE variable_name (COMMA namespace_clause_options)?
+    | CREATE variable_name (COMMA variable_name)*
+    | EXPORT variable_name (COMMA variable_name)*
+
+namespace_clause_options ::= LBRACE (ALL|variable_name (COMMA variable_name)*) RBRACE
+
+definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_set? macro_definition_tail
+
+macro_definition_tail ::= END MACRO_T variable_name? | END variable_name?
+
+definition_method_definer ::= DEFINE modifiers? METHOD variable_name body_fragment method_definition_tail
+
+method_definition_tail ::= END METHOD variable_name? | END variable_name?
+
+definition_shared_symbols_definer ::= DEFINE modifiers? SHARED_SYMBOLS_T variable_name shared_symbols? shared_symbols_definition_tail
+
+shared_symbols_definition_tail ::= END SHARED_SYMBOLS_T variable_name? | END variable_name?
+
+shared_symbols ::= (SYMBOL (COMMA SYMBOL)*)?
+
+definition_variable_definer ::= DEFINE modifiers? VARIABLE_T list_fragment?
 
 definition_macro_call ::=
       DEFINE modifiers? define_body_word body_fragment? definition_tail
@@ -193,15 +264,6 @@ local_declaration ::=
     | LET HANDLER_T condition EQUAL handler
     | LOCAL local_methods
     | PARSED_LOCAL_DECLARATION
-
-// FIXME: This is not present in the original yacc file.
-// Ugly hack to include the 'constant' slot modifier
-slot_declaration ::=
-     (modifiers|DEFINE_LIST_BEGIN_WORD)? SLOT variable (EQUAL expression)? init_specifications?
-
-init_specifications ::= (COMMA init_specification)+
-
-init_specification ::= SYMBOL expression
 
 condition ::=
       unparenthesized_operand
@@ -524,6 +586,9 @@ template_element ::=
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
     | substitution
+    // FIXME
+    | METHOD
+    | FUNCTION
 
 separator ::=
       SEMICOLON

@@ -11,6 +11,12 @@ public interface DylanDefinitionMacroCall extends PsiElement {
   DylanBodyFragment getBodyFragment();
 
   @Nullable
+  DylanBracketedFragment getBracketedFragment();
+
+  @Nullable
+  DylanConstantFragment getConstantFragment();
+
+  @Nullable
   DylanDefineBodyWord getDefineBodyWord();
 
   @Nullable
@@ -20,9 +26,21 @@ public interface DylanDefinitionMacroCall extends PsiElement {
   DylanDefinitionTail getDefinitionTail();
 
   @Nullable
-  DylanListFragment getListFragment();
+  DylanFunctionMacroCall getFunctionMacroCall();
+
+  @Nullable
+  DylanHashWord getHashWord();
 
   @Nullable
   DylanModifiers getModifiers();
+
+  @Nullable
+  DylanOperator getOperator();
+
+  @Nullable
+  DylanStatement getStatement();
+
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

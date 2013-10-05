@@ -25,14 +25,20 @@ public class DylanCaseConstituentsImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @Nullable
+  public DylanDefinition getDefinition() {
+    return findChildByClass(DylanDefinition.class);
+  }
+
+  @Override
+  @Nullable
   public DylanExpression getExpression() {
     return findChildByClass(DylanExpression.class);
   }
 
   @Override
   @Nullable
-  public DylanNonExpressionConstituent getNonExpressionConstituent() {
-    return findChildByClass(DylanNonExpressionConstituent.class);
+  public DylanLocalDeclaration getLocalDeclaration() {
+    return findChildByClass(DylanLocalDeclaration.class);
   }
 
   @Override

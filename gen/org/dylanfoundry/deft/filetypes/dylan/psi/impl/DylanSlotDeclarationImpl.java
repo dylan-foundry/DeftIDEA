@@ -37,6 +37,12 @@ public class DylanSlotDeclarationImpl extends ASTWrapperPsiElement implements Dy
 
   @Override
   @NotNull
+  public DylanSemicolonFragment getSemicolonFragment() {
+    return findNotNullChildByClass(DylanSemicolonFragment.class);
+  }
+
+  @Override
+  @NotNull
   public DylanVariable getVariable() {
     return findNotNullChildByClass(DylanVariable.class);
   }

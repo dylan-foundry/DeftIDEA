@@ -10,7 +10,22 @@ public interface DylanNonStatementBasicFragment extends PsiElement {
   @Nullable
   DylanBasicFragment getBasicFragment();
 
-  @NotNull
-  DylanSimpleFragment getSimpleFragment();
+  @Nullable
+  DylanBracketedFragment getBracketedFragment();
+
+  @Nullable
+  DylanConstantFragment getConstantFragment();
+
+  @Nullable
+  DylanFunctionMacroCall getFunctionMacroCall();
+
+  @Nullable
+  DylanHashWord getHashWord();
+
+  @Nullable
+  DylanOperator getOperator();
+
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

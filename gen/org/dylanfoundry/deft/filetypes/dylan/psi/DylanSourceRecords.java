@@ -10,14 +10,17 @@ public interface DylanSourceRecords extends PsiElement {
   @Nullable
   DylanCaseBody getCaseBody();
 
-  @Nullable
-  DylanExpression getExpression();
+  @NotNull
+  List<DylanDefinition> getDefinitionList();
+
+  @NotNull
+  List<DylanExpression> getExpressionList();
+
+  @NotNull
+  List<DylanLocalDeclaration> getLocalDeclarationList();
 
   @Nullable
   DylanMacro getMacro();
-
-  @Nullable
-  DylanSourceRecord getSourceRecord();
 
   @Nullable
   DylanToken getToken();

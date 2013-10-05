@@ -18,9 +18,21 @@ public class DylanMethodDefinitionImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
-  @Nullable
-  public DylanBody getBody() {
-    return findChildByClass(DylanBody.class);
+  @NotNull
+  public List<DylanDefinition> getDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanLocalDeclaration> getLocalDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   @Override

@@ -17,6 +17,9 @@ public interface DylanSlotDeclaration extends PsiElement {
   DylanModifiers getModifiers();
 
   @NotNull
+  DylanSemicolonFragment getSemicolonFragment();
+
+  @NotNull
   DylanVariable getVariable();
 
 }
