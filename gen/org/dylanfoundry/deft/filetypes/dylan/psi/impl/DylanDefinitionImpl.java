@@ -43,6 +43,12 @@ public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDe
 
   @Override
   @Nullable
+  public DylanDefinitionFunctionDefiner getDefinitionFunctionDefiner() {
+    return findChildByClass(DylanDefinitionFunctionDefiner.class);
+  }
+
+  @Override
+  @Nullable
   public DylanDefinitionGenericDefiner getDefinitionGenericDefiner() {
     return findChildByClass(DylanDefinitionGenericDefiner.class);
   }

@@ -155,6 +155,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDefinitionFunctionDefiner(@NotNull DylanDefinitionFunctionDefiner o) {
+    visitPsiElement(o);
+  }
+
   public void visitDefinitionGenericDefiner(@NotNull DylanDefinitionGenericDefiner o) {
     visitPsiElement(o);
   }
@@ -208,6 +212,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitExpressions(@NotNull DylanExpressions o) {
+    visitPsiElement(o);
+  }
+
+  public void visitFunctionDefinitionTail(@NotNull DylanFunctionDefinitionTail o) {
     visitPsiElement(o);
   }
 

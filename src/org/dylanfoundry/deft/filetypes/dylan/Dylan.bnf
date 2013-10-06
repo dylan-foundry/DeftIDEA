@@ -58,9 +58,9 @@ define_body_word ::= DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_BODY_BEGIN_WORD | D
 
 define_list_word ::= DEFINE_LIST_NONEXPRESSION_WORD | DEFINE_LIST_BEGIN_WORD | DEFINE_LIST_FUNCTION_WORD
 
-nonexpression_word ::= NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD
+nonexpression_word ::= NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS
 
-begin_word ::= NONDEFINING_BEGIN_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_LIST_BEGIN_WORD
+begin_word ::= NONDEFINING_BEGIN_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_LIST_BEGIN_WORD | METHOD
 
 function_word ::= NONDEFINING_FUNCTION_WORD | DEFINE_BODY_FUNCTION_WORD | DEFINE_LIST_FUNCTION_WORD
 
@@ -176,6 +176,7 @@ definition ::=
     | definition_constant_definer
     | definition_copy_down_method_definer
     | definition_domain_definer
+    | definition_function_definer
     | definition_generic_definer
     | definition_library_definer
     | definition_module_definer
@@ -209,6 +210,10 @@ definition_constant_definer ::= DEFINE modifiers? CONSTANT_T list_fragment?
 definition_copy_down_method_definer ::= DEFINE modifiers? COPY_DOWN_METHOD variable_name list_fragment?
 
 definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_fragment
+
+definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name body_fragment function_definition_tail
+
+function_definition_tail ::= END FUNCTION variable_name? | END variable_name?
 
 definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_fragment
 

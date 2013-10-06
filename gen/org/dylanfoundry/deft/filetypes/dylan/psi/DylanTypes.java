@@ -45,6 +45,7 @@ public interface DylanTypes {
   IElementType DEFINITION_CONSTANT_DEFINER = new DylanElementType("DEFINITION_CONSTANT_DEFINER");
   IElementType DEFINITION_COPY_DOWN_METHOD_DEFINER = new DylanElementType("DEFINITION_COPY_DOWN_METHOD_DEFINER");
   IElementType DEFINITION_DOMAIN_DEFINER = new DylanElementType("DEFINITION_DOMAIN_DEFINER");
+  IElementType DEFINITION_FUNCTION_DEFINER = new DylanElementType("DEFINITION_FUNCTION_DEFINER");
   IElementType DEFINITION_GENERIC_DEFINER = new DylanElementType("DEFINITION_GENERIC_DEFINER");
   IElementType DEFINITION_LIBRARY_DEFINER = new DylanElementType("DEFINITION_LIBRARY_DEFINER");
   IElementType DEFINITION_MACRO_CALL = new DylanElementType("DEFINITION_MACRO_CALL");
@@ -59,6 +60,7 @@ public interface DylanTypes {
   IElementType EXPRESSION = new DylanElementType("EXPRESSION");
   IElementType EXPRESSIONS = new DylanElementType("EXPRESSIONS");
   IElementType EXPRESSION_NO_SYMBOL = new DylanElementType("EXPRESSION_NO_SYMBOL");
+  IElementType FUNCTION_DEFINITION_TAIL = new DylanElementType("FUNCTION_DEFINITION_TAIL");
   IElementType FUNCTION_MACRO_CALL = new DylanElementType("FUNCTION_MACRO_CALL");
   IElementType FUNCTION_RULE = new DylanElementType("FUNCTION_RULE");
   IElementType FUNCTION_RULES = new DylanElementType("FUNCTION_RULES");
@@ -356,6 +358,9 @@ public interface DylanTypes {
       else if (type == DEFINITION_DOMAIN_DEFINER) {
         return new DylanDefinitionDomainDefinerImpl(node);
       }
+      else if (type == DEFINITION_FUNCTION_DEFINER) {
+        return new DylanDefinitionFunctionDefinerImpl(node);
+      }
       else if (type == DEFINITION_GENERIC_DEFINER) {
         return new DylanDefinitionGenericDefinerImpl(node);
       }
@@ -397,6 +402,9 @@ public interface DylanTypes {
       }
       else if (type == EXPRESSION_NO_SYMBOL) {
         return new DylanExpressionNoSymbolImpl(node);
+      }
+      else if (type == FUNCTION_DEFINITION_TAIL) {
+        return new DylanFunctionDefinitionTailImpl(node);
       }
       else if (type == FUNCTION_MACRO_CALL) {
         return new DylanFunctionMacroCallImpl(node);

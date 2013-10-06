@@ -134,6 +134,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == DEFINITION_DOMAIN_DEFINER) {
       result_ = definition_domain_definer(builder_, level_ + 1);
     }
+    else if (root_ == DEFINITION_FUNCTION_DEFINER) {
+      result_ = definition_function_definer(builder_, level_ + 1);
+    }
     else if (root_ == DEFINITION_GENERIC_DEFINER) {
       result_ = definition_generic_definer(builder_, level_ + 1);
     }
@@ -175,6 +178,9 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == EXPRESSIONS) {
       result_ = expressions(builder_, level_ + 1);
+    }
+    else if (root_ == FUNCTION_DEFINITION_TAIL) {
+      result_ = function_definition_tail(builder_, level_ + 1);
     }
     else if (root_ == FUNCTION_MACRO_CALL) {
       result_ = function_macro_call(builder_, level_ + 1);
@@ -737,7 +743,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // NONDEFINING_BEGIN_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_LIST_BEGIN_WORD
+  // NONDEFINING_BEGIN_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_LIST_BEGIN_WORD | METHOD
   public static boolean begin_word(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "begin_word")) return false;
     boolean result_ = false;
@@ -746,6 +752,7 @@ public class DylanParser implements PsiParser {
     result_ = consumeToken(builder_, NONDEFINING_BEGIN_WORD);
     if (!result_) result_ = consumeToken(builder_, DEFINE_BODY_BEGIN_WORD);
     if (!result_) result_ = consumeToken(builder_, DEFINE_LIST_BEGIN_WORD);
+    if (!result_) result_ = consumeToken(builder_, METHOD);
     if (result_) {
       marker_.done(BEGIN_WORD);
     }
@@ -2055,6 +2062,7 @@ public class DylanParser implements PsiParser {
   //     | definition_constant_definer
   //     | definition_copy_down_method_definer
   //     | definition_domain_definer
+  //     | definition_function_definer
   //     | definition_generic_definer
   //     | definition_library_definer
   //     | definition_module_definer
@@ -2076,6 +2084,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = definition_constant_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_copy_down_method_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_domain_definer(builder_, level_ + 1);
+    if (!result_) result_ = definition_function_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_generic_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_library_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_module_definer(builder_, level_ + 1);
@@ -2084,7 +2093,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = definition_shared_symbols_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_variable_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_macro_call(builder_, level_ + 1);
-    if (!result_) result_ = definition_12(builder_, level_ + 1);
+    if (!result_) result_ = definition_13(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_DEFINITION);
     if (result_) {
       marker_.done(DEFINITION);
@@ -2097,8 +2106,8 @@ public class DylanParser implements PsiParser {
   }
 
   // DEFINE MACRO_T macro_definition
-  private static boolean definition_12(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_12")) return false;
+  private static boolean definition_13(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_13")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeTokens(builder_, 0, DEFINE, MACRO_T);
@@ -2251,6 +2260,35 @@ public class DylanParser implements PsiParser {
   // modifiers?
   private static boolean definition_domain_definer_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_domain_definer_1")) return false;
+    modifiers(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // DEFINE modifiers? FUNCTION variable_name body_fragment function_definition_tail
+  public static boolean definition_function_definer(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_function_definer")) return false;
+    if (!nextTokenIs(builder_, DEFINE)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, DEFINE);
+    result_ = result_ && definition_function_definer_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, FUNCTION);
+    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && body_fragment(builder_, level_ + 1);
+    result_ = result_ && function_definition_tail(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(DEFINITION_FUNCTION_DEFINER);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // modifiers?
+  private static boolean definition_function_definer_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_function_definer_1")) return false;
     modifiers(builder_, level_ + 1);
     return true;
   }
@@ -2825,6 +2863,70 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  /* ********************************************************** */
+  // END FUNCTION variable_name? | END variable_name?
+  public static boolean function_definition_tail(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_definition_tail")) return false;
+    if (!nextTokenIs(builder_, END)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = function_definition_tail_0(builder_, level_ + 1);
+    if (!result_) result_ = function_definition_tail_1(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(FUNCTION_DEFINITION_TAIL);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // END FUNCTION variable_name?
+  private static boolean function_definition_tail_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_definition_tail_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeTokens(builder_, 0, END, FUNCTION);
+    result_ = result_ && function_definition_tail_0_2(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // variable_name?
+  private static boolean function_definition_tail_0_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_definition_tail_0_2")) return false;
+    variable_name(builder_, level_ + 1);
+    return true;
+  }
+
+  // END variable_name?
+  private static boolean function_definition_tail_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_definition_tail_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, END);
+    result_ = result_ && function_definition_tail_1_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // variable_name?
+  private static boolean function_definition_tail_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "function_definition_tail_1_1")) return false;
+    variable_name(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -4913,7 +5015,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD
+  // NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS
   public static boolean nonexpression_word(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "nonexpression_word")) return false;
     boolean result_ = false;
@@ -4922,6 +5024,8 @@ public class DylanParser implements PsiParser {
     result_ = consumeToken(builder_, NONDEFINING_NONEXPRESSION_WORD);
     if (!result_) result_ = consumeToken(builder_, DEFINE_BODY_NONEXPRESSION_WORD);
     if (!result_) result_ = consumeToken(builder_, DEFINE_LIST_NONEXPRESSION_WORD);
+    if (!result_) result_ = consumeToken(builder_, FUNCTION);
+    if (!result_) result_ = consumeToken(builder_, CLASS);
     if (result_) {
       marker_.done(NONEXPRESSION_WORD);
     }

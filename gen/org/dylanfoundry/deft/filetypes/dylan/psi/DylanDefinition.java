@@ -20,6 +20,9 @@ public interface DylanDefinition extends PsiElement {
   DylanDefinitionDomainDefiner getDefinitionDomainDefiner();
 
   @Nullable
+  DylanDefinitionFunctionDefiner getDefinitionFunctionDefiner();
+
+  @Nullable
   DylanDefinitionGenericDefiner getDefinitionGenericDefiner();
 
   @Nullable
