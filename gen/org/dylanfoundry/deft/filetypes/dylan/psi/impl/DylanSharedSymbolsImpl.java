@@ -17,6 +17,12 @@ public class DylanSharedSymbolsImpl extends ASTWrapperPsiElement implements Dyla
     super(node);
   }
 
+  @Override
+  @NotNull
+  public List<DylanSymbol> getSymbolList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanSymbol.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSharedSymbols(this);
     else super.accept(visitor);

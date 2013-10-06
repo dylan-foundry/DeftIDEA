@@ -23,6 +23,12 @@ public class DylanInitSpecificationImpl extends ASTWrapperPsiElement implements 
     return findNotNullChildByClass(DylanExpression.class);
   }
 
+  @Override
+  @NotNull
+  public DylanSymbol getSymbol() {
+    return findNotNullChildByClass(DylanSymbol.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitInitSpecification(this);
     else super.accept(visitor);

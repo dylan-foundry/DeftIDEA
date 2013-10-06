@@ -19,6 +19,12 @@ public class DylanPropertyImpl extends ASTWrapperPsiElement implements DylanProp
 
   @Override
   @NotNull
+  public DylanSymbol getSymbol() {
+    return findNotNullChildByClass(DylanSymbol.class);
+  }
+
+  @Override
+  @NotNull
   public DylanSymbolValue getSymbolValue() {
     return findNotNullChildByClass(DylanSymbolValue.class);
   }

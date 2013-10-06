@@ -14,7 +14,13 @@ public interface DylanTemplateElement extends PsiElement {
   DylanSeparator getSeparator();
 
   @Nullable
+  DylanString getString();
+
+  @Nullable
   DylanSubstitution getSubstitution();
+
+  @Nullable
+  DylanSymbol getSymbol();
 
   @Nullable
   DylanTemplate getTemplate();

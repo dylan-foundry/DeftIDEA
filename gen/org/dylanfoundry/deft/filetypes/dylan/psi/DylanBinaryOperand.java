@@ -10,4 +10,7 @@ public interface DylanBinaryOperand extends PsiElement {
   @Nullable
   DylanBinaryOperandNoSymbol getBinaryOperandNoSymbol();
 
+  @Nullable
+  DylanSymbol getSymbol();
+
 }

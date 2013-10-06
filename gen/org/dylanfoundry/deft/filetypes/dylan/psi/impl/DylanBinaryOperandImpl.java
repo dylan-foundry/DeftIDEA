@@ -23,6 +23,12 @@ public class DylanBinaryOperandImpl extends ASTWrapperPsiElement implements Dyla
     return findChildByClass(DylanBinaryOperandNoSymbol.class);
   }
 
+  @Override
+  @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBinaryOperand(this);
     else super.accept(visitor);

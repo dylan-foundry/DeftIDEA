@@ -17,6 +17,12 @@ public class DylanNamePrefixImpl extends ASTWrapperPsiElement implements DylanNa
     super(node);
   }
 
+  @Override
+  @NotNull
+  public DylanString getString() {
+    return findNotNullChildByClass(DylanString.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNamePrefix(this);
     else super.accept(visitor);

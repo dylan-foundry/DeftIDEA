@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanSharedSymbols extends PsiElement {
 
+  @NotNull
+  List<DylanSymbol> getSymbolList();
+
 }

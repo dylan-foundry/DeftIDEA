@@ -39,7 +39,7 @@ BINARY_OPERATOR="+" | "*" | "/" | "^" | "~=" | "~==" | "<" | "<=" | ">" | ">=" |
 OPERATOR_NAME="\\" {UNARY_OPERATOR} | "\\" {BINARY_OPERATOR} | "\\" {UNARY_AND_BINARY_OPERATOR} | "\\=" | "\\=="
 NAME={WORD} | "\\" {WORD} | {OPERATOR_NAME}
 
-CHARACTER="'" [^'] "'" | "'\\" [abefnrt0\\] "'"
+CHARACTER="'" [^'] "'" | "'\\" [abefnrt0\\\'] "'"
 
 SIGN=(\+|-)
 DECIMAL_INTEGER={SIGN}? {DIGIT}+
@@ -60,14 +60,14 @@ VALUE_CHARACTER=[^\n\r\f\\]
 KEY_CHARACTER=[a-zA-Z0-9\-]
 SEPARATOR=[:]
 
-STRING=\" (\\\"|\.|[^\"])* \"
-SYMBOL="#"{STRING}
+STRING_ESCAPE=\\ ([\\abefnrt0\"]|x[a-fA-F0-9]{2,4}|[0-7]{1,3})
+
+STRING=\" ({STRING_ESCAPE}|[^\"])* \"
 
 %state WAITING_VALUE
 %state DYLAN_CODE
 %state COMMENT_BLOCK
 %state STRING
-%state SYMBOL
 
 %{
     int commentLevel = 0;
@@ -98,9 +98,9 @@ SYMBOL="#"{STRING}
     {NUMBER}                                        { return DylanTypes.NUMBER; }
 
     {CHARACTER}                                     { return DylanTypes.CHARACTER_LITERAL; }
-    {STRING}                                        { return DylanTypes.STRING; }
-    {SYMBOL}                                        { return DylanTypes.SYMBOL; }
-    {WORD}":"                                       { return DylanTypes.SYMBOL; }
+    "\""                                            { yybegin(STRING); return DylanTypes.STRING_CHARACTER; }
+    "#"                                             { return DylanTypes.HASH; }
+    {WORD}":"                                       { return DylanTypes.KEYWORD; }
 
     {NAME}":"{WORD}                                 { return DylanTypes.CONSTRAINED_NAME; }
     {NAME}":"({BINARY_OPERATOR}|"=="|"=")           { return DylanTypes.CONSTRAINED_NAME; }
@@ -413,6 +413,12 @@ SYMBOL="#"{STRING}
     "/\*"                                           { commentLevel++; yybegin(COMMENT_BLOCK); return DylanTypes.COMMENT; }
     {CRLF}                                          { /* return DylanTypes.CRLF; */ }
     .                                               { return DylanTypes.COMMENT; }
+}
+
+<STRING> {
+    "\""                                            { yybegin(DYLAN_CODE); return DylanTypes.STRING_CHARACTER; }
+    \\[abefnrt0\\\"]                                { return DylanTypes.STRING_ESCAPE_CHARACTER; }
+    .                                               { return DylanTypes.STRING_CHARACTER; }
 }
 
 {CRLF}                                              { yybegin(DYLAN_CODE); return DylanTypes.CRLF; }

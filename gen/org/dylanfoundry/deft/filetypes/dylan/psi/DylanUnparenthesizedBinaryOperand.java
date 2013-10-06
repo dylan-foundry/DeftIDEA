@@ -11,6 +11,9 @@ public interface DylanUnparenthesizedBinaryOperand extends PsiElement {
   DylanOperand getOperand();
 
   @Nullable
+  DylanSymbol getSymbol();
+
+  @Nullable
   DylanUnaryOperator getUnaryOperator();
 
   @Nullable

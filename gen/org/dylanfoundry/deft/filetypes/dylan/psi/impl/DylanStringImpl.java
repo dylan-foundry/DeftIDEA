@@ -11,32 +11,14 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanNameStringOrSymbolImpl extends ASTWrapperPsiElement implements DylanNameStringOrSymbol {
+public class DylanStringImpl extends ASTWrapperPsiElement implements DylanString {
 
-  public DylanNameStringOrSymbolImpl(ASTNode node) {
+  public DylanStringImpl(ASTNode node) {
     super(node);
   }
 
-  @Override
-  @Nullable
-  public DylanString getString() {
-    return findChildByClass(DylanString.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanSymbol getSymbol() {
-    return findChildByClass(DylanSymbol.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanWordName getWordName() {
-    return findChildByClass(DylanWordName.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNameStringOrSymbol(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitString(this);
     else super.accept(visitor);
   }
 

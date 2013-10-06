@@ -13,4 +13,10 @@ public interface DylanConstantFragment extends PsiElement {
   @Nullable
   DylanConstants getConstants();
 
+  @Nullable
+  DylanString getString();
+
+  @Nullable
+  DylanSymbol getSymbol();
+
 }

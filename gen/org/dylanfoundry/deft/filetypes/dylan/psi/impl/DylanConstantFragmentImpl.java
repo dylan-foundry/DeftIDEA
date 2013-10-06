@@ -29,6 +29,18 @@ public class DylanConstantFragmentImpl extends ASTWrapperPsiElement implements D
     return findChildByClass(DylanConstants.class);
   }
 
+  @Override
+  @Nullable
+  public DylanString getString() {
+    return findChildByClass(DylanString.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitConstantFragment(this);
     else super.accept(visitor);

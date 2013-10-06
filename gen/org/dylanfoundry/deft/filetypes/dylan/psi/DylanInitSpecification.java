@@ -10,4 +10,7 @@ public interface DylanInitSpecification extends PsiElement {
   @NotNull
   DylanExpression getExpression();
 
+  @NotNull
+  DylanSymbol getSymbol();
+
 }

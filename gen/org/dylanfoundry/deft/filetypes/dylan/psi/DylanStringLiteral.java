@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanStringLiteral extends PsiElement {
 
+  @NotNull
+  List<DylanString> getStringList();
+
 }

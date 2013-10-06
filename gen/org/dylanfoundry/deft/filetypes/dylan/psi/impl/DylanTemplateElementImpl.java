@@ -31,8 +31,20 @@ public class DylanTemplateElementImpl extends ASTWrapperPsiElement implements Dy
 
   @Override
   @Nullable
+  public DylanString getString() {
+    return findChildByClass(DylanString.class);
+  }
+
+  @Override
+  @Nullable
   public DylanSubstitution getSubstitution() {
     return findChildByClass(DylanSubstitution.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
   }
 
   @Override

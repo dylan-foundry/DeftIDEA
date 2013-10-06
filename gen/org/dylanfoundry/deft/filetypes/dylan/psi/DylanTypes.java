@@ -141,9 +141,11 @@ public interface DylanTypes {
   IElementType STATEMENT = new DylanElementType("STATEMENT");
   IElementType STATEMENT_RULE = new DylanElementType("STATEMENT_RULE");
   IElementType STATEMENT_RULES = new DylanElementType("STATEMENT_RULES");
+  IElementType STRING = new DylanElementType("STRING");
   IElementType STRING_LITERAL = new DylanElementType("STRING_LITERAL");
   IElementType SUBSTITUTION = new DylanElementType("SUBSTITUTION");
   IElementType SUPERS = new DylanElementType("SUPERS");
+  IElementType SYMBOL = new DylanElementType("SYMBOL");
   IElementType SYMBOL_VALUE = new DylanElementType("SYMBOL_VALUE");
   IElementType TEMPLATE = new DylanElementType("TEMPLATE");
   IElementType TEMPLATE_ELEMENT = new DylanElementType("TEMPLATE_ELEMENT");
@@ -193,6 +195,7 @@ public interface DylanTypes {
   IElementType FUNCTION = new DylanTokenType("FUNCTION");
   IElementType GENERIC = new DylanTokenType("GENERIC");
   IElementType HANDLER_T = new DylanTokenType("HANDLER_T");
+  IElementType HASH = new DylanTokenType("HASH");
   IElementType HASH_ALL_KEYS = new DylanTokenType("HASH_ALL_KEYS");
   IElementType HASH_BRACKET = new DylanTokenType("HASH_BRACKET");
   IElementType HASH_F = new DylanTokenType("HASH_F");
@@ -205,6 +208,7 @@ public interface DylanTypes {
   IElementType HASH_T = new DylanTokenType("HASH_T");
   IElementType HEADER_SEPARATOR = new DylanTokenType("HEADER_SEPARATOR");
   IElementType KEY = new DylanTokenType("KEY");
+  IElementType KEYWORD = new DylanTokenType("KEYWORD");
   IElementType LBRACE = new DylanTokenType("LBRACE");
   IElementType LBRACKET = new DylanTokenType("LBRACKET");
   IElementType LET = new DylanTokenType("LET");
@@ -236,8 +240,8 @@ public interface DylanTypes {
   IElementType SEMICOLON = new DylanTokenType("semicolon");
   IElementType SHARED_SYMBOLS_T = new DylanTokenType("SHARED_SYMBOLS_T");
   IElementType SLOT = new DylanTokenType("SLOT");
-  IElementType STRING = new DylanTokenType("STRING");
-  IElementType SYMBOL = new DylanTokenType("SYMBOL");
+  IElementType STRING_CHARACTER = new DylanTokenType("STRING_CHARACTER");
+  IElementType STRING_ESCAPE_CHARACTER = new DylanTokenType("STRING_ESCAPE_CHARACTER");
   IElementType UNARY_AND_BINARY_OPERATOR = new DylanTokenType("UNARY_AND_BINARY_OPERATOR");
   IElementType UNARY_OPERATOR_ONLY = new DylanTokenType("UNARY_OPERATOR_ONLY");
   IElementType USE = new DylanTokenType("USE");
@@ -646,6 +650,9 @@ public interface DylanTypes {
       else if (type == STATEMENT_RULES) {
         return new DylanStatementRulesImpl(node);
       }
+      else if (type == STRING) {
+        return new DylanStringImpl(node);
+      }
       else if (type == STRING_LITERAL) {
         return new DylanStringLiteralImpl(node);
       }
@@ -654,6 +661,9 @@ public interface DylanTypes {
       }
       else if (type == SUPERS) {
         return new DylanSupersImpl(node);
+      }
+      else if (type == SYMBOL) {
+        return new DylanSymbolImpl(node);
       }
       else if (type == SYMBOL_VALUE) {
         return new DylanSymbolValueImpl(node);

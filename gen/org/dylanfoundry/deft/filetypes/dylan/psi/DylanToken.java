@@ -17,6 +17,12 @@ public interface DylanToken extends PsiElement {
   DylanPunctuation getPunctuation();
 
   @Nullable
+  DylanString getString();
+
+  @Nullable
+  DylanSymbol getSymbol();
+
+  @Nullable
   DylanWordName getWordName();
 
 }

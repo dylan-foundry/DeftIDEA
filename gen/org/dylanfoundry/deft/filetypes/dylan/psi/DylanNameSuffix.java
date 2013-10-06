@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanNameSuffix extends PsiElement {
 
+  @NotNull
+  DylanString getString();
+
 }

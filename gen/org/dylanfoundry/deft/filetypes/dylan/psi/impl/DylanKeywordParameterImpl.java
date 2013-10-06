@@ -24,6 +24,12 @@ public class DylanKeywordParameterImpl extends ASTWrapperPsiElement implements D
   }
 
   @Override
+  @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
+  }
+
+  @Override
   @NotNull
   public DylanVariable getVariable() {
     return findNotNullChildByClass(DylanVariable.class);

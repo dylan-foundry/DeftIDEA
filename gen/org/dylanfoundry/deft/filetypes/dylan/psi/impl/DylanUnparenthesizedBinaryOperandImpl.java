@@ -25,6 +25,12 @@ public class DylanUnparenthesizedBinaryOperandImpl extends ASTWrapperPsiElement 
 
   @Override
   @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
+  }
+
+  @Override
+  @Nullable
   public DylanUnaryOperator getUnaryOperator() {
     return findChildByClass(DylanUnaryOperator.class);
   }

@@ -17,6 +17,12 @@ public class DylanNameSuffixImpl extends ASTWrapperPsiElement implements DylanNa
     super(node);
   }
 
+  @Override
+  @NotNull
+  public DylanString getString() {
+    return findNotNullChildByClass(DylanString.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNameSuffix(this);
     else super.accept(visitor);

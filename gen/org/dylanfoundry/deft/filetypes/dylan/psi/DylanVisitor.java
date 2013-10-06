@@ -539,6 +539,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitString(@NotNull DylanString o) {
+    visitPsiElement(o);
+  }
+
   public void visitStringLiteral(@NotNull DylanStringLiteral o) {
     visitPsiElement(o);
   }
@@ -548,6 +552,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitSupers(@NotNull DylanSupers o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSymbol(@NotNull DylanSymbol o) {
     visitPsiElement(o);
   }
 

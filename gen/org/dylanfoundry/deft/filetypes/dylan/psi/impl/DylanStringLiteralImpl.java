@@ -17,6 +17,12 @@ public class DylanStringLiteralImpl extends ASTWrapperPsiElement implements Dyla
     super(node);
   }
 
+  @Override
+  @NotNull
+  public List<DylanString> getStringList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanString.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitStringLiteral(this);
     else super.accept(visitor);

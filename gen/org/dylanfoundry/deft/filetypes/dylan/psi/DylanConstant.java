@@ -10,4 +10,7 @@ public interface DylanConstant extends PsiElement {
   @Nullable
   DylanLiteral getLiteral();
 
+  @Nullable
+  DylanSymbol getSymbol();
+
 }

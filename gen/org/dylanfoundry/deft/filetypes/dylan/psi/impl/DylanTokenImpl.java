@@ -37,6 +37,18 @@ public class DylanTokenImpl extends ASTWrapperPsiElement implements DylanToken {
 
   @Override
   @Nullable
+  public DylanString getString() {
+    return findChildByClass(DylanString.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
+  }
+
+  @Override
+  @Nullable
   public DylanWordName getWordName() {
     return findChildByClass(DylanWordName.class);
   }

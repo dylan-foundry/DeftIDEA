@@ -23,6 +23,12 @@ public class DylanAuxRuleSetImpl extends ASTWrapperPsiElement implements DylanAu
     return findNotNullChildByClass(DylanAuxRules.class);
   }
 
+  @Override
+  @NotNull
+  public DylanSymbol getSymbol() {
+    return findNotNullChildByClass(DylanSymbol.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitAuxRuleSet(this);
     else super.accept(visitor);

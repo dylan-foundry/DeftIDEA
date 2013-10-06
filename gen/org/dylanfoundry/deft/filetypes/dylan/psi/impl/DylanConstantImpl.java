@@ -23,6 +23,12 @@ public class DylanConstantImpl extends ASTWrapperPsiElement implements DylanCons
     return findChildByClass(DylanLiteral.class);
   }
 
+  @Override
+  @Nullable
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitConstant(this);
     else super.accept(visitor);

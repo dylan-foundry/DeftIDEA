@@ -13,4 +13,7 @@ public interface DylanArgument extends PsiElement {
   @Nullable
   DylanExpressionNoSymbol getExpressionNoSymbol();
 
+  @Nullable
+  DylanSymbol getSymbol();
+
 }

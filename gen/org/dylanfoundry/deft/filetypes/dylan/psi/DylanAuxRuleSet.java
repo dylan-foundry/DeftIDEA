@@ -10,4 +10,7 @@ public interface DylanAuxRuleSet extends PsiElement {
   @NotNull
   DylanAuxRules getAuxRules();
 
+  @NotNull
+  DylanSymbol getSymbol();
+
 }

@@ -27,7 +27,11 @@ header_values ::= (VALUE? CRLF)* {methods=[getValues]}
 //source_records ::= source_record | variable | expression | name | token | body? | case_body? | macro
 source_records ::= source_record | variable | expression | word_name | token | case_body | macro
 
-token ::= word_name | SYMBOL | NUMBER | CHARACTER_LITERAL | STRING | operator | punctuation | hash_word
+token ::= word_name | symbol | NUMBER | CHARACTER_LITERAL | string | operator | punctuation | hash_word
+
+string ::= (STRING_CHARACTER|STRING_ESCAPE_CHARACTER)+
+
+symbol ::= HASH string | KEYWORD
 
 punctuation ::= bracketing_punctuation | non_bracketing_punctuation
 
@@ -109,7 +113,7 @@ macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO
 
 property_list ::= property (COMMA property)*
 
-property ::= SYMBOL symbol_value
+property ::= symbol symbol_value
 
 symbol_value ::= basic_fragment
 
@@ -161,8 +165,8 @@ bracketed_fragment ::=
 constant_fragment ::=
       NUMBER
     | CHARACTER_LITERAL
-    | STRING
-    | SYMBOL
+    | string
+    | symbol
     | HASH_PAREN constants DOT constant RPAREN
     | HASH_PAREN constants? RPAREN
     | HASH_BRACKET constants? RBRACKET
@@ -203,7 +207,7 @@ slot_declaration ::=
 
 init_specifications ::= (COMMA init_specification)+
 
-init_specification ::= SYMBOL expression
+init_specification ::= symbol expression
 
 definition_constant_definer ::= DEFINE modifiers? CONSTANT_T list_fragment?
 
@@ -246,7 +250,7 @@ definition_shared_symbols_definer ::= DEFINE modifiers? SHARED_SYMBOLS_T variabl
 
 shared_symbols_definition_tail ::= END SHARED_SYMBOLS_T variable_name? | END variable_name?
 
-shared_symbols ::= (SYMBOL (COMMA SYMBOL)*)?
+shared_symbols ::= (symbol (COMMA symbol)*)?
 
 definition_variable_definer ::= DEFINE modifiers? VARIABLE_T list_fragment?
 
@@ -299,9 +303,9 @@ unparenthesized_expression ::= unparenthesized_binary_operand (binary_operator b
 
 binary_operand_no_symbol ::= unary_operator? operand
 
-binary_operand ::= SYMBOL | binary_operand_no_symbol
+binary_operand ::= symbol | binary_operand_no_symbol
 
-unparenthesized_binary_operand ::= SYMBOL | unparenthesized_operand | unary_operator operand
+unparenthesized_binary_operand ::= symbol | unparenthesized_operand | unary_operator operand
 
 //operand ::= operand operand_tail | leaf
 operand ::= leaf operand_tail*
@@ -327,7 +331,7 @@ unparenthesized_leaf ::=
 
 arguments ::= argument (COMMA argument)*
 
-argument ::= SYMBOL expression | expression_no_symbol | SYMBOL
+argument ::= symbol expression | expression_no_symbol | symbol
 
 literal ::=
       NUMBER
@@ -341,11 +345,11 @@ literal ::=
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
 
-string_literal ::= STRING+
+string_literal ::= string+
 
 constants ::= constant (COMMA constant)*
 
-constant ::= literal | SYMBOL
+constant ::= literal | symbol
 
 /* Statements, page 419 */
 
@@ -452,7 +456,7 @@ required_parameter ::=
 
 keyword_parameters ::= keyword_parameter (COMMA keyword_parameter)*
 
-keyword_parameter ::= SYMBOL? variable default_value?
+keyword_parameter ::= symbol? variable default_value?
 
 default_value ::= EQUAL expression
 
@@ -571,10 +575,10 @@ template ::= template_element+
 
 template_element ::=
       word_name
-    | SYMBOL
+    | symbol
     | NUMBER
     | CHARACTER_LITERAL
-    | STRING
+    | string
     | UNARY_OPERATOR_ONLY
     | separator
     | hash_word
@@ -605,17 +609,17 @@ substitution ::=
     | ELLIPSIS
     | QUERY_EQUAL word_name
 
-name_prefix ::= STRING HASH_HASH
+name_prefix ::= string HASH_HASH
 
-name_suffix ::= HASH_HASH STRING
+name_suffix ::= HASH_HASH string
 
-name_string_or_symbol ::= word_name | STRING | SYMBOL
+name_string_or_symbol ::= word_name | string | symbol
 
 /* Auxiliary Rule Sets, page 424 */
 
 aux_rule_sets ::= aux_rule_set+
 
-aux_rule_set ::= SYMBOL aux_rules
+aux_rule_set ::= symbol aux_rules
 
 aux_rules ::= aux_rule+
 

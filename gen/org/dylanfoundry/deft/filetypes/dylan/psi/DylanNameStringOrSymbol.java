@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DylanNameStringOrSymbol extends PsiElement {
 
   @Nullable
+  DylanString getString();
+
+  @Nullable
+  DylanSymbol getSymbol();
+
+  @Nullable
   DylanWordName getWordName();
 
 }
