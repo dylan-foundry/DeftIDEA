@@ -239,6 +239,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitHeaderValues(@NotNull DylanHeaderValues o) {
+    visitPsiElement(o);
+  }
+
   public void visitHeaders(@NotNull DylanHeaders o) {
     visitPsiElement(o);
   }
@@ -580,10 +584,6 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitUnreservedWord(@NotNull DylanUnreservedWord o) {
-    visitPsiElement(o);
-  }
-
-  public void visitValues(@NotNull DylanValues o) {
     visitPsiElement(o);
   }
 

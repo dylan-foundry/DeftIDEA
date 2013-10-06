@@ -197,6 +197,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == HEADER) {
       result_ = header(builder_, level_ + 1);
     }
+    else if (root_ == HEADER_VALUES) {
+      result_ = header_values(builder_, level_ + 1);
+    }
     else if (root_ == HEADERS) {
       result_ = headers(builder_, level_ + 1);
     }
@@ -454,9 +457,6 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == UNRESERVED_WORD) {
       result_ = unreserved_word(builder_, level_ + 1);
-    }
-    else if (root_ == VALUES) {
-      result_ = values(builder_, level_ + 1);
     }
     else if (root_ == VALUES_LIST) {
       result_ = values_list(builder_, level_ + 1);
@@ -2974,14 +2974,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // KEY HEADER_SEPARATOR values
+  // KEY HEADER_SEPARATOR header_values
   public static boolean header(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "header")) return false;
     if (!nextTokenIs(builder_, KEY)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeTokens(builder_, 0, KEY, HEADER_SEPARATOR);
-    result_ = result_ && values(builder_, level_ + 1);
+    result_ = result_ && header_values(builder_, level_ + 1);
     if (result_) {
       marker_.done(HEADER);
     }
@@ -2989,6 +2989,50 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     return result_;
+  }
+
+  /* ********************************************************** */
+  // (VALUE? CRLF)*
+  public static boolean header_values(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "header_values")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<header values>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!header_values_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "header_values");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(HEADER_VALUES);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  // VALUE? CRLF
+  private static boolean header_values_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "header_values_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = header_values_0_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, CRLF);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // VALUE?
+  private static boolean header_values_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "header_values_0_0")) return false;
+    consumeToken(builder_, VALUE);
+    return true;
   }
 
   /* ********************************************************** */
@@ -7011,50 +7055,6 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     return result_;
-  }
-
-  /* ********************************************************** */
-  // (VALUE? CRLF)*
-  public static boolean values(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "values")) return false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<values>");
-    int offset_ = builder_.getCurrentOffset();
-    while (true) {
-      if (!values_0(builder_, level_ + 1)) break;
-      int next_offset_ = builder_.getCurrentOffset();
-      if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "values");
-        break;
-      }
-      offset_ = next_offset_;
-    }
-    marker_.done(VALUES);
-    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
-    return true;
-  }
-
-  // VALUE? CRLF
-  private static boolean values_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "values_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = values_0_0(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, CRLF);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // VALUE?
-  private static boolean values_0_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "values_0_0")) return false;
-    consumeToken(builder_, VALUE);
-    return true;
   }
 
   /* ********************************************************** */

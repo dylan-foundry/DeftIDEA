@@ -67,6 +67,7 @@ public interface DylanTypes {
   IElementType HASH_WORD = new DylanElementType("HASH_WORD");
   IElementType HEADER = new DylanElementType("HEADER");
   IElementType HEADERS = new DylanElementType("HEADERS");
+  IElementType HEADER_VALUES = new DylanElementType("HEADER_VALUES");
   IElementType INIT_SPECIFICATION = new DylanElementType("INIT_SPECIFICATION");
   IElementType INIT_SPECIFICATIONS = new DylanElementType("INIT_SPECIFICATIONS");
   IElementType KEYWORD_PARAMETER = new DylanElementType("KEYWORD_PARAMETER");
@@ -152,7 +153,6 @@ public interface DylanTypes {
   IElementType UNPARENTHESIZED_OPERAND = new DylanElementType("UNPARENTHESIZED_OPERAND");
   IElementType UNRESERVED_NAME = new DylanElementType("UNRESERVED_NAME");
   IElementType UNRESERVED_WORD = new DylanElementType("UNRESERVED_WORD");
-  IElementType VALUES = new DylanElementType("VALUES");
   IElementType VALUES_LIST = new DylanElementType("VALUES_LIST");
   IElementType VARIABLE = new DylanElementType("VARIABLE");
   IElementType VARIABLES = new DylanElementType("VARIABLES");
@@ -422,6 +422,9 @@ public interface DylanTypes {
       else if (type == HEADERS) {
         return new DylanHeadersImpl(node);
       }
+      else if (type == HEADER_VALUES) {
+        return new DylanHeaderValuesImpl(node);
+      }
       else if (type == INIT_SPECIFICATION) {
         return new DylanInitSpecificationImpl(node);
       }
@@ -676,9 +679,6 @@ public interface DylanTypes {
       }
       else if (type == UNRESERVED_WORD) {
         return new DylanUnreservedWordImpl(node);
-      }
-      else if (type == VALUES) {
-        return new DylanValuesImpl(node);
       }
       else if (type == VALUES_LIST) {
         return new DylanValuesListImpl(node);

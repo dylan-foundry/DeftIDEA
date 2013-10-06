@@ -21,8 +21,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanHeader;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanHeaderValues;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanValues;
 
 public class DylanPsiImplUtil {
     public static String getKey(DylanHeader element) {
@@ -34,7 +34,7 @@ public class DylanPsiImplUtil {
       }
     }
 
-    public static PsiElement[] getValues(DylanValues element) {
+    public static PsiElement[] getValues(DylanHeaderValues element) {
       return PsiTreeUtil.collectElements(element, new PsiElementFilter() {
         @Override
         public boolean isAccepted(PsiElement e) {

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanValues extends PsiElement {
+public interface DylanHeaderValues extends PsiElement {
 
   PsiElement[] getValues();
 

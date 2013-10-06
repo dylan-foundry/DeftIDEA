@@ -19,8 +19,8 @@ public class DylanHeaderImpl extends ASTWrapperPsiElement implements DylanHeader
 
   @Override
   @NotNull
-  public DylanValues getValues() {
-    return findNotNullChildByClass(DylanValues.class);
+  public DylanHeaderValues getHeaderValues() {
+    return findNotNullChildByClass(DylanHeaderValues.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

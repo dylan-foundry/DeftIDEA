@@ -11,14 +11,14 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanValuesImpl extends ASTWrapperPsiElement implements DylanValues {
+public class DylanHeaderValuesImpl extends ASTWrapperPsiElement implements DylanHeaderValues {
 
-  public DylanValuesImpl(ASTNode node) {
+  public DylanHeaderValuesImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitValues(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitHeaderValues(this);
     else super.accept(visitor);
   }
 
