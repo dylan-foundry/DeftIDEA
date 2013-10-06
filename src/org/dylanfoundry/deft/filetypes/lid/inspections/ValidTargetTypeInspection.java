@@ -18,10 +18,10 @@ package org.dylanfoundry.deft.filetypes.lid.inspections;
 
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItem;
-import org.dylanfoundry.deft.filetypes.lid.psi.LIDItemValue;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItems;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
 import org.jetbrains.annotations.Nls;
@@ -46,12 +46,12 @@ class ValidTargetTypeInspection extends AbstractLIDInspection {
       @Override
       public void visitItems(@NotNull LIDItems items) {
         for (LIDItem item : items.getItemList()) {
-          if (item.getItemKey().getText().toLowerCase().equals("target-type")) {
-            if (!item.getValues().getItemValueList().isEmpty()) {
-              LIDItemValue value = item.getValues().getItemValueList().get(0);
-              String valueText = value.getText().toLowerCase();
+          if (item.getKey().toLowerCase().equals("target-type")) {
+            PsiElement itemValues[] = item.getValues().getValues();
+            if (itemValues.length > 0) {
+              String valueText = itemValues[0].getText().toLowerCase();
               if (!valueText.equals("dll") && !valueText.equals("executable")) {
-                holder.registerProblem(value, DeftBundle.message("inspections.lid.valid-target-type.register-problem"), ProblemHighlightType.ERROR);
+                holder.registerProblem(itemValues[0], DeftBundle.message("inspections.lid.valid-target-type.register-problem"), ProblemHighlightType.ERROR);
               }
             }
             break;

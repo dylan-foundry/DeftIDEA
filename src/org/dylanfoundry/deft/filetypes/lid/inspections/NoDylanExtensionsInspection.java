@@ -18,10 +18,10 @@ package org.dylanfoundry.deft.filetypes.lid.inspections;
 
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItem;
-import org.dylanfoundry.deft.filetypes.lid.psi.LIDItemValue;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItems;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
 import org.jetbrains.annotations.Nls;
@@ -48,9 +48,9 @@ public class NoDylanExtensionsInspection extends AbstractLIDInspection {
       @Override
       public void visitItems(@NotNull LIDItems items) {
         for (LIDItem item : items.getItemList()) {
-          if (item.getItemKey().getText().toLowerCase().equals("files")) {
-            List<LIDItemValue> itemValues = item.getValues().getItemValueList();
-            for (LIDItemValue value : itemValues) {
+          if (item.getKey().toLowerCase().equals("files")) {
+            PsiElement[] itemValues = item.getValues().getValues();
+            for (PsiElement value : itemValues) {
               if (value.getText().toLowerCase().endsWith(".dylan")) {
                 holder.registerProblem(value, DeftBundle.message("inspections.lid.no-dylan-extensions.register-problem"), ProblemHighlightType.WEAK_WARNING);
               }

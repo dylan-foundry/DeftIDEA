@@ -18,10 +18,10 @@ package org.dylanfoundry.deft.filetypes.lid.inspections;
 
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import org.dylanfoundry.deft.DeftBundle;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItem;
-import org.dylanfoundry.deft.filetypes.lid.psi.LIDItemValue;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDItems;
 import org.dylanfoundry.deft.filetypes.lid.psi.LIDVisitor;
 import org.jetbrains.annotations.Nls;
@@ -48,15 +48,15 @@ public class LibraryFirstInspection extends AbstractLIDInspection {
       @Override
       public void visitItems(@NotNull LIDItems items) {
         for (LIDItem item : items.getItemList()) {
-          if (item.getItemKey().getText().toLowerCase().equals("files")) {
-            List<LIDItemValue> itemValues = item.getValues().getItemValueList();
-            if (!itemValues.isEmpty()) {
-              String firstFileName = itemValues.get(0).getText().toLowerCase();
+          if (item.getKey().toLowerCase().equals("files")) {
+            PsiElement itemValues[] = item.getValues().getValues();
+            if (itemValues.length > 0) {
+              String firstFileName = itemValues[0].getText().toLowerCase();
               if (firstFileName.contains(".")) {
                 firstFileName = firstFileName.substring(0, firstFileName.indexOf(".") - 1);
               }
               if (!firstFileName.matches("library") && !firstFileName.endsWith("-library") && !firstFileName.endsWith("-lib")) {
-                holder.registerProblem(itemValues.get(0), DeftBundle.message("inspections.lid.library-first.register-problem", ProblemHighlightType.ERROR));
+                holder.registerProblem(itemValues[0], DeftBundle.message("inspections.lid.library-first.register-problem", ProblemHighlightType.ERROR));
               }
             }
             break;

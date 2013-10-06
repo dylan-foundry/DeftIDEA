@@ -46,7 +46,7 @@ class MustContainLibraryInspection extends AbstractLIDInspection {
       public void visitItems(@NotNull LIDItems items) {
         boolean hasLibraryProperty = false;
         for (LIDItem item : items.getItemList()) {
-          if (item.getItemKey().getText().toLowerCase().equals("library")) {
+          if (item.getKey().toLowerCase().equals("library")) {
             hasLibraryProperty = true;
             break;
           }

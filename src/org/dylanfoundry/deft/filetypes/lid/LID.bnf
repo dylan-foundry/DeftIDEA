@@ -12,16 +12,14 @@
   elementTypeHolderClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDTypes"
   elementTypeClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDElementType"
   tokenTypeClass="org.dylanfoundry.deft.filetypes.lid.psi.LIDTokenType"
+
+  psiImplUtilClass="org.dylanfoundry.deft.filetypes.lid.psi.impl.LIDPsiImplUtil"
 }
  
 lidFile ::= items
 
 items ::= item*
  
-item ::= (item_key SEPARATOR values)
+item ::= (KEY SEPARATOR values) {methods=[getKey]}
 
-item_key ::= KEY
-
-values ::= (item_value CRLF?)*
-
-item_value ::= VALUE
+values ::= (VALUE CRLF?)* {methods=[getValues]}

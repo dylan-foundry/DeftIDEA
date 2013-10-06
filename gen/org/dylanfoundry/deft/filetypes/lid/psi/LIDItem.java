@@ -8,9 +8,8 @@ import com.intellij.psi.PsiElement;
 public interface LIDItem extends PsiElement {
 
   @NotNull
-  LIDItemKey getItemKey();
-
-  @NotNull
   LIDValues getValues();
+
+  String getKey();
 
 }

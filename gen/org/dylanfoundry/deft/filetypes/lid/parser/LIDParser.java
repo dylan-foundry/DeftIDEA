@@ -26,12 +26,6 @@ public class LIDParser implements PsiParser {
     if (root_ == ITEM) {
       result_ = item(builder_, level_ + 1);
     }
-    else if (root_ == ITEM_KEY) {
-      result_ = item_key(builder_, level_ + 1);
-    }
-    else if (root_ == ITEM_VALUE) {
-      result_ = item_value(builder_, level_ + 1);
-    }
     else if (root_ == ITEMS) {
       result_ = items(builder_, level_ + 1);
     }
@@ -53,51 +47,16 @@ public class LIDParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // item_key SEPARATOR values
+  // KEY SEPARATOR values
   public static boolean item(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "item")) return false;
     if (!nextTokenIs(builder_, KEY)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = item_key(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SEPARATOR);
+    result_ = consumeTokens(builder_, 0, KEY, SEPARATOR);
     result_ = result_ && values(builder_, level_ + 1);
     if (result_) {
       marker_.done(ITEM);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // KEY
-  public static boolean item_key(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "item_key")) return false;
-    if (!nextTokenIs(builder_, KEY)) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, KEY);
-    if (result_) {
-      marker_.done(ITEM_KEY);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // VALUE
-  public static boolean item_value(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "item_value")) return false;
-    if (!nextTokenIs(builder_, VALUE)) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, VALUE);
-    if (result_) {
-      marker_.done(ITEM_VALUE);
     }
     else {
       marker_.rollbackTo();
@@ -133,7 +92,7 @@ public class LIDParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (item_value CRLF?)*
+  // (VALUE CRLF?)*
   public static boolean values(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values")) return false;
     Marker marker_ = builder_.mark();
@@ -153,12 +112,12 @@ public class LIDParser implements PsiParser {
     return true;
   }
 
-  // item_value CRLF?
+  // VALUE CRLF?
   private static boolean values_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = item_value(builder_, level_ + 1);
+    result_ = consumeToken(builder_, VALUE);
     result_ = result_ && values_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();

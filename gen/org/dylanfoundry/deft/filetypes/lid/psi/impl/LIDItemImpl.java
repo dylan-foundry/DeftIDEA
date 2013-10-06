@@ -19,12 +19,6 @@ public class LIDItemImpl extends ASTWrapperPsiElement implements LIDItem {
 
   @Override
   @NotNull
-  public LIDItemKey getItemKey() {
-    return findNotNullChildByClass(LIDItemKey.class);
-  }
-
-  @Override
-  @NotNull
   public LIDValues getValues() {
     return findNotNullChildByClass(LIDValues.class);
   }
@@ -32,6 +26,10 @@ public class LIDItemImpl extends ASTWrapperPsiElement implements LIDItem {
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof LIDVisitor) ((LIDVisitor)visitor).visitItem(this);
     else super.accept(visitor);
+  }
+
+  public String getKey() {
+    return LIDPsiImplUtil.getKey(this);
   }
 
 }
