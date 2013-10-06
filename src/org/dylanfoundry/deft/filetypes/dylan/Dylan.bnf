@@ -12,19 +12,17 @@
   elementTypeHolderClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes"
   elementTypeClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanElementType"
   tokenTypeClass="org.dylanfoundry.deft.filetypes.dylan.psi.DylanTokenType"
+
+  psiImplUtilClass="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanPsiImplUtil"
 }
  
 dylanFile ::= headers source_records
 
 headers ::= header*
 
-header ::= (header_key HEADER_SEPARATOR values)
+header ::= (KEY HEADER_SEPARATOR values) {methods=[getKey]}
 
-header_key ::= KEY
-
-values ::= (header_value? CRLF)*
-
-header_value ::= VALUE
+values ::= (VALUE? CRLF)* {methods=[getValues]}
 
 //source_records ::= source_record | variable | expression | name | token | body? | case_body? | macro
 source_records ::= source_record | variable | expression | word_name | token | case_body | macro

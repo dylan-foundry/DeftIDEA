@@ -8,9 +8,8 @@ import com.intellij.psi.PsiElement;
 public interface DylanHeader extends PsiElement {
 
   @NotNull
-  DylanHeaderKey getHeaderKey();
-
-  @NotNull
   DylanValues getValues();
+
+  String getKey();
 
 }

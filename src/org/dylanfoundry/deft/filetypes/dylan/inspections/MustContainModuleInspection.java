@@ -46,7 +46,7 @@ class MustContainModuleInspection extends AbstractDylanInspection {
       public void visitHeaders(@NotNull DylanHeaders items) {
         boolean hasModuleProperty = false;
         for (DylanHeader item : items.getHeaderList()) {
-          if (item.getHeaderKey().getText().toLowerCase().equals("module")) {
+          if (item.getKey().toLowerCase().equals("module")) {
             hasModuleProperty = true;
             break;
           }

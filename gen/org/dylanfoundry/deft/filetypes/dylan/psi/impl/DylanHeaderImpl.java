@@ -19,12 +19,6 @@ public class DylanHeaderImpl extends ASTWrapperPsiElement implements DylanHeader
 
   @Override
   @NotNull
-  public DylanHeaderKey getHeaderKey() {
-    return findNotNullChildByClass(DylanHeaderKey.class);
-  }
-
-  @Override
-  @NotNull
   public DylanValues getValues() {
     return findNotNullChildByClass(DylanValues.class);
   }
@@ -32,6 +26,10 @@ public class DylanHeaderImpl extends ASTWrapperPsiElement implements DylanHeader
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitHeader(this);
     else super.accept(visitor);
+  }
+
+  public String getKey() {
+    return DylanPsiImplUtil.getKey(this);
   }
 
 }

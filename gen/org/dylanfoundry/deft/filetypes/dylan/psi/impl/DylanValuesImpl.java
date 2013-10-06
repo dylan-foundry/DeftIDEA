@@ -17,15 +17,13 @@ public class DylanValuesImpl extends ASTWrapperPsiElement implements DylanValues
     super(node);
   }
 
-  @Override
-  @NotNull
-  public List<DylanHeaderValue> getHeaderValueList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanHeaderValue.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitValues(this);
     else super.accept(visitor);
+  }
+
+  public PsiElement[] getValues() {
+    return DylanPsiImplUtil.getValues(this);
   }
 
 }

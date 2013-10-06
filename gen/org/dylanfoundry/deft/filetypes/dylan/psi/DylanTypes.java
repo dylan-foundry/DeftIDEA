@@ -67,8 +67,6 @@ public interface DylanTypes {
   IElementType HASH_WORD = new DylanElementType("HASH_WORD");
   IElementType HEADER = new DylanElementType("HEADER");
   IElementType HEADERS = new DylanElementType("HEADERS");
-  IElementType HEADER_KEY = new DylanElementType("HEADER_KEY");
-  IElementType HEADER_VALUE = new DylanElementType("HEADER_VALUE");
   IElementType INIT_SPECIFICATION = new DylanElementType("INIT_SPECIFICATION");
   IElementType INIT_SPECIFICATIONS = new DylanElementType("INIT_SPECIFICATIONS");
   IElementType KEYWORD_PARAMETER = new DylanElementType("KEYWORD_PARAMETER");
@@ -423,12 +421,6 @@ public interface DylanTypes {
       }
       else if (type == HEADERS) {
         return new DylanHeadersImpl(node);
-      }
-      else if (type == HEADER_KEY) {
-        return new DylanHeaderKeyImpl(node);
-      }
-      else if (type == HEADER_VALUE) {
-        return new DylanHeaderValueImpl(node);
       }
       else if (type == INIT_SPECIFICATION) {
         return new DylanInitSpecificationImpl(node);
