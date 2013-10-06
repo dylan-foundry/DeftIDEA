@@ -71,7 +71,6 @@ SYMBOL="#"{STRING}
 
 %{
     int commentLevel = 0;
-    boolean afterDefine = false;
 %}
 %%
 
@@ -134,9 +133,9 @@ SYMBOL="#"{STRING}
     "copy-down-method"                              { return DylanTypes.COPY_DOWN_METHOD; }
     //"cleanup"                                       { return DylanTypes.KEYWORD; }
     "create"                                        { return DylanTypes.CREATE; }
-    "define"                                        { afterDefine = true; return DylanTypes.DEFINE; }
-    "else"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; }
-    "elseif"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "define"                                        { return DylanTypes.DEFINE; }
+    "else"                                          { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    "elseif"                                        { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
     "end"                                           { return DylanTypes.END; }
     "export"                                        { return DylanTypes.EXPORT; }
     //"finally"                                       { return DylanTypes.KEYWORD; }
@@ -177,10 +176,10 @@ SYMBOL="#"{STRING}
     /*
     "dynamic"                                       { return DylanTypes.BUILTIN; }
     "each-subclass"                                 { return DylanTypes.BUILTIN; }
-    "exception"                                     { return DylanTypes.BUILTIN; }
-    "exclude"                                       { return DylanTypes.BUILTIN; }
     */
-    "function"                                      { if (afterDefine) return DylanTypes.DEFINE_BODY_FUNCTION_WORD; else return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    "exception"                                     { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    //"exclude"                                       { return DylanTypes.BUILTIN; }
+    "function"                                      { return DylanTypes.FUNCTION; }
     "generic"                                       { return DylanTypes.GENERIC; }
     "handler"                                       { return DylanTypes.HANDLER_T; }
     /*
@@ -220,7 +219,7 @@ SYMBOL="#"{STRING}
     {UNARY_AND_BINARY_OPERATOR}                     { return DylanTypes.UNARY_AND_BINARY_OPERATOR; }
 
     // Punctuation
-    "("                                             { afterDefine = false; return DylanTypes.LPAREN; }
+    "("                                             { return DylanTypes.LPAREN; }
     ")"                                             { return DylanTypes.RPAREN; }
     "["                                             { return DylanTypes.LBRACKET; }
     "]"                                             { return DylanTypes.RBRACKET; }
