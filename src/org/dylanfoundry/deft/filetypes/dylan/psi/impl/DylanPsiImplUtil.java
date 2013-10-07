@@ -25,21 +25,21 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.DylanHeaderValues;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes;
 
 public class DylanPsiImplUtil {
-    public static String getKey(DylanHeader element) {
-      ASTNode keyNode = element.getNode().findChildByType(DylanTypes.KEY);
-      if (keyNode != null) {
-        return keyNode.getText();
-      } else {
-        return null;
-      }
+  public static String getKey(DylanHeader element) {
+    ASTNode keyNode = element.getNode().findChildByType(DylanTypes.KEY);
+    if (keyNode != null) {
+      return keyNode.getText();
+    } else {
+      return null;
     }
+  }
 
-    public static PsiElement[] getValues(DylanHeaderValues element) {
-      return PsiTreeUtil.collectElements(element, new PsiElementFilter() {
-        @Override
-        public boolean isAccepted(PsiElement e) {
-          return (e.getNode().getElementType() == DylanTypes.VALUE);
-        }
-      });
-    }
+  public static PsiElement[] getValues(DylanHeaderValues element) {
+    return PsiTreeUtil.collectElements(element, new PsiElementFilter() {
+      @Override
+      public boolean isAccepted(PsiElement e) {
+        return (e.getNode().getElementType() == DylanTypes.VALUE);
+      }
+    });
+  }
 }
