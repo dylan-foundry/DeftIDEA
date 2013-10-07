@@ -199,4 +199,26 @@ public class DylanPsiImplUtil {
       }
     };
   }
+
+  public static ItemPresentation getPresentation(final DylanNamedElement element) {
+    return new ItemPresentation() {
+      @Nullable
+      @Override
+      public String getPresentableText() {
+        return element.getName();
+      }
+
+      @Nullable
+      @Override
+      public String getLocationString() {
+        return element.getContainingFile().getName();
+      }
+
+      @Nullable
+      @Override
+      public Icon getIcon(boolean b) {
+        return DeftIcons.DYLAN_FILE;
+      }
+    };
+  }
 }

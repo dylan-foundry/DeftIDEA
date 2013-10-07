@@ -40,6 +40,7 @@
     <lang.parserDefinition language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanParserDefinition"/>
     <lang.syntaxHighlighterFactory key="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanSyntaxHighlighterFactory"/>
     <completion.contributor language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanHeaderCompletionContributor"/>
+    <gotoSymbolContributor implementation="org.dylanfoundry.deft.filetypes.dylan.DylanChooseByNameContributor"/>
     <inspectionToolProvider implementation="org.dylanfoundry.deft.filetypes.dylan.inspections.InspectionProvider"/>
     <lang.commenter language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanCommenter"/>
     <lang.foldingBuilder language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanFoldingBuilder"/>

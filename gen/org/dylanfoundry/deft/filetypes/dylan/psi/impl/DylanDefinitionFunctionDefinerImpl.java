@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
 public class DylanDefinitionFunctionDefinerImpl extends DylanNamedElementImpl implements DylanDefinitionFunctionDefiner {
 
@@ -55,6 +56,10 @@ public class DylanDefinitionFunctionDefinerImpl extends DylanNamedElementImpl im
 
   public PsiElement getNameIdentifier() {
     return DylanPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public ItemPresentation getPresentation() {
+    return DylanPsiImplUtil.getPresentation(this);
   }
 
 }
