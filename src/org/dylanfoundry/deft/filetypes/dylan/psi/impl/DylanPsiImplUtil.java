@@ -47,7 +47,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionClassDefiner element) {
-    return "Class " + element.getVariableName().getText();
+    return "class " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionClassDefiner element, String newName) {
@@ -59,7 +59,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionConstantDefiner element) {
-    return "Constant " + element.getVariableName().getText();
+    return "constant " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionConstantDefiner element, String newName) {
@@ -71,7 +71,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionCopyDownMethodDefiner element) {
-    return "Copy-down-method " + element.getFunctionMacroCall().getText();
+    return "copy-down-method " + element.getText();
   }
 
   public static PsiElement setName(DylanDefinitionCopyDownMethodDefiner element, String newName) {
@@ -79,11 +79,11 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionCopyDownMethodDefiner element) {
-    return element.getFunctionMacroCall().getFunctionWord();
+    return element;
   }
 
   public static String getName(DylanDefinitionDomainDefiner element) {
-    return "Domain " + element.getVariableName().getText();
+    return "sealed domain" + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionDomainDefiner element, String newName) {
@@ -95,7 +95,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionFunctionDefiner element) {
-    return "Function " + element.getVariableName().getText();
+    return "function " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionFunctionDefiner element, String newName) {
@@ -107,7 +107,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionGenericDefiner element) {
-    return "Generic " + element.getText();
+    return cleanText(element.getText());
   }
 
   public static PsiElement setName(DylanDefinitionGenericDefiner element, String newName) {
@@ -115,11 +115,11 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionGenericDefiner element) {
-    return element.getFunctionMacroCall();
+    return element;
   }
 
   public static String getName(DylanDefinitionLibraryDefiner element) {
-    return "Library " + element.getVariableName().getText();
+    return "library " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionLibraryDefiner element, String newName) {
@@ -131,7 +131,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionMacroDefiner element) {
-    return "Macro " + element.getVariableName().getText();
+    return "macro " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionMacroDefiner element, String newName) {
@@ -143,7 +143,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionMethodDefiner element) {
-    return "Method " + element.getVariableName().getText();
+    return "method " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionMethodDefiner element, String newName) {
@@ -155,7 +155,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionModuleDefiner element) {
-    return "Module " + element.getVariableName().getText();
+    return "module " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionModuleDefiner element, String newName) {
@@ -167,7 +167,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionVariableDefiner element) {
-    return "Variable " + element.getVariableName().getText();
+    return "variable " + element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionVariableDefiner element, String newName) {
@@ -220,5 +220,12 @@ public class DylanPsiImplUtil {
         return DeftIcons.DYLAN_FILE;
       }
     };
+  }
+
+  static String cleanText(String text) {
+    if (text.startsWith("define ")) {
+      text = text.substring(7, text.length());
+    }
+    return text;
   }
 }
