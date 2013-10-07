@@ -627,7 +627,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNamedElement(@NotNull DylanNamedElement o) {
+  public void visitNamedElement(@NotNull DylanDefiner o) {
     visitPsiElement(o);
   }
 

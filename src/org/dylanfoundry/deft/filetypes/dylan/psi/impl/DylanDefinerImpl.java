@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft.filetypes.dylan.psi;
+package org.dylanfoundry.deft.filetypes.dylan.psi.impl;
 
-import com.intellij.psi.PsiNameIdentifierOwner;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.intellij.lang.ASTNode;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
+import org.jetbrains.annotations.NotNull;
 
-public interface DylanNamedElement extends PsiNameIdentifierOwner {
+public abstract class DylanDefinerImpl extends ASTWrapperPsiElement implements DylanDefiner {
+  public DylanDefinerImpl(@NotNull ASTNode node) {
+    super(node);
+  }
 }

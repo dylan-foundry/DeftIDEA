@@ -194,8 +194,8 @@ definition ::=
 
 definition_class_definer ::= DEFINE modifiers? CLASS variable_name LPAREN supers? RPAREN slot_declarations? class_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
@@ -216,29 +216,29 @@ init_specification ::= symbol expression
 
 definition_constant_definer ::= DEFINE modifiers? CONSTANT_T list_fragment?
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
 definition_copy_down_method_definer ::= DEFINE modifiers? COPY_DOWN_METHOD variable_name list_fragment?
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
 definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_fragment
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
 definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name body_fragment function_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
@@ -246,15 +246,15 @@ function_definition_tail ::= END FUNCTION variable_name? | END variable_name?
 
 definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_fragment
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
 definition_library_definer ::= DEFINE modifiers? LIBRARY variable_name namespace_clauses? library_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
@@ -262,8 +262,8 @@ library_definition_tail ::= END LIBRARY variable_name?| END variable_name?
 
 definition_module_definer ::= DEFINE modifiers? MODULE variable_name namespace_clauses? module_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
@@ -280,8 +280,8 @@ namespace_clause_options ::= LBRACE (ALL|variable_name (COMMA variable_name)*) R
 
 definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_set? macro_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
@@ -289,8 +289,8 @@ macro_definition_tail ::= END MACRO_T variable_name? | END variable_name?
 
 definition_method_definer ::= DEFINE modifiers? METHOD variable_name body_fragment method_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 
@@ -304,8 +304,8 @@ shared_symbols ::= (symbol (COMMA symbol)*)?
 
 definition_variable_definer ::= DEFINE modifiers? VARIABLE_T list_fragment?
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanNamedElementImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement"
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentation]
   }
 

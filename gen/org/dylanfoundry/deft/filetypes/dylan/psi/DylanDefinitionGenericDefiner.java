@@ -6,7 +6,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionGenericDefiner extends DylanNamedElement {
+public interface DylanDefinitionGenericDefiner extends DylanDefiner {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();

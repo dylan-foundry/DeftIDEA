@@ -1,12 +1,11 @@
 // This is a generated file. Not intended for manual editing.
 package org.dylanfoundry.deft.filetypes.dylan.psi;
 
-import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionMacroDefiner extends DylanNamedElement {
+public interface DylanDefinitionMacroDefiner extends DylanDefiner {
 
   @NotNull
   DylanMacroDefinitionTail getMacroDefinitionTail();

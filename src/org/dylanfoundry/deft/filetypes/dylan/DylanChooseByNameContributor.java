@@ -27,7 +27,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.indexing.FileBasedIndex;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanFile;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanNamedElement;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanSourceRecords;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,9 +40,9 @@ public class DylanChooseByNameContributor implements ChooseByNameContributor {
   @NotNull
   @Override
   public String[] getNames(Project project, boolean includeNonProjectItems) {
-    List<DylanNamedElement> definitions = findDefinitions(project);
+    List<DylanDefiner> definitions = findDefinitions(project);
     List<String> names = new ArrayList<String>(definitions.size());
-    for (DylanNamedElement definition : definitions) {
+    for (DylanDefiner definition : definitions) {
       if (definition.getName() != null && definition.getName().length() > 0) {
         names.add(definition.getName());
       }
@@ -54,12 +54,12 @@ public class DylanChooseByNameContributor implements ChooseByNameContributor {
   @Override
   public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
     // todo include non project items
-    List<DylanNamedElement> definitions = findDefinitions(project, name);
+    List<DylanDefiner> definitions = findDefinitions(project, name);
     return definitions.toArray(new NavigationItem[definitions.size()]);
   }
 
-  public static List<DylanNamedElement> findDefinitions(Project project, String name) {
-    List<DylanNamedElement> result = null;
+  public static List<DylanDefiner> findDefinitions(Project project, String name) {
+    List<DylanDefiner> result = null;
     Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, DylanFileType.INSTANCE,
             GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
@@ -70,11 +70,11 @@ public class DylanChooseByNameContributor implements ChooseByNameContributor {
           DylanDefinition[] definitions = PsiTreeUtil.getChildrenOfType(sourceRecords, DylanDefinition.class);
           if (definitions != null) {
             for (DylanDefinition definition : definitions) {
-              DylanNamedElement definer = PsiTreeUtil.getChildOfType(definition, DylanNamedElement.class);
+              DylanDefiner definer = PsiTreeUtil.getChildOfType(definition, DylanDefiner.class);
               if (definer != null) {
                 if (name.equals(definer.getName())) {
                   if (result == null) {
-                    result = new ArrayList<DylanNamedElement>();
+                    result = new ArrayList<DylanDefiner>();
                   }
                   result.add(definer);
                 }
@@ -84,11 +84,11 @@ public class DylanChooseByNameContributor implements ChooseByNameContributor {
         }
       }
     }
-    return result != null ? result : Collections.<DylanNamedElement>emptyList();
+    return result != null ? result : Collections.<DylanDefiner>emptyList();
   }
 
-  public static List<DylanNamedElement> findDefinitions(Project project) {
-    List<DylanNamedElement> result = new ArrayList<DylanNamedElement>();
+  public static List<DylanDefiner> findDefinitions(Project project) {
+    List<DylanDefiner> result = new ArrayList<DylanDefiner>();
     Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, DylanFileType.INSTANCE,
             GlobalSearchScope.allScope(project));
     for (VirtualFile virtualFile : virtualFiles) {
@@ -99,10 +99,10 @@ public class DylanChooseByNameContributor implements ChooseByNameContributor {
           DylanDefinition[] definitions = PsiTreeUtil.getChildrenOfType(sourceRecords, DylanDefinition.class);
           if (definitions != null) {
             for (DylanDefinition definition : definitions) {
-              DylanNamedElement definer = PsiTreeUtil.getChildOfType(definition, DylanNamedElement.class);
+              DylanDefiner definer = PsiTreeUtil.getChildOfType(definition, DylanDefiner.class);
               if (definer != null) {
                 if (result == null) {
-                  result = new ArrayList<DylanNamedElement>();
+                  result = new ArrayList<DylanDefiner>();
                 }
                 result.add(definer);
               }

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionCopyDownMethodDefiner extends DylanNamedElement {
+public interface DylanDefinitionCopyDownMethodDefiner extends DylanDefiner {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();

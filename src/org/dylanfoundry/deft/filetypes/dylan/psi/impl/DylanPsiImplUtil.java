@@ -183,7 +183,7 @@ public class DylanPsiImplUtil {
       @Nullable
       @Override
       public String getPresentableText() {
-        return ((DylanNamedElement)(element.getFirstChild())).getName();
+        return ((DylanDefiner)(element.getFirstChild())).getName();
       }
 
       @Nullable
@@ -200,7 +200,7 @@ public class DylanPsiImplUtil {
     };
   }
 
-  public static ItemPresentation getPresentation(final DylanNamedElement element) {
+  public static ItemPresentation getPresentation(final DylanDefiner element) {
     return new ItemPresentation() {
       @Nullable
       @Override
