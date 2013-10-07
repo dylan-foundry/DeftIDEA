@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanDefinitionVariableDefiner extends PsiElement {
+public interface DylanDefinitionVariableDefiner extends DylanNamedElement {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();
@@ -30,5 +30,11 @@ public interface DylanDefinitionVariableDefiner extends PsiElement {
 
   @Nullable
   DylanVariableName getVariableName();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanDefinitionCopyDownMethodDefiner extends PsiElement {
+public interface DylanDefinitionCopyDownMethodDefiner extends DylanNamedElement {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();
@@ -30,5 +30,11 @@ public interface DylanDefinitionCopyDownMethodDefiner extends PsiElement {
 
   @NotNull
   List<DylanVariableName> getVariableNameList();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

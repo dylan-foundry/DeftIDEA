@@ -43,6 +43,7 @@
     <inspectionToolProvider implementation="org.dylanfoundry.deft.filetypes.dylan.inspections.InspectionProvider"/>
     <lang.commenter language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanCommenter"/>
     <lang.foldingBuilder language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanFoldingBuilder"/>
+    <lang.psiStructureViewFactory language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.structure.DylanStructureViewFactory"/>
 
     <!-- Template Group -->
     <fileTemplateGroup implementation="org.dylanfoundry.deft.actions.DeftTemplatesFactory"/>

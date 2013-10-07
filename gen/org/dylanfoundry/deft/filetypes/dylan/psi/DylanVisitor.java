@@ -140,31 +140,31 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinitionClassDefiner(@NotNull DylanDefinitionClassDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionConstantDefiner(@NotNull DylanDefinitionConstantDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionCopyDownMethodDefiner(@NotNull DylanDefinitionCopyDownMethodDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionDomainDefiner(@NotNull DylanDefinitionDomainDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionFunctionDefiner(@NotNull DylanDefinitionFunctionDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionGenericDefiner(@NotNull DylanDefinitionGenericDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionLibraryDefiner(@NotNull DylanDefinitionLibraryDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionMacroCall(@NotNull DylanDefinitionMacroCall o) {
@@ -172,15 +172,15 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinitionMacroDefiner(@NotNull DylanDefinitionMacroDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionMethodDefiner(@NotNull DylanDefinitionMethodDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionModuleDefiner(@NotNull DylanDefinitionModuleDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDefinitionSharedSymbolsDefiner(@NotNull DylanDefinitionSharedSymbolsDefiner o) {
@@ -192,7 +192,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinitionVariableDefiner(@NotNull DylanDefinitionVariableDefiner o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitEndClause(@NotNull DylanEndClause o) {
@@ -624,6 +624,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitWordName(@NotNull DylanWordName o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull DylanNamedElement o) {
     visitPsiElement(o);
   }
 

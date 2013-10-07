@@ -4,6 +4,7 @@ package org.dylanfoundry.deft.filetypes.dylan.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinition extends PsiElement {
 
@@ -48,5 +49,7 @@ public interface DylanDefinition extends PsiElement {
 
   @Nullable
   DylanMacroDefinition getMacroDefinition();
+
+  ItemPresentation getPresentation();
 
 }

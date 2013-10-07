@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanDefinitionFunctionDefiner extends PsiElement {
+public interface DylanDefinitionFunctionDefiner extends DylanNamedElement {
 
   @NotNull
   DylanBodyFragment getBodyFragment();
@@ -18,5 +18,11 @@ public interface DylanDefinitionFunctionDefiner extends PsiElement {
 
   @NotNull
   DylanVariableName getVariableName();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

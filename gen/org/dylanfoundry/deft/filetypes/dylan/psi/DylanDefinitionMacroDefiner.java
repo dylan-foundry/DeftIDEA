@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanDefinitionMacroDefiner extends PsiElement {
+public interface DylanDefinitionMacroDefiner extends DylanNamedElement {
 
   @NotNull
   DylanMacroDefinitionTail getMacroDefinitionTail();
@@ -18,5 +18,11 @@ public interface DylanDefinitionMacroDefiner extends PsiElement {
 
   @NotNull
   DylanVariableName getVariableName();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

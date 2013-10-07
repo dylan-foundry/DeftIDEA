@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
 public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDefinition {
 
@@ -104,6 +105,10 @@ public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDe
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitDefinition(this);
     else super.accept(visitor);
+  }
+
+  public ItemPresentation getPresentation() {
+    return DylanPsiImplUtil.getPresentation(this);
   }
 
 }

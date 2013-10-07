@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanDefinitionConstantDefinerImpl extends ASTWrapperPsiElement implements DylanDefinitionConstantDefiner {
+public class DylanDefinitionConstantDefinerImpl extends DylanNamedElementImpl implements DylanDefinitionConstantDefiner {
 
   public DylanDefinitionConstantDefinerImpl(ASTNode node) {
     super(node);
@@ -68,6 +67,18 @@ public class DylanDefinitionConstantDefinerImpl extends ASTWrapperPsiElement imp
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitDefinitionConstantDefiner(this);
     else super.accept(visitor);
+  }
+
+  public String getName() {
+    return DylanPsiImplUtil.getName(this);
+  }
+
+  public PsiElement setName(String newName) {
+    return DylanPsiImplUtil.setName(this, newName);
+  }
+
+  public PsiElement getNameIdentifier() {
+    return DylanPsiImplUtil.getNameIdentifier(this);
   }
 
 }
