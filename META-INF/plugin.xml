@@ -5,8 +5,15 @@
     <p>This plugin provides support for the <a href="http://opendylan.org/">Dylan</a> programming language.</p>
   ]]></description>
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
-  <version>0.1.1</version>
+  <version>0.2</version>
   <changes><![CDATA[
+  <p>0.2</p>
+  <ul>
+    <li>Significant progress on parsing the Dylan language.</li>
+    <li>Go To Symbol and Go To Class work (but not optimally).</li>
+    <li>Folding works on method, function, class, library and module definitions.</li>
+    <li>Structure View partially works.</li>
+  </ul>
   <p>0.1.1</p>
   <ul>
     <li>Two new LID inspections.</li>
