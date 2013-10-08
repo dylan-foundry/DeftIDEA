@@ -96,6 +96,7 @@ public interface DylanTypes {
   IElementType MODULE_DEFINITION_TAIL = new DylanElementType("MODULE_DEFINITION_TAIL");
   IElementType NAMESPACE_CLAUSE = new DylanElementType("NAMESPACE_CLAUSE");
   IElementType NAMESPACE_CLAUSES = new DylanElementType("NAMESPACE_CLAUSES");
+  IElementType NAMESPACE_CLAUSE_OPTION = new DylanElementType("NAMESPACE_CLAUSE_OPTION");
   IElementType NAMESPACE_CLAUSE_OPTIONS = new DylanElementType("NAMESPACE_CLAUSE_OPTIONS");
   IElementType NAME_NOT_END = new DylanElementType("NAME_NOT_END");
   IElementType NAME_PREFIX = new DylanElementType("NAME_PREFIX");
@@ -515,6 +516,9 @@ public interface DylanTypes {
       }
       else if (type == NAMESPACE_CLAUSES) {
         return new DylanNamespaceClausesImpl(node);
+      }
+      else if (type == NAMESPACE_CLAUSE_OPTION) {
+        return new DylanNamespaceClauseOptionImpl(node);
       }
       else if (type == NAMESPACE_CLAUSE_OPTIONS) {
         return new DylanNamespaceClauseOptionsImpl(node);

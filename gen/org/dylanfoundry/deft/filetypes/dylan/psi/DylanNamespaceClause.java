@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanNamespaceClause extends PsiElement {
 
-  @Nullable
-  DylanNamespaceClauseOptions getNamespaceClauseOptions();
+  @NotNull
+  List<DylanNamespaceClauseOptions> getNamespaceClauseOptionsList();
 
   @NotNull
   List<DylanVariableName> getVariableNameList();

@@ -296,6 +296,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == NAMESPACE_CLAUSE) {
       result_ = namespace_clause(builder_, level_ + 1);
     }
+    else if (root_ == NAMESPACE_CLAUSE_OPTION) {
+      result_ = namespace_clause_option(builder_, level_ + 1);
+    }
     else if (root_ == NAMESPACE_CLAUSE_OPTIONS) {
       result_ = namespace_clause_options(builder_, level_ + 1);
     }
@@ -1089,6 +1092,41 @@ public class DylanParser implements PsiParser {
     }
     else {
       marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // LBRACE (ALL|namespace_clause_option_list) RBRACE
+  static boolean braced_namespace_clause_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "braced_namespace_clause_option")) return false;
+    if (!nextTokenIs(builder_, LBRACE)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, LBRACE);
+    result_ = result_ && braced_namespace_clause_option_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // ALL|namespace_clause_option_list
+  private static boolean braced_namespace_clause_option_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "braced_namespace_clause_option_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, ALL);
+    if (!result_) result_ = namespace_clause_option_list(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
     }
     return result_;
   }
@@ -4341,7 +4379,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // USE variable_name (COMMA namespace_clause_options)?
+  // USE variable_name (COMMA namespace_clause_options)*
   //     | CREATE variable_name (COMMA variable_name)*
   //     | EXPORT variable_name (COMMA variable_name)*
   public static boolean namespace_clause(PsiBuilder builder_, int level_) {
@@ -4362,7 +4400,7 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // USE variable_name (COMMA namespace_clause_options)?
+  // USE variable_name (COMMA namespace_clause_options)*
   private static boolean namespace_clause_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_0")) return false;
     boolean result_ = false;
@@ -4379,10 +4417,19 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (COMMA namespace_clause_options)?
+  // (COMMA namespace_clause_options)*
   private static boolean namespace_clause_0_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_0_2")) return false;
-    namespace_clause_0_2_0(builder_, level_ + 1);
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!namespace_clause_0_2_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "namespace_clause_0_2");
+        break;
+      }
+      offset_ = next_offset_;
+    }
     return true;
   }
 
@@ -4501,47 +4548,32 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACE (ALL|variable_name (COMMA variable_name)*) RBRACE
-  public static boolean namespace_clause_options(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "namespace_clause_options")) return false;
-    if (!nextTokenIs(builder_, LBRACE)) return false;
+  // variable_name EQUAL_ARROW variable_name | variable_name
+  public static boolean namespace_clause_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, LBRACE);
-    result_ = result_ && namespace_clause_options_1(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RBRACE);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<namespace clause option>");
+    result_ = namespace_clause_option_0(builder_, level_ + 1);
+    if (!result_) result_ = variable_name(builder_, level_ + 1);
     if (result_) {
-      marker_.done(NAMESPACE_CLAUSE_OPTIONS);
+      marker_.done(NAMESPACE_CLAUSE_OPTION);
     }
     else {
       marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
-  // ALL|variable_name (COMMA variable_name)*
-  private static boolean namespace_clause_options_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "namespace_clause_options_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, ALL);
-    if (!result_) result_ = namespace_clause_options_1_1(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // variable_name (COMMA variable_name)*
-  private static boolean namespace_clause_options_1_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "namespace_clause_options_1_1")) return false;
+  // variable_name EQUAL_ARROW variable_name
+  private static boolean namespace_clause_option_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_option_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variable_name(builder_, level_ + 1);
-    result_ = result_ && namespace_clause_options_1_1_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EQUAL_ARROW);
+    result_ = result_ && variable_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -4551,15 +4583,32 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (COMMA variable_name)*
-  private static boolean namespace_clause_options_1_1_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "namespace_clause_options_1_1_1")) return false;
+  /* ********************************************************** */
+  // namespace_clause_option (COMMA namespace_clause_option)*
+  static boolean namespace_clause_option_list(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_option_list")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = namespace_clause_option(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_option_list_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // (COMMA namespace_clause_option)*
+  private static boolean namespace_clause_option_list_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_option_list_1")) return false;
     int offset_ = builder_.getCurrentOffset();
     while (true) {
-      if (!namespace_clause_options_1_1_1_0(builder_, level_ + 1)) break;
+      if (!namespace_clause_option_list_1_0(builder_, level_ + 1)) break;
       int next_offset_ = builder_.getCurrentOffset();
       if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "namespace_clause_options_1_1_1");
+        empty_element_parsed_guard_(builder_, offset_, "namespace_clause_option_list_1");
         break;
       }
       offset_ = next_offset_;
@@ -4567,13 +4616,50 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // COMMA variable_name
-  private static boolean namespace_clause_options_1_1_1_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "namespace_clause_options_1_1_1_0")) return false;
+  // COMMA namespace_clause_option
+  private static boolean namespace_clause_option_list_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_option_list_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_option(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // symbol (braced_namespace_clause_option|expression)
+  public static boolean namespace_clause_options(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_options")) return false;
+    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
+        && replaceVariants(builder_, 2, "<namespace clause options>")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<namespace clause options>");
+    result_ = symbol(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_options_1(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(NAMESPACE_CLAUSE_OPTIONS);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // braced_namespace_clause_option|expression
+  private static boolean namespace_clause_options_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_options_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = braced_namespace_clause_option(builder_, level_ + 1);
+    if (!result_) result_ = expression(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }

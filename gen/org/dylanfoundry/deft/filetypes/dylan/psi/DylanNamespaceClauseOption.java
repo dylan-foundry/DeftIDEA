@@ -5,15 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNamespaceClauseOptions extends PsiElement {
-
-  @Nullable
-  DylanExpression getExpression();
+public interface DylanNamespaceClauseOption extends PsiElement {
 
   @NotNull
-  List<DylanNamespaceClauseOption> getNamespaceClauseOptionList();
-
-  @NotNull
-  DylanSymbol getSymbol();
+  List<DylanVariableName> getVariableNameList();
 
 }

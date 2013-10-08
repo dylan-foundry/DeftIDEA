@@ -18,9 +18,21 @@ public class DylanNamespaceClauseOptionsImpl extends ASTWrapperPsiElement implem
   }
 
   @Override
+  @Nullable
+  public DylanExpression getExpression() {
+    return findChildByClass(DylanExpression.class);
+  }
+
+  @Override
   @NotNull
-  public List<DylanVariableName> getVariableNameList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
+  public List<DylanNamespaceClauseOption> getNamespaceClauseOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanNamespaceClauseOption.class);
+  }
+
+  @Override
+  @NotNull
+  public DylanSymbol getSymbol() {
+    return findNotNullChildByClass(DylanSymbol.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -371,6 +371,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitNamespaceClauseOption(@NotNull DylanNamespaceClauseOption o) {
+    visitPsiElement(o);
+  }
+
   public void visitNamespaceClauseOptions(@NotNull DylanNamespaceClauseOptions o) {
     visitPsiElement(o);
   }
