@@ -26,7 +26,6 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanFile;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanProperty;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanSourceRecords;
 
 import java.util.ArrayList;
