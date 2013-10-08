@@ -23,10 +23,7 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinitionClassDefiner;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinitionFunctionDefiner;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinitionMethodDefiner;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes;
+import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,6 +58,14 @@ public class DylanFoldingBuilder implements FoldingBuilder, DumbAware {
       DylanDefinitionFunctionDefiner f = ((DylanDefinitionFunctionDefiner)element);
       textRange = new TextRange(f.getVariableName().getTextRange().getEndOffset() - 1,
               f.getFunctionDefinitionTail().getTextRange().getEndOffset());
+    } else if (node.getElementType() == DylanTypes.DEFINITION_LIBRARY_DEFINER) {
+      DylanDefinitionLibraryDefiner f = ((DylanDefinitionLibraryDefiner)element);
+      textRange = new TextRange(f.getVariableName().getTextRange().getEndOffset() - 1,
+              f.getLibraryDefinitionTail().getTextRange().getEndOffset());
+    } else if (node.getElementType() == DylanTypes.DEFINITION_MODULE_DEFINER) {
+      DylanDefinitionModuleDefiner f = ((DylanDefinitionModuleDefiner)element);
+      textRange = new TextRange(f.getVariableName().getTextRange().getEndOffset() - 1,
+              f.getModuleDefinitionTail().getTextRange().getEndOffset());
     }
     if (textRange.getLength() > 1) {
       list.add(new FoldingDescriptor(node, textRange));
