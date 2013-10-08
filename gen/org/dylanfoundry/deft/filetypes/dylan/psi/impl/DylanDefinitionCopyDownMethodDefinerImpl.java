@@ -7,6 +7,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 import com.intellij.navigation.ItemPresentation;
 
