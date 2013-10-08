@@ -23,6 +23,7 @@ import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.dylanfoundry.deft.DeftIcons;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class DylanPsiImplUtil {
     return "class " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionClassDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionClassDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -62,7 +63,7 @@ public class DylanPsiImplUtil {
     return "constant " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionConstantDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionConstantDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -74,7 +75,7 @@ public class DylanPsiImplUtil {
     return "copy-down-method " + element.getText();
   }
 
-  public static PsiElement setName(DylanDefinitionCopyDownMethodDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionCopyDownMethodDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -86,7 +87,7 @@ public class DylanPsiImplUtil {
     return "sealed domain" + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionDomainDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionDomainDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -98,7 +99,7 @@ public class DylanPsiImplUtil {
     return "function " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionFunctionDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionFunctionDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -110,7 +111,7 @@ public class DylanPsiImplUtil {
     return cleanText(element.getText());
   }
 
-  public static PsiElement setName(DylanDefinitionGenericDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionGenericDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -122,7 +123,7 @@ public class DylanPsiImplUtil {
     return "library " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionLibraryDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionLibraryDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -134,7 +135,7 @@ public class DylanPsiImplUtil {
     return "macro " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionMacroDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionMacroDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -146,7 +147,7 @@ public class DylanPsiImplUtil {
     return "method " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionMethodDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionMethodDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -158,7 +159,7 @@ public class DylanPsiImplUtil {
     return "module " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionModuleDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionModuleDefiner element, @NotNull String newName) {
     return null;
   }
 
@@ -170,7 +171,7 @@ public class DylanPsiImplUtil {
     return "variable " + element.getVariableName().getText();
   }
 
-  public static PsiElement setName(DylanDefinitionVariableDefiner element, String newName) {
+  public static PsiElement setName(DylanDefinitionVariableDefiner element, @NotNull String newName) {
     return null;
   }
 
