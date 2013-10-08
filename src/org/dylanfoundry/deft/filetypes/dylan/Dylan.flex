@@ -402,6 +402,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     */
 
     {WORD}                                          { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    "_"                                             { return DylanTypes.VARIABLE_IGNORE; }
 
     {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
     {CRLF}                                          { /* return DylanTypes.CRLF; */ }

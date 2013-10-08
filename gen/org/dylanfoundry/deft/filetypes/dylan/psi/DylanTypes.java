@@ -246,6 +246,7 @@ public interface DylanTypes {
   IElementType UNARY_OPERATOR_ONLY = new DylanTokenType("UNARY_OPERATOR_ONLY");
   IElementType USE = new DylanTokenType("USE");
   IElementType VALUE = new DylanTokenType("VALUE");
+  IElementType VARIABLE_IGNORE = new DylanTokenType("VARIABLE_IGNORE");
   IElementType VARIABLE_T = new DylanTokenType("VARIABLE_T");
 
   class Factory {

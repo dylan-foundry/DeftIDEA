@@ -344,7 +344,7 @@ variables ::= variable (COMMA variable)*
 
 variable ::= variable_name COLON_COLON operand | variable_name
 
-variable_name ::= ordinary_name
+variable_name ::= ordinary_name | VARIABLE_IGNORE
 
 /* Expression, page 418-419 */
 

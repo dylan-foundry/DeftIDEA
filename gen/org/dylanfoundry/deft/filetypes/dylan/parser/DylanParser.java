@@ -7423,13 +7423,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // ordinary_name
+  // ordinary_name | VARIABLE_IGNORE
   public static boolean variable_name(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variable_name")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<variable name>");
     result_ = ordinary_name(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, VARIABLE_IGNORE);
     if (result_) {
       marker_.done(VARIABLE_NAME);
     }
