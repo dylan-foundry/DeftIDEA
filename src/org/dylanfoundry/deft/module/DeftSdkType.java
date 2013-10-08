@@ -39,7 +39,11 @@ public class DeftSdkType extends SdkType {
   @Override
   public String suggestHomePath() {
     if (SystemInfo.isWindows) {
-      return "C:\\Program Files\\Open Dylan";
+      if(SystemInfo.is64Bit) {
+        return "C:\\Program Files (x86)\\Open Dylan";
+      } else {
+        return "C:\\Program Files\\Open Dylan";
+      }
     } else if (SystemInfo.isUnix) {
       return "/opt/opendylan-2013.1";
     }
@@ -53,7 +57,11 @@ public class DeftSdkType extends SdkType {
   }
 
   private File getCompilerExecutable(@NotNull final String sdkPath) {
-    return getExecutable(sdkPath + File.separator + "bin", "dylan-compiler");
+    if(SystemInfo.isWindows) {
+      return getExecutable(sdkPath + File.separator + "bin", "dylan-compiler-with-tools");
+    } else {
+      return getExecutable(sdkPath + File.separator + "bin", "dylan-compiler");
+    }
   }
 
   @NotNull
