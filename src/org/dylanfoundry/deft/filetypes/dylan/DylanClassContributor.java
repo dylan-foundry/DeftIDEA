@@ -41,7 +41,7 @@ public class DylanClassContributor implements ChooseByNameContributor {
     List<String> names = new ArrayList<String>(definitions.size());
     for (DylanDefiner definition : definitions) {
       if (definition.getName() != null && definition.getName().length() > 0) {
-        names.add(definition.getName());
+        names.add(definition.getNameIdentifier().getText());
       }
     }
     return names.toArray(new String[names.size()]);
@@ -69,7 +69,7 @@ public class DylanClassContributor implements ChooseByNameContributor {
             for (DylanDefinition definition : definitions) {
               DylanDefiner definer = PsiTreeUtil.getChildOfType(definition, DylanDefinitionClassDefiner.class);
               if (definer != null) {
-                if (name.equals(definer.getName())) {
+                if (name.equals(definer.getNameIdentifier().getText())) {
                   if (result == null) {
                     result = new ArrayList<DylanDefiner>();
                   }
