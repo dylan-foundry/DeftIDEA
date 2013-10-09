@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft.filetypes.dylan;
+package org.dylanfoundry.deft.filetypes.dylan.highlight;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import org.dylanfoundry.deft.filetypes.dylan.highlight.DylanSyntaxHighlighter;
 import org.jetbrains.annotations.NotNull;
 
 public class DylanSyntaxHighlighterFactory extends SyntaxHighlighterFactory {

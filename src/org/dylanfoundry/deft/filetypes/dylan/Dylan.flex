@@ -7,7 +7,7 @@ import com.intellij.psi.TokenType;
 
 %%
 
-%class DylanLexer
+%class _DylanLexer
 %implements FlexLexer
 %unicode
 %function advance
@@ -45,7 +45,7 @@ SIGN=(\+|-)
 DECIMAL_INTEGER={SIGN}? {DIGIT}+
 BINARY_INTEGER="#"[bB][01]+
 OCTAL_INTEGER="#"[oO][0-7]+
-HEX_INTEGER="#"[0-9a-fA-F]+
+HEX_INTEGER="#"[xX][0-9a-fA-F]+
 RATIO={SIGN}? {DIGIT}+ "/" {DIGIT}+
 EXPONENT=[eE] {SIGN}? {DECIMAL_INTEGER}
 FLOAT=({SIGN}? {DECIMAL_INTEGER}? "." {DECIMAL_INTEGER} {EXPONENT}?) | ({SIGN}? {DECIMAL_INTEGER} "." {DECIMAL_INTEGER}? {EXPONENT}?) | ({SIGN}? {DECIMAL_INTEGER} {EXPONENT})
@@ -99,7 +99,6 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
 
     {CHARACTER}                                     { return DylanTypes.CHARACTER_LITERAL; }
     "\""                                            { yybegin(STRING); return DylanTypes.STRING_CHARACTER; }
-    "#"                                             { return DylanTypes.HASH; }
     {WORD}":"                                       { return DylanTypes.KEYWORD; }
 
     {NAME}":"{WORD}                                 { return DylanTypes.CONSTRAINED_NAME; }
@@ -117,6 +116,8 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "#rest"                                         { return DylanTypes.HASH_REST; }
     "#key"                                          { return DylanTypes.HASH_KEY; }
     "#all-keys"                                     { return DylanTypes.HASH_ALL_KEYS; }
+
+    "#"                                             { return DylanTypes.HASH; }
 
     // Keywords
     /*
