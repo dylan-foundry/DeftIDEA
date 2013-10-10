@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import static org.dylanfoundry.deft.filetypes.dylan.DylanTokenTypesSets.*;
 
 public class DylanParserDefinition implements ParserDefinition {
-  public static final IFileElementType FILE = new IFileElementType(Language.<DylanLanguage>findInstance(DylanLanguage.class));
+  public static final IFileElementType FILE = new IFileElementType(DylanLanguage.INSTANCE);
 
   @NotNull
   @Override
