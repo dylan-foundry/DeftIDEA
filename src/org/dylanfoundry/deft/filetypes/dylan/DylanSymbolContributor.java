@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class DylanChooseByNameContributor implements ChooseByNameContributor {
+public class DylanSymbolContributor implements ChooseByNameContributor {
   @NotNull
   @Override
   public String[] getNames(Project project, boolean includeNonProjectItems) {
