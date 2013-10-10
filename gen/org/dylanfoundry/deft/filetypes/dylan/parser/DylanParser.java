@@ -104,6 +104,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == CONSTANT_FRAGMENT) {
       result_ = constant_fragment(builder_, level_ + 1);
     }
+    else if (root_ == CONSTANT_STRING) {
+      result_ = constant_string(builder_, level_ + 1);
+    }
     else if (root_ == CONSTANTS) {
       result_ = constants(builder_, level_ + 1);
     }
@@ -1895,6 +1898,24 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "constant_fragment_6_1")) return false;
     constants(builder_, level_ + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // HASH string
+  public static boolean constant_string(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constant_string")) return false;
+    if (!nextTokenIs(builder_, HASH)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, HASH);
+    result_ = result_ && string(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(CONSTANT_STRING);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
   }
 
   /* ********************************************************** */
@@ -6871,7 +6892,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // HASH string | KEYWORD
+  // constant_string | KEYWORD
   public static boolean symbol(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "symbol")) return false;
     if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
@@ -6879,7 +6900,7 @@ public class DylanParser implements PsiParser {
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<symbol>");
-    result_ = symbol_0(builder_, level_ + 1);
+    result_ = constant_string(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, KEYWORD);
     if (result_) {
       marker_.done(SYMBOL);
@@ -6888,22 +6909,6 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
-    return result_;
-  }
-
-  // HASH string
-  private static boolean symbol_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "symbol_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH);
-    result_ = result_ && string(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
     return result_;
   }
 

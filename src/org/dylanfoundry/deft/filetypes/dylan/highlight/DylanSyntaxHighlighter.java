@@ -45,8 +45,6 @@ public class DylanSyntaxHighlighter extends SyntaxHighlighterBase {
     ATTRIBUTES.put(DylanTypes.CHARACTER_LITERAL, DylanSyntaxHighlighterColors.CHARACTER);
     ATTRIBUTES.put(DylanTypes.STRING_ESCAPE_CHARACTER, DylanSyntaxHighlighterColors.ESCAPE_CHARACTER);
     ATTRIBUTES.put(DylanTypes.STRING_CHARACTER, DylanSyntaxHighlighterColors.STRING);
-    ATTRIBUTES.put(DylanTypes.SYMBOL, DylanSyntaxHighlighterColors.SYMBOL); // FIXME: symbol is not a token so this doesn't work
-
 
     ATTRIBUTES.put(DylanTypes.LPAREN, DylanSyntaxHighlighterColors.PAREN);
     ATTRIBUTES.put(DylanTypes.RPAREN, DylanSyntaxHighlighterColors.PAREN);
@@ -62,9 +60,6 @@ public class DylanSyntaxHighlighter extends SyntaxHighlighterBase {
 
     ATTRIBUTES.put(BAD_CHARACTER, DylanSyntaxHighlighterColors.BAD_CHARACTER);
   }
-
-
-  private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
   @NotNull
   @Override

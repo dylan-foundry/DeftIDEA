@@ -30,12 +30,15 @@ public class DylanSyntaxHighlighterColors {
   public static final String DYLAN_COMMENT = "DYLAN_COMMENT";
   public static final String DYLAN_NUMBER = "DYLAN_NUMBER";
   public static final String DYLAN_IDENTIFIER = "DYLAN_IDENTIFIER";
+  public static final String DYLAN_CLASS = "DYLAN_CLASS";
+  public static final String DYLAN_CONSTANT = "DYLAN_CONSTANT";
+  public static final String DYLAN_VARIABLE = "DYLAN_VARIABLE";
   public static final String DYLAN_CHARACTER = "DYLAN_CHARACTER";
   public static final String DYLAN_ESCAPE_CHARACTER = "DYLAN_ESCAPE_CHARACTER";
   public static final String DYLAN_STRING = "DYLAN_STRING";
   public static final String DYLAN_BAD_CHARACTER = "DYLAN_BAD_CHARACTER";
   public static final String DYLAN_HASH_WORD = "DYLAN_HASH_WORD";
-  public static final String DYLAN_SYMBOL = "DYLAN_SYMBOL";
+  public static final String DYLAN_CONSTANT_STRING = "DYLAN_CONSTANT_STRING";
   public static final String DYLAN_OPERATOR = "DYLAN_OPERATOR";
   public static final String DYLAN_KEYWORD = "DYLAN_KEYWORD";
   public static final String DYLAN_PAREN = "DYLAN_PAREN";
@@ -57,6 +60,12 @@ public class DylanSyntaxHighlighterColors {
     createTextAttributesKey(DYLAN_NUMBER, DefaultLanguageHighlighterColors.NUMBER);
   public static final TextAttributesKey IDENTIFIER =
     createTextAttributesKey(DYLAN_IDENTIFIER, DefaultLanguageHighlighterColors.IDENTIFIER);
+  public static final TextAttributesKey CLASS =
+    createTextAttributesKey(DYLAN_CLASS, DefaultLanguageHighlighterColors.CLASS_NAME);
+  public static final TextAttributesKey CONSTANT =
+    createTextAttributesKey(DYLAN_CONSTANT, DefaultLanguageHighlighterColors.CONSTANT);
+  public static final TextAttributesKey VARIABLE =
+    createTextAttributesKey(DYLAN_VARIABLE, DefaultLanguageHighlighterColors.GLOBAL_VARIABLE);
   public static final TextAttributesKey CHARACTER =
     createTextAttributesKey(DYLAN_CHARACTER, DefaultLanguageHighlighterColors.STRING);
   public static final TextAttributesKey ESCAPE_CHARACTER =
@@ -65,8 +74,8 @@ public class DylanSyntaxHighlighterColors {
     createTextAttributesKey(DYLAN_STRING, DefaultLanguageHighlighterColors.STRING);
   public static final TextAttributesKey HASH_WORD =
     createTextAttributesKey(DYLAN_HASH_WORD, DefaultLanguageHighlighterColors.LABEL);
-  public static final TextAttributesKey SYMBOL =
-    createTextAttributesKey(DYLAN_SYMBOL, DefaultLanguageHighlighterColors.CONSTANT);
+  public static final TextAttributesKey CONSTANT_STRING =
+    createTextAttributesKey(DYLAN_CONSTANT_STRING, DefaultLanguageHighlighterColors.CONSTANT);
   public static final TextAttributesKey OPERATOR =
     createTextAttributesKey(DYLAN_OPERATOR, DefaultLanguageHighlighterColors.OPERATION_SIGN);
   public static final TextAttributesKey KEYWORD =

@@ -55,6 +55,7 @@
     <lang.commenter language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanCommenter"/>
     <lang.foldingBuilder language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanFoldingBuilder"/>
     <lang.psiStructureViewFactory language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.structure.DylanStructureViewFactory"/>
+    <annotator language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanAnnotator"/>
 
     <!-- Template Group -->
     <fileTemplateGroup implementation="org.dylanfoundry.deft.actions.DeftTemplatesFactory"/>

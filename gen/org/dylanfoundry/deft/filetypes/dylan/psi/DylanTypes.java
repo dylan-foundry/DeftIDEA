@@ -36,6 +36,7 @@ public interface DylanTypes {
   IElementType CONSTANT = new DylanElementType("CONSTANT");
   IElementType CONSTANTS = new DylanElementType("CONSTANTS");
   IElementType CONSTANT_FRAGMENT = new DylanElementType("CONSTANT_FRAGMENT");
+  IElementType CONSTANT_STRING = new DylanElementType("CONSTANT_STRING");
   IElementType CORE_WORD = new DylanElementType("CORE_WORD");
   IElementType DEFAULT_VALUE = new DylanElementType("DEFAULT_VALUE");
   IElementType DEFINE_BODY_WORD = new DylanElementType("DEFINE_BODY_WORD");
@@ -336,6 +337,9 @@ public interface DylanTypes {
       }
       else if (type == CONSTANT_FRAGMENT) {
         return new DylanConstantFragmentImpl(node);
+      }
+      else if (type == CONSTANT_STRING) {
+        return new DylanConstantStringImpl(node);
       }
       else if (type == CORE_WORD) {
         return new DylanCoreWordImpl(node);

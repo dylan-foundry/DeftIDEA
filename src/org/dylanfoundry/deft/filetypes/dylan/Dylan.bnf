@@ -31,7 +31,9 @@ token ::= word_name | symbol | NUMBER | CHARACTER_LITERAL | string | operator | 
 
 string ::= (STRING_CHARACTER|STRING_ESCAPE_CHARACTER)+
 
-symbol ::= HASH string | KEYWORD
+constant_string ::= HASH string
+
+symbol ::= constant_string | KEYWORD
 
 punctuation ::= bracketing_punctuation | non_bracketing_punctuation
 
