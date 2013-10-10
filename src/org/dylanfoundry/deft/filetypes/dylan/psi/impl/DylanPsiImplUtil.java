@@ -196,7 +196,7 @@ public class DylanPsiImplUtil {
       @Nullable
       @Override
       public Icon getIcon(boolean unused) {
-        return DeftIcons.DYLAN_FILE;
+        return DeftIcons.DEFINER_GENERIC;
       }
     };
   }
@@ -218,7 +218,7 @@ public class DylanPsiImplUtil {
       @Nullable
       @Override
       public Icon getIcon(boolean b) {
-        return DeftIcons.DYLAN_FILE;
+        return DeftIcons.DEFINER_GENERIC;
       }
     };
   }
