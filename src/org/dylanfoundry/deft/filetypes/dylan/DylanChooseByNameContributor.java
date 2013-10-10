@@ -19,98 +19,27 @@ package org.dylanfoundry.deft.filetypes.dylan;
 import com.intellij.navigation.ChooseByNameContributor;
 import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.indexing.FileBasedIndex;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanFile;
+import com.intellij.util.ArrayUtil;
+import org.dylanfoundry.deft.filetypes.dylan.index.DylanSymbolIndex;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanSourceRecords;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class DylanChooseByNameContributor implements ChooseByNameContributor {
   @NotNull
   @Override
   public String[] getNames(Project project, boolean includeNonProjectItems) {
-    List<DylanDefiner> definitions = findDefinitions(project);
-    List<String> names = new ArrayList<String>(definitions.size());
-    for (DylanDefiner definition : definitions) {
-      if (definition.getName() != null && definition.getName().length() > 0) {
-        names.add(definition.getNameIdentifier().getText());
-      }
-    }
-    return names.toArray(new String[names.size()]);
+    Collection<String> names = DylanSymbolIndex.getNames(project);
+    return ArrayUtil.toStringArray(names);
   }
 
   @NotNull
   @Override
   public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
-    // todo include non project items
-    List<DylanDefiner> definitions = findDefinitions(project, name);
-    return definitions.toArray(new NavigationItem[definitions.size()]);
-  }
-
-  public static List<DylanDefiner> findDefinitions(Project project, String name) {
-    List<DylanDefiner> result = null;
-    Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, DylanFileType.INSTANCE,
-            GlobalSearchScope.allScope(project));
-    for (VirtualFile virtualFile : virtualFiles) {
-      DylanFile dylanFile = (DylanFile) PsiManager.getInstance(project).findFile(virtualFile);
-      if (dylanFile != null) {
-        DylanSourceRecords sourceRecords = PsiTreeUtil.getChildOfType(dylanFile, DylanSourceRecords.class);
-        if (sourceRecords != null) {
-          DylanDefinition[] definitions = PsiTreeUtil.getChildrenOfType(sourceRecords, DylanDefinition.class);
-          if (definitions != null) {
-            for (DylanDefinition definition : definitions) {
-              DylanDefiner definer = PsiTreeUtil.getChildOfType(definition, DylanDefiner.class);
-              if (definer != null) {
-                if (name.equals(definer.getNameIdentifier().getText())) {
-                  if (result == null) {
-                    result = new ArrayList<DylanDefiner>();
-                  }
-                  result.add(definer);
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    return result != null ? result : Collections.<DylanDefiner>emptyList();
-  }
-
-  public static List<DylanDefiner> findDefinitions(Project project) {
-    List<DylanDefiner> result = new ArrayList<DylanDefiner>();
-    Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance().getContainingFiles(FileTypeIndex.NAME, DylanFileType.INSTANCE,
-            GlobalSearchScope.allScope(project));
-    for (VirtualFile virtualFile : virtualFiles) {
-      DylanFile dylanFile = (DylanFile) PsiManager.getInstance(project).findFile(virtualFile);
-      if (dylanFile != null) {
-        DylanSourceRecords sourceRecords = PsiTreeUtil.getChildOfType(dylanFile, DylanSourceRecords.class);
-        if (sourceRecords != null) {
-          DylanDefinition[] definitions = PsiTreeUtil.getChildrenOfType(sourceRecords, DylanDefinition.class);
-          if (definitions != null) {
-            for (DylanDefinition definition : definitions) {
-              DylanDefiner definer = PsiTreeUtil.getChildOfType(definition, DylanDefiner.class);
-              if (definer != null) {
-                if (result == null) {
-                  result = new ArrayList<DylanDefiner>();
-                }
-                result.add(definer);
-              }
-            }
-          }
-        }
-      }
-    }
-    return result;
+    GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
+    Collection<DylanDefiner> result = DylanSymbolIndex.getItemsByName(project, name, scope);
+    return result.toArray(new NavigationItem[result.size()]);
   }
 }
