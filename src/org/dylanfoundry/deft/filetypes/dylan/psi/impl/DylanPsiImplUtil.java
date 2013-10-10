@@ -48,7 +48,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionClassDefiner element) {
-    return "class " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionClassDefiner element, @NotNull String newName) {
@@ -59,8 +59,12 @@ public class DylanPsiImplUtil {
     return element.getVariableName();
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionClassDefiner element) {
+    return DeftIcons.DEFINER_CLASS;
+  }
+
   public static String getName(DylanDefinitionConstantDefiner element) {
-    return "constant " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionConstantDefiner element, @NotNull String newName) {
@@ -71,12 +75,20 @@ public class DylanPsiImplUtil {
     return element.getVariableName();
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionConstantDefiner element) {
+    return DeftIcons.DEFINER_CONSTANT;
+  }
+
   public static String getName(DylanDefinitionCopyDownMethodDefiner element) {
-    return "copy-down-method " + element.getText();
+    return element.getText();
   }
 
   public static PsiElement setName(DylanDefinitionCopyDownMethodDefiner element, @NotNull String newName) {
     return null;
+  }
+
+  public static Icon getPresentationIcon(DylanDefinitionCopyDownMethodDefiner element) {
+    return DeftIcons.DEFINER_COPYDOWN;
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionCopyDownMethodDefiner element) {
@@ -95,8 +107,12 @@ public class DylanPsiImplUtil {
     return element.getVariableName();
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionDomainDefiner element) {
+    return DeftIcons.DEFINER_DOMAIN;
+  }
+
   public static String getName(DylanDefinitionFunctionDefiner element) {
-    return "function " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionFunctionDefiner element, @NotNull String newName) {
@@ -105,6 +121,10 @@ public class DylanPsiImplUtil {
 
   public static PsiElement getNameIdentifier(DylanDefinitionFunctionDefiner element) {
     return element.getVariableName();
+  }
+
+  public static Icon getPresentationIcon(DylanDefinitionFunctionDefiner element) {
+    return DeftIcons.DEFINER_FUNCTION;
   }
 
   public static String getName(DylanDefinitionGenericDefiner element) {
@@ -119,8 +139,12 @@ public class DylanPsiImplUtil {
     return element;
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionGenericDefiner element) {
+    return DeftIcons.DEFINER_GENERIC;
+  }
+
   public static String getName(DylanDefinitionLibraryDefiner element) {
-    return "library " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionLibraryDefiner element, @NotNull String newName) {
@@ -131,8 +155,12 @@ public class DylanPsiImplUtil {
     return element.getVariableName();
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionLibraryDefiner element) {
+    return DeftIcons.DEFINER_LIBRARY;
+  }
+
   public static String getName(DylanDefinitionMacroDefiner element) {
-    return "macro " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionMacroDefiner element, @NotNull String newName) {
@@ -143,8 +171,12 @@ public class DylanPsiImplUtil {
     return element.getVariableName();
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionMacroDefiner element) {
+    return DeftIcons.DEFINER_MACRO;
+  }
+
   public static String getName(DylanDefinitionMethodDefiner element) {
-    return "method " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionMethodDefiner element, @NotNull String newName) {
@@ -153,6 +185,10 @@ public class DylanPsiImplUtil {
 
   public static PsiElement getNameIdentifier(DylanDefinitionMethodDefiner element) {
     return element.getVariableName();
+  }
+
+  public static Icon getPresentationIcon(DylanDefinitionMethodDefiner element) {
+    return DeftIcons.DEFINER_METHOD;
   }
 
   public static String getName(DylanDefinitionModuleDefiner element) {
@@ -167,8 +203,12 @@ public class DylanPsiImplUtil {
     return element.getVariableName();
   }
 
+  public static Icon getPresentationIcon(DylanDefinitionModuleDefiner element) {
+    return DeftIcons.DEFINER_MODULE;
+  }
+
   public static String getName(DylanDefinitionVariableDefiner element) {
-    return "variable " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionVariableDefiner element, @NotNull String newName) {
@@ -177,6 +217,10 @@ public class DylanPsiImplUtil {
 
   public static PsiElement getNameIdentifier(DylanDefinitionVariableDefiner element) {
     return element.getVariableName();
+  }
+
+  public static Icon getPresentationIcon(DylanDefinitionVariableDefiner element) {
+    return DeftIcons.DEFINER_VARIABLE;
   }
 
   public static ItemPresentation getPresentation(final DylanDefinition element) {
@@ -196,7 +240,7 @@ public class DylanPsiImplUtil {
       @Nullable
       @Override
       public Icon getIcon(boolean unused) {
-        return DeftIcons.DEFINER_GENERIC;
+        return ((DylanDefiner)(element.getFirstChild())).getPresentationIcon();
       }
     };
   }
@@ -218,7 +262,7 @@ public class DylanPsiImplUtil {
       @Nullable
       @Override
       public Icon getIcon(boolean b) {
-        return DeftIcons.DEFINER_GENERIC;
+        return element.getPresentationIcon();
       }
     };
   }

@@ -196,7 +196,7 @@ definition_class_definer ::= DEFINE modifiers? CLASS variable_name LPAREN supers
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 class_definition_tail ::= END CLASS variable_name? | END variable_name?
@@ -218,28 +218,28 @@ definition_constant_definer ::= DEFINE modifiers? CONSTANT_T list_fragment?
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_copy_down_method_definer ::= DEFINE modifiers? COPY_DOWN_METHOD variable_name list_fragment?
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_fragment
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name body_fragment function_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 function_definition_tail ::= END FUNCTION variable_name? | END variable_name?
@@ -248,14 +248,14 @@ definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_frag
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_library_definer ::= DEFINE modifiers? LIBRARY variable_name namespace_clauses? library_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 library_definition_tail ::= END LIBRARY variable_name?| END variable_name?
@@ -264,7 +264,7 @@ definition_module_definer ::= DEFINE modifiers? MODULE variable_name namespace_c
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 module_definition_tail ::= END MODULE variable_name? | END variable_name?
@@ -288,7 +288,7 @@ definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_s
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 macro_definition_tail ::= END MACRO_T variable_name? | END variable_name?
@@ -297,7 +297,7 @@ definition_method_definer ::= DEFINE modifiers? METHOD variable_name body_fragme
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 method_definition_tail ::= END METHOD variable_name? | END variable_name?
@@ -312,7 +312,7 @@ definition_variable_definer ::= DEFINE modifiers? VARIABLE_T list_fragment?
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
-    methods=[getName setName getNameIdentifier getPresentation]
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_macro_call ::=

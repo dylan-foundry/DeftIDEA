@@ -30,6 +30,17 @@ public class DeftIcons {
   public static final Icon LID_FILE = load("/org/dylanfoundry/deft/icons/file_lid_16.png"); // 16x16
   public static final Icon DEFT = load("/org/dylanfoundry/deft/icons/file_dylan_16.png");
 
+  public static final Icon DEFINER_CLASS = load("/org/dylanfoundry/deft/icons/definer_class.png");
+  public static final Icon DEFINER_CONSTANT = load("/org/dylanfoundry/deft/icons/definer_constant.png");
+  public static final Icon DEFINER_COPYDOWN = load("/org/dylanfoundry/deft/icons/definer_copydown.png");
+  public static final Icon DEFINER_DOMAIN = load("/org/dylanfoundry/deft/icons/definer_domain.png");
+  public static final Icon DEFINER_FUNCTION = load("/org/dylanfoundry/deft/icons/definer_function.png");
   public static final Icon DEFINER_GENERIC = load("/org/dylanfoundry/deft/icons/definer_generic.png");
+  public static final Icon DEFINER_LIBRARY = load("/org/dylanfoundry/deft/icons/definer_library.png");
+  public static final Icon DEFINER_MACRO = load("/org/dylanfoundry/deft/icons/definer_macro.png");
+  public static final Icon DEFINER_METHOD = load("/org/dylanfoundry/deft/icons/definer_method.png");
+  public static final Icon DEFINER_MODULE = load("/org/dylanfoundry/deft/icons/definer_module.png");
+  public static final Icon DEFINER_UNKNOWN = load("/org/dylanfoundry/deft/icons/definer_unknown.png");
+  public static final Icon DEFINER_VARIABLE = load("/org/dylanfoundry/deft/icons/definer_variable.png");
 }
 

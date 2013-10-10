@@ -18,5 +18,8 @@ package org.dylanfoundry.deft.filetypes.dylan.psi;
 
 import com.intellij.psi.PsiNameIdentifierOwner;
 
+import javax.swing.*;
+
 public interface DylanDefiner extends PsiNameIdentifierOwner {
+  public Icon getPresentationIcon();
 }

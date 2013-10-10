@@ -4,6 +4,7 @@ package org.dylanfoundry.deft.filetypes.dylan.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionLibraryDefiner extends DylanDefiner {
@@ -25,6 +26,8 @@ public interface DylanDefinitionLibraryDefiner extends DylanDefiner {
   PsiElement setName(String newName);
 
   PsiElement getNameIdentifier();
+
+  Icon getPresentationIcon();
 
   ItemPresentation getPresentation();
 

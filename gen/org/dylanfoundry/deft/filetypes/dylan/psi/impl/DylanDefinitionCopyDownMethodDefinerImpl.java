@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
+import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
 public class DylanDefinitionCopyDownMethodDefinerImpl extends DylanDefinerImpl implements DylanDefinitionCopyDownMethodDefiner {
@@ -80,6 +81,10 @@ public class DylanDefinitionCopyDownMethodDefinerImpl extends DylanDefinerImpl i
 
   public PsiElement getNameIdentifier() {
     return DylanPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public Icon getPresentationIcon() {
+    return DylanPsiImplUtil.getPresentationIcon(this);
   }
 
   public ItemPresentation getPresentation() {
