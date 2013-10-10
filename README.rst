@@ -39,6 +39,12 @@ GrammarKit:
 * https://github.com/JetBrains/Grammar-Kit/blob/master/TUTORIAL.md
 * https://github.com/JetBrains/Grammar-Kit/blob/master/HOWTO.md
 
+Other plugins to look at:
+* https://github.com/ignatov/intellij-erlang/
+* https://github.com/JetBrains/intellij-plugins/
+* https://github.com/JetBrains/intellij-community/
+* https://bitbucket.org/sylvanaar2/lua-for-idea/wiki/Home
+
 Configuring IntelliJ
 --------------------
 
