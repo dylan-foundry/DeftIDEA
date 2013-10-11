@@ -112,7 +112,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionFunctionDefiner element) {
-    return element.getVariableName().getText();
+    return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
   }
 
   public static PsiElement setName(DylanDefinitionFunctionDefiner element, @NotNull String newName) {
@@ -176,7 +176,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionMethodDefiner element) {
-    return element.getVariableName().getText();
+    return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
   }
 
   public static PsiElement setName(DylanDefinitionMethodDefiner element, @NotNull String newName) {
@@ -271,6 +271,8 @@ public class DylanPsiImplUtil {
     if (text.startsWith("define ")) {
       text = text.substring(7, text.length());
     }
+    // collapse all whitespace
+    text = text.replaceAll("\\s+", " ");
     return text;
   }
 }

@@ -37,7 +37,7 @@ import java.util.*;
 
 public class DylanSymbolIndex extends ScalarIndexExtension<String> {
   public static final ID<String, Void> DYLAN_SYMBOL_INDEX = ID.create("DylanSymbolIndex");
-  private static final int INDEX_VERSION = 1;
+  private static final int INDEX_VERSION = 2;
   private DataIndexer<String, Void, FileContent> myDataIndexer = new MyDataIndexer();
 
   @NotNull
@@ -87,7 +87,7 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
       processComponents(psiFile, new PsiElementProcessor<DylanDefiner>() {
         @Override
         public boolean execute(@NotNull DylanDefiner component) {
-          if (name.equals(component.getNameIdentifier().getText())) {
+          if (name.equals(component.getName())) {
             result.add(component);
           }
           return true;
@@ -106,8 +106,8 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
       processComponents(psiFile, new PsiElementProcessor<DylanDefiner>() {
         @Override
         public boolean execute(@NotNull DylanDefiner component) {
-          if (component.getNameIdentifier() != null) {
-            result.put(component.getNameIdentifier().getText(), null);
+          if (component.getName() != null) {
+            result.put(component.getName(), null);
           }
           return true;
         }
