@@ -15,6 +15,7 @@ public interface DylanTypes {
   IElementType AUX_RULE_SET = new DylanElementType("AUX_RULE_SET");
   IElementType AUX_RULE_SETS = new DylanElementType("AUX_RULE_SETS");
   IElementType BASIC_FRAGMENT = new DylanElementType("BASIC_FRAGMENT");
+  IElementType BEGIN_STATEMENT = new DylanElementType("BEGIN_STATEMENT");
   IElementType BEGIN_WORD = new DylanElementType("BEGIN_WORD");
   IElementType BINARY_OPERAND = new DylanElementType("BINARY_OPERAND");
   IElementType BINARY_OPERAND_NO_SYMBOL = new DylanElementType("BINARY_OPERAND_NO_SYMBOL");
@@ -91,7 +92,7 @@ public interface DylanTypes {
   IElementType MAYBE_PATTERN_AND_SEMICOLON = new DylanElementType("MAYBE_PATTERN_AND_SEMICOLON");
   IElementType METHOD_DEFINITION = new DylanElementType("METHOD_DEFINITION");
   IElementType METHOD_DEFINITION_TAIL = new DylanElementType("METHOD_DEFINITION_TAIL");
-  IElementType METHOD_NAME = new DylanElementType("METHOD_NAME");
+  IElementType METHOD_STATEMENT = new DylanElementType("METHOD_STATEMENT");
   IElementType MODIFIER = new DylanElementType("MODIFIER");
   IElementType MODIFIERS = new DylanElementType("MODIFIERS");
   IElementType MODULE_DEFINITION_TAIL = new DylanElementType("MODULE_DEFINITION_TAIL");
@@ -167,6 +168,7 @@ public interface DylanTypes {
   IElementType WORD_NAME = new DylanElementType("WORD_NAME");
 
   IElementType ALL = new DylanTokenType("ALL");
+  IElementType BEGIN = new DylanTokenType("BEGIN");
   IElementType BINARY_OPERATOR_ONLY = new DylanTokenType("BINARY_OPERATOR_ONLY");
   IElementType CHARACTER_LITERAL = new DylanTokenType("CHARACTER_LITERAL");
   IElementType CLASS = new DylanTokenType("CLASS");
@@ -274,6 +276,9 @@ public interface DylanTypes {
       }
       else if (type == BASIC_FRAGMENT) {
         return new DylanBasicFragmentImpl(node);
+      }
+      else if (type == BEGIN_STATEMENT) {
+        return new DylanBeginStatementImpl(node);
       }
       else if (type == BEGIN_WORD) {
         return new DylanBeginWordImpl(node);
@@ -503,8 +508,8 @@ public interface DylanTypes {
       else if (type == METHOD_DEFINITION_TAIL) {
         return new DylanMethodDefinitionTailImpl(node);
       }
-      else if (type == METHOD_NAME) {
-        return new DylanMethodNameImpl(node);
+      else if (type == METHOD_STATEMENT) {
+        return new DylanMethodStatementImpl(node);
       }
       else if (type == MODIFIER) {
         return new DylanModifierImpl(node);

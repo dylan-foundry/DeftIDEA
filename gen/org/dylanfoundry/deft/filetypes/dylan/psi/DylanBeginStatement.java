@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanMethodDefinition extends PsiElement {
+public interface DylanBeginStatement extends PsiElement {
 
   @NotNull
   List<DylanDefinition> getDefinitionList();
@@ -15,14 +15,5 @@ public interface DylanMethodDefinition extends PsiElement {
 
   @NotNull
   List<DylanLocalDeclaration> getLocalDeclarationList();
-
-  @NotNull
-  DylanMethodDefinitionTail getMethodDefinitionTail();
-
-  @NotNull
-  DylanParameterList getParameterList();
-
-  @NotNull
-  DylanVariableName getVariableName();
 
 }

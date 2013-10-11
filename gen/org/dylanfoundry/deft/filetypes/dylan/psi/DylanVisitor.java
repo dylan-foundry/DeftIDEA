@@ -35,6 +35,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitBeginStatement(@NotNull DylanBeginStatement o) {
+    visitPsiElement(o);
+  }
+
   public void visitBeginWord(@NotNull DylanBeginWord o) {
     visitPsiElement(o);
   }
@@ -339,7 +343,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMethodName(@NotNull DylanMethodName o) {
+  public void visitMethodStatement(@NotNull DylanMethodStatement o) {
     visitPsiElement(o);
   }
 

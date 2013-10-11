@@ -7,13 +7,19 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanStatement extends PsiElement {
 
-  @NotNull
+  @Nullable
+  DylanBeginStatement getBeginStatement();
+
+  @Nullable
   DylanBeginWord getBeginWord();
 
   @Nullable
   DylanBodyFragment getBodyFragment();
 
-  @NotNull
+  @Nullable
   DylanEndClause getEndClause();
+
+  @Nullable
+  DylanMethodStatement getMethodStatement();
 
 }

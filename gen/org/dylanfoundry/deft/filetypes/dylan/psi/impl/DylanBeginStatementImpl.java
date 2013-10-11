@@ -11,9 +11,9 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanMethodDefinitionImpl extends ASTWrapperPsiElement implements DylanMethodDefinition {
+public class DylanBeginStatementImpl extends ASTWrapperPsiElement implements DylanBeginStatement {
 
-  public DylanMethodDefinitionImpl(ASTNode node) {
+  public DylanBeginStatementImpl(ASTNode node) {
     super(node);
   }
 
@@ -35,26 +35,8 @@ public class DylanMethodDefinitionImpl extends ASTWrapperPsiElement implements D
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
-  @Override
-  @NotNull
-  public DylanMethodDefinitionTail getMethodDefinitionTail() {
-    return findNotNullChildByClass(DylanMethodDefinitionTail.class);
-  }
-
-  @Override
-  @NotNull
-  public DylanParameterList getParameterList() {
-    return findNotNullChildByClass(DylanParameterList.class);
-  }
-
-  @Override
-  @NotNull
-  public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitMethodDefinition(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBeginStatement(this);
     else super.accept(visitor);
   }
 
