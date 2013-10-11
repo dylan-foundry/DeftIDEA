@@ -7,6 +7,11 @@
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
   <version>0.2</version>
   <changes><![CDATA[
+  <p>0.2.1</p>
+  <ul>
+    <li>Improvements to sytax highlighting for Dylan.</li>
+    <li>Improvements to the icons used in structure and go-to-X views.</li>
+  </ul>
   <p>0.2</p>
   <ul>
     <li>Significant progress on parsing the Dylan language.</li>
