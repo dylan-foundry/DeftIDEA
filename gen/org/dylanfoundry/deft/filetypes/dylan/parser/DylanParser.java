@@ -2369,7 +2369,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? FUNCTION variable_name body_fragment function_definition_tail
+  // DEFINE modifiers? FUNCTION variable_name parameter_list body? function_definition_tail
   public static boolean definition_function_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_function_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -2379,7 +2379,8 @@ public class DylanParser implements PsiParser {
     result_ = result_ && definition_function_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, FUNCTION);
     result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && body_fragment(builder_, level_ + 1);
+    result_ = result_ && parameter_list(builder_, level_ + 1);
+    result_ = result_ && definition_function_definer_5(builder_, level_ + 1);
     result_ = result_ && function_definition_tail(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_FUNCTION_DEFINER);
@@ -2394,6 +2395,13 @@ public class DylanParser implements PsiParser {
   private static boolean definition_function_definer_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_function_definer_1")) return false;
     modifiers(builder_, level_ + 1);
+    return true;
+  }
+
+  // body?
+  private static boolean definition_function_definer_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_function_definer_5")) return false;
+    body(builder_, level_ + 1);
     return true;
   }
 
@@ -2582,7 +2590,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? METHOD variable_name body_fragment method_definition_tail
+  // DEFINE modifiers? METHOD variable_name parameter_list body? method_definition_tail
   public static boolean definition_method_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_method_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -2592,7 +2600,8 @@ public class DylanParser implements PsiParser {
     result_ = result_ && definition_method_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, METHOD);
     result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && body_fragment(builder_, level_ + 1);
+    result_ = result_ && parameter_list(builder_, level_ + 1);
+    result_ = result_ && definition_method_definer_5(builder_, level_ + 1);
     result_ = result_ && method_definition_tail(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_METHOD_DEFINER);
@@ -2607,6 +2616,13 @@ public class DylanParser implements PsiParser {
   private static boolean definition_method_definer_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_method_definer_1")) return false;
     modifiers(builder_, level_ + 1);
+    return true;
+  }
+
+  // body?
+  private static boolean definition_method_definer_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_method_definer_5")) return false;
+    body(builder_, level_ + 1);
     return true;
   }
 

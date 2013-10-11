@@ -20,8 +20,20 @@ public class DylanDefinitionMethodDefinerImpl extends DylanDefinerImpl implement
 
   @Override
   @NotNull
-  public DylanBodyFragment getBodyFragment() {
-    return findNotNullChildByClass(DylanBodyFragment.class);
+  public List<DylanDefinition> getDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanLocalDeclaration> getLocalDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   @Override
@@ -34,6 +46,12 @@ public class DylanDefinitionMethodDefinerImpl extends DylanDefinerImpl implement
   @Nullable
   public DylanModifiers getModifiers() {
     return findChildByClass(DylanModifiers.class);
+  }
+
+  @Override
+  @NotNull
+  public DylanParameterList getParameterList() {
+    return findNotNullChildByClass(DylanParameterList.class);
   }
 
   @Override

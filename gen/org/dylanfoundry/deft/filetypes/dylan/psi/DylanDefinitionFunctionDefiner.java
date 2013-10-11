@@ -10,13 +10,22 @@ import com.intellij.navigation.ItemPresentation;
 public interface DylanDefinitionFunctionDefiner extends DylanDefiner {
 
   @NotNull
-  DylanBodyFragment getBodyFragment();
+  List<DylanDefinition> getDefinitionList();
+
+  @NotNull
+  List<DylanExpression> getExpressionList();
 
   @NotNull
   DylanFunctionDefinitionTail getFunctionDefinitionTail();
 
+  @NotNull
+  List<DylanLocalDeclaration> getLocalDeclarationList();
+
   @Nullable
   DylanModifiers getModifiers();
+
+  @NotNull
+  DylanParameterList getParameterList();
 
   @NotNull
   DylanVariableName getVariableName();

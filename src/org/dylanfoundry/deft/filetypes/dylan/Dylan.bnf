@@ -237,7 +237,7 @@ definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_f
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
-definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name body_fragment function_definition_tail
+definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name parameter_list body? function_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
@@ -295,7 +295,7 @@ definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_s
 
 macro_definition_tail ::= END MACRO_T variable_name? | END variable_name?
 
-definition_method_definer ::= DEFINE modifiers? METHOD variable_name body_fragment method_definition_tail
+definition_method_definer ::= DEFINE modifiers? METHOD variable_name parameter_list body? method_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
