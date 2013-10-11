@@ -18,9 +18,15 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
   }
 
   @Override
-  @NotNull
+  @Nullable
+  public DylanBeginStatement getBeginStatement() {
+    return findChildByClass(DylanBeginStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DylanBeginWord getBeginWord() {
-    return findNotNullChildByClass(DylanBeginWord.class);
+    return findChildByClass(DylanBeginWord.class);
   }
 
   @Override
@@ -30,9 +36,15 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanEndClause getEndClause() {
-    return findNotNullChildByClass(DylanEndClause.class);
+    return findChildByClass(DylanEndClause.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanMethodStatement getMethodStatement() {
+    return findChildByClass(DylanMethodStatement.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

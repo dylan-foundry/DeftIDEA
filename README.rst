@@ -50,3 +50,14 @@ Configuring IntelliJ
 
 Virtual Whitespace at the end of the line:
    This can be disabled in the editor preferences.
+
+Tests
+-----
+
+See http://confluence.jetbrains.com/display/IntelliJIDEA/Writing+Tests+for+Plugins.
+
+The parsing tests page does not say that the name of the method dictates the
+name of the files, but it does. For example, for "testHeaderSourceSeparation"
+you need "HeaderSourceSeparation.dylan" and "HeaderSourceSeparation.txt".
+Also, the tests assume that your checkout of the IDEA community sources is next
+to the DeftIDEA project.

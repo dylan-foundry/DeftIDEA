@@ -416,9 +416,46 @@ constant ::= literal | symbol
 
 /* Statements, page 419 */
 
+/*
+ * The following is the general-purpose statement parsing rule, and is written
+ * under the assumption that statements are macros that will be expanded by the
+ * macro expansion system. Although we are parsing the reserved-word statements
+ * using specific BNF grammar, this is more or less how we will handle
+ * user-defined statement macros -- but among other things we need to ensure the
+ * end_clause's begin_word matches the statement's begin_word.
+ */
+/*
+
 statement ::= begin_word body_fragment? end_clause
 
 end_clause ::= END begin_word?
+
+*/
+
+statement ::=
+      begin_statement
+    /*
+    | block_statement
+    | case_statement
+    | for_statement
+    | if_statement
+    */
+    | method_statement
+    /*
+    | select_statement
+    | unless_statement
+    | until_statement
+    | while_statement
+    */
+    | begin_word body_fragment? end_clause
+
+end_clause ::= END begin_word?
+
+begin_statement ::= BEGIN body? END
+    { pin=1 }
+
+method_statement ::= METHOD parameter_list body? END METHOD?
+    { pin=1 }
 
 /*
  * The parsing of case bodies is changed in structure
@@ -466,24 +503,7 @@ case_tail ::=
 
 /* Methods, pages 420-421 */
 
-method_definition ::= method_name parameter_list body? END method_name?
-
-/*
- * The hack for dealing with the word ``method'' is in
- * the production for method_name.  If the optional
- * variable_name is present, it is the name of the
- * local method and the macro_name must be the word
- * ``method.''  If the variable_name is not present,
- * the name of the local method can be found in the
- * macro_name;  it must be checked that it isn't a
- * core word, etc.  I'm not sure that the syntactic
- * category macro_name is the best possible, but it
- * is workable.
- *
- * I feel unclean.
- */
-
-method_name ::= macro_name variable_name?
+method_definition ::= METHOD? variable_name parameter_list body? method_definition_tail
 
 parameter_list ::=
       LPAREN parameters? RPAREN EQUAL_ARROW variable SEMICOLON

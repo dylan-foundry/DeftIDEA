@@ -125,7 +125,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "afterwards"                                    { return DylanTypes.KEYWORD; }
     */
     "all"                                           { return DylanTypes.ALL; }
-    "begin"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    "begin"                                         { return DylanTypes.BEGIN; }
     /*
     "below"                                         { return DylanTypes.KEYWORD; }
     "by"                                            { return DylanTypes.KEYWORD; }
