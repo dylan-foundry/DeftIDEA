@@ -73,16 +73,12 @@
   <actions>
       <action id="org.dylanfoundry.deft.actions.CreateDylanFileAction" class="org.dylanfoundry.deft.actions.CreateDylanFileAction"
               text="Dylan File" description="Create New Dylan File">
-        <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
       </action>
       <action id="org.dylanfoundry.deft.actions.CreateLIDFileAction" class="org.dylanfoundry.deft.actions.CreateLIDFileAction"
               text="Dylan LID File" description="Create New Dylan LID File">
-        <add-to-group group-id="NewGroup" anchor="after" relative-to-action="org.dylanfoundry.deft.actions.CreateDylanFileAction"/>
       </action>
       <action id="org.dylanfoundry.deft.actions.CreateMelangeInterfaceFileAction" class="org.dylanfoundry.deft.actions.CreateMelangeInterfaceFileAction"
               text="Melange Interface File" description="Create New Melange Interface File">
-        <add-to-group group-id="NewGroup" anchor="after" relative-to-action="org.dylanfoundry.deft.actions.CreateLIDFileAction"/>
       </action>
-
   </actions>
 </idea-plugin>
