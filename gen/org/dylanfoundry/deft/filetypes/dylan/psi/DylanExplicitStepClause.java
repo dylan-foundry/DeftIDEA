@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanMethodName extends PsiElement {
+public interface DylanExplicitStepClause extends PsiElement {
 
   @NotNull
-  DylanMacroName getMacroName();
+  List<DylanExpression> getExpressionList();
 
-  @Nullable
-  DylanVariableName getVariableName();
+  @NotNull
+  DylanVariable getVariable();
 
 }

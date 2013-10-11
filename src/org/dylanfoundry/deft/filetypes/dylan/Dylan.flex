@@ -120,50 +120,48 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "#"                                             { return DylanTypes.HASH; }
 
     // Keywords
-    /*
-    "above"                                         { return DylanTypes.KEYWORD; }
-    "afterwards"                                    { return DylanTypes.KEYWORD; }
-    */
+    "above"                                         { return DylanTypes.ABOVE; }
+    "afterwards"                                    { return DylanTypes.AFTERWARDS; }
     "all"                                           { return DylanTypes.ALL; }
     "begin"                                         { return DylanTypes.BEGIN; }
-    /*
-    "below"                                         { return DylanTypes.KEYWORD; }
-    "by"                                            { return DylanTypes.KEYWORD; }
-    */
-    "case"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    "below"                                         { return DylanTypes.BELOW; }
+    "by"                                            { return DylanTypes.BY; }
+    //"case"                                          { return DylanTypes.CASE; }
     "copy-down-method"                              { return DylanTypes.COPY_DOWN_METHOD; }
-    //"cleanup"                                       { return DylanTypes.KEYWORD; }
+    "cleanup"                                       { return DylanTypes.CLEANUP; }
     "create"                                        { return DylanTypes.CREATE; }
     "define"                                        { return DylanTypes.DEFINE; }
-    "else"                                          { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
-    "elseif"                                        { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    "else"                                          { return DylanTypes.ELSE; }
+    "elseif"                                        { return DylanTypes.ELSEIF; }
     "end"                                           { return DylanTypes.END; }
     "export"                                        { return DylanTypes.EXPORT; }
-    //"finally"                                       { return DylanTypes.KEYWORD; }
-    "for"                                           { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
-    //"from"                                          { return DylanTypes.KEYWORD; }
-    "if"                                            { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
-    //"in"                                            { return DylanTypes.KEYWORD; }
+    "finally"                                       { return DylanTypes.FINALLY; }
+    "for"                                           { return DylanTypes.FOR; }
+    "from"                                          { return DylanTypes.FROM; }
+    "if"                                            { return DylanTypes.IF; }
+    "in"                                            { return DylanTypes.IN; }
+    "keyed-by"                                      { return DylanTypes.KEYED_BY; }
     "let"                                           { return DylanTypes.LET; }
     "local"                                         { return DylanTypes.LOCAL; }
     "otherwise"                                     { return DylanTypes.OTHERWISE; }
     //"rename"                                        { return DylanTypes.KEYWORD; }
     "select"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; }
     //"signal"                                        { return DylanTypes.KEYWORD; }
-    //"then"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
-    //"to"                                            { return DylanTypes.KEYWORD; }
-    "unless"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
-    "until"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "then"                                          { return DylanTypes.THEN; }
+    "to"                                            { return DylanTypes.TO; }
+    "unless"                                        { return DylanTypes.UNLESS; }
+    "until"                                         { return DylanTypes.UNTIL; }
     "use"                                           { return DylanTypes.USE; }
-    "when"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
-    "while"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    "using"                                         { return DylanTypes.USING; }
+    "when"                                          { return DylanTypes.WHEN; }
+    "while"                                         { return DylanTypes.WHILE; }
 
     // Builtins
     /*
     "subclass"                                      { return DylanTypes.BUILTIN; }
     "abstract"                                      { return DylanTypes.BUILTIN; }
     */
-    "block"                                         { return DylanTypes.NONDEFINING_BEGIN_WORD; } // FIXME
+    "block"                                         { return DylanTypes.BLOCK; }
     /*
     "concrete"                                      { return DylanTypes.BUILTIN; }
     */
@@ -178,7 +176,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "dynamic"                                       { return DylanTypes.BUILTIN; }
     "each-subclass"                                 { return DylanTypes.BUILTIN; }
     */
-    "exception"                                     { return DylanTypes.NONDEFINING_NONEXPRESSION_WORD; }
+    "exception"                                     { return DylanTypes.EXCEPTION; }
     //"exclude"                                       { return DylanTypes.BUILTIN; }
     "function"                                      { return DylanTypes.FUNCTION; }
     "generic"                                       { return DylanTypes.GENERIC; }

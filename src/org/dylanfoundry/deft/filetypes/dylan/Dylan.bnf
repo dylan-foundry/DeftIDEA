@@ -434,19 +434,16 @@ end_clause ::= END begin_word?
 
 statement ::=
       begin_statement
-    /*
     | block_statement
-    | case_statement
+    //| case_statement
     | for_statement
     | if_statement
-    */
     | method_statement
-    /*
-    | select_statement
+    //| select_statement
     | unless_statement
     | until_statement
+    | when_statement
     | while_statement
-    */
     | begin_word body_fragment? end_clause
 
 end_clause ::= END begin_word?
@@ -454,8 +451,55 @@ end_clause ::= END begin_word?
 begin_statement ::= BEGIN body? END
     { pin=1 }
 
+block_statement ::= BLOCK LPAREN variable_name? RPAREN body? afterwards_statement? cleanup_statement? exception_statement* block_tail
+    { pin=1 }
+
+block_tail ::= END BLOCK?
+
+afterwards_statement ::= AFTERWARDS body?
+
+cleanup_statement ::= CLEANUP body?
+
+exception_statement ::= EXCEPTION LPAREN variable (COMMA exception_options)* RPAREN body?
+
+exception_options ::= KEYWORD expression // KEYWORD should be only test: or init-arguments:
+
+for_statement ::= FOR LPAREN for_clauses RPAREN body? finally_clause? END FOR?
+
+for_clauses ::= ((for_clause COMMA)* end_for_clause) | (for_clause (COMMA for_clause)*)
+
+for_clause ::= explicit_step_clause | collection_clause | numeric_clauses | keyed_by_clause
+
+end_for_clause ::= KEYWORD expression // FIXME: KEYWORD should be only until: and while:
+
+explicit_step_clause ::= variable EQUAL expression THEN expression
+
+collection_clause ::= variable IN expression (USING expression)?
+
+numeric_clauses ::= variable  FROM expression ((TO|ABOVE|BELOW) expression)? (BY expression)?
+
+keyed_by_clause ::= variable KEYED_BY variable IN expression
+
+finally_clause ::= FINALLY body?
+
+if_statement ::= IF LPAREN expression RPAREN body? elseif_statement* else_statement? if_tail
+
+if_tail ::= END IF?
+
+elseif_statement ::= ELSEIF LPAREN expression RPAREN body?
+
+else_statement ::= ELSE body?
+
 method_statement ::= METHOD parameter_list body? END METHOD?
     { pin=1 }
+
+unless_statement ::= UNLESS LPAREN expression RPAREN body? END UNLESS?
+
+until_statement ::= UNTIL LPAREN expression RPAREN body? END UNTIL?
+
+when_statement ::= WHEN LPAREN expression RPAREN body? END WHEN?
+
+while_statement ::= WHILE LPAREN expression RPAREN body? END WHILE?
 
 /*
  * The parsing of case bodies is changed in structure

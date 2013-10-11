@@ -31,6 +31,12 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
 
   @Override
   @Nullable
+  public DylanBlockStatement getBlockStatement() {
+    return findChildByClass(DylanBlockStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DylanBodyFragment getBodyFragment() {
     return findChildByClass(DylanBodyFragment.class);
   }
@@ -43,8 +49,44 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
 
   @Override
   @Nullable
+  public DylanForStatement getForStatement() {
+    return findChildByClass(DylanForStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanIfStatement getIfStatement() {
+    return findChildByClass(DylanIfStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DylanMethodStatement getMethodStatement() {
     return findChildByClass(DylanMethodStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanUnlessStatement getUnlessStatement() {
+    return findChildByClass(DylanUnlessStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanUntilStatement getUntilStatement() {
+    return findChildByClass(DylanUntilStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanWhenStatement getWhenStatement() {
+    return findChildByClass(DylanWhenStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanWhileStatement getWhileStatement() {
+    return findChildByClass(DylanWhileStatement.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

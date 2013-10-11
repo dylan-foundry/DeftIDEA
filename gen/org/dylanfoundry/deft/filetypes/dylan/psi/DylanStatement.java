@@ -14,12 +14,33 @@ public interface DylanStatement extends PsiElement {
   DylanBeginWord getBeginWord();
 
   @Nullable
+  DylanBlockStatement getBlockStatement();
+
+  @Nullable
   DylanBodyFragment getBodyFragment();
 
   @Nullable
   DylanEndClause getEndClause();
 
   @Nullable
+  DylanForStatement getForStatement();
+
+  @Nullable
+  DylanIfStatement getIfStatement();
+
+  @Nullable
   DylanMethodStatement getMethodStatement();
+
+  @Nullable
+  DylanUnlessStatement getUnlessStatement();
+
+  @Nullable
+  DylanUntilStatement getUntilStatement();
+
+  @Nullable
+  DylanWhenStatement getWhenStatement();
+
+  @Nullable
+  DylanWhileStatement getWhileStatement();
 
 }
