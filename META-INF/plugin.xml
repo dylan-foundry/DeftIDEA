@@ -9,8 +9,10 @@
   <changes><![CDATA[
   <p>0.2.1</p>
   <ul>
-    <li>Improvements to sytax highlighting for Dylan.</li>
+    <li>Further improvements to parsing the Dylan language.</li>
+    <li>Improvements to syntax highlighting for Dylan.</li>
     <li>Improvements to the icons used in structure and go-to-X views.</li>
+    <li>Improvements to function and method names in structure and go-to-symbol views.</li>
   </ul>
   <p>0.2</p>
   <ul>
