@@ -578,8 +578,8 @@ key_parameter_list ::=
 required_parameters ::= required_parameter (COMMA required_parameter)*
 
 required_parameter ::=
-      variable
-    | variable_name EQUAL_EQUAL expression
+      variable EQUAL_EQUAL expression
+    | variable
 
 keyword_parameters ::= keyword_parameter (COMMA keyword_parameter)*
 

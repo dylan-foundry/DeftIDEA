@@ -10,10 +10,7 @@ public interface DylanRequiredParameter extends PsiElement {
   @Nullable
   DylanExpression getExpression();
 
-  @Nullable
+  @NotNull
   DylanVariable getVariable();
-
-  @Nullable
-  DylanVariableName getVariableName();
 
 }

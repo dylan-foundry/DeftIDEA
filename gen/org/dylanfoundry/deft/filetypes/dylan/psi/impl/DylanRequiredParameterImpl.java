@@ -24,15 +24,9 @@ public class DylanRequiredParameterImpl extends ASTWrapperPsiElement implements 
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DylanVariable getVariable() {
-    return findChildByClass(DylanVariable.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanVariableName getVariableName() {
-    return findChildByClass(DylanVariableName.class);
+    return findNotNullChildByClass(DylanVariable.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

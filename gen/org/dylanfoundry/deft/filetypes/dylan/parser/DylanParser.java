@@ -6901,15 +6901,15 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variable
-  //     | variable_name EQUAL_EQUAL expression
+  // variable EQUAL_EQUAL expression
+  //     | variable
   public static boolean required_parameter(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "required_parameter")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<required parameter>");
-    result_ = variable(builder_, level_ + 1);
-    if (!result_) result_ = required_parameter_1(builder_, level_ + 1);
+    result_ = required_parameter_0(builder_, level_ + 1);
+    if (!result_) result_ = variable(builder_, level_ + 1);
     if (result_) {
       marker_.done(REQUIRED_PARAMETER);
     }
@@ -6920,12 +6920,12 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // variable_name EQUAL_EQUAL expression
-  private static boolean required_parameter_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "required_parameter_1")) return false;
+  // variable EQUAL_EQUAL expression
+  private static boolean required_parameter_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "required_parameter_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = variable_name(builder_, level_ + 1);
+    result_ = variable(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, EQUAL_EQUAL);
     result_ = result_ && expression(builder_, level_ + 1);
     if (!result_) {
