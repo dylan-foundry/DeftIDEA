@@ -13,9 +13,6 @@ public interface DylanDefinitionLibraryDefiner extends DylanDefiner {
   DylanLibraryDefinitionTail getLibraryDefinitionTail();
 
   @Nullable
-  DylanModifiers getModifiers();
-
-  @Nullable
   DylanNamespaceClauses getNamespaceClauses();
 
   @NotNull

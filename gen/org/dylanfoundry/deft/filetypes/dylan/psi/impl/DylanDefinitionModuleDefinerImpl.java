@@ -19,12 +19,6 @@ public class DylanDefinitionModuleDefinerImpl extends DylanDefinerImpl implement
   }
 
   @Override
-  @Nullable
-  public DylanModifiers getModifiers() {
-    return findChildByClass(DylanModifiers.class);
-  }
-
-  @Override
   @NotNull
   public DylanModuleDefinitionTail getModuleDefinitionTail() {
     return findNotNullChildByClass(DylanModuleDefinitionTail.class);

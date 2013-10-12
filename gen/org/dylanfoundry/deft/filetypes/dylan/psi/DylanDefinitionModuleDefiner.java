@@ -9,9 +9,6 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionModuleDefiner extends DylanDefiner {
 
-  @Nullable
-  DylanModifiers getModifiers();
-
   @NotNull
   DylanModuleDefinitionTail getModuleDefinitionTail();
 

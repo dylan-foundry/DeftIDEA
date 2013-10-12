@@ -2990,17 +2990,15 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? LIBRARY variable_name namespace_clauses? library_definition_tail
+  // DEFINE LIBRARY variable_name namespace_clauses? library_definition_tail
   public static boolean definition_library_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_library_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, DEFINE);
-    result_ = result_ && definition_library_definer_1(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, LIBRARY);
+    result_ = consumeTokens(builder_, 0, DEFINE, LIBRARY);
     result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_library_definer_4(builder_, level_ + 1);
+    result_ = result_ && definition_library_definer_3(builder_, level_ + 1);
     result_ = result_ && library_definition_tail(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_LIBRARY_DEFINER);
@@ -3011,16 +3009,9 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // modifiers?
-  private static boolean definition_library_definer_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_library_definer_1")) return false;
-    modifiers(builder_, level_ + 1);
-    return true;
-  }
-
   // namespace_clauses?
-  private static boolean definition_library_definer_4(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_library_definer_4")) return false;
+  private static boolean definition_library_definer_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_library_definer_3")) return false;
     namespace_clauses(builder_, level_ + 1);
     return true;
   }
@@ -3183,17 +3174,15 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? MODULE variable_name namespace_clauses? module_definition_tail
+  // DEFINE MODULE variable_name namespace_clauses? module_definition_tail
   public static boolean definition_module_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_module_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, DEFINE);
-    result_ = result_ && definition_module_definer_1(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, MODULE);
+    result_ = consumeTokens(builder_, 0, DEFINE, MODULE);
     result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_module_definer_4(builder_, level_ + 1);
+    result_ = result_ && definition_module_definer_3(builder_, level_ + 1);
     result_ = result_ && module_definition_tail(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_MODULE_DEFINER);
@@ -3204,16 +3193,9 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // modifiers?
-  private static boolean definition_module_definer_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_module_definer_1")) return false;
-    modifiers(builder_, level_ + 1);
-    return true;
-  }
-
   // namespace_clauses?
-  private static boolean definition_module_definer_4(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_module_definer_4")) return false;
+  private static boolean definition_module_definer_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_module_definer_3")) return false;
     namespace_clauses(builder_, level_ + 1);
     return true;
   }

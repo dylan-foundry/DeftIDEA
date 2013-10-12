@@ -26,12 +26,6 @@ public class DylanDefinitionLibraryDefinerImpl extends DylanDefinerImpl implemen
 
   @Override
   @Nullable
-  public DylanModifiers getModifiers() {
-    return findChildByClass(DylanModifiers.class);
-  }
-
-  @Override
-  @Nullable
   public DylanNamespaceClauses getNamespaceClauses() {
     return findChildByClass(DylanNamespaceClauses.class);
   }

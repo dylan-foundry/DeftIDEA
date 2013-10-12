@@ -253,7 +253,7 @@ definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_frag
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
-definition_library_definer ::= DEFINE modifiers? LIBRARY variable_name namespace_clauses? library_definition_tail
+definition_library_definer ::= DEFINE LIBRARY variable_name namespace_clauses? library_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
@@ -262,7 +262,7 @@ definition_library_definer ::= DEFINE modifiers? LIBRARY variable_name namespace
 
 library_definition_tail ::= END LIBRARY variable_name?| END variable_name?
 
-definition_module_definer ::= DEFINE modifiers? MODULE variable_name namespace_clauses? module_definition_tail
+definition_module_definer ::= DEFINE MODULE variable_name namespace_clauses? module_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
