@@ -273,10 +273,11 @@ module_definition_tail ::= END MODULE variable_name? | END variable_name?
 
 namespace_clauses ::= (namespace_clause semicolon_fragment?)*
 
+// TODO: Remove the NONDEFINING_BEGIN_WORD stuff when macros are handled properly.
 namespace_clause ::=
       USE variable_name (COMMA namespace_clause_options)*
-    | CREATE variable_name (COMMA variable_name)*
-    | EXPORT variable_name (COMMA variable_name)*
+    | CREATE (variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
+    | EXPORT (variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
 
 namespace_clause_options ::= symbol (braced_namespace_clause_option|expression) // expression that evaluates as a string
 
@@ -284,7 +285,7 @@ private braced_namespace_clause_option ::= LBRACE (ALL|namespace_clause_option_l
 
 private namespace_clause_option_list ::= namespace_clause_option (COMMA namespace_clause_option)*
 
-namespace_clause_option ::= variable_name EQUAL_ARROW variable_name | variable_name
+namespace_clause_option ::= variable_name EQUAL_ARROW variable_name | variable_name | NONDEFINING_BEGIN_WORD EQUAL_ARROW variable_name | NONDEFINING_BEGIN_WORD
 
 definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_set? macro_definition_tail
   {

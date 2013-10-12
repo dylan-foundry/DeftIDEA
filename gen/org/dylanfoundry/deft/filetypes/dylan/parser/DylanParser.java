@@ -5494,8 +5494,8 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // USE variable_name (COMMA namespace_clause_options)*
-  //     | CREATE variable_name (COMMA variable_name)*
-  //     | EXPORT variable_name (COMMA variable_name)*
+  //     | CREATE (variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
+  //     | EXPORT (variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
   public static boolean namespace_clause(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause")) return false;
     boolean result_ = false;
@@ -5563,13 +5563,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // CREATE variable_name (COMMA variable_name)*
+  // CREATE (variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
   private static boolean namespace_clause_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, CREATE);
-    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_1_1(builder_, level_ + 1);
     result_ = result_ && namespace_clause_1_2(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -5580,7 +5580,23 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (COMMA variable_name)*
+  // variable_name | NONDEFINING_BEGIN_WORD
+  private static boolean namespace_clause_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_1_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable_name(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NONDEFINING_BEGIN_WORD);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
   private static boolean namespace_clause_1_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_1_2")) return false;
     int offset_ = builder_.getCurrentOffset();
@@ -5596,13 +5612,13 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // COMMA variable_name
+  // COMMA (variable_name | NONDEFINING_BEGIN_WORD)
   private static boolean namespace_clause_1_2_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_1_2_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_1_2_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -5612,13 +5628,29 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // EXPORT variable_name (COMMA variable_name)*
+  // variable_name | NONDEFINING_BEGIN_WORD
+  private static boolean namespace_clause_1_2_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_1_2_0_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable_name(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NONDEFINING_BEGIN_WORD);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // EXPORT (variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
   private static boolean namespace_clause_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, EXPORT);
-    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_2_1(builder_, level_ + 1);
     result_ = result_ && namespace_clause_2_2(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -5629,7 +5661,23 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (COMMA variable_name)*
+  // variable_name | NONDEFINING_BEGIN_WORD
+  private static boolean namespace_clause_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_2_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable_name(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NONDEFINING_BEGIN_WORD);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*
   private static boolean namespace_clause_2_2(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_2_2")) return false;
     int offset_ = builder_.getCurrentOffset();
@@ -5645,13 +5693,29 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // COMMA variable_name
+  // COMMA (variable_name | NONDEFINING_BEGIN_WORD)
   private static boolean namespace_clause_2_2_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_2_2_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && namespace_clause_2_2_0_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // variable_name | NONDEFINING_BEGIN_WORD
+  private static boolean namespace_clause_2_2_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_2_2_0_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable_name(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NONDEFINING_BEGIN_WORD);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -5662,7 +5726,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variable_name EQUAL_ARROW variable_name | variable_name
+  // variable_name EQUAL_ARROW variable_name | variable_name | NONDEFINING_BEGIN_WORD EQUAL_ARROW variable_name | NONDEFINING_BEGIN_WORD
   public static boolean namespace_clause_option(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "namespace_clause_option")) return false;
     boolean result_ = false;
@@ -5670,6 +5734,8 @@ public class DylanParser implements PsiParser {
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<namespace clause option>");
     result_ = namespace_clause_option_0(builder_, level_ + 1);
     if (!result_) result_ = variable_name(builder_, level_ + 1);
+    if (!result_) result_ = namespace_clause_option_2(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, NONDEFINING_BEGIN_WORD);
     if (result_) {
       marker_.done(NAMESPACE_CLAUSE_OPTION);
     }
@@ -5687,6 +5753,22 @@ public class DylanParser implements PsiParser {
     Marker marker_ = builder_.mark();
     result_ = variable_name(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, EQUAL_ARROW);
+    result_ = result_ && variable_name(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // NONDEFINING_BEGIN_WORD EQUAL_ARROW variable_name
+  private static boolean namespace_clause_option_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "namespace_clause_option_2")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeTokens(builder_, 0, NONDEFINING_BEGIN_WORD, EQUAL_ARROW);
     result_ = result_ && variable_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
