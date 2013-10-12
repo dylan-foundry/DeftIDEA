@@ -238,6 +238,16 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "..."                                           { return DylanTypes.ELLIPSIS; }
     "##"                                            { return DylanTypes.HASH_HASH; }
 
+    // XXX: These are hacks to deal with our lack of macro support at the moment
+    "bind"                                          { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "dynamic-bind"                                  { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "iterate"                                       { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "with-lock"                                     { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "with-open-file"                                { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "with-output-to-string"                         { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "with-socket-thread"                            { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "with-storage"                                  { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+
     // Functions
     /*
     "abort"                                         { return DylanTypes.FUNCTION; }
