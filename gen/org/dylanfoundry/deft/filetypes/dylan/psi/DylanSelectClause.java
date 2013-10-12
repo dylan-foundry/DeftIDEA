@@ -5,9 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCaseConstituents extends PsiElement {
+public interface DylanSelectClause extends PsiElement {
+
+  @Nullable
+  DylanSelectConstituents getSelectConstituents();
 
   @NotNull
-  List<DylanCaseConstituent> getCaseConstituentList();
+  DylanSelectLabel getSelectLabel();
 
 }

@@ -5,12 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCaseTail extends PsiElement {
-
-  @NotNull
-  DylanCaseConstituents getCaseConstituents();
+public interface DylanCaseConstituent extends PsiElement {
 
   @Nullable
-  DylanCaseLabel getCaseLabel();
+  DylanDefinition getDefinition();
+
+  @Nullable
+  DylanExpression getExpression();
+
+  @Nullable
+  DylanLocalDeclaration getLocalDeclaration();
 
 }

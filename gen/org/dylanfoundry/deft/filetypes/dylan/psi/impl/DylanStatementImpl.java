@@ -43,6 +43,12 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
 
   @Override
   @Nullable
+  public DylanCaseStatement getCaseStatement() {
+    return findChildByClass(DylanCaseStatement.class);
+  }
+
+  @Override
+  @Nullable
   public DylanEndClause getEndClause() {
     return findChildByClass(DylanEndClause.class);
   }
@@ -63,6 +69,12 @@ public class DylanStatementImpl extends ASTWrapperPsiElement implements DylanSta
   @Nullable
   public DylanMethodStatement getMethodStatement() {
     return findChildByClass(DylanMethodStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanSelectStatement getSelectStatement() {
+    return findChildByClass(DylanSelectStatement.class);
   }
 
   @Override
