@@ -126,7 +126,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "begin"                                         { return DylanTypes.BEGIN; }
     "below"                                         { return DylanTypes.BELOW; }
     "by"                                            { return DylanTypes.BY; }
-    //"case"                                          { return DylanTypes.CASE; }
+    "case"                                          { return DylanTypes.CASE; }
     "copy-down-method"                              { return DylanTypes.COPY_DOWN_METHOD; }
     "cleanup"                                       { return DylanTypes.CLEANUP; }
     "create"                                        { return DylanTypes.CREATE; }
@@ -145,7 +145,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "local"                                         { return DylanTypes.LOCAL; }
     "otherwise"                                     { return DylanTypes.OTHERWISE; }
     //"rename"                                        { return DylanTypes.KEYWORD; }
-    "select"                                        { return DylanTypes.NONDEFINING_BEGIN_WORD; }
+    "select"                                        { return DylanTypes.SELECT; }
     //"signal"                                        { return DylanTypes.KEYWORD; }
     "then"                                          { return DylanTypes.THEN; }
     "to"                                            { return DylanTypes.TO; }
