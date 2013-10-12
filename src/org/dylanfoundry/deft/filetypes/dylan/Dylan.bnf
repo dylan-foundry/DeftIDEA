@@ -501,30 +501,60 @@ when_statement ::= WHEN LPAREN expression RPAREN body? END WHEN?
 
 while_statement ::= WHILE LPAREN expression RPAREN body? END WHILE?
 
-select_statement ::= SELECT LPAREN expression (BY expression)? RPAREN select_clause* END SELECT?
+select_statement ::= SELECT LPAREN expression (BY expression)? RPAREN select_stmt_clause* select_stmt_tail
 
-select_clause ::= select_label select_constituents? SEMICOLON
+select_stmt_tail ::= END SELECT?
 
-select_label ::=
+select_stmt_clause ::= select_stmt_label select_stmt_constituents? (SEMICOLON | &select_stmt_tail)
+
+select_stmt_label ::=
       OTHERWISE EQUAL_ARROW?
     | LPAREN expressions RPAREN EQUAL_ARROW
     | expressions EQUAL_ARROW
 
-select_constituents ::= select_constituent (SEMICOLON select_constituent)* | COMMENT
+select_stmt_constituents ::= select_stmt_constituent (SEMICOLON select_stmt_constituent)*
 
-select_constituent ::= !select_label constituent
+select_stmt_constituent ::= !select_stmt_label constituent
 
-case_statement ::= CASE case_clause* END CASE?
+/*
+ * The case_statement productions are distinct from the case_body, case_label,
+ * etc. productions from the DRM. The DRM productions are used in macro parsing
+ * and are more lenient.
+ */
 
-case_clause ::= case_label case_constituents? SEMICOLON
+case_statement ::= CASE case_stmt_clause* case_stmt_tail
 
-case_label ::=
+case_stmt_tail ::= END CASE?
+
+case_stmt_clause ::= case_stmt_label case_stmt_constituents? (SEMICOLON | &case_stmt_tail)
+
+case_stmt_label ::=
       OTHERWISE EQUAL_ARROW?
     | expression EQUAL_ARROW
 
-case_constituents ::= case_constituent (SEMICOLON case_constituent)* | COMMENT
+case_stmt_constituents ::= case_stmt_constituent (SEMICOLON case_stmt_constituent)*
 
-case_constituent ::= !case_label constituent
+case_stmt_constituent ::= !case_stmt_label constituent
+
+/* DRM case_body productions */
+
+case_body ::= cases SEMICOLON?
+
+cases ::= case_label case_constituents? (SEMICOLON case_constituents)*
+
+case_label ::=
+      unparenthesized_expression EQUAL_ARROW
+    | unparenthesized_expression COMMA expressions EQUAL_ARROW
+    | LPAREN expression RPAREN operand_tails EQUAL_ARROW
+    | LPAREN expression RPAREN operand_tails COMMA expressions EQUAL_ARROW
+    | LPAREN expression COMMA expressions RPAREN EQUAL_ARROW
+    | OTHERWISE EQUAL_ARROW?
+
+case_constituents ::=
+      case_constituent (SEMICOLON case_constituent)*
+
+case_constituent ::=
+      !case_label constituent
 
 /* Methods, pages 420-421 */
 
