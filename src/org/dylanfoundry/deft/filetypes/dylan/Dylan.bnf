@@ -22,7 +22,7 @@ headers ::= header*
 
 header ::= (KEY HEADER_SEPARATOR header_values) {methods=[getKey]}
 
-header_values ::= (VALUE? CRLF)* {methods=[getValues]}
+header_values ::= CRLF | (VALUE CRLF)+ {methods=[getValues]}
 
 //source_records ::= source_record | variable | expression | name | token | body? | case_body? | macro
 source_records ::= source_record | variable | expression | word_name | token | case_body | macro
