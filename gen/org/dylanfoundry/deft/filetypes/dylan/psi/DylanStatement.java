@@ -20,6 +20,9 @@ public interface DylanStatement extends PsiElement {
   DylanBodyFragment getBodyFragment();
 
   @Nullable
+  DylanCaseStatement getCaseStatement();
+
+  @Nullable
   DylanEndClause getEndClause();
 
   @Nullable
@@ -30,6 +33,9 @@ public interface DylanStatement extends PsiElement {
 
   @Nullable
   DylanMethodStatement getMethodStatement();
+
+  @Nullable
+  DylanSelectStatement getSelectStatement();
 
   @Nullable
   DylanUnlessStatement getUnlessStatement();

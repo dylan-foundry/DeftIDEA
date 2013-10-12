@@ -23,24 +23,6 @@ public class DylanCaseLabelImpl extends ASTWrapperPsiElement implements DylanCas
     return findChildByClass(DylanExpression.class);
   }
 
-  @Override
-  @Nullable
-  public DylanExpressions getExpressions() {
-    return findChildByClass(DylanExpressions.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperandTails getOperandTails() {
-    return findChildByClass(DylanOperandTails.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnparenthesizedExpression getUnparenthesizedExpression() {
-    return findChildByClass(DylanUnparenthesizedExpression.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitCaseLabel(this);
     else super.accept(visitor);
