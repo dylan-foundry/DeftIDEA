@@ -18,6 +18,12 @@ public class DylanSourceRecordsImpl extends ASTWrapperPsiElement implements Dyla
   }
 
   @Override
+  @Nullable
+  public DylanCaseBody getCaseBody() {
+    return findChildByClass(DylanCaseBody.class);
+  }
+
+  @Override
   @NotNull
   public List<DylanDefinition> getDefinitionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
@@ -57,12 +63,6 @@ public class DylanSourceRecordsImpl extends ASTWrapperPsiElement implements Dyla
   @Nullable
   public DylanWordName getWordName() {
     return findChildByClass(DylanWordName.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getCaseBody() {
-    return findChildByType(CASE_BODY);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

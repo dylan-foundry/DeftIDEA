@@ -11,9 +11,9 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanCaseLabelImpl extends ASTWrapperPsiElement implements DylanCaseLabel {
+public class DylanCaseStmtLabelImpl extends ASTWrapperPsiElement implements DylanCaseStmtLabel {
 
-  public DylanCaseLabelImpl(ASTNode node) {
+  public DylanCaseStmtLabelImpl(ASTNode node) {
     super(node);
   }
 
@@ -23,26 +23,8 @@ public class DylanCaseLabelImpl extends ASTWrapperPsiElement implements DylanCas
     return findChildByClass(DylanExpression.class);
   }
 
-  @Override
-  @Nullable
-  public DylanExpressions getExpressions() {
-    return findChildByClass(DylanExpressions.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperandTails getOperandTails() {
-    return findChildByClass(DylanOperandTails.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnparenthesizedExpression getUnparenthesizedExpression() {
-    return findChildByClass(DylanUnparenthesizedExpression.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitCaseLabel(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitCaseStmtLabel(this);
     else super.accept(visitor);
   }
 

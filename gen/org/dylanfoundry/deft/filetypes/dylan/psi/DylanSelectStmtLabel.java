@@ -5,18 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCaseLabel extends PsiElement {
-
-  @Nullable
-  DylanExpression getExpression();
+public interface DylanSelectStmtLabel extends PsiElement {
 
   @Nullable
   DylanExpressions getExpressions();
-
-  @Nullable
-  DylanOperandTails getOperandTails();
-
-  @Nullable
-  DylanUnparenthesizedExpression getUnparenthesizedExpression();
 
 }

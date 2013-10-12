@@ -11,26 +11,14 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanCaseStatementImpl extends ASTWrapperPsiElement implements DylanCaseStatement {
+public class DylanSelectStmtTailImpl extends ASTWrapperPsiElement implements DylanSelectStmtTail {
 
-  public DylanCaseStatementImpl(ASTNode node) {
+  public DylanSelectStmtTailImpl(ASTNode node) {
     super(node);
   }
 
-  @Override
-  @NotNull
-  public List<DylanCaseStmtClause> getCaseStmtClauseList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanCaseStmtClause.class);
-  }
-
-  @Override
-  @NotNull
-  public DylanCaseStmtTail getCaseStmtTail() {
-    return findNotNullChildByClass(DylanCaseStmtTail.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitCaseStatement(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSelectStmtTail(this);
     else super.accept(visitor);
   }
 

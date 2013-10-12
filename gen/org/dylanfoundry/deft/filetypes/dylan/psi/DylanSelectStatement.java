@@ -11,6 +11,9 @@ public interface DylanSelectStatement extends PsiElement {
   List<DylanExpression> getExpressionList();
 
   @NotNull
-  List<DylanSelectClause> getSelectClauseList();
+  List<DylanSelectStmtClause> getSelectStmtClauseList();
+
+  @NotNull
+  DylanSelectStmtTail getSelectStmtTail();
 
 }

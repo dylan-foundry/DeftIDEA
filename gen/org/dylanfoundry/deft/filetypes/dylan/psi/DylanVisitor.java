@@ -99,7 +99,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitCaseClause(@NotNull DylanCaseClause o) {
+  public void visitCaseBody(@NotNull DylanCaseBody o) {
     visitPsiElement(o);
   }
 
@@ -116,6 +116,30 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitCaseStatement(@NotNull DylanCaseStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCaseStmtClause(@NotNull DylanCaseStmtClause o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCaseStmtConstituent(@NotNull DylanCaseStmtConstituent o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCaseStmtConstituents(@NotNull DylanCaseStmtConstituents o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCaseStmtLabel(@NotNull DylanCaseStmtLabel o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCaseStmtTail(@NotNull DylanCaseStmtTail o) {
+    visitPsiElement(o);
+  }
+
+  public void visitCases(@NotNull DylanCases o) {
     visitPsiElement(o);
   }
 
@@ -587,23 +611,27 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitSelectClause(@NotNull DylanSelectClause o) {
-    visitPsiElement(o);
-  }
-
-  public void visitSelectConstituent(@NotNull DylanSelectConstituent o) {
-    visitPsiElement(o);
-  }
-
-  public void visitSelectConstituents(@NotNull DylanSelectConstituents o) {
-    visitPsiElement(o);
-  }
-
-  public void visitSelectLabel(@NotNull DylanSelectLabel o) {
-    visitPsiElement(o);
-  }
-
   public void visitSelectStatement(@NotNull DylanSelectStatement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSelectStmtClause(@NotNull DylanSelectStmtClause o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSelectStmtConstituent(@NotNull DylanSelectStmtConstituent o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSelectStmtConstituents(@NotNull DylanSelectStmtConstituents o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSelectStmtLabel(@NotNull DylanSelectStmtLabel o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSelectStmtTail(@NotNull DylanSelectStmtTail o) {
     visitPsiElement(o);
   }
 

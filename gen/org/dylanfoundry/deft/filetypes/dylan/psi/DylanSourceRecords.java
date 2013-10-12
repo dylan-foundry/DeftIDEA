@@ -7,6 +7,9 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanSourceRecords extends PsiElement {
 
+  @Nullable
+  DylanCaseBody getCaseBody();
+
   @NotNull
   List<DylanDefinition> getDefinitionList();
 
@@ -27,8 +30,5 @@ public interface DylanSourceRecords extends PsiElement {
 
   @Nullable
   DylanWordName getWordName();
-
-  @Nullable
-  PsiElement getCaseBody();
 
 }

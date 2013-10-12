@@ -11,32 +11,26 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanSelectStatementImpl extends ASTWrapperPsiElement implements DylanSelectStatement {
+public class DylanCasesImpl extends ASTWrapperPsiElement implements DylanCases {
 
-  public DylanSelectStatementImpl(ASTNode node) {
+  public DylanCasesImpl(ASTNode node) {
     super(node);
   }
 
   @Override
   @NotNull
-  public List<DylanExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
+  public List<DylanCaseConstituents> getCaseConstituentsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanCaseConstituents.class);
   }
 
   @Override
   @NotNull
-  public List<DylanSelectStmtClause> getSelectStmtClauseList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanSelectStmtClause.class);
-  }
-
-  @Override
-  @NotNull
-  public DylanSelectStmtTail getSelectStmtTail() {
-    return findNotNullChildByClass(DylanSelectStmtTail.class);
+  public DylanCaseLabel getCaseLabel() {
+    return findNotNullChildByClass(DylanCaseLabel.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSelectStatement(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitCases(this);
     else super.accept(visitor);
   }
 

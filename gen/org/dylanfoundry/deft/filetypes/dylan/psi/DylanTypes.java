@@ -31,11 +31,17 @@ public interface DylanTypes {
   IElementType BRACKETED_FRAGMENT = new DylanElementType("BRACKETED_FRAGMENT");
   IElementType BRACKETED_PATTERN = new DylanElementType("BRACKETED_PATTERN");
   IElementType BRACKETING_PUNCTUATION = new DylanElementType("BRACKETING_PUNCTUATION");
-  IElementType CASE_CLAUSE = new DylanElementType("CASE_CLAUSE");
+  IElementType CASES = new DylanElementType("CASES");
+  IElementType CASE_BODY = new DylanElementType("CASE_BODY");
   IElementType CASE_CONSTITUENT = new DylanElementType("CASE_CONSTITUENT");
   IElementType CASE_CONSTITUENTS = new DylanElementType("CASE_CONSTITUENTS");
   IElementType CASE_LABEL = new DylanElementType("CASE_LABEL");
   IElementType CASE_STATEMENT = new DylanElementType("CASE_STATEMENT");
+  IElementType CASE_STMT_CLAUSE = new DylanElementType("CASE_STMT_CLAUSE");
+  IElementType CASE_STMT_CONSTITUENT = new DylanElementType("CASE_STMT_CONSTITUENT");
+  IElementType CASE_STMT_CONSTITUENTS = new DylanElementType("CASE_STMT_CONSTITUENTS");
+  IElementType CASE_STMT_LABEL = new DylanElementType("CASE_STMT_LABEL");
+  IElementType CASE_STMT_TAIL = new DylanElementType("CASE_STMT_TAIL");
   IElementType CLASS_DEFINITION_TAIL = new DylanElementType("CLASS_DEFINITION_TAIL");
   IElementType CLEANUP_STATEMENT = new DylanElementType("CLEANUP_STATEMENT");
   IElementType COLLECTION_CLAUSE = new DylanElementType("COLLECTION_CLAUSE");
@@ -153,11 +159,12 @@ public interface DylanTypes {
   IElementType RESERVED_WORD = new DylanElementType("RESERVED_WORD");
   IElementType REST_KEY_PARAMETER_LIST = new DylanElementType("REST_KEY_PARAMETER_LIST");
   IElementType RHS = new DylanElementType("RHS");
-  IElementType SELECT_CLAUSE = new DylanElementType("SELECT_CLAUSE");
-  IElementType SELECT_CONSTITUENT = new DylanElementType("SELECT_CONSTITUENT");
-  IElementType SELECT_CONSTITUENTS = new DylanElementType("SELECT_CONSTITUENTS");
-  IElementType SELECT_LABEL = new DylanElementType("SELECT_LABEL");
   IElementType SELECT_STATEMENT = new DylanElementType("SELECT_STATEMENT");
+  IElementType SELECT_STMT_CLAUSE = new DylanElementType("SELECT_STMT_CLAUSE");
+  IElementType SELECT_STMT_CONSTITUENT = new DylanElementType("SELECT_STMT_CONSTITUENT");
+  IElementType SELECT_STMT_CONSTITUENTS = new DylanElementType("SELECT_STMT_CONSTITUENTS");
+  IElementType SELECT_STMT_LABEL = new DylanElementType("SELECT_STMT_LABEL");
+  IElementType SELECT_STMT_TAIL = new DylanElementType("SELECT_STMT_TAIL");
   IElementType SEMICOLON_FRAGMENT = new DylanElementType("SEMICOLON_FRAGMENT");
   IElementType SEPARATOR = new DylanElementType("SEPARATOR");
   IElementType SHARED_SYMBOLS = new DylanElementType("SHARED_SYMBOLS");
@@ -205,7 +212,6 @@ public interface DylanTypes {
   IElementType BLOCK = new DylanTokenType("BLOCK");
   IElementType BY = new DylanTokenType("BY");
   IElementType CASE = new DylanTokenType("CASE");
-  IElementType CASE_BODY = new DylanTokenType("case_body");
   IElementType CHARACTER_LITERAL = new DylanTokenType("CHARACTER_LITERAL");
   IElementType CLASS = new DylanTokenType("CLASS");
   IElementType CLEANUP = new DylanTokenType("CLEANUP");
@@ -379,8 +385,11 @@ public interface DylanTypes {
       else if (type == BRACKETING_PUNCTUATION) {
         return new DylanBracketingPunctuationImpl(node);
       }
-      else if (type == CASE_CLAUSE) {
-        return new DylanCaseClauseImpl(node);
+      else if (type == CASES) {
+        return new DylanCasesImpl(node);
+      }
+      else if (type == CASE_BODY) {
+        return new DylanCaseBodyImpl(node);
       }
       else if (type == CASE_CONSTITUENT) {
         return new DylanCaseConstituentImpl(node);
@@ -393,6 +402,21 @@ public interface DylanTypes {
       }
       else if (type == CASE_STATEMENT) {
         return new DylanCaseStatementImpl(node);
+      }
+      else if (type == CASE_STMT_CLAUSE) {
+        return new DylanCaseStmtClauseImpl(node);
+      }
+      else if (type == CASE_STMT_CONSTITUENT) {
+        return new DylanCaseStmtConstituentImpl(node);
+      }
+      else if (type == CASE_STMT_CONSTITUENTS) {
+        return new DylanCaseStmtConstituentsImpl(node);
+      }
+      else if (type == CASE_STMT_LABEL) {
+        return new DylanCaseStmtLabelImpl(node);
+      }
+      else if (type == CASE_STMT_TAIL) {
+        return new DylanCaseStmtTailImpl(node);
       }
       else if (type == CLASS_DEFINITION_TAIL) {
         return new DylanClassDefinitionTailImpl(node);
@@ -745,20 +769,23 @@ public interface DylanTypes {
       else if (type == RHS) {
         return new DylanRhsImpl(node);
       }
-      else if (type == SELECT_CLAUSE) {
-        return new DylanSelectClauseImpl(node);
-      }
-      else if (type == SELECT_CONSTITUENT) {
-        return new DylanSelectConstituentImpl(node);
-      }
-      else if (type == SELECT_CONSTITUENTS) {
-        return new DylanSelectConstituentsImpl(node);
-      }
-      else if (type == SELECT_LABEL) {
-        return new DylanSelectLabelImpl(node);
-      }
       else if (type == SELECT_STATEMENT) {
         return new DylanSelectStatementImpl(node);
+      }
+      else if (type == SELECT_STMT_CLAUSE) {
+        return new DylanSelectStmtClauseImpl(node);
+      }
+      else if (type == SELECT_STMT_CONSTITUENT) {
+        return new DylanSelectStmtConstituentImpl(node);
+      }
+      else if (type == SELECT_STMT_CONSTITUENTS) {
+        return new DylanSelectStmtConstituentsImpl(node);
+      }
+      else if (type == SELECT_STMT_LABEL) {
+        return new DylanSelectStmtLabelImpl(node);
+      }
+      else if (type == SELECT_STMT_TAIL) {
+        return new DylanSelectStmtTailImpl(node);
       }
       else if (type == SEMICOLON_FRAGMENT) {
         return new DylanSemicolonFragmentImpl(node);
