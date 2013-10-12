@@ -25,7 +25,7 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.DylanConstantString;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanVariableName;
 import org.jetbrains.annotations.NotNull;
 
-public class DylanAnnotator implements Annotator {
+public class DylanSyntaxAnnotator implements Annotator {
   @Override
   public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
     if (element instanceof DylanConstantString) {
