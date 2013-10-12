@@ -3341,13 +3341,13 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // headers source_records
+  // headers source_records?
   static boolean dylanFile(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "dylanFile")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = headers(builder_, level_ + 1);
-    result_ = result_ && source_records(builder_, level_ + 1);
+    result_ = result_ && dylanFile_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3355,6 +3355,13 @@ public class DylanParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // source_records?
+  private static boolean dylanFile_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "dylanFile_1")) return false;
+    source_records(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */

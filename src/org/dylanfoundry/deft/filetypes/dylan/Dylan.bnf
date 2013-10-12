@@ -16,7 +16,7 @@
   psiImplUtilClass="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanPsiImplUtil"
 }
  
-dylanFile ::= headers source_records
+dylanFile ::= headers source_records?
 
 headers ::= header*
 
