@@ -64,6 +64,7 @@ STRING_ESCAPE=\\ ([\\abefnrt0\"]|x[a-fA-F0-9]{2,4}|[0-7]{1,3})
 
 STRING=\" ({STRING_ESCAPE}|[^\"])* \"
 
+%state WAITING_SEPARATOR
 %state WAITING_VALUE
 %state DYLAN_CODE
 %state COMMENT_BLOCK
@@ -74,20 +75,32 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
 %}
 %%
 
+// The logic here is that in YYINITIAL stage, were looking for:
+//  * a key and then a separator (WAITING_SEPARATOR),
+//  * a CRLF on a blank line to kick us into DYLAN_CODE
+//  * or whitespace to pick up an additional value for the current key.
+// While waiting for a separator, things are obvious.
+// While waiting for a value, we either get a value, ignore whitespace,
+//   or get a CRLF to return us to the initial stage.
+// We don't support comments in the header as that isn't standard.
+
 // Dylan header
 <YYINITIAL> {
-    {END_OF_LINE_COMMENT}                           { return DylanTypes.COMMENT; }
-    {CRLF}{CRLF}                                    { yybegin(DYLAN_CODE); return  DylanTypes.CRLF; }
-    {ALPHABETIC_CHARACTER}{KEY_CHARACTER}*          { return DylanTypes.KEY; }
-    {SEPARATOR}                                     { yybegin(WAITING_VALUE); return DylanTypes.HEADER_SEPARATOR; }
+    {ALPHABETIC_CHARACTER}{KEY_CHARACTER}*          { yybegin(WAITING_SEPARATOR); return DylanTypes.KEY; }
+    // This is intentionally returning whitespace instead as otherwise things break.
+    {CRLF}                                          { yybegin(DYLAN_CODE); return TokenType.WHITE_SPACE; }
     {WHITE_SPACE}+                                  { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-    {CRLF}                                          { return DylanTypes.CRLF; }
+}
+
+<WAITING_SEPARATOR> {
+    {SEPARATOR}                                     { yybegin(WAITING_VALUE); return DylanTypes.HEADER_SEPARATOR; }
+    {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
 }
 
 <WAITING_VALUE> {
     {CRLF}                                          { yybegin(YYINITIAL); return DylanTypes.CRLF; }
     {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
-    {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*       { yybegin(YYINITIAL); return DylanTypes.VALUE; }
+    {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*       { return DylanTypes.VALUE; }
 }
 
 // Dylan Code
