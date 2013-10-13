@@ -11,26 +11,20 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanNamespaceClausesImpl extends ASTWrapperPsiElement implements DylanNamespaceClauses {
+public class DylanRenameOptionImpl extends ASTWrapperPsiElement implements DylanRenameOption {
 
-  public DylanNamespaceClausesImpl(ASTNode node) {
+  public DylanRenameOptionImpl(ASTNode node) {
     super(node);
   }
 
   @Override
   @NotNull
-  public List<DylanNamespaceClause> getNamespaceClauseList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanNamespaceClause.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanSemicolonFragment> getSemicolonFragmentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanSemicolonFragment.class);
+  public List<DylanVariableName> getVariableNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNamespaceClauses(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitRenameOption(this);
     else super.accept(visitor);
   }
 

@@ -20,14 +20,20 @@ public class DylanDefinitionLibraryDefinerImpl extends DylanDefinerImpl implemen
 
   @Override
   @NotNull
+  public List<DylanExportClause> getExportClauseList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExportClause.class);
+  }
+
+  @Override
+  @NotNull
   public DylanLibraryDefinitionTail getLibraryDefinitionTail() {
     return findNotNullChildByClass(DylanLibraryDefinitionTail.class);
   }
 
   @Override
-  @Nullable
-  public DylanNamespaceClauses getNamespaceClauses() {
-    return findChildByClass(DylanNamespaceClauses.class);
+  @NotNull
+  public List<DylanUseClause> getUseClauseList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanUseClause.class);
   }
 
   @Override

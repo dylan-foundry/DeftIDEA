@@ -11,32 +11,26 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanNamespaceClauseOptionsImpl extends ASTWrapperPsiElement implements DylanNamespaceClauseOptions {
+public class DylanExportClauseImpl extends ASTWrapperPsiElement implements DylanExportClause {
 
-  public DylanNamespaceClauseOptionsImpl(ASTNode node) {
+  public DylanExportClauseImpl(ASTNode node) {
     super(node);
   }
 
   @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
+  @NotNull
+  public List<DylanEscapedName> getEscapedNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanEscapedName.class);
   }
 
   @Override
   @NotNull
-  public List<DylanNamespaceClauseOption> getNamespaceClauseOptionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanNamespaceClauseOption.class);
-  }
-
-  @Override
-  @NotNull
-  public DylanSymbol getSymbol() {
-    return findNotNullChildByClass(DylanSymbol.class);
+  public List<DylanNonexpressionWord> getNonexpressionWordList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanNonexpressionWord.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNamespaceClauseOptions(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitExportClause(this);
     else super.accept(visitor);
   }
 

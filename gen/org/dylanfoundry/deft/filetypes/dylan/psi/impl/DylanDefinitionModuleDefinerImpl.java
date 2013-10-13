@@ -20,14 +20,26 @@ public class DylanDefinitionModuleDefinerImpl extends DylanDefinerImpl implement
 
   @Override
   @NotNull
+  public List<DylanCreateClause> getCreateClauseList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanCreateClause.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanExportClause> getExportClauseList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExportClause.class);
+  }
+
+  @Override
+  @NotNull
   public DylanModuleDefinitionTail getModuleDefinitionTail() {
     return findNotNullChildByClass(DylanModuleDefinitionTail.class);
   }
 
   @Override
-  @Nullable
-  public DylanNamespaceClauses getNamespaceClauses() {
-    return findChildByClass(DylanNamespaceClauses.class);
+  @NotNull
+  public List<DylanUseClause> getUseClauseList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanUseClause.class);
   }
 
   @Override

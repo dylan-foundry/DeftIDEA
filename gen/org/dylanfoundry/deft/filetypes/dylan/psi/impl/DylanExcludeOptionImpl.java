@@ -11,16 +11,10 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanNamespaceClauseImpl extends ASTWrapperPsiElement implements DylanNamespaceClause {
+public class DylanExcludeOptionImpl extends ASTWrapperPsiElement implements DylanExcludeOption {
 
-  public DylanNamespaceClauseImpl(ASTNode node) {
+  public DylanExcludeOptionImpl(ASTNode node) {
     super(node);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanNamespaceClauseOptions> getNamespaceClauseOptionsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanNamespaceClauseOptions.class);
   }
 
   @Override
@@ -30,7 +24,7 @@ public class DylanNamespaceClauseImpl extends ASTWrapperPsiElement implements Dy
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNamespaceClause(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitExcludeOption(this);
     else super.accept(visitor);
   }
 
