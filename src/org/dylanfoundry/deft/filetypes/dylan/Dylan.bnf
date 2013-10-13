@@ -283,7 +283,8 @@ import_option ::= KEYWORD (ALL|LBRACE variable_specs RBRACE)
 
 private variable_specs ::= (variable_spec (COMMA variable_spec)*)?
 
-variable_spec ::= variable_name (EQUAL_ARROW variable_name)?
+// TODO: Remove the NONDEFINING_BEGIN_WORD when the macro hacks are gone.
+variable_spec ::= (variable_name | NONDEFINING_BEGIN_WORD) (EQUAL_ARROW (variable_name | NONDEFINING_BEGIN_WORD))?
 
 exclude_option ::= KEYWORD LBRACE (variable_name (COMMA variable_name)*)? RBRACE
 
@@ -291,7 +292,7 @@ prefix_option ::= KEYWORD string
 
 rename_option ::= KEYWORD LBRACE (variable_name EQUAL_ARROW variable_name (COMMA variable_name EQUAL_ARROW variable_name)*)? RBRACE
 
-export_option ::= KEYWORD (ALL|LBRACE (variable_name (COMMA variable_name)*)? RBRACE)
+export_option ::= KEYWORD (ALL|LBRACE ((variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*)? RBRACE)
 
 definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_set? macro_definition_tail
   {
