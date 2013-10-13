@@ -10,10 +10,16 @@ import com.intellij.navigation.ItemPresentation;
 public interface DylanDefinitionModuleDefiner extends DylanDefiner {
 
   @NotNull
+  List<DylanCreateClause> getCreateClauseList();
+
+  @NotNull
+  List<DylanExportClause> getExportClauseList();
+
+  @NotNull
   DylanModuleDefinitionTail getModuleDefinitionTail();
 
-  @Nullable
-  DylanNamespaceClauses getNamespaceClauses();
+  @NotNull
+  List<DylanUseClause> getUseClauseList();
 
   @NotNull
   DylanVariableName getVariableName();
