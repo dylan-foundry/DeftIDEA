@@ -11,9 +11,9 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanNamespaceClauseOptionImpl extends ASTWrapperPsiElement implements DylanNamespaceClauseOption {
+public class DylanVariableSpecImpl extends ASTWrapperPsiElement implements DylanVariableSpec {
 
-  public DylanNamespaceClauseOptionImpl(ASTNode node) {
+  public DylanVariableSpecImpl(ASTNode node) {
     super(node);
   }
 
@@ -24,7 +24,7 @@ public class DylanNamespaceClauseOptionImpl extends ASTWrapperPsiElement impleme
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNamespaceClauseOption(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitVariableSpec(this);
     else super.accept(visitor);
   }
 

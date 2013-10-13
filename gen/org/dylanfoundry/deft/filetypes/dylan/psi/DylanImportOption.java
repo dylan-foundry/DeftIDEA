@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNamespaceClause extends PsiElement {
+public interface DylanImportOption extends PsiElement {
 
   @NotNull
-  List<DylanNamespaceClauseOptions> getNamespaceClauseOptionsList();
-
-  @NotNull
-  List<DylanVariableName> getVariableNameList();
+  List<DylanVariableSpec> getVariableSpecList();
 
 }
