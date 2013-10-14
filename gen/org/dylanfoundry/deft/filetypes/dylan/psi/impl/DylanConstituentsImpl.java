@@ -11,32 +11,32 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanExceptionStatementImpl extends ASTWrapperPsiElement implements DylanExceptionStatement {
+public class DylanConstituentsImpl extends ASTWrapperPsiElement implements DylanConstituents {
 
-  public DylanExceptionStatementImpl(ASTNode node) {
+  public DylanConstituentsImpl(ASTNode node) {
     super(node);
   }
 
   @Override
-  @Nullable
-  public DylanBody getBody() {
-    return findChildByClass(DylanBody.class);
+  @NotNull
+  public List<DylanDefinition> getDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
   }
 
   @Override
   @NotNull
-  public List<DylanExceptionOptions> getExceptionOptionsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExceptionOptions.class);
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
   }
 
   @Override
   @NotNull
-  public DylanVariable getVariable() {
-    return findNotNullChildByClass(DylanVariable.class);
+  public List<DylanLocalDeclaration> getLocalDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitExceptionStatement(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitConstituents(this);
     else super.accept(visitor);
   }
 

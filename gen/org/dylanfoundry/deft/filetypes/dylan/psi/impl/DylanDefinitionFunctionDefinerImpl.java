@@ -19,27 +19,15 @@ public class DylanDefinitionFunctionDefinerImpl extends DylanDefinerImpl impleme
   }
 
   @Override
-  @NotNull
-  public List<DylanDefinition> getDefinitionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
+  @Nullable
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
   }
 
   @Override
   @NotNull
   public DylanFunctionDefinitionTail getFunctionDefinitionTail() {
     return findNotNullChildByClass(DylanFunctionDefinitionTail.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanLocalDeclaration> getLocalDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   @Override

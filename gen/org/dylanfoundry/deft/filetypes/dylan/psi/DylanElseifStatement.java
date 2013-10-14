@@ -7,13 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanElseifStatement extends PsiElement {
 
-  @NotNull
-  List<DylanDefinition> getDefinitionList();
+  @Nullable
+  DylanBody getBody();
 
   @NotNull
-  List<DylanExpression> getExpressionList();
-
-  @NotNull
-  List<DylanLocalDeclaration> getLocalDeclarationList();
+  DylanExpression getExpression();
 
 }

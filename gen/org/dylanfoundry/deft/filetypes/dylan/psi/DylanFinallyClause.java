@@ -7,13 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanFinallyClause extends PsiElement {
 
-  @NotNull
-  List<DylanDefinition> getDefinitionList();
-
-  @NotNull
-  List<DylanExpression> getExpressionList();
-
-  @NotNull
-  List<DylanLocalDeclaration> getLocalDeclarationList();
+  @Nullable
+  DylanBody getBody();
 
 }

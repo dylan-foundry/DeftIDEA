@@ -14,19 +14,13 @@ public interface DylanBlockStatement extends PsiElement {
   DylanBlockTail getBlockTail();
 
   @Nullable
+  DylanBody getBody();
+
+  @Nullable
   DylanCleanupStatement getCleanupStatement();
 
   @NotNull
-  List<DylanDefinition> getDefinitionList();
-
-  @NotNull
   List<DylanExceptionStatement> getExceptionStatementList();
-
-  @NotNull
-  List<DylanExpression> getExpressionList();
-
-  @NotNull
-  List<DylanLocalDeclaration> getLocalDeclarationList();
 
   @Nullable
   DylanVariableName getVariableName();

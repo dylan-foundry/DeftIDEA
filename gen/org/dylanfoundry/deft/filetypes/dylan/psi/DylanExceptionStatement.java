@@ -7,17 +7,11 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanExceptionStatement extends PsiElement {
 
-  @NotNull
-  List<DylanDefinition> getDefinitionList();
+  @Nullable
+  DylanBody getBody();
 
   @NotNull
   List<DylanExceptionOptions> getExceptionOptionsList();
-
-  @NotNull
-  List<DylanExpression> getExpressionList();
-
-  @NotNull
-  List<DylanLocalDeclaration> getLocalDeclarationList();
 
   @NotNull
   DylanVariable getVariable();

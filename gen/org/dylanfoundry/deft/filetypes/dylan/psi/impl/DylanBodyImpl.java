@@ -11,26 +11,20 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanElseifStatementImpl extends ASTWrapperPsiElement implements DylanElseifStatement {
+public class DylanBodyImpl extends ASTWrapperPsiElement implements DylanBody {
 
-  public DylanElseifStatementImpl(ASTNode node) {
+  public DylanBodyImpl(ASTNode node) {
     super(node);
   }
 
   @Override
-  @Nullable
-  public DylanBody getBody() {
-    return findChildByClass(DylanBody.class);
-  }
-
-  @Override
   @NotNull
-  public DylanExpression getExpression() {
-    return findNotNullChildByClass(DylanExpression.class);
+  public DylanConstituents getConstituents() {
+    return findNotNullChildByClass(DylanConstituents.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitElseifStatement(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBody(this);
     else super.accept(visitor);
   }
 

@@ -18,21 +18,15 @@ public class DylanWhileStatementImpl extends ASTWrapperPsiElement implements Dyl
   }
 
   @Override
-  @NotNull
-  public List<DylanDefinition> getDefinitionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
+  @Nullable
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
   }
 
   @Override
   @NotNull
-  public List<DylanExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanLocalDeclaration> getLocalDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
+  public DylanExpression getExpression() {
+    return findNotNullChildByClass(DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

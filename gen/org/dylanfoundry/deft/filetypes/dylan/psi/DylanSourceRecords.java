@@ -8,16 +8,13 @@ import com.intellij.psi.PsiElement;
 public interface DylanSourceRecords extends PsiElement {
 
   @Nullable
+  DylanBody getBody();
+
+  @Nullable
   DylanCaseBody getCaseBody();
 
-  @NotNull
-  List<DylanDefinition> getDefinitionList();
-
-  @NotNull
-  List<DylanExpression> getExpressionList();
-
-  @NotNull
-  List<DylanLocalDeclaration> getLocalDeclarationList();
+  @Nullable
+  DylanExpression getExpression();
 
   @Nullable
   DylanMacro getMacro();

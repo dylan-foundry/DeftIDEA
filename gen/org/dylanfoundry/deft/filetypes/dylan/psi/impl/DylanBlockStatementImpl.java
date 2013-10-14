@@ -31,32 +31,20 @@ public class DylanBlockStatementImpl extends ASTWrapperPsiElement implements Dyl
 
   @Override
   @Nullable
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
+  }
+
+  @Override
+  @Nullable
   public DylanCleanupStatement getCleanupStatement() {
     return findChildByClass(DylanCleanupStatement.class);
   }
 
   @Override
   @NotNull
-  public List<DylanDefinition> getDefinitionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
-  }
-
-  @Override
-  @NotNull
   public List<DylanExceptionStatement> getExceptionStatementList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExceptionStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanExpression> getExpressionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanLocalDeclaration> getLocalDeclarationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   @Override

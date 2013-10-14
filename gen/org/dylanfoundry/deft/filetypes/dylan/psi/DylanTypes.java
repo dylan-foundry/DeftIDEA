@@ -26,6 +26,7 @@ public interface DylanTypes {
   IElementType BINDING_PATTERN = new DylanElementType("BINDING_PATTERN");
   IElementType BLOCK_STATEMENT = new DylanElementType("BLOCK_STATEMENT");
   IElementType BLOCK_TAIL = new DylanElementType("BLOCK_TAIL");
+  IElementType BODY = new DylanElementType("BODY");
   IElementType BODY_FRAGMENT = new DylanElementType("BODY_FRAGMENT");
   IElementType BODY_STYLE_DEFINITION_RULE = new DylanElementType("BODY_STYLE_DEFINITION_RULE");
   IElementType BODY_STYLE_DEFINITION_RULES = new DylanElementType("BODY_STYLE_DEFINITION_RULES");
@@ -52,6 +53,7 @@ public interface DylanTypes {
   IElementType CONSTANTS = new DylanElementType("CONSTANTS");
   IElementType CONSTANT_FRAGMENT = new DylanElementType("CONSTANT_FRAGMENT");
   IElementType CONSTANT_STRING = new DylanElementType("CONSTANT_STRING");
+  IElementType CONSTITUENTS = new DylanElementType("CONSTITUENTS");
   IElementType CORE_WORD = new DylanElementType("CORE_WORD");
   IElementType CREATE_CLAUSE = new DylanElementType("CREATE_CLAUSE");
   IElementType DEFAULT_VALUE = new DylanElementType("DEFAULT_VALUE");
@@ -400,6 +402,9 @@ public interface DylanTypes {
       else if (type == BLOCK_TAIL) {
         return new DylanBlockTailImpl(node);
       }
+      else if (type == BODY) {
+        return new DylanBodyImpl(node);
+      }
       else if (type == BODY_FRAGMENT) {
         return new DylanBodyFragmentImpl(node);
       }
@@ -477,6 +482,9 @@ public interface DylanTypes {
       }
       else if (type == CONSTANT_STRING) {
         return new DylanConstantStringImpl(node);
+      }
+      else if (type == CONSTITUENTS) {
+        return new DylanConstituentsImpl(node);
       }
       else if (type == CORE_WORD) {
         return new DylanCoreWordImpl(node);

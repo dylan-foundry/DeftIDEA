@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanIfStatement extends PsiElement {
 
-  @NotNull
-  List<DylanDefinition> getDefinitionList();
+  @Nullable
+  DylanBody getBody();
 
   @Nullable
   DylanElseStatement getElseStatement();
@@ -17,12 +17,9 @@ public interface DylanIfStatement extends PsiElement {
   List<DylanElseifStatement> getElseifStatementList();
 
   @NotNull
-  List<DylanExpression> getExpressionList();
+  DylanExpression getExpression();
 
   @NotNull
   DylanIfTail getIfTail();
-
-  @NotNull
-  List<DylanLocalDeclaration> getLocalDeclarationList();
 
 }

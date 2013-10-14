@@ -37,7 +37,7 @@ import java.util.*;
 
 public class DylanClassIndex extends ScalarIndexExtension<String> {
   public static final ID<String, Void> DYLAN_SYMBOL_INDEX = ID.create("DylanClassIndex");
-  private static final int INDEX_VERSION = 2;
+  private static final int INDEX_VERSION = 3;
   private DataIndexer<String, Void, FileContent> myDataIndexer = new MyDataIndexer();
 
   @NotNull
@@ -121,8 +121,11 @@ public class DylanClassIndex extends ScalarIndexExtension<String> {
     if (records == null) {
       return;
     }
-    final DylanDefinition[] definitions = PsiTreeUtil.getChildrenOfType(records, DylanDefinition.class);
-    if (definitions == null) {
+    if ((records.getBody() == null) || (records.getBody().getConstituents() == null)) {
+      return;
+    }
+    final List<DylanDefinition> definitions = records.getBody().getConstituents().getDefinitionList();
+    if (definitions.isEmpty()) {
       return;
     }
     for (DylanDefinition definition : definitions) {

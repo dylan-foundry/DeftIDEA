@@ -100,9 +100,9 @@ binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | E
 // FIXME: original is body?
 private source_record ::= body
 
-private body ::= constituents SEMICOLON?
+body ::= constituents SEMICOLON?
 
-private constituents ::= constituent (SEMICOLON constituent)* | COMMENT
+constituents ::= constituent (SEMICOLON constituent)* | COMMENT
 
 private constituent ::= non_expression_constituent | expression
 

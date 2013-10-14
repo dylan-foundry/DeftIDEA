@@ -77,6 +77,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == BLOCK_TAIL) {
       result_ = block_tail(builder_, level_ + 1);
     }
+    else if (root_ == BODY) {
+      result_ = body(builder_, level_ + 1);
+    }
     else if (root_ == BODY_FRAGMENT) {
       result_ = body_fragment(builder_, level_ + 1);
     }
@@ -154,6 +157,9 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == CONSTANTS) {
       result_ = constants(builder_, level_ + 1);
+    }
+    else if (root_ == CONSTITUENTS) {
+      result_ = constituents(builder_, level_ + 1);
     }
     else if (root_ == CORE_WORD) {
       result_ = core_word(builder_, level_ + 1);
@@ -1264,18 +1270,20 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // constituents SEMICOLON?
-  static boolean body(PsiBuilder builder_, int level_) {
+  public static boolean body(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "body")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<body>");
     result_ = constituents(builder_, level_ + 1);
     result_ = result_ && body_1(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
+    if (result_) {
+      marker_.done(BODY);
     }
     else {
-      marker_.drop();
+      marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
@@ -2497,18 +2505,20 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // constituent (SEMICOLON constituent)* | COMMENT
-  static boolean constituents(PsiBuilder builder_, int level_) {
+  public static boolean constituents(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constituents")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<constituents>");
     result_ = constituents_0(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, COMMENT);
-    if (!result_) {
-      marker_.rollbackTo();
+    if (result_) {
+      marker_.done(CONSTITUENTS);
     }
     else {
-      marker_.drop();
+      marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 

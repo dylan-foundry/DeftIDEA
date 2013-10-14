@@ -77,9 +77,9 @@ public class DylanStructureViewElement implements StructureViewTreeElement, Sort
   public TreeElement[] getChildren() {
     if (element instanceof DylanFile) {
       DylanSourceRecords sourceRecords = PsiTreeUtil.getChildOfType(element, DylanSourceRecords.class);
-      DylanDefinition[] definitions = PsiTreeUtil.getChildrenOfType(sourceRecords, DylanDefinition.class);
-      if (definitions != null) {
-        List<TreeElement> treeElements = new ArrayList<TreeElement>(definitions.length);
+      List<DylanDefinition> definitions = sourceRecords.getBody().getConstituents().getDefinitionList();
+      if (!definitions.isEmpty()) {
+        List<TreeElement> treeElements = new ArrayList<TreeElement>(definitions.size());
         for (DylanDefinition definition : definitions) {
           treeElements.add(new DylanStructureViewElement(definition));
         }
