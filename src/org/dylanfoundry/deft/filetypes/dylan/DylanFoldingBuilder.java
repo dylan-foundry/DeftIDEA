@@ -44,30 +44,34 @@ public class DylanFoldingBuilder implements FoldingBuilder, DumbAware {
     if (isSingleLine(node.getPsi(), document)) {
       return;
     }
-    TextRange textRange = new TextRange(0, 0);
     PsiElement element = node.getPsi();
+
+    int beginOffset = 0;
+    int endOffset = node.getTextRange().getEndOffset();
+    boolean canFold = false;
     if (node.getElementType() == DylanTypes.DEFINITION_CLASS_DEFINER) {
       DylanDefinitionClassDefiner c = ((DylanDefinitionClassDefiner)element);
-      textRange = new TextRange(c.getVariableName().getTextRange().getEndOffset(),
-              c.getClassDefinitionTail().getTextRange().getEndOffset());
+      beginOffset = c.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
     } else if (node.getElementType() == DylanTypes.DEFINITION_METHOD_DEFINER) {
       DylanDefinitionMethodDefiner m = ((DylanDefinitionMethodDefiner)element);
-      textRange = new TextRange(m.getVariableName().getTextRange().getEndOffset() - 1,
-              m.getMethodDefinitionTail().getTextRange().getEndOffset());
+      beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
     } else if (node.getElementType() == DylanTypes.DEFINITION_FUNCTION_DEFINER) {
       DylanDefinitionFunctionDefiner f = ((DylanDefinitionFunctionDefiner)element);
-      textRange = new TextRange(f.getVariableName().getTextRange().getEndOffset() - 1,
-              f.getFunctionDefinitionTail().getTextRange().getEndOffset());
+      beginOffset = f.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
     } else if (node.getElementType() == DylanTypes.DEFINITION_LIBRARY_DEFINER) {
-      DylanDefinitionLibraryDefiner f = ((DylanDefinitionLibraryDefiner)element);
-      textRange = new TextRange(f.getVariableName().getTextRange().getEndOffset() - 1,
-              f.getLibraryDefinitionTail().getTextRange().getEndOffset());
+      DylanDefinitionLibraryDefiner l = ((DylanDefinitionLibraryDefiner)element);
+      beginOffset = l.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
     } else if (node.getElementType() == DylanTypes.DEFINITION_MODULE_DEFINER) {
-      DylanDefinitionModuleDefiner f = ((DylanDefinitionModuleDefiner)element);
-      textRange = new TextRange(f.getVariableName().getTextRange().getEndOffset() - 1,
-              f.getModuleDefinitionTail().getTextRange().getEndOffset());
+      DylanDefinitionModuleDefiner m = ((DylanDefinitionModuleDefiner)element);
+      beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
     }
-    if (textRange.getLength() > 1) {
+    if (canFold) {
+      TextRange textRange = new TextRange(beginOffset, endOffset);
       list.add(new FoldingDescriptor(node, textRange));
     }
     for (ASTNode child : node.getChildren(null)) {
