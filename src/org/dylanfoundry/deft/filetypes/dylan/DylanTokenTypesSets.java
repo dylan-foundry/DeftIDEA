@@ -44,8 +44,10 @@ public interface DylanTokenTypesSets {
   );
 
   TokenSet RESERVED = TokenSet.create(
+    DylanTypes.CREATE,
     DylanTypes.DEFINE,
     DylanTypes.END,
+    DylanTypes.EXPORT,
     DylanTypes.NONDEFINING_BEGIN_WORD,
     DylanTypes.LET,
     DylanTypes.BEGIN,
@@ -72,6 +74,7 @@ public interface DylanTokenTypesSets {
     DylanTypes.SELECT,
     DylanTypes.UNLESS,
     DylanTypes.UNTIL,
+    DylanTypes.USE,
     DylanTypes.WHEN,
     DylanTypes.WHILE
   );
