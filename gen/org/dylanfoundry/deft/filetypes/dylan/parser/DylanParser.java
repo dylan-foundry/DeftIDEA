@@ -2821,7 +2821,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? CONSTANT_T list_fragment?
+  // DEFINE modifiers? CONSTANT_T (variable | variable_list) EQUAL expression
   public static boolean definition_constant_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_constant_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -2831,6 +2831,8 @@ public class DylanParser implements PsiParser {
     result_ = result_ && definition_constant_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, CONSTANT_T);
     result_ = result_ && definition_constant_definer_3(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EQUAL);
+    result_ = result_ && expression(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_CONSTANT_DEFINER);
     }
@@ -2847,11 +2849,20 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // list_fragment?
+  // variable | variable_list
   private static boolean definition_constant_definer_3(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_constant_definer_3")) return false;
-    list_fragment(builder_, level_ + 1);
-    return true;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable(builder_, level_ + 1);
+    if (!result_) result_ = variable_list(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
   }
 
   /* ********************************************************** */
@@ -3365,7 +3376,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? VARIABLE_T list_fragment?
+  // DEFINE modifiers? VARIABLE_T (variable | variable_list) EQUAL expression
   public static boolean definition_variable_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_variable_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -3375,6 +3386,8 @@ public class DylanParser implements PsiParser {
     result_ = result_ && definition_variable_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, VARIABLE_T);
     result_ = result_ && definition_variable_definer_3(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EQUAL);
+    result_ = result_ && expression(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_VARIABLE_DEFINER);
     }
@@ -3391,11 +3404,20 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // list_fragment?
+  // variable | variable_list
   private static boolean definition_variable_definer_3(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_variable_definer_3")) return false;
-    list_fragment(builder_, level_ + 1);
-    return true;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable(builder_, level_ + 1);
+    if (!result_) result_ = variable_list(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
   }
 
   /* ********************************************************** */

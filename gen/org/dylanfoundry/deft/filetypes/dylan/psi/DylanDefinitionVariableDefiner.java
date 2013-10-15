@@ -9,29 +9,17 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionVariableDefiner extends DylanDefiner {
 
-  @Nullable
-  DylanBracketedFragment getBracketedFragment();
-
-  @Nullable
-  DylanConstantFragment getConstantFragment();
-
-  @Nullable
-  DylanFunctionMacroCall getFunctionMacroCall();
-
-  @Nullable
-  DylanHashWord getHashWord();
+  @NotNull
+  DylanExpression getExpression();
 
   @Nullable
   DylanModifiers getModifiers();
 
   @Nullable
-  DylanStatement getStatement();
+  DylanVariable getVariable();
 
   @Nullable
-  DylanVariableName getVariableName();
-
-  @Nullable
-  PsiElement getOperator();
+  DylanVariableList getVariableList();
 
   String getName();
 

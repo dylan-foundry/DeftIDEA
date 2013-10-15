@@ -215,7 +215,7 @@ init_specifications ::= (COMMA init_specification)+
 
 init_specification ::= symbol expression
 
-definition_constant_definer ::= DEFINE modifiers? CONSTANT_T list_fragment?
+definition_constant_definer ::= DEFINE modifiers? CONSTANT_T (variable | variable_list) EQUAL expression
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
@@ -317,7 +317,7 @@ shared_symbols_definition_tail ::= END SHARED_SYMBOLS_T variable_name? | END var
 
 shared_symbols ::= (symbol (COMMA symbol)*)?
 
-definition_variable_definer ::= DEFINE modifiers? VARIABLE_T list_fragment?
+definition_variable_definer ::= DEFINE modifiers? VARIABLE_T (variable | variable_list) EQUAL expression
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"

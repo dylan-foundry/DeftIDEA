@@ -64,7 +64,11 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionConstantDefiner element) {
-    return element.getVariableName().getText();
+    PsiElement nameIdentifier = getNameIdentifier(element);
+    if (nameIdentifier != null) {
+      return nameIdentifier.getText();
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionConstantDefiner element, @NotNull String newName) {
@@ -72,7 +76,12 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionConstantDefiner element) {
-    return element.getVariableName();
+    if (element.getVariable() != null) {
+      return element.getVariable();
+    } else if (element.getVariableList() != null) {
+      return element.getVariableList();
+    }
+    return null;
   }
 
   public static Icon getPresentationIcon(DylanDefinitionConstantDefiner element) {
@@ -208,7 +217,11 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionVariableDefiner element) {
-    return element.getVariableName().getText();
+    PsiElement nameIdentifier = getNameIdentifier(element);
+    if (nameIdentifier != null) {
+      return nameIdentifier.getText();
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionVariableDefiner element, @NotNull String newName) {
@@ -216,7 +229,12 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionVariableDefiner element) {
-    return element.getVariableName();
+    if (element.getVariable() != null) {
+      return element.getVariable();
+    } else if (element.getVariableList() != null) {
+      return element.getVariableList();
+    }
+    return null;
   }
 
   public static Icon getPresentationIcon(DylanDefinitionVariableDefiner element) {
