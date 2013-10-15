@@ -11,20 +11,20 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanInitSpecificationsImpl extends ASTWrapperPsiElement implements DylanInitSpecifications {
+public class DylanInitValueOptionImpl extends ASTWrapperPsiElement implements DylanInitValueOption {
 
-  public DylanInitSpecificationsImpl(ASTNode node) {
+  public DylanInitValueOptionImpl(ASTNode node) {
     super(node);
   }
 
   @Override
   @NotNull
-  public List<DylanInitSpecification> getInitSpecificationList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanInitSpecification.class);
+  public DylanExpression getExpression() {
+    return findNotNullChildByClass(DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitInitSpecifications(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitInitValueOption(this);
     else super.accept(visitor);
   }
 

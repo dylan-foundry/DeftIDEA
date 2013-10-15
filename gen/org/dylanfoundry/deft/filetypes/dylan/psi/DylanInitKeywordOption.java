@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanInitSpecifications extends PsiElement {
+public interface DylanInitKeywordOption extends PsiElement {
 
   @NotNull
-  List<DylanInitSpecification> getInitSpecificationList();
+  DylanSymbol getSymbol();
 
 }

@@ -9,6 +9,7 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.impl.*;
 public interface DylanTypes {
 
   IElementType AFTERWARDS_STATEMENT = new DylanElementType("AFTERWARDS_STATEMENT");
+  IElementType ALLOCATION = new DylanElementType("ALLOCATION");
   IElementType AND_EXPR = new DylanElementType("AND_EXPR");
   IElementType ARGUMENT = new DylanElementType("ARGUMENT");
   IElementType ARGUMENTS = new DylanElementType("ARGUMENTS");
@@ -111,8 +112,16 @@ public interface DylanTypes {
   IElementType IF_STATEMENT = new DylanElementType("IF_STATEMENT");
   IElementType IF_TAIL = new DylanElementType("IF_TAIL");
   IElementType IMPORT_OPTION = new DylanElementType("IMPORT_OPTION");
-  IElementType INIT_SPECIFICATION = new DylanElementType("INIT_SPECIFICATION");
-  IElementType INIT_SPECIFICATIONS = new DylanElementType("INIT_SPECIFICATIONS");
+  IElementType INHERITED_OPTION = new DylanElementType("INHERITED_OPTION");
+  IElementType INHERITED_OPTIONS = new DylanElementType("INHERITED_OPTIONS");
+  IElementType INHERITED_SLOT_SPEC = new DylanElementType("INHERITED_SLOT_SPEC");
+  IElementType INIT_ARG_OPTION = new DylanElementType("INIT_ARG_OPTION");
+  IElementType INIT_ARG_OPTIONS = new DylanElementType("INIT_ARG_OPTIONS");
+  IElementType INIT_ARG_SPEC = new DylanElementType("INIT_ARG_SPEC");
+  IElementType INIT_EXPRESSION = new DylanElementType("INIT_EXPRESSION");
+  IElementType INIT_FUNCTION_OPTION = new DylanElementType("INIT_FUNCTION_OPTION");
+  IElementType INIT_KEYWORD_OPTION = new DylanElementType("INIT_KEYWORD_OPTION");
+  IElementType INIT_VALUE_OPTION = new DylanElementType("INIT_VALUE_OPTION");
   IElementType KEYED_BY_CLAUSE = new DylanElementType("KEYED_BY_CLAUSE");
   IElementType KEYWORD_PARAMETER = new DylanElementType("KEYWORD_PARAMETER");
   IElementType KEYWORD_PARAMETERS = new DylanElementType("KEYWORD_PARAMETERS");
@@ -174,6 +183,7 @@ public interface DylanTypes {
   IElementType PROPERTY_LIST_PATTERN = new DylanElementType("PROPERTY_LIST_PATTERN");
   IElementType PUNCTUATION = new DylanElementType("PUNCTUATION");
   IElementType RENAME_OPTION = new DylanElementType("RENAME_OPTION");
+  IElementType REQUIRED_INIT_KEYWORD_OPTION = new DylanElementType("REQUIRED_INIT_KEYWORD_OPTION");
   IElementType REQUIRED_PARAMETER = new DylanElementType("REQUIRED_PARAMETER");
   IElementType REQUIRED_PARAMETERS = new DylanElementType("REQUIRED_PARAMETERS");
   IElementType RESERVED_WORD = new DylanElementType("RESERVED_WORD");
@@ -187,11 +197,15 @@ public interface DylanTypes {
   IElementType SELECT_STMT_TAIL = new DylanElementType("SELECT_STMT_TAIL");
   IElementType SEMICOLON_FRAGMENT = new DylanElementType("SEMICOLON_FRAGMENT");
   IElementType SEPARATOR = new DylanElementType("SEPARATOR");
+  IElementType SETTER_OPTION = new DylanElementType("SETTER_OPTION");
   IElementType SHARED_SYMBOLS = new DylanElementType("SHARED_SYMBOLS");
   IElementType SHARED_SYMBOLS_DEFINITION_TAIL = new DylanElementType("SHARED_SYMBOLS_DEFINITION_TAIL");
   IElementType SIMPLE_PATTERN = new DylanElementType("SIMPLE_PATTERN");
-  IElementType SLOT_DECLARATION = new DylanElementType("SLOT_DECLARATION");
+  IElementType SLOT_ADJECTIVE = new DylanElementType("SLOT_ADJECTIVE");
   IElementType SLOT_DECLARATIONS = new DylanElementType("SLOT_DECLARATIONS");
+  IElementType SLOT_OPTION = new DylanElementType("SLOT_OPTION");
+  IElementType SLOT_OPTIONS = new DylanElementType("SLOT_OPTIONS");
+  IElementType SLOT_SPEC = new DylanElementType("SLOT_SPEC");
   IElementType SOURCE_RECORDS = new DylanElementType("SOURCE_RECORDS");
   IElementType STATEMENT = new DylanElementType("STATEMENT");
   IElementType STATEMENT_RULE = new DylanElementType("STATEMENT_RULE");
@@ -205,6 +219,7 @@ public interface DylanTypes {
   IElementType TEMPLATE = new DylanElementType("TEMPLATE");
   IElementType TEMPLATE_ELEMENT = new DylanElementType("TEMPLATE_ELEMENT");
   IElementType TOKEN = new DylanElementType("TOKEN");
+  IElementType TYPE_OPTION = new DylanElementType("TYPE_OPTION");
   IElementType UNLESS_STATEMENT = new DylanElementType("UNLESS_STATEMENT");
   IElementType UNRESERVED_NAME = new DylanElementType("UNRESERVED_NAME");
   IElementType UNRESERVED_WORD = new DylanElementType("UNRESERVED_WORD");
@@ -350,6 +365,9 @@ public interface DylanTypes {
       IElementType type = node.getElementType();
        if (type == AFTERWARDS_STATEMENT) {
         return new DylanAfterwardsStatementImpl(node);
+      }
+      else if (type == ALLOCATION) {
+        return new DylanAllocationImpl(node);
       }
       else if (type == AND_EXPR) {
         return new DylanAndExprImpl(node);
@@ -657,11 +675,35 @@ public interface DylanTypes {
       else if (type == IMPORT_OPTION) {
         return new DylanImportOptionImpl(node);
       }
-      else if (type == INIT_SPECIFICATION) {
-        return new DylanInitSpecificationImpl(node);
+      else if (type == INHERITED_OPTION) {
+        return new DylanInheritedOptionImpl(node);
       }
-      else if (type == INIT_SPECIFICATIONS) {
-        return new DylanInitSpecificationsImpl(node);
+      else if (type == INHERITED_OPTIONS) {
+        return new DylanInheritedOptionsImpl(node);
+      }
+      else if (type == INHERITED_SLOT_SPEC) {
+        return new DylanInheritedSlotSpecImpl(node);
+      }
+      else if (type == INIT_ARG_OPTION) {
+        return new DylanInitArgOptionImpl(node);
+      }
+      else if (type == INIT_ARG_OPTIONS) {
+        return new DylanInitArgOptionsImpl(node);
+      }
+      else if (type == INIT_ARG_SPEC) {
+        return new DylanInitArgSpecImpl(node);
+      }
+      else if (type == INIT_EXPRESSION) {
+        return new DylanInitExpressionImpl(node);
+      }
+      else if (type == INIT_FUNCTION_OPTION) {
+        return new DylanInitFunctionOptionImpl(node);
+      }
+      else if (type == INIT_KEYWORD_OPTION) {
+        return new DylanInitKeywordOptionImpl(node);
+      }
+      else if (type == INIT_VALUE_OPTION) {
+        return new DylanInitValueOptionImpl(node);
       }
       else if (type == KEYED_BY_CLAUSE) {
         return new DylanKeyedByClauseImpl(node);
@@ -846,6 +888,9 @@ public interface DylanTypes {
       else if (type == RENAME_OPTION) {
         return new DylanRenameOptionImpl(node);
       }
+      else if (type == REQUIRED_INIT_KEYWORD_OPTION) {
+        return new DylanRequiredInitKeywordOptionImpl(node);
+      }
       else if (type == REQUIRED_PARAMETER) {
         return new DylanRequiredParameterImpl(node);
       }
@@ -885,6 +930,9 @@ public interface DylanTypes {
       else if (type == SEPARATOR) {
         return new DylanSeparatorImpl(node);
       }
+      else if (type == SETTER_OPTION) {
+        return new DylanSetterOptionImpl(node);
+      }
       else if (type == SHARED_SYMBOLS) {
         return new DylanSharedSymbolsImpl(node);
       }
@@ -894,11 +942,20 @@ public interface DylanTypes {
       else if (type == SIMPLE_PATTERN) {
         return new DylanSimplePatternImpl(node);
       }
-      else if (type == SLOT_DECLARATION) {
-        return new DylanSlotDeclarationImpl(node);
+      else if (type == SLOT_ADJECTIVE) {
+        return new DylanSlotAdjectiveImpl(node);
       }
       else if (type == SLOT_DECLARATIONS) {
         return new DylanSlotDeclarationsImpl(node);
+      }
+      else if (type == SLOT_OPTION) {
+        return new DylanSlotOptionImpl(node);
+      }
+      else if (type == SLOT_OPTIONS) {
+        return new DylanSlotOptionsImpl(node);
+      }
+      else if (type == SLOT_SPEC) {
+        return new DylanSlotSpecImpl(node);
       }
       else if (type == SOURCE_RECORDS) {
         return new DylanSourceRecordsImpl(node);
@@ -938,6 +995,9 @@ public interface DylanTypes {
       }
       else if (type == TOKEN) {
         return new DylanTokenImpl(node);
+      }
+      else if (type == TYPE_OPTION) {
+        return new DylanTypeOptionImpl(node);
       }
       else if (type == UNLESS_STATEMENT) {
         return new DylanUnlessStatementImpl(node);

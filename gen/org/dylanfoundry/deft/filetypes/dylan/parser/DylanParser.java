@@ -26,6 +26,9 @@ public class DylanParser implements PsiParser {
     if (root_ == AFTERWARDS_STATEMENT) {
       result_ = afterwards_statement(builder_, level_ + 1);
     }
+    else if (root_ == ALLOCATION) {
+      result_ = allocation(builder_, level_ + 1);
+    }
     else if (root_ == AND_EXPR) {
       result_ = expr(builder_, level_ + 1, 0);
     }
@@ -332,11 +335,35 @@ public class DylanParser implements PsiParser {
     else if (root_ == IMPORT_OPTION) {
       result_ = import_option(builder_, level_ + 1);
     }
-    else if (root_ == INIT_SPECIFICATION) {
-      result_ = init_specification(builder_, level_ + 1);
+    else if (root_ == INHERITED_OPTION) {
+      result_ = inherited_option(builder_, level_ + 1);
     }
-    else if (root_ == INIT_SPECIFICATIONS) {
-      result_ = init_specifications(builder_, level_ + 1);
+    else if (root_ == INHERITED_OPTIONS) {
+      result_ = inherited_options(builder_, level_ + 1);
+    }
+    else if (root_ == INHERITED_SLOT_SPEC) {
+      result_ = inherited_slot_spec(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_ARG_OPTION) {
+      result_ = init_arg_option(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_ARG_OPTIONS) {
+      result_ = init_arg_options(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_ARG_SPEC) {
+      result_ = init_arg_spec(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_EXPRESSION) {
+      result_ = init_expression(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_FUNCTION_OPTION) {
+      result_ = init_function_option(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_KEYWORD_OPTION) {
+      result_ = init_keyword_option(builder_, level_ + 1);
+    }
+    else if (root_ == INIT_VALUE_OPTION) {
+      result_ = init_value_option(builder_, level_ + 1);
     }
     else if (root_ == KEY_PARAMETER_LIST) {
       result_ = key_parameter_list(builder_, level_ + 1);
@@ -521,6 +548,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == RENAME_OPTION) {
       result_ = rename_option(builder_, level_ + 1);
     }
+    else if (root_ == REQUIRED_INIT_KEYWORD_OPTION) {
+      result_ = required_init_keyword_option(builder_, level_ + 1);
+    }
     else if (root_ == REQUIRED_PARAMETER) {
       result_ = required_parameter(builder_, level_ + 1);
     }
@@ -560,6 +590,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == SEPARATOR) {
       result_ = separator(builder_, level_ + 1);
     }
+    else if (root_ == SETTER_OPTION) {
+      result_ = setter_option(builder_, level_ + 1);
+    }
     else if (root_ == SHARED_SYMBOLS) {
       result_ = shared_symbols(builder_, level_ + 1);
     }
@@ -569,11 +602,20 @@ public class DylanParser implements PsiParser {
     else if (root_ == SIMPLE_PATTERN) {
       result_ = simple_pattern(builder_, level_ + 1);
     }
-    else if (root_ == SLOT_DECLARATION) {
-      result_ = slot_declaration(builder_, level_ + 1);
+    else if (root_ == SLOT_ADJECTIVE) {
+      result_ = slot_adjective(builder_, level_ + 1);
     }
     else if (root_ == SLOT_DECLARATIONS) {
       result_ = slot_declarations(builder_, level_ + 1);
+    }
+    else if (root_ == SLOT_OPTION) {
+      result_ = slot_option(builder_, level_ + 1);
+    }
+    else if (root_ == SLOT_OPTIONS) {
+      result_ = slot_options(builder_, level_ + 1);
+    }
+    else if (root_ == SLOT_SPEC) {
+      result_ = slot_spec(builder_, level_ + 1);
     }
     else if (root_ == SOURCE_RECORDS) {
       result_ = source_records(builder_, level_ + 1);
@@ -613,6 +655,9 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == TOKEN) {
       result_ = token(builder_, level_ + 1);
+    }
+    else if (root_ == TYPE_OPTION) {
+      result_ = type_option(builder_, level_ + 1);
     }
     else if (root_ == UNLESS_STATEMENT) {
       result_ = unless_statement(builder_, level_ + 1);
@@ -708,6 +753,25 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "afterwards_statement_1")) return false;
     body(builder_, level_ + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // <<unreservedNameWithValues "instance" "each-subclass" "virtual">> | CLASS
+  public static boolean allocation(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "allocation")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<allocation>");
+    result_ = unreservedNameWithValues(builder_, level_ + 1, "instance", "each-subclass", "virtual");
+    if (!result_) result_ = consumeToken(builder_, CLASS);
+    if (result_) {
+      marker_.done(ALLOCATION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
   }
 
   /* ********************************************************** */
@@ -4669,18 +4733,16 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // symbol expression
-  public static boolean init_specification(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "init_specification")) return false;
-    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
-        && replaceVariants(builder_, 2, "<init specification>")) return false;
+  // init_value_option | init_function_option
+  public static boolean inherited_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inherited_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init specification>");
-    result_ = symbol(builder_, level_ + 1);
-    result_ = result_ && expression(builder_, level_ + 1);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<inherited option>");
+    result_ = init_value_option(builder_, level_ + 1);
+    if (!result_) result_ = init_function_option(builder_, level_ + 1);
     if (result_) {
-      marker_.done(INIT_SPECIFICATION);
+      marker_.done(INHERITED_OPTION);
     }
     else {
       marker_.rollbackTo();
@@ -4690,25 +4752,189 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (COMMA init_specification)+
-  public static boolean init_specifications(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "init_specifications")) return false;
-    if (!nextTokenIs(builder_, COMMA)) return false;
-    boolean result_ = false;
+  // (COMMA inherited_option)*
+  public static boolean inherited_options(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inherited_options")) return false;
     Marker marker_ = builder_.mark();
-    result_ = init_specifications_0(builder_, level_ + 1);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<inherited options>");
     int offset_ = builder_.getCurrentOffset();
-    while (result_) {
-      if (!init_specifications_0(builder_, level_ + 1)) break;
+    while (true) {
+      if (!inherited_options_0(builder_, level_ + 1)) break;
       int next_offset_ = builder_.getCurrentOffset();
       if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "init_specifications");
+        empty_element_parsed_guard_(builder_, offset_, "inherited_options");
         break;
       }
       offset_ = next_offset_;
     }
+    marker_.done(INHERITED_OPTIONS);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  // COMMA inherited_option
+  private static boolean inherited_options_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inherited_options_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && inherited_option(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // <<unreservedNameWithValues "inherited">> SLOT variable_name init_expression? inherited_options?
+  public static boolean inherited_slot_spec(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inherited_slot_spec")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<inherited slot spec>");
+    result_ = unreservedNameWithValues(builder_, level_ + 1, "inherited");
+    result_ = result_ && consumeToken(builder_, SLOT);
+    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && inherited_slot_spec_3(builder_, level_ + 1);
+    result_ = result_ && inherited_slot_spec_4(builder_, level_ + 1);
     if (result_) {
-      marker_.done(INIT_SPECIFICATIONS);
+      marker_.done(INHERITED_SLOT_SPEC);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // init_expression?
+  private static boolean inherited_slot_spec_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inherited_slot_spec_3")) return false;
+    init_expression(builder_, level_ + 1);
+    return true;
+  }
+
+  // inherited_options?
+  private static boolean inherited_slot_spec_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "inherited_slot_spec_4")) return false;
+    inherited_options(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // type_option | init_value_option | init_function_option
+  public static boolean init_arg_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init arg option>");
+    result_ = type_option(builder_, level_ + 1);
+    if (!result_) result_ = init_value_option(builder_, level_ + 1);
+    if (!result_) result_ = init_function_option(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_ARG_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // (COMMA init_arg_option)*
+  public static boolean init_arg_options(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_options")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init arg options>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!init_arg_options_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "init_arg_options");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(INIT_ARG_OPTIONS);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  // COMMA init_arg_option
+  private static boolean init_arg_options_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_options_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && init_arg_option(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // <<unreservedNameWithValues "required">>? <<unreservedNameWithValues "keyword">> symbol init_expression? init_arg_options?
+  public static boolean init_arg_spec(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_spec")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init arg spec>");
+    result_ = init_arg_spec_0(builder_, level_ + 1);
+    result_ = result_ && unreservedNameWithValues(builder_, level_ + 1, "keyword");
+    result_ = result_ && symbol(builder_, level_ + 1);
+    result_ = result_ && init_arg_spec_3(builder_, level_ + 1);
+    result_ = result_ && init_arg_spec_4(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_ARG_SPEC);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // <<unreservedNameWithValues "required">>?
+  private static boolean init_arg_spec_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_spec_0")) return false;
+    unreservedNameWithValues(builder_, level_ + 1, "required");
+    return true;
+  }
+
+  // init_expression?
+  private static boolean init_arg_spec_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_spec_3")) return false;
+    init_expression(builder_, level_ + 1);
+    return true;
+  }
+
+  // init_arg_options?
+  private static boolean init_arg_spec_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_arg_spec_4")) return false;
+    init_arg_options(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // EQUAL expression
+  public static boolean init_expression(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_expression")) return false;
+    if (!nextTokenIs(builder_, EQUAL)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, EQUAL);
+    result_ = result_ && expression(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_EXPRESSION);
     }
     else {
       marker_.rollbackTo();
@@ -4716,19 +4942,60 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // COMMA init_specification
-  private static boolean init_specifications_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "init_specifications_0")) return false;
+  /* ********************************************************** */
+  // <<keywordWithValue "init-function:">> expression
+  public static boolean init_function_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_function_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && init_specification(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init function option>");
+    result_ = keywordWithValue(builder_, level_ + 1, "init-function:");
+    result_ = result_ && expression(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_FUNCTION_OPTION);
     }
     else {
-      marker_.drop();
+      marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // <<keywordWithValue "init-keyword:">> symbol
+  public static boolean init_keyword_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_keyword_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init keyword option>");
+    result_ = keywordWithValue(builder_, level_ + 1, "init-keyword:");
+    result_ = result_ && symbol(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_KEYWORD_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // <<keywordWithValue "init-value:">> expression
+  public static boolean init_value_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_value_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init value option>");
+    result_ = keywordWithValue(builder_, level_ + 1, "init-value:");
+    result_ = result_ && expression(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(INIT_VALUE_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
@@ -7304,6 +7571,25 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // <<keywordWithValue "required-init-keyword:">> symbol
+  public static boolean required_init_keyword_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "required_init_keyword_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<required init keyword option>");
+    result_ = keywordWithValue(builder_, level_ + 1, "required-init-keyword:");
+    result_ = result_ && symbol(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(REQUIRED_INIT_KEYWORD_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
   // variable EQUAL_EQUAL expression
   //     | variable
   public static boolean required_parameter(PsiBuilder builder_, int level_) {
@@ -7854,6 +8140,41 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // <<keywordWithValue "setter:">> (variable_name|HASH_F)
+  public static boolean setter_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "setter_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<setter option>");
+    result_ = keywordWithValue(builder_, level_ + 1, "setter:");
+    result_ = result_ && setter_option_1(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(SETTER_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // variable_name|HASH_F
+  private static boolean setter_option_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "setter_option_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable_name(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, HASH_F);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
   // (symbol (COMMA symbol)*)?
   public static boolean shared_symbols(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "shared_symbols")) return false;
@@ -8052,20 +8373,16 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (modifiers|CONSTANT_T)? SLOT variable (EQUAL expression)? init_specifications? semicolon_fragment
-  public static boolean slot_declaration(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "slot_declaration")) return false;
+  // <<unreservedNameWithValues "sealed">> | CONSTANT_T
+  public static boolean slot_adjective(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_adjective")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot declaration>");
-    result_ = slot_declaration_0(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, SLOT);
-    result_ = result_ && variable(builder_, level_ + 1);
-    result_ = result_ && slot_declaration_3(builder_, level_ + 1);
-    result_ = result_ && slot_declaration_4(builder_, level_ + 1);
-    result_ = result_ && semicolon_fragment(builder_, level_ + 1);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot adjective>");
+    result_ = unreservedNameWithValues(builder_, level_ + 1, "sealed");
+    if (!result_) result_ = consumeToken(builder_, CONSTANT_T);
     if (result_) {
-      marker_.done(SLOT_DECLARATION);
+      marker_.done(SLOT_ADJECTIVE);
     }
     else {
       marker_.rollbackTo();
@@ -8074,68 +8391,15 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (modifiers|CONSTANT_T)?
-  private static boolean slot_declaration_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "slot_declaration_0")) return false;
-    slot_declaration_0_0(builder_, level_ + 1);
-    return true;
-  }
-
-  // modifiers|CONSTANT_T
-  private static boolean slot_declaration_0_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "slot_declaration_0_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = modifiers(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, CONSTANT_T);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // (EQUAL expression)?
-  private static boolean slot_declaration_3(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "slot_declaration_3")) return false;
-    slot_declaration_3_0(builder_, level_ + 1);
-    return true;
-  }
-
-  // EQUAL expression
-  private static boolean slot_declaration_3_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "slot_declaration_3_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, EQUAL);
-    result_ = result_ && expression(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // init_specifications?
-  private static boolean slot_declaration_4(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "slot_declaration_4")) return false;
-    init_specifications(builder_, level_ + 1);
-    return true;
-  }
-
   /* ********************************************************** */
-  // slot_declaration*
+  // ((slot_spec|init_arg_spec|inherited_slot_spec) SEMICOLON)*
   public static boolean slot_declarations(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "slot_declarations")) return false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot declarations>");
     int offset_ = builder_.getCurrentOffset();
     while (true) {
-      if (!slot_declaration(builder_, level_ + 1)) break;
+      if (!slot_declarations_0(builder_, level_ + 1)) break;
       int next_offset_ = builder_.getCurrentOffset();
       if (offset_ == next_offset_) {
         empty_element_parsed_guard_(builder_, offset_, "slot_declarations");
@@ -8145,6 +8409,188 @@ public class DylanParser implements PsiParser {
     }
     marker_.done(SLOT_DECLARATIONS);
     exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  // (slot_spec|init_arg_spec|inherited_slot_spec) SEMICOLON
+  private static boolean slot_declarations_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declarations_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = slot_declarations_0_0(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, SEMICOLON);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // slot_spec|init_arg_spec|inherited_slot_spec
+  private static boolean slot_declarations_0_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_declarations_0_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = slot_spec(builder_, level_ + 1);
+    if (!result_) result_ = init_arg_spec(builder_, level_ + 1);
+    if (!result_) result_ = inherited_slot_spec(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // setter_option
+  //     | init_keyword_option
+  //     | required_init_keyword_option
+  //     | init_value_option
+  //     | init_function_option
+  //     | type_option
+  public static boolean slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot option>");
+    result_ = setter_option(builder_, level_ + 1);
+    if (!result_) result_ = init_keyword_option(builder_, level_ + 1);
+    if (!result_) result_ = required_init_keyword_option(builder_, level_ + 1);
+    if (!result_) result_ = init_value_option(builder_, level_ + 1);
+    if (!result_) result_ = init_function_option(builder_, level_ + 1);
+    if (!result_) result_ = type_option(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(SLOT_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // (COMMA slot_option)*
+  public static boolean slot_options(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_options")) return false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot options>");
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!slot_options_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "slot_options");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    marker_.done(SLOT_OPTIONS);
+    exitErrorRecordingSection(builder_, level_, true, false, _SECTION_GENERAL_, null);
+    return true;
+  }
+
+  // COMMA slot_option
+  private static boolean slot_options_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_options_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && slot_option(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // slot_adjective* allocation? SLOT variable_name (COLON_COLON operand)? init_expression? slot_options?
+  public static boolean slot_spec(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot spec>");
+    result_ = slot_spec_0(builder_, level_ + 1);
+    result_ = result_ && slot_spec_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, SLOT);
+    result_ = result_ && variable_name(builder_, level_ + 1);
+    result_ = result_ && slot_spec_4(builder_, level_ + 1);
+    result_ = result_ && slot_spec_5(builder_, level_ + 1);
+    result_ = result_ && slot_spec_6(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(SLOT_SPEC);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // slot_adjective*
+  private static boolean slot_spec_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec_0")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!slot_adjective(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "slot_spec_0");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // allocation?
+  private static boolean slot_spec_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec_1")) return false;
+    allocation(builder_, level_ + 1);
+    return true;
+  }
+
+  // (COLON_COLON operand)?
+  private static boolean slot_spec_4(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec_4")) return false;
+    slot_spec_4_0(builder_, level_ + 1);
+    return true;
+  }
+
+  // COLON_COLON operand
+  private static boolean slot_spec_4_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec_4_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COLON_COLON);
+    result_ = result_ && operand(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // init_expression?
+  private static boolean slot_spec_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec_5")) return false;
+    init_expression(builder_, level_ + 1);
+    return true;
+  }
+
+  // slot_options?
+  private static boolean slot_spec_6(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "slot_spec_6")) return false;
+    slot_options(builder_, level_ + 1);
     return true;
   }
 
@@ -8777,6 +9223,25 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = hash_word(builder_, level_ + 1);
     if (result_) {
       marker_.done(TOKEN);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // <<keywordWithValue "type:">> expression
+  public static boolean type_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type_option")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<type option>");
+    result_ = keywordWithValue(builder_, level_ + 1, "type:");
+    result_ = result_ && expression(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(TYPE_OPTION);
     }
     else {
       marker_.rollbackTo();

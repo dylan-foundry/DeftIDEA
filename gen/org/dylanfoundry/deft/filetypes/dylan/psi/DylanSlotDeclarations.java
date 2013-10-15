@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DylanSlotDeclarations extends PsiElement {
 
   @NotNull
-  List<DylanSlotDeclaration> getSlotDeclarationList();
+  List<DylanInheritedSlotSpec> getInheritedSlotSpecList();
+
+  @NotNull
+  List<DylanInitArgSpec> getInitArgSpecList();
+
+  @NotNull
+  List<DylanSlotSpec> getSlotSpecList();
 
 }

@@ -4,6 +4,9 @@ import com.intellij.lang.PsiBuilder;
 import org.dylanfoundry.deft.filetypes.dylan.parser.DylanParser;
 import org.dylanfoundry.deft.parser.GeneratedParserUtilBase;
 
+import static com.intellij.lang.PsiBuilder.Marker;
+import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
+
 public class DylanParserUtil extends GeneratedParserUtilBase {
 
   public static boolean clauseOption(PsiBuilder builder, int level) {
@@ -21,5 +24,30 @@ public class DylanParserUtil extends GeneratedParserUtilBase {
       return DylanParser.export_clause(builder, level);
     }
     return false;
+  }
+
+  public static boolean keywordWithValue(PsiBuilder builder, int level, String value) {
+    if (!nextTokenIs(builder, KEYWORD)) return false;
+    boolean result = false;
+    String tokenText = builder.getTokenText();
+    if (tokenText != null) {
+      result = (builder.getTokenType() == KEYWORD) && value.equals(tokenText.toLowerCase());
+    }
+    if (result) consumeToken(builder, KEYWORD);
+    return result;
+  }
+
+  public static boolean unreservedNameWithValues(PsiBuilder builder, int level, String... values) {
+    //if (!nextTokenIs(builder, UNRESERVED_NAME)) return false;
+    boolean result = false;
+    String tokenText = builder.getTokenText();
+    if (tokenText == null) return false;
+    for (String value : values) {
+      if (value.equals(tokenText.toLowerCase())) {
+        result = true;
+      }
+    }
+    if (result) consumeToken(builder, NONDEFINING_NONEXPRESSION_WORD);
+    return result;
   }
 }

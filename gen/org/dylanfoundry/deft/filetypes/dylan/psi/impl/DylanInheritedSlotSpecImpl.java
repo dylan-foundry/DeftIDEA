@@ -11,32 +11,32 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanSlotDeclarationsImpl extends ASTWrapperPsiElement implements DylanSlotDeclarations {
+public class DylanInheritedSlotSpecImpl extends ASTWrapperPsiElement implements DylanInheritedSlotSpec {
 
-  public DylanSlotDeclarationsImpl(ASTNode node) {
+  public DylanInheritedSlotSpecImpl(ASTNode node) {
     super(node);
   }
 
   @Override
-  @NotNull
-  public List<DylanInheritedSlotSpec> getInheritedSlotSpecList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanInheritedSlotSpec.class);
+  @Nullable
+  public DylanInheritedOptions getInheritedOptions() {
+    return findChildByClass(DylanInheritedOptions.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanInitExpression getInitExpression() {
+    return findChildByClass(DylanInitExpression.class);
   }
 
   @Override
   @NotNull
-  public List<DylanInitArgSpec> getInitArgSpecList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanInitArgSpec.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanSlotSpec> getSlotSpecList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanSlotSpec.class);
+  public DylanVariableName getVariableName() {
+    return findNotNullChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSlotDeclarations(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitInheritedSlotSpec(this);
     else super.accept(visitor);
   }
 

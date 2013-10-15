@@ -204,16 +204,49 @@ class_definition_tail ::= END CLASS variable_name? | END variable_name?
 
 supers ::= variable_name (COMMA variable_name)*
 
-slot_declarations ::= slot_declaration*
+slot_declarations ::= ((slot_spec|init_arg_spec|inherited_slot_spec) SEMICOLON)*
 
-// FIXME: This is not present in the original yacc file.
-// Ugly hack to include the 'constant' slot modifier
-slot_declaration ::=
-     (modifiers|CONSTANT_T)? SLOT variable (EQUAL expression)? init_specifications? semicolon_fragment
+slot_spec ::= slot_adjective* allocation? SLOT variable_name (COLON_COLON operand)? init_expression? slot_options?
 
-init_specifications ::= (COMMA init_specification)+
+init_arg_spec ::= <<unreservedNameWithValues "required">>? <<unreservedNameWithValues "keyword">> symbol init_expression? init_arg_options?
 
-init_specification ::= symbol expression
+inherited_slot_spec ::= <<unreservedNameWithValues "inherited">> SLOT variable_name init_expression? inherited_options?
+
+slot_adjective ::= <<unreservedNameWithValues "sealed">> | CONSTANT_T
+
+allocation ::= <<unreservedNameWithValues "instance" "each-subclass" "virtual">> | CLASS
+
+init_expression ::= EQUAL expression
+
+slot_options ::= (COMMA slot_option)*
+
+slot_option ::=
+      setter_option
+    | init_keyword_option
+    | required_init_keyword_option
+    | init_value_option
+    | init_function_option
+    | type_option
+
+init_arg_options ::= (COMMA init_arg_option)*
+
+init_arg_option ::=  type_option | init_value_option | init_function_option
+
+inherited_options ::= (COMMA inherited_option)*
+
+inherited_option ::= init_value_option | init_function_option
+
+setter_option ::= <<keywordWithValue "setter:">> (variable_name|HASH_F)
+
+init_keyword_option ::= <<keywordWithValue "init-keyword:">> symbol
+
+required_init_keyword_option ::= <<keywordWithValue "required-init-keyword:">> symbol
+
+init_value_option ::= <<keywordWithValue "init-value:">> expression
+
+init_function_option ::= <<keywordWithValue "init-function:">> expression
+
+type_option ::= <<keywordWithValue "type:">> expression
 
 definition_constant_definer ::= DEFINE modifiers? CONSTANT_T (variable | variable_list) EQUAL expression
   {
