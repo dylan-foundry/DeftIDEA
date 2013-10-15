@@ -19,14 +19,20 @@ public class DylanOperandImpl extends ASTWrapperPsiElement implements DylanOpera
 
   @Override
   @NotNull
+  public List<DylanArguments> getArgumentsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanArguments.class);
+  }
+
+  @Override
+  @NotNull
   public DylanLeaf getLeaf() {
     return findNotNullChildByClass(DylanLeaf.class);
   }
 
   @Override
   @NotNull
-  public List<DylanOperandTail> getOperandTailList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanOperandTail.class);
+  public List<DylanVariableName> getVariableNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

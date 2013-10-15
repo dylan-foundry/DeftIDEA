@@ -8,29 +8,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanArgumentImpl extends ASTWrapperPsiElement implements DylanArgument {
+public class DylanArithNegExprImpl extends DylanExprImpl implements DylanArithNegExpr {
 
-  public DylanArgumentImpl(ASTNode node) {
+  public DylanArithNegExprImpl(ASTNode node) {
     super(node);
   }
 
   @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanSymbol getSymbol() {
-    return findChildByClass(DylanSymbol.class);
+  @NotNull
+  public DylanExpr getExpr() {
+    return findNotNullChildByClass(DylanExpr.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitArgument(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitArithNegExpr(this);
     else super.accept(visitor);
   }
 

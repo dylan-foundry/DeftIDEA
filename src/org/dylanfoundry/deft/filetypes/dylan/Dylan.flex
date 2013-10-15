@@ -224,11 +224,23 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     */
 
     // Operators
-    {UNARY_OPERATOR}                                { return DylanTypes.UNARY_OPERATOR_ONLY; }
-    {BINARY_OPERATOR}                               { return DylanTypes.BINARY_OPERATOR_ONLY; }
-    "="                                             { return DylanTypes.EQUAL; } // FIXME
-    "=="                                            { return DylanTypes.EQUAL_EQUAL; } // FIXME
-    {UNARY_AND_BINARY_OPERATOR}                     { return DylanTypes.UNARY_AND_BINARY_OPERATOR; }
+    "~"                                             { return DylanTypes.TILDE; }
+    "+"                                             { return DylanTypes.PLUS; }
+    "-"                                             { return DylanTypes.MINUS; }
+    "*"                                             { return DylanTypes.STAR; }
+    "/"                                             { return DylanTypes.SLASH; }
+    "^"                                             { return DylanTypes.CARET; }
+    "="                                             { return DylanTypes.EQUAL; }
+    "=="                                            { return DylanTypes.EQUAL_EQUAL; }
+    "~="                                            { return DylanTypes.TILDE_EQUAL; }
+    "~=="                                           { return DylanTypes.TILDE_EQUAL_EQUAL; }
+    "<"                                             { return DylanTypes.LESS_THAN; }
+    "<="                                            { return DylanTypes.LESS_THAN_EQUAL; }
+    ">"                                             { return DylanTypes.GREATER_THAN; }
+    ">="                                            { return DylanTypes.GREATER_THAN_EQUAL; }
+    "&"                                             { return DylanTypes.AMPERSAND; }
+    "|"                                             { return DylanTypes.VERT_BAR; }
+    ":="                                            { return DylanTypes.COLON_EQUAL; }
 
     // Punctuation
     "("                                             { return DylanTypes.LPAREN; }

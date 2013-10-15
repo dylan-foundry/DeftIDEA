@@ -25,8 +25,26 @@ public class DylanLeafImpl extends ASTWrapperPsiElement implements DylanLeaf {
 
   @Override
   @Nullable
-  public DylanUnparenthesizedLeaf getUnparenthesizedLeaf() {
-    return findChildByClass(DylanUnparenthesizedLeaf.class);
+  public DylanFunctionMacroCall getFunctionMacroCall() {
+    return findChildByClass(DylanFunctionMacroCall.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanLiteral getLiteral() {
+    return findChildByClass(DylanLiteral.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanStatement getStatement() {
+    return findChildByClass(DylanStatement.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -11,9 +11,6 @@ public interface DylanToken extends PsiElement {
   DylanHashWord getHashWord();
 
   @Nullable
-  DylanOperator getOperator();
-
-  @Nullable
   DylanPunctuation getPunctuation();
 
   @Nullable
@@ -24,5 +21,8 @@ public interface DylanToken extends PsiElement {
 
   @Nullable
   DylanWordName getWordName();
+
+  @Nullable
+  PsiElement getOperator();
 
 }

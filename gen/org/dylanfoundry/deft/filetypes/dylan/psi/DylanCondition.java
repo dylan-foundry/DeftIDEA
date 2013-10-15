@@ -7,16 +7,10 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanCondition extends PsiElement {
 
-  @Nullable
+  @NotNull
   DylanOperand getOperand();
 
   @Nullable
-  DylanOperandTails getOperandTails();
-
-  @Nullable
   DylanPropertyList getPropertyList();
-
-  @Nullable
-  DylanUnparenthesizedOperand getUnparenthesizedOperand();
 
 }

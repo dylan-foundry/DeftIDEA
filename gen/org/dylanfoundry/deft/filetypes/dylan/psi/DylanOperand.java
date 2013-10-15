@@ -8,9 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DylanOperand extends PsiElement {
 
   @NotNull
+  List<DylanArguments> getArgumentsList();
+
+  @NotNull
   DylanLeaf getLeaf();
 
   @NotNull
-  List<DylanOperandTail> getOperandTailList();
+  List<DylanVariableName> getVariableNameList();
 
 }
