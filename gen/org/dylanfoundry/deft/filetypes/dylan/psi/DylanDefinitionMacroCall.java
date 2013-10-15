@@ -35,12 +35,12 @@ public interface DylanDefinitionMacroCall extends PsiElement {
   DylanModifiers getModifiers();
 
   @Nullable
-  DylanOperator getOperator();
-
-  @Nullable
   DylanStatement getStatement();
 
   @Nullable
   DylanVariableName getVariableName();
+
+  @Nullable
+  PsiElement getOperator();
 
 }

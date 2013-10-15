@@ -11,14 +11,14 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanUnaryOperatorImpl extends ASTWrapperPsiElement implements DylanUnaryOperator {
+public class DylanExprImpl extends ASTWrapperPsiElement implements DylanExpr {
 
-  public DylanUnaryOperatorImpl(ASTNode node) {
+  public DylanExprImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitUnaryOperator(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitExpr(this);
     else super.accept(visitor);
   }
 

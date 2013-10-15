@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanUnparenthesizedOperand extends PsiElement {
+public interface DylanMulExpr extends DylanExpr {
 
   @NotNull
-  List<DylanOperandTail> getOperandTailList();
-
-  @NotNull
-  DylanUnparenthesizedLeaf getUnparenthesizedLeaf();
+  List<DylanExpr> getExprList();
 
 }

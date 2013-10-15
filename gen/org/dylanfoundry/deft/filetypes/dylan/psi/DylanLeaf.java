@@ -11,6 +11,15 @@ public interface DylanLeaf extends PsiElement {
   DylanExpression getExpression();
 
   @Nullable
-  DylanUnparenthesizedLeaf getUnparenthesizedLeaf();
+  DylanFunctionMacroCall getFunctionMacroCall();
+
+  @Nullable
+  DylanLiteral getLiteral();
+
+  @Nullable
+  DylanStatement getStatement();
+
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

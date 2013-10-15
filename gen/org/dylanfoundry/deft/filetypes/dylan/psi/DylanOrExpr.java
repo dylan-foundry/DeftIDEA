@@ -5,12 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanBinaryOperand extends PsiElement {
+public interface DylanOrExpr extends DylanExpr {
 
-  @Nullable
-  DylanBinaryOperandNoSymbol getBinaryOperandNoSymbol();
-
-  @Nullable
-  DylanSymbol getSymbol();
+  @NotNull
+  List<DylanExpr> getExprList();
 
 }

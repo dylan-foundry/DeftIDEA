@@ -8,23 +8,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanOperandTailsImpl extends ASTWrapperPsiElement implements DylanOperandTails {
+public class DylanMinusExprImpl extends DylanExprImpl implements DylanMinusExpr {
 
-  public DylanOperandTailsImpl(ASTNode node) {
+  public DylanMinusExprImpl(ASTNode node) {
     super(node);
   }
 
   @Override
   @NotNull
-  public List<DylanOperandTail> getOperandTailList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanOperandTail.class);
+  public List<DylanExpr> getExprList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpr.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitOperandTails(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitMinusExpr(this);
     else super.accept(visitor);
   }
 

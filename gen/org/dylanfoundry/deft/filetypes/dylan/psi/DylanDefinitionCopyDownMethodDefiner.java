@@ -25,13 +25,13 @@ public interface DylanDefinitionCopyDownMethodDefiner extends DylanDefiner {
   DylanModifiers getModifiers();
 
   @Nullable
-  DylanOperator getOperator();
-
-  @Nullable
   DylanStatement getStatement();
 
   @NotNull
   List<DylanVariableName> getVariableNameList();
+
+  @Nullable
+  PsiElement getOperator();
 
   String getName();
 

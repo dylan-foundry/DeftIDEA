@@ -23,9 +23,9 @@ public interface DylanNonStatementBasicFragment extends PsiElement {
   DylanHashWord getHashWord();
 
   @Nullable
-  DylanOperator getOperator();
+  DylanVariableName getVariableName();
 
   @Nullable
-  DylanVariableName getVariableName();
+  PsiElement getOperator();
 
 }

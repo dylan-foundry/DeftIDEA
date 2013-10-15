@@ -18,27 +18,15 @@ public class DylanConditionImpl extends ASTWrapperPsiElement implements DylanCon
   }
 
   @Override
-  @Nullable
+  @NotNull
   public DylanOperand getOperand() {
-    return findChildByClass(DylanOperand.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperandTails getOperandTails() {
-    return findChildByClass(DylanOperandTails.class);
+    return findNotNullChildByClass(DylanOperand.class);
   }
 
   @Override
   @Nullable
   public DylanPropertyList getPropertyList() {
     return findChildByClass(DylanPropertyList.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnparenthesizedOperand getUnparenthesizedOperand() {
-    return findChildByClass(DylanUnparenthesizedOperand.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
