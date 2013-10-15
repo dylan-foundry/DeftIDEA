@@ -13,10 +13,4 @@ public interface DylanCaseLabel extends PsiElement {
   @Nullable
   DylanExpressions getExpressions();
 
-  @Nullable
-  DylanOperandTails getOperandTails();
-
-  @Nullable
-  DylanUnparenthesizedExpression getUnparenthesizedExpression();
-
 }

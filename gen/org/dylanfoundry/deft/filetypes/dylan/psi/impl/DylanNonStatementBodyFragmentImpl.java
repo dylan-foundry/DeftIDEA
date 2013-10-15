@@ -61,12 +61,6 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
-  public DylanOperator getOperator() {
-    return findChildByClass(DylanOperator.class);
-  }
-
-  @Override
-  @Nullable
   public DylanSemicolonFragment getSemicolonFragment() {
     return findChildByClass(DylanSemicolonFragment.class);
   }
@@ -75,6 +69,12 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
   @Nullable
   public DylanVariableName getVariableName() {
     return findChildByClass(DylanVariableName.class);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getOperator() {
+    return findChildByType(OPERATOR);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

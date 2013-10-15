@@ -25,13 +25,13 @@ public interface DylanDefinitionVariableDefiner extends DylanDefiner {
   DylanModifiers getModifiers();
 
   @Nullable
-  DylanOperator getOperator();
-
-  @Nullable
   DylanStatement getStatement();
 
   @Nullable
   DylanVariableName getVariableName();
+
+  @Nullable
+  PsiElement getOperator();
 
   String getName();
 
