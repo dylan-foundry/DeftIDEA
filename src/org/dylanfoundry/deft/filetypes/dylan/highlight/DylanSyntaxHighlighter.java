@@ -45,6 +45,7 @@ public class DylanSyntaxHighlighter extends SyntaxHighlighterBase {
     ATTRIBUTES.put(DylanTypes.CHARACTER_LITERAL, DylanSyntaxHighlighterColors.CHARACTER);
     ATTRIBUTES.put(DylanTypes.STRING_ESCAPE_CHARACTER, DylanSyntaxHighlighterColors.ESCAPE_CHARACTER);
     ATTRIBUTES.put(DylanTypes.STRING_CHARACTER, DylanSyntaxHighlighterColors.STRING);
+    ATTRIBUTES.put(DylanTypes.UNIQUE_STRING_CHARACTER, DylanSyntaxHighlighterColors.UNIQUE_STRING);
 
     ATTRIBUTES.put(DylanTypes.LPAREN, DylanSyntaxHighlighterColors.PAREN);
     ATTRIBUTES.put(DylanTypes.RPAREN, DylanSyntaxHighlighterColors.PAREN);

@@ -34,9 +34,9 @@ token ::= word_name | symbol | NUMBER | CHARACTER_LITERAL | string | operator | 
 
 string ::= (STRING_CHARACTER|STRING_ESCAPE_CHARACTER)+
 
-constant_string ::= HASH string
+unique_string ::= UNIQUE_STRING_CHARACTER+
 
-symbol ::= constant_string | KEYWORD
+symbol ::= unique_string | KEYWORD
 
 punctuation ::= bracketing_punctuation | non_bracketing_punctuation
 
@@ -459,6 +459,7 @@ literal ::=
       NUMBER
     | CHARACTER_LITERAL
     | string_literal
+    | unique_string
     | HASH_T
     | HASH_F
     | HASH_PAREN constants DOT constant RPAREN

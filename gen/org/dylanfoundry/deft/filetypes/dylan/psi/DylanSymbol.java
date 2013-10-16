@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanSymbol extends PsiElement {
 
   @Nullable
-  DylanConstantString getConstantString();
+  DylanUniqueString getUniqueString();
 
 }

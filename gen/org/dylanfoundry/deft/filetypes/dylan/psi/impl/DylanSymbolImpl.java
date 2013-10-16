@@ -19,8 +19,8 @@ public class DylanSymbolImpl extends ASTWrapperPsiElement implements DylanSymbol
 
   @Override
   @Nullable
-  public DylanConstantString getConstantString() {
-    return findChildByClass(DylanConstantString.class);
+  public DylanUniqueString getUniqueString() {
+    return findChildByClass(DylanUniqueString.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

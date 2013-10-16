@@ -155,9 +155,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == CONSTANT_FRAGMENT) {
       result_ = constant_fragment(builder_, level_ + 1);
     }
-    else if (root_ == CONSTANT_STRING) {
-      result_ = constant_string(builder_, level_ + 1);
-    }
     else if (root_ == CONSTANTS) {
       result_ = constants(builder_, level_ + 1);
     }
@@ -659,6 +656,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == TYPE_OPTION) {
       result_ = type_option(builder_, level_ + 1);
     }
+    else if (root_ == UNIQUE_STRING) {
+      result_ = unique_string(builder_, level_ + 1);
+    }
     else if (root_ == UNLESS_STATEMENT) {
       result_ = unless_statement(builder_, level_ + 1);
     }
@@ -916,7 +916,7 @@ public class DylanParser implements PsiParser {
   // symbol aux_rules
   public static boolean aux_rule_set(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rule_set")) return false;
-    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
+    if (!nextTokenIs(builder_, KEYWORD) && !nextTokenIs(builder_, UNIQUE_STRING_CHARACTER)
         && replaceVariants(builder_, 2, "<aux rule set>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
@@ -937,7 +937,7 @@ public class DylanParser implements PsiParser {
   // aux_rule_set+
   public static boolean aux_rule_sets(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rule_sets")) return false;
-    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
+    if (!nextTokenIs(builder_, KEYWORD) && !nextTokenIs(builder_, UNIQUE_STRING_CHARACTER)
         && replaceVariants(builder_, 2, "<aux rule sets>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
@@ -2479,24 +2479,6 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "constant_fragment_6_1")) return false;
     constants(builder_, level_ + 1);
     return true;
-  }
-
-  /* ********************************************************** */
-  // HASH string
-  public static boolean constant_string(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "constant_string")) return false;
-    if (!nextTokenIs(builder_, HASH)) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH);
-    result_ = result_ && string(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(CONSTANT_STRING);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    return result_;
   }
 
   /* ********************************************************** */
@@ -5379,6 +5361,7 @@ public class DylanParser implements PsiParser {
   // NUMBER
   //     | CHARACTER_LITERAL
   //     | string_literal
+  //     | unique_string
   //     | HASH_T
   //     | HASH_F
   //     | HASH_PAREN constants DOT constant RPAREN
@@ -5394,11 +5377,12 @@ public class DylanParser implements PsiParser {
     result_ = consumeToken(builder_, NUMBER);
     if (!result_) result_ = consumeToken(builder_, CHARACTER_LITERAL);
     if (!result_) result_ = string_literal(builder_, level_ + 1);
+    if (!result_) result_ = unique_string(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, HASH_T);
     if (!result_) result_ = consumeToken(builder_, HASH_F);
-    if (!result_) result_ = literal_5(builder_, level_ + 1);
     if (!result_) result_ = literal_6(builder_, level_ + 1);
     if (!result_) result_ = literal_7(builder_, level_ + 1);
+    if (!result_) result_ = literal_8(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_LIST_CONSTANT);
     if (!result_) result_ = consumeToken(builder_, PARSED_VECTOR_CONSTANT);
     if (result_) {
@@ -5412,8 +5396,8 @@ public class DylanParser implements PsiParser {
   }
 
   // HASH_PAREN constants DOT constant RPAREN
-  private static boolean literal_5(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "literal_5")) return false;
+  private static boolean literal_6(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "literal_6")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, HASH_PAREN);
@@ -5431,37 +5415,13 @@ public class DylanParser implements PsiParser {
   }
 
   // HASH_PAREN constants? RPAREN
-  private static boolean literal_6(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "literal_6")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH_PAREN);
-    result_ = result_ && literal_6_1(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAREN);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // constants?
-  private static boolean literal_6_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "literal_6_1")) return false;
-    constants(builder_, level_ + 1);
-    return true;
-  }
-
-  // HASH_BRACKET constants? RBRACKET
   private static boolean literal_7(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "literal_7")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, HASH_BRACKET);
+    result_ = consumeToken(builder_, HASH_PAREN);
     result_ = result_ && literal_7_1(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RBRACKET);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -5474,6 +5434,30 @@ public class DylanParser implements PsiParser {
   // constants?
   private static boolean literal_7_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "literal_7_1")) return false;
+    constants(builder_, level_ + 1);
+    return true;
+  }
+
+  // HASH_BRACKET constants? RBRACKET
+  private static boolean literal_8(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "literal_8")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, HASH_BRACKET);
+    result_ = result_ && literal_8_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACKET);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // constants?
+  private static boolean literal_8_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "literal_8_1")) return false;
     constants(builder_, level_ + 1);
     return true;
   }
@@ -7315,7 +7299,7 @@ public class DylanParser implements PsiParser {
   // symbol symbol_value
   public static boolean property(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property")) return false;
-    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
+    if (!nextTokenIs(builder_, KEYWORD) && !nextTokenIs(builder_, UNIQUE_STRING_CHARACTER)
         && replaceVariants(builder_, 2, "<property>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
@@ -7336,7 +7320,7 @@ public class DylanParser implements PsiParser {
   // property (COMMA property)*
   public static boolean property_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "property_list")) return false;
-    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
+    if (!nextTokenIs(builder_, KEYWORD) && !nextTokenIs(builder_, UNIQUE_STRING_CHARACTER)
         && replaceVariants(builder_, 2, "<property list>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
@@ -8961,15 +8945,15 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // constant_string | KEYWORD
+  // unique_string | KEYWORD
   public static boolean symbol(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "symbol")) return false;
-    if (!nextTokenIs(builder_, HASH) && !nextTokenIs(builder_, KEYWORD)
+    if (!nextTokenIs(builder_, KEYWORD) && !nextTokenIs(builder_, UNIQUE_STRING_CHARACTER)
         && replaceVariants(builder_, 2, "<symbol>")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<symbol>");
-    result_ = constant_string(builder_, level_ + 1);
+    result_ = unique_string(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, KEYWORD);
     if (result_) {
       marker_.done(SYMBOL);
@@ -9247,6 +9231,33 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // UNIQUE_STRING_CHARACTER+
+  public static boolean unique_string(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unique_string")) return false;
+    if (!nextTokenIs(builder_, UNIQUE_STRING_CHARACTER)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, UNIQUE_STRING_CHARACTER);
+    int offset_ = builder_.getCurrentOffset();
+    while (result_) {
+      if (!consumeToken(builder_, UNIQUE_STRING_CHARACTER)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "unique_string");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    if (result_) {
+      marker_.done(UNIQUE_STRING);
+    }
+    else {
+      marker_.rollbackTo();
+    }
     return result_;
   }
 

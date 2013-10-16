@@ -44,7 +44,7 @@ public class DylanColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("String", DylanSyntaxHighlighterColors.STRING),
             new AttributesDescriptor("Bad Character", DylanSyntaxHighlighterColors.BAD_CHARACTER),
             new AttributesDescriptor("Hash Word", DylanSyntaxHighlighterColors.HASH_WORD),
-            new AttributesDescriptor("Constant String", DylanSyntaxHighlighterColors.CONSTANT_STRING),
+            new AttributesDescriptor("Unique String", DylanSyntaxHighlighterColors.UNIQUE_STRING),
             new AttributesDescriptor("Operator", DylanSyntaxHighlighterColors.OPERATOR),
             new AttributesDescriptor("Keyword", DylanSyntaxHighlighterColors.KEYWORD),
             new AttributesDescriptor("Parenthesis", DylanSyntaxHighlighterColors.PAREN),

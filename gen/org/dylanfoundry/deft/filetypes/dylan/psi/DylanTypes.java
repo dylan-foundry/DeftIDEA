@@ -53,7 +53,6 @@ public interface DylanTypes {
   IElementType CONSTANT = new DylanElementType("CONSTANT");
   IElementType CONSTANTS = new DylanElementType("CONSTANTS");
   IElementType CONSTANT_FRAGMENT = new DylanElementType("CONSTANT_FRAGMENT");
-  IElementType CONSTANT_STRING = new DylanElementType("CONSTANT_STRING");
   IElementType CONSTITUENTS = new DylanElementType("CONSTITUENTS");
   IElementType CORE_WORD = new DylanElementType("CORE_WORD");
   IElementType CREATE_CLAUSE = new DylanElementType("CREATE_CLAUSE");
@@ -220,6 +219,7 @@ public interface DylanTypes {
   IElementType TEMPLATE_ELEMENT = new DylanElementType("TEMPLATE_ELEMENT");
   IElementType TOKEN = new DylanElementType("TOKEN");
   IElementType TYPE_OPTION = new DylanElementType("TYPE_OPTION");
+  IElementType UNIQUE_STRING = new DylanElementType("UNIQUE_STRING");
   IElementType UNLESS_STATEMENT = new DylanElementType("UNLESS_STATEMENT");
   IElementType UNRESERVED_NAME = new DylanElementType("UNRESERVED_NAME");
   IElementType UNRESERVED_WORD = new DylanElementType("UNRESERVED_WORD");
@@ -285,7 +285,6 @@ public interface DylanTypes {
   IElementType GREATER_THAN = new DylanTokenType("GREATER_THAN");
   IElementType GREATER_THAN_EQUAL = new DylanTokenType("GREATER_THAN_EQUAL");
   IElementType HANDLER_T = new DylanTokenType("HANDLER_T");
-  IElementType HASH = new DylanTokenType("HASH");
   IElementType HASH_ALL_KEYS = new DylanTokenType("HASH_ALL_KEYS");
   IElementType HASH_BRACKET = new DylanTokenType("HASH_BRACKET");
   IElementType HASH_F = new DylanTokenType("HASH_F");
@@ -349,6 +348,7 @@ public interface DylanTypes {
   IElementType TO = new DylanTokenType("TO");
   IElementType UNARY_AND_BINARY_OPERATOR = new DylanTokenType("UNARY_AND_BINARY_OPERATOR");
   IElementType UNARY_OPERATOR_ONLY = new DylanTokenType("UNARY_OPERATOR_ONLY");
+  IElementType UNIQUE_STRING_CHARACTER = new DylanTokenType("UNIQUE_STRING_CHARACTER");
   IElementType UNLESS = new DylanTokenType("UNLESS");
   IElementType UNTIL = new DylanTokenType("UNTIL");
   IElementType USE = new DylanTokenType("USE");
@@ -497,9 +497,6 @@ public interface DylanTypes {
       }
       else if (type == CONSTANT_FRAGMENT) {
         return new DylanConstantFragmentImpl(node);
-      }
-      else if (type == CONSTANT_STRING) {
-        return new DylanConstantStringImpl(node);
       }
       else if (type == CONSTITUENTS) {
         return new DylanConstituentsImpl(node);
@@ -998,6 +995,9 @@ public interface DylanTypes {
       }
       else if (type == TYPE_OPTION) {
         return new DylanTypeOptionImpl(node);
+      }
+      else if (type == UNIQUE_STRING) {
+        return new DylanUniqueStringImpl(node);
       }
       else if (type == UNLESS_STATEMENT) {
         return new DylanUnlessStatementImpl(node);

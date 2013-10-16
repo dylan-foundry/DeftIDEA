@@ -35,6 +35,12 @@ public class DylanLiteralImpl extends ASTWrapperPsiElement implements DylanLiter
     return findChildByClass(DylanStringLiteral.class);
   }
 
+  @Override
+  @Nullable
+  public DylanUniqueString getUniqueString() {
+    return findChildByClass(DylanUniqueString.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitLiteral(this);
     else super.accept(visitor);

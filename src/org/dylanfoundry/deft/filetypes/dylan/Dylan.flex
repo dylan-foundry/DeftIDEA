@@ -69,6 +69,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
 %state DYLAN_CODE
 %state COMMENT_BLOCK
 %state STRING
+%state UNIQUE_STRING
 
 %{
     int commentLevel = 0;
@@ -112,6 +113,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
 
     {CHARACTER}                                     { return DylanTypes.CHARACTER_LITERAL; }
     "\""                                            { yybegin(STRING); return DylanTypes.STRING_CHARACTER; }
+    "#\""                                           { yybegin(UNIQUE_STRING); return DylanTypes.UNIQUE_STRING_CHARACTER; }
     {WORD}":"                                       { return DylanTypes.KEYWORD; }
 
     {NAME}":"{WORD}                                 { return DylanTypes.CONSTRAINED_NAME; }
@@ -129,8 +131,6 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "#rest"                                         { return DylanTypes.HASH_REST; }
     "#key"                                          { return DylanTypes.HASH_KEY; }
     "#all-keys"                                     { return DylanTypes.HASH_ALL_KEYS; }
-
-    "#"                                             { return DylanTypes.HASH; }
 
     // Keywords
     "above"                                         { return DylanTypes.ABOVE; }
@@ -454,6 +454,12 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "\""                                            { yybegin(DYLAN_CODE); return DylanTypes.STRING_CHARACTER; }
     \\[abefnrt0\\\"]                                { return DylanTypes.STRING_ESCAPE_CHARACTER; }
     .                                               { return DylanTypes.STRING_CHARACTER; }
+}
+
+<UNIQUE_STRING> {
+    "\""                                            { yybegin(DYLAN_CODE); return DylanTypes.UNIQUE_STRING_CHARACTER; }
+    \\[abefnrt0\\\"]                                { return DylanTypes.UNIQUE_STRING_CHARACTER; }
+    .                                               { return DylanTypes.UNIQUE_STRING_CHARACTER; }
 }
 
 {CRLF}                                              { yybegin(DYLAN_CODE); return DylanTypes.CRLF; }

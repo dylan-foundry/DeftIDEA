@@ -28,10 +28,7 @@ import org.jetbrains.annotations.NotNull;
 public class DylanSyntaxAnnotator implements Annotator {
   @Override
   public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
-    if (element instanceof DylanConstantString) {
-      Annotation annotation = holder.createInfoAnnotation(element, null);
-      annotation.setTextAttributes(DylanSyntaxHighlighterColors.CONSTANT_STRING);
-    } else if (element instanceof DylanVariableName) {
+    if (element instanceof DylanVariableName) {
       DylanVariableName variable = (DylanVariableName) element;
       Annotation annotation = holder.createInfoAnnotation(element, null);
       String name = variable.getText();

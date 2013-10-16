@@ -183,10 +183,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitConstantString(@NotNull DylanConstantString o) {
-    visitPsiElement(o);
-  }
-
   public void visitConstants(@NotNull DylanConstants o) {
     visitPsiElement(o);
   }
@@ -852,6 +848,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitTypeOption(@NotNull DylanTypeOption o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUniqueString(@NotNull DylanUniqueString o) {
     visitPsiElement(o);
   }
 

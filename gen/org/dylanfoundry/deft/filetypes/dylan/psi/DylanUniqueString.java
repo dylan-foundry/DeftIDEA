@@ -5,9 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanConstantString extends PsiElement {
-
-  @NotNull
-  DylanString getString();
+public interface DylanUniqueString extends PsiElement {
 
 }

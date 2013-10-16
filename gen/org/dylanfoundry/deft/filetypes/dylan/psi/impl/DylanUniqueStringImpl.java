@@ -11,20 +11,14 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanConstantStringImpl extends ASTWrapperPsiElement implements DylanConstantString {
+public class DylanUniqueStringImpl extends ASTWrapperPsiElement implements DylanUniqueString {
 
-  public DylanConstantStringImpl(ASTNode node) {
+  public DylanUniqueStringImpl(ASTNode node) {
     super(node);
   }
 
-  @Override
-  @NotNull
-  public DylanString getString() {
-    return findNotNullChildByClass(DylanString.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitConstantString(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitUniqueString(this);
     else super.accept(visitor);
   }
 
