@@ -21,7 +21,6 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.highlight.DylanSyntaxHighlighterColors;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanConstantString;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanVariableName;
 import org.jetbrains.annotations.NotNull;
 
