@@ -16,7 +16,8 @@
     <li>Dylan syntax highlighting colors can be configured in the preferences.</li>
     <li>Method separators are now supported when enabled in preferences. However, they separate
         definers instead of only methods.</li>
-    <li>Next / Previous Method work, but navigate between definers.
+    <li>Next / Previous Method work, but navigate between definers.</li>
+    <li>Hardcoded some support for testworks definers.</li>
   </ul>
   <p>0.2</p>
   <ul>
