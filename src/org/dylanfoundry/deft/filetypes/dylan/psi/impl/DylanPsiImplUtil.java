@@ -233,7 +233,7 @@ public class DylanPsiImplUtil {
   }
 
   public static Icon getPresentationIcon(DylanDefinitionSuiteDefiner element) {
-    return DeftIcons.DEFINER_UNKNOWN;
+    return DeftIcons.DEFINER_SUITE;
   }
 
   public static String getName(DylanDefinitionTestDefiner element) {
@@ -253,7 +253,7 @@ public class DylanPsiImplUtil {
   }
 
   public static Icon getPresentationIcon(DylanDefinitionTestDefiner element) {
-    return DeftIcons.DEFINER_UNKNOWN;
+    return DeftIcons.DEFINER_TEST;
   }
 
   public static String getName(DylanDefinitionVariableDefiner element) {

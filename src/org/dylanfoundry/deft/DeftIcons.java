@@ -40,6 +40,8 @@ public class DeftIcons {
   public static final Icon DEFINER_MACRO = load("/org/dylanfoundry/deft/icons/definer_macro.png");
   public static final Icon DEFINER_METHOD = load("/org/dylanfoundry/deft/icons/definer_method.png");
   public static final Icon DEFINER_MODULE = load("/org/dylanfoundry/deft/icons/definer_module.png");
+  public static final Icon DEFINER_SUITE = load("/org/dylanfoundry/deft/icons/definer_suite.png");
+  public static final Icon DEFINER_TEST = load("/org/dylanfoundry/deft/icons/definer_test.png");
   public static final Icon DEFINER_UNKNOWN = load("/org/dylanfoundry/deft/icons/definer_unknown.png");
   public static final Icon DEFINER_VARIABLE = load("/org/dylanfoundry/deft/icons/definer_variable.png");
 }
