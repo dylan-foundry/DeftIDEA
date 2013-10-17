@@ -201,7 +201,7 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionModuleDefiner element) {
-    return "module " + element.getVariableName().getText();
+    return element.getVariableName().getText();
   }
 
   public static PsiElement setName(DylanDefinitionModuleDefiner element, @NotNull String newName) {
