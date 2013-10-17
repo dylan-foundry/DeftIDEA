@@ -187,7 +187,7 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitConstituents(@NotNull DylanConstituents o) {
+  public void visitConstituent(@NotNull DylanConstituent o) {
     visitPsiElement(o);
   }
 
@@ -212,7 +212,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinition(@NotNull DylanDefinition o) {
-    visitPsiElement(o);
+    visitConstituent(o);
   }
 
   public void visitDefinitionClassDefiner(@NotNull DylanDefinitionClassDefiner o) {
@@ -340,7 +340,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitExpression(@NotNull DylanExpression o) {
-    visitPsiElement(o);
+    visitConstituent(o);
   }
 
   public void visitExpressions(@NotNull DylanExpressions o) {
@@ -500,7 +500,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitLocalDeclaration(@NotNull DylanLocalDeclaration o) {
-    visitPsiElement(o);
+    visitConstituent(o);
   }
 
   public void visitLocalMethods(@NotNull DylanLocalMethods o) {

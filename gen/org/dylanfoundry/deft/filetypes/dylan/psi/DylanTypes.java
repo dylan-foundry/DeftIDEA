@@ -53,7 +53,7 @@ public interface DylanTypes {
   IElementType CONSTANT = new DylanElementType("CONSTANT");
   IElementType CONSTANTS = new DylanElementType("CONSTANTS");
   IElementType CONSTANT_FRAGMENT = new DylanElementType("CONSTANT_FRAGMENT");
-  IElementType CONSTITUENTS = new DylanElementType("CONSTITUENTS");
+  IElementType CONSTITUENT = new DylanElementType("CONSTITUENT");
   IElementType CORE_WORD = new DylanElementType("CORE_WORD");
   IElementType CREATE_CLAUSE = new DylanElementType("CREATE_CLAUSE");
   IElementType DEFAULT_VALUE = new DylanElementType("DEFAULT_VALUE");
@@ -507,8 +507,8 @@ public interface DylanTypes {
       else if (type == CONSTANT_FRAGMENT) {
         return new DylanConstantFragmentImpl(node);
       }
-      else if (type == CONSTITUENTS) {
-        return new DylanConstituentsImpl(node);
+      else if (type == CONSTITUENT) {
+        return new DylanConstituentImpl(node);
       }
       else if (type == CORE_WORD) {
         return new DylanCoreWordImpl(node);

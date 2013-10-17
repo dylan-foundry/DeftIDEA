@@ -6,7 +6,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinition extends PsiElement {
+public interface DylanDefinition extends DylanConstituent {
 
   @Nullable
   DylanDefinitionClassDefiner getDefinitionClassDefiner();

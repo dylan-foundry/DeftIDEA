@@ -7,13 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanCaseConstituent extends PsiElement {
 
-  @Nullable
-  DylanDefinition getDefinition();
-
-  @Nullable
-  DylanExpression getExpression();
-
-  @Nullable
-  DylanLocalDeclaration getLocalDeclaration();
+  @NotNull
+  DylanConstituent getConstituent();
 
 }

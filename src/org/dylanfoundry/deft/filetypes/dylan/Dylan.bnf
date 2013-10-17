@@ -18,6 +18,7 @@
   // Support for Pratt-style left-recursive expressions
   extends(".*_expr|expr")=expr
 
+  extends("definition|local_declaration|expression|constituent")=constituent
   extends(".*_statement|statement")=statement
   extends(".*_suite_component|suite_component")=suite_component
 }
@@ -107,11 +108,9 @@ private source_record ::= body
 
 body ::= constituents SEMICOLON?
 
-constituents ::= constituent (SEMICOLON constituent)* | COMMENT
+private constituents ::= constituent (SEMICOLON constituent)* | COMMENT
 
-private constituent ::= non_expression_constituent | expression
-
-private non_expression_constituent ::= definition | local_declaration
+constituent ::= definition | local_declaration | expression
 
 macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO_CALL
 

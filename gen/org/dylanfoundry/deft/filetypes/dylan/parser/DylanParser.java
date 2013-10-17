@@ -158,8 +158,8 @@ public class DylanParser implements PsiParser {
     else if (root_ == CONSTANTS) {
       result_ = constants(builder_, level_ + 1);
     }
-    else if (root_ == CONSTITUENTS) {
-      result_ = constituents(builder_, level_ + 1);
+    else if (root_ == CONSTITUENT) {
+      result_ = constituent(builder_, level_ + 1);
     }
     else if (root_ == CORE_WORD) {
       result_ = core_word(builder_, level_ + 1);
@@ -737,6 +737,7 @@ public class DylanParser implements PsiParser {
   }
 
   private static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
+    TokenSet.create(CONSTITUENT, DEFINITION, EXPRESSION, LOCAL_DECLARATION),
     TokenSet.create(AND_EXPR, ARITH_NEG_EXPR, ASSIGN_EXPR, DIV_EXPR,
       EQ_EXPR, EXPR, EXP_EXPR, GTEQ_EXPR,
       GT_EXPR, IDENT_EXPR, LOG_NEG_EXPR, LTEQ_EXPR,
@@ -2560,38 +2561,44 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // non_expression_constituent | expression
-  static boolean constituent(PsiBuilder builder_, int level_) {
+  // definition | local_declaration | expression
+  public static boolean constituent(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "constituent")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
-    result_ = non_expression_constituent(builder_, level_ + 1);
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<constituent>");
+    result_ = definition(builder_, level_ + 1);
+    if (!result_) result_ = local_declaration(builder_, level_ + 1);
     if (!result_) result_ = expression(builder_, level_ + 1);
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), CONSTITUENT)) {
+      marker_.drop();
+    }
+    else if (result_) {
+      marker_.done(CONSTITUENT);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // constituent (SEMICOLON constituent)* | COMMENT
+  static boolean constituents(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "constituents")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = constituents_0(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, COMMENT);
     if (!result_) {
       marker_.rollbackTo();
     }
     else {
       marker_.drop();
     }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // constituent (SEMICOLON constituent)* | COMMENT
-  public static boolean constituents(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "constituents")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<constituents>");
-    result_ = constituents_0(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, COMMENT);
-    if (result_) {
-      marker_.done(CONSTITUENTS);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
@@ -2816,6 +2823,7 @@ public class DylanParser implements PsiParser {
     if (!nextTokenIs(builder_, DEFINE) && !nextTokenIs(builder_, PARSED_DEFINITION)
         && replaceVariants(builder_, 2, "<definition>")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<definition>");
     result_ = definition_class_definer(builder_, level_ + 1);
@@ -2835,7 +2843,11 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = definition_macro_call(builder_, level_ + 1);
     if (!result_) result_ = definition_15(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_DEFINITION);
-    if (result_) {
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), DEFINITION)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(DEFINITION);
     }
     else {
@@ -5555,13 +5567,18 @@ public class DylanParser implements PsiParser {
   public static boolean local_declaration(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "local_declaration")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<local declaration>");
     result_ = local_declaration_0(builder_, level_ + 1);
     if (!result_) result_ = local_declaration_1(builder_, level_ + 1);
     if (!result_) result_ = local_declaration_2(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_LOCAL_DECLARATION);
-    if (result_) {
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), LOCAL_DECLARATION)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(LOCAL_DECLARATION);
     }
     else {
@@ -6365,23 +6382,6 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // definition | local_declaration
-  static boolean non_expression_constituent(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "non_expression_constituent")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = definition(builder_, level_ + 1);
-    if (!result_) result_ = local_declaration(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
     return result_;
   }
 

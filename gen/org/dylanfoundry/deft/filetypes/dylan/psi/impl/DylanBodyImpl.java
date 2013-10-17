@@ -19,8 +19,8 @@ public class DylanBodyImpl extends ASTWrapperPsiElement implements DylanBody {
 
   @Override
   @NotNull
-  public DylanConstituents getConstituents() {
-    return findNotNullChildByClass(DylanConstituents.class);
+  public List<DylanConstituent> getConstituentList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanConstituent.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

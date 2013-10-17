@@ -18,21 +18,9 @@ public class DylanCaseStmtConstituentImpl extends ASTWrapperPsiElement implement
   }
 
   @Override
-  @Nullable
-  public DylanDefinition getDefinition() {
-    return findChildByClass(DylanDefinition.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanLocalDeclaration getLocalDeclaration() {
-    return findChildByClass(DylanLocalDeclaration.class);
+  @NotNull
+  public DylanConstituent getConstituent() {
+    return findNotNullChildByClass(DylanConstituent.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

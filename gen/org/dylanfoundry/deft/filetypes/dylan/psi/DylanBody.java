@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanBody extends PsiElement {
 
   @NotNull
-  DylanConstituents getConstituents();
+  List<DylanConstituent> getConstituentList();
 
 }
