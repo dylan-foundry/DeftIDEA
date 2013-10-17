@@ -211,7 +211,7 @@ supers ::= variable_name (COMMA variable_name)*
 
 slot_declarations ::= ((slot_spec|init_arg_spec|inherited_slot_spec) SEMICOLON)*
 
-slot_spec ::= slot_adjective* allocation? SLOT variable_name (COLON_COLON operand)? init_expression? slot_options?
+slot_spec ::= slot_adjective* allocation? SLOT variable_name (COLON_COLON operand_expr)? init_expression? slot_options?
 
 init_arg_spec ::= <<unreservedNameWithValues "required">>? <<unreservedNameWithValues "keyword">> symbol init_expression? init_arg_options?
 
@@ -407,8 +407,8 @@ local_declaration ::=
     | PARSED_LOCAL_DECLARATION
 
 condition ::=
-      operand
-    | LPAREN operand COMMA property_list RPAREN
+      operand_expr
+    | LPAREN operand_expr COMMA property_list RPAREN
 
 handler ::= expression
 
@@ -420,7 +420,7 @@ variable_list ::= variables COMMA HASH_REST variable_name | variables | HASH_RES
 
 variables ::= variable (COMMA variable)*
 
-variable ::= variable_name COLON_COLON operand | variable_name
+variable ::= variable_name COLON_COLON operand_expr | variable_name
 
 variable_name ::= ordinary_name | VARIABLE_IGNORE
 
@@ -469,7 +469,7 @@ and_expr ::= expr AMPERSAND expr
 or_expr ::= expr VERT_BAR expr
 operand_expr ::= operand
 
-operand ::= leaf ( LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name )*
+private operand ::= leaf ( LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name )*
 
 function_macro_call ::= function_word LPAREN body_fragment? RPAREN
 

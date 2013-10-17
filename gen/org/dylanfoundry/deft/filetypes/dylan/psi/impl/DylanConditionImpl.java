@@ -19,8 +19,8 @@ public class DylanConditionImpl extends ASTWrapperPsiElement implements DylanCon
 
   @Override
   @NotNull
-  public DylanOperand getOperand() {
-    return findNotNullChildByClass(DylanOperand.class);
+  public DylanOperandExpr getOperandExpr() {
+    return findNotNullChildByClass(DylanOperandExpr.class);
   }
 
   @Override

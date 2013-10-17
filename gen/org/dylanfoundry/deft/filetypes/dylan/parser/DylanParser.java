@@ -500,9 +500,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == NUMERIC_CLAUSES) {
       result_ = numeric_clauses(builder_, level_ + 1);
     }
-    else if (root_ == OPERAND) {
-      result_ = operand(builder_, level_ + 1);
-    }
     else if (root_ == OPERAND_EXPR) {
       result_ = operand_expr(builder_, level_ + 1);
     }
@@ -2356,14 +2353,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // operand
-  //     | LPAREN operand COMMA property_list RPAREN
+  // operand_expr
+  //     | LPAREN operand_expr COMMA property_list RPAREN
   public static boolean condition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "condition")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<condition>");
-    result_ = operand(builder_, level_ + 1);
+    result_ = operand_expr(builder_, level_ + 1);
     if (!result_) result_ = condition_1(builder_, level_ + 1);
     if (result_) {
       marker_.done(CONDITION);
@@ -2375,13 +2372,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN operand COMMA property_list RPAREN
+  // LPAREN operand_expr COMMA property_list RPAREN
   private static boolean condition_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "condition_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, LPAREN);
-    result_ = result_ && operand(builder_, level_ + 1);
+    result_ = result_ && operand_expr(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, COMMA);
     result_ = result_ && property_list(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, RPAREN);
@@ -6775,20 +6772,18 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // leaf ( LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name )*
-  public static boolean operand(PsiBuilder builder_, int level_) {
+  static boolean operand(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<operand>");
     result_ = leaf(builder_, level_ + 1);
     result_ = result_ && operand_1(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(OPERAND);
-    }
-    else {
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -8615,7 +8610,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // slot_adjective* allocation? SLOT variable_name (COLON_COLON operand)? init_expression? slot_options?
+  // slot_adjective* allocation? SLOT variable_name (COLON_COLON operand_expr)? init_expression? slot_options?
   public static boolean slot_spec(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "slot_spec")) return false;
     boolean result_ = false;
@@ -8661,20 +8656,20 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // (COLON_COLON operand)?
+  // (COLON_COLON operand_expr)?
   private static boolean slot_spec_4(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "slot_spec_4")) return false;
     slot_spec_4_0(builder_, level_ + 1);
     return true;
   }
 
-  // COLON_COLON operand
+  // COLON_COLON operand_expr
   private static boolean slot_spec_4_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "slot_spec_4_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, COLON_COLON);
-    result_ = result_ && operand(builder_, level_ + 1);
+    result_ = result_ && operand_expr(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -9827,7 +9822,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variable_name COLON_COLON operand | variable_name
+  // variable_name COLON_COLON operand_expr | variable_name
   public static boolean variable(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variable")) return false;
     boolean result_ = false;
@@ -9845,14 +9840,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // variable_name COLON_COLON operand
+  // variable_name COLON_COLON operand_expr
   private static boolean variable_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variable_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variable_name(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, COLON_COLON);
-    result_ = result_ && operand(builder_, level_ + 1);
+    result_ = result_ && operand_expr(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }

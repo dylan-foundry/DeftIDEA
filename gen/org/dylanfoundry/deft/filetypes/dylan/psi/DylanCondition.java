@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DylanCondition extends PsiElement {
 
   @NotNull
-  DylanOperand getOperand();
+  DylanOperandExpr getOperandExpr();
 
   @Nullable
   DylanPropertyList getPropertyList();

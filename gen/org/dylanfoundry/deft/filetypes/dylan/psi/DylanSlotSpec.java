@@ -14,7 +14,7 @@ public interface DylanSlotSpec extends PsiElement {
   DylanInitExpression getInitExpression();
 
   @Nullable
-  DylanOperand getOperand();
+  DylanOperandExpr getOperandExpr();
 
   @NotNull
   List<DylanSlotAdjective> getSlotAdjectiveList();

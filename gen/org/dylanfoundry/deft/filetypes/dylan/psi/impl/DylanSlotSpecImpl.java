@@ -31,8 +31,8 @@ public class DylanSlotSpecImpl extends ASTWrapperPsiElement implements DylanSlot
 
   @Override
   @Nullable
-  public DylanOperand getOperand() {
-    return findChildByClass(DylanOperand.class);
+  public DylanOperandExpr getOperandExpr() {
+    return findChildByClass(DylanOperandExpr.class);
   }
 
   @Override

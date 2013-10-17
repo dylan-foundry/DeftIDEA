@@ -167,7 +167,6 @@ public interface DylanTypes {
   IElementType NON_STATEMENT_BASIC_FRAGMENT = new DylanElementType("NON_STATEMENT_BASIC_FRAGMENT");
   IElementType NON_STATEMENT_BODY_FRAGMENT = new DylanElementType("NON_STATEMENT_BODY_FRAGMENT");
   IElementType NUMERIC_CLAUSES = new DylanElementType("NUMERIC_CLAUSES");
-  IElementType OPERAND = new DylanElementType("OPERAND");
   IElementType OPERAND_EXPR = new DylanElementType("OPERAND_EXPR");
   IElementType OR_EXPR = new DylanElementType("OR_EXPR");
   IElementType PARAMETERS = new DylanElementType("PARAMETERS");
@@ -850,9 +849,6 @@ public interface DylanTypes {
       }
       else if (type == NUMERIC_CLAUSES) {
         return new DylanNumericClausesImpl(node);
-      }
-      else if (type == OPERAND) {
-        return new DylanOperandImpl(node);
       }
       else if (type == OPERAND_EXPR) {
         return new DylanOperandExprImpl(node);

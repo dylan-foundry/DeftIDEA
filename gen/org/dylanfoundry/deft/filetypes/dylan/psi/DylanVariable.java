@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface DylanVariable extends PsiElement {
 
   @Nullable
-  DylanOperand getOperand();
+  DylanOperandExpr getOperandExpr();
 
   @NotNull
   DylanVariableName getVariableName();

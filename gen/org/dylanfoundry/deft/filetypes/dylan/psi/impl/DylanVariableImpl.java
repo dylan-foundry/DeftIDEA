@@ -19,8 +19,8 @@ public class DylanVariableImpl extends ASTWrapperPsiElement implements DylanVari
 
   @Override
   @Nullable
-  public DylanOperand getOperand() {
-    return findChildByClass(DylanOperand.class);
+  public DylanOperandExpr getOperandExpr() {
+    return findChildByClass(DylanOperandExpr.class);
   }
 
   @Override

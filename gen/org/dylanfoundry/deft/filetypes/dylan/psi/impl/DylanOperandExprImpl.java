@@ -18,8 +18,20 @@ public class DylanOperandExprImpl extends DylanExprImpl implements DylanOperandE
 
   @Override
   @NotNull
-  public DylanOperand getOperand() {
-    return findNotNullChildByClass(DylanOperand.class);
+  public List<DylanArguments> getArgumentsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanArguments.class);
+  }
+
+  @Override
+  @NotNull
+  public DylanLeaf getLeaf() {
+    return findNotNullChildByClass(DylanLeaf.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanVariableName> getVariableNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
