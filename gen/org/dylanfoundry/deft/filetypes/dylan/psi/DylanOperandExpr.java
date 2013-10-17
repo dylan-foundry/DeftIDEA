@@ -10,8 +10,17 @@ public interface DylanOperandExpr extends DylanExpr {
   @NotNull
   List<DylanArguments> getArgumentsList();
 
-  @NotNull
-  DylanLeaf getLeaf();
+  @Nullable
+  DylanExpression getExpression();
+
+  @Nullable
+  DylanFunctionMacroCall getFunctionMacroCall();
+
+  @Nullable
+  DylanLiteral getLiteral();
+
+  @Nullable
+  DylanStatement getStatement();
 
   @NotNull
   List<DylanVariableName> getVariableNameList();

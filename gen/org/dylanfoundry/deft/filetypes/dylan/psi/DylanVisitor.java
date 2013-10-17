@@ -483,10 +483,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitLeaf(@NotNull DylanLeaf o) {
-    visitPsiElement(o);
-  }
-
   public void visitLibraryDefinitionTail(@NotNull DylanLibraryDefinitionTail o) {
     visitPsiElement(o);
   }

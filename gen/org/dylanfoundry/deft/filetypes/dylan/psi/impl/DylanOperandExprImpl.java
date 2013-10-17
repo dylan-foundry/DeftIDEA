@@ -23,9 +23,27 @@ public class DylanOperandExprImpl extends DylanExprImpl implements DylanOperandE
   }
 
   @Override
-  @NotNull
-  public DylanLeaf getLeaf() {
-    return findNotNullChildByClass(DylanLeaf.class);
+  @Nullable
+  public DylanExpression getExpression() {
+    return findChildByClass(DylanExpression.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanFunctionMacroCall getFunctionMacroCall() {
+    return findChildByClass(DylanFunctionMacroCall.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanLiteral getLiteral() {
+    return findChildByClass(DylanLiteral.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanStatement getStatement() {
+    return findChildByClass(DylanStatement.class);
   }
 
   @Override

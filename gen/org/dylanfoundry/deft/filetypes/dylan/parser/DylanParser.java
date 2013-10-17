@@ -380,9 +380,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == KEYWORD_PARAMETERS) {
       result_ = keyword_parameters(builder_, level_ + 1);
     }
-    else if (root_ == LEAF) {
-      result_ = leaf(builder_, level_ + 1);
-    }
     else if (root_ == LIBRARY_DEFINITION_TAIL) {
       result_ = library_definition_tail(builder_, level_ + 1);
     }
@@ -5257,11 +5254,10 @@ public class DylanParser implements PsiParser {
   //     | LPAREN expression RPAREN
   //     | PARSED_FUNCTION_CALL
   //     | PARSED_MACRO_CALL
-  public static boolean leaf(PsiBuilder builder_, int level_) {
+  static boolean leaf(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "leaf")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<leaf>");
     result_ = literal(builder_, level_ + 1);
     if (!result_) result_ = statement(builder_, level_ + 1);
     if (!result_) result_ = function_macro_call(builder_, level_ + 1);
@@ -5269,13 +5265,12 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = leaf_4(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_FUNCTION_CALL);
     if (!result_) result_ = consumeToken(builder_, PARSED_MACRO_CALL);
-    if (result_) {
-      marker_.done(LEAF);
-    }
-    else {
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -10372,10 +10367,15 @@ public class DylanParser implements PsiParser {
   public static boolean operand_expr(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "operand_expr")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<operand expr>");
     result_ = operand(builder_, level_ + 1);
-    if (result_) {
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), OPERAND_EXPR)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(OPERAND_EXPR);
     }
     else {

@@ -127,7 +127,6 @@ public interface DylanTypes {
   IElementType KEYWORD_PARAMETER = new DylanElementType("KEYWORD_PARAMETER");
   IElementType KEYWORD_PARAMETERS = new DylanElementType("KEYWORD_PARAMETERS");
   IElementType KEY_PARAMETER_LIST = new DylanElementType("KEY_PARAMETER_LIST");
-  IElementType LEAF = new DylanElementType("LEAF");
   IElementType LIBRARY_DEFINITION_TAIL = new DylanElementType("LIBRARY_DEFINITION_TAIL");
   IElementType LIST_STYLE_DEFINITION_RULE = new DylanElementType("LIST_STYLE_DEFINITION_RULE");
   IElementType LIST_STYLE_DEFINITION_RULES = new DylanElementType("LIST_STYLE_DEFINITION_RULES");
@@ -729,9 +728,6 @@ public interface DylanTypes {
       }
       else if (type == KEY_PARAMETER_LIST) {
         return new DylanKeyParameterListImpl(node);
-      }
-      else if (type == LEAF) {
-        return new DylanLeafImpl(node);
       }
       else if (type == LIBRARY_DEFINITION_TAIL) {
         return new DylanLibraryDefinitionTailImpl(node);

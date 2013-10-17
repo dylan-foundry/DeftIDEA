@@ -473,7 +473,7 @@ private operand ::= leaf ( LPAREN arguments? RPAREN | LBRACKET arguments? RBRACK
 
 function_macro_call ::= function_word LPAREN body_fragment? RPAREN
 
-leaf ::=
+private leaf ::=
       literal
     | statement
     | function_macro_call
