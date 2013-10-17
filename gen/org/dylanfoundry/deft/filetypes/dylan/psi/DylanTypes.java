@@ -72,7 +72,9 @@ public interface DylanTypes {
   IElementType DEFINITION_METHOD_DEFINER = new DylanElementType("DEFINITION_METHOD_DEFINER");
   IElementType DEFINITION_MODULE_DEFINER = new DylanElementType("DEFINITION_MODULE_DEFINER");
   IElementType DEFINITION_SHARED_SYMBOLS_DEFINER = new DylanElementType("DEFINITION_SHARED_SYMBOLS_DEFINER");
+  IElementType DEFINITION_SUITE_DEFINER = new DylanElementType("DEFINITION_SUITE_DEFINER");
   IElementType DEFINITION_TAIL = new DylanElementType("DEFINITION_TAIL");
+  IElementType DEFINITION_TEST_DEFINER = new DylanElementType("DEFINITION_TEST_DEFINER");
   IElementType DEFINITION_VARIABLE_DEFINER = new DylanElementType("DEFINITION_VARIABLE_DEFINER");
   IElementType DIV_EXPR = new DylanElementType("DIV_EXPR");
   IElementType ELSEIF_STATEMENT = new DylanElementType("ELSEIF_STATEMENT");
@@ -212,11 +214,17 @@ public interface DylanTypes {
   IElementType STRING = new DylanElementType("STRING");
   IElementType STRING_LITERAL = new DylanElementType("STRING_LITERAL");
   IElementType SUBSTITUTION = new DylanElementType("SUBSTITUTION");
+  IElementType SUITE_COMPONENT = new DylanElementType("SUITE_COMPONENT");
+  IElementType SUITE_COMPONENTS = new DylanElementType("SUITE_COMPONENTS");
+  IElementType SUITE_DEFINITION_TAIL = new DylanElementType("SUITE_DEFINITION_TAIL");
+  IElementType SUITE_SUITE_COMPONENT = new DylanElementType("SUITE_SUITE_COMPONENT");
   IElementType SUPERS = new DylanElementType("SUPERS");
   IElementType SYMBOL = new DylanElementType("SYMBOL");
   IElementType SYMBOL_VALUE = new DylanElementType("SYMBOL_VALUE");
   IElementType TEMPLATE = new DylanElementType("TEMPLATE");
   IElementType TEMPLATE_ELEMENT = new DylanElementType("TEMPLATE_ELEMENT");
+  IElementType TEST_DEFINITION_TAIL = new DylanElementType("TEST_DEFINITION_TAIL");
+  IElementType TEST_SUITE_COMPONENT = new DylanElementType("TEST_SUITE_COMPONENT");
   IElementType TOKEN = new DylanElementType("TOKEN");
   IElementType TYPE_OPTION = new DylanElementType("TYPE_OPTION");
   IElementType UNIQUE_STRING = new DylanElementType("UNIQUE_STRING");
@@ -341,6 +349,8 @@ public interface DylanTypes {
   IElementType STAR = new DylanTokenType("STAR");
   IElementType STRING_CHARACTER = new DylanTokenType("STRING_CHARACTER");
   IElementType STRING_ESCAPE_CHARACTER = new DylanTokenType("STRING_ESCAPE_CHARACTER");
+  IElementType SUITE = new DylanTokenType("SUITE");
+  IElementType TEST = new DylanTokenType("TEST");
   IElementType THEN = new DylanTokenType("THEN");
   IElementType TILDE = new DylanTokenType("TILDE");
   IElementType TILDE_EQUAL = new DylanTokenType("TILDE_EQUAL");
@@ -555,8 +565,14 @@ public interface DylanTypes {
       else if (type == DEFINITION_SHARED_SYMBOLS_DEFINER) {
         return new DylanDefinitionSharedSymbolsDefinerImpl(node);
       }
+      else if (type == DEFINITION_SUITE_DEFINER) {
+        return new DylanDefinitionSuiteDefinerImpl(node);
+      }
       else if (type == DEFINITION_TAIL) {
         return new DylanDefinitionTailImpl(node);
+      }
+      else if (type == DEFINITION_TEST_DEFINER) {
+        return new DylanDefinitionTestDefinerImpl(node);
       }
       else if (type == DEFINITION_VARIABLE_DEFINER) {
         return new DylanDefinitionVariableDefinerImpl(node);
@@ -975,6 +991,18 @@ public interface DylanTypes {
       else if (type == SUBSTITUTION) {
         return new DylanSubstitutionImpl(node);
       }
+      else if (type == SUITE_COMPONENT) {
+        return new DylanSuiteComponentImpl(node);
+      }
+      else if (type == SUITE_COMPONENTS) {
+        return new DylanSuiteComponentsImpl(node);
+      }
+      else if (type == SUITE_DEFINITION_TAIL) {
+        return new DylanSuiteDefinitionTailImpl(node);
+      }
+      else if (type == SUITE_SUITE_COMPONENT) {
+        return new DylanSuiteSuiteComponentImpl(node);
+      }
       else if (type == SUPERS) {
         return new DylanSupersImpl(node);
       }
@@ -989,6 +1017,12 @@ public interface DylanTypes {
       }
       else if (type == TEMPLATE_ELEMENT) {
         return new DylanTemplateElementImpl(node);
+      }
+      else if (type == TEST_DEFINITION_TAIL) {
+        return new DylanTestDefinitionTailImpl(node);
+      }
+      else if (type == TEST_SUITE_COMPONENT) {
+        return new DylanTestSuiteComponentImpl(node);
       }
       else if (type == TOKEN) {
         return new DylanTokenImpl(node);

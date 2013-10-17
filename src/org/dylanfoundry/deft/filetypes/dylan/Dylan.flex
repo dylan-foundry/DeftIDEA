@@ -217,6 +217,8 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     */
     "shared-symbols"                                { return DylanTypes.SHARED_SYMBOLS_T; }
     "slot"                                          { return DylanTypes.SLOT; }
+    "suite"                                         { return DylanTypes.SUITE; }
+    "test"                                          { return DylanTypes.TEST; }
     //"thread"                                        { return DylanTypes.BUILTIN; }
     "variable"                                      { return DylanTypes.VARIABLE_T; }
     /*

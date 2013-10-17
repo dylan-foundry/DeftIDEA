@@ -17,6 +17,8 @@
 
   // Support for Pratt-style left-recursive expressions
   extends(".*_expr|expr")=expr
+
+  extends(".*_suite_component|suite_component")=suite_component
 }
  
 dylanFile ::= headers source_records?
@@ -188,6 +190,8 @@ definition ::=
     | definition_macro_definer
     | definition_method_definer
     | definition_shared_symbols_definer
+    | definition_suite_definer
+    | definition_test_definer
     | definition_variable_definer
     | definition_macro_call
     | DEFINE MACRO_T macro_definition
@@ -349,6 +353,32 @@ definition_shared_symbols_definer ::= DEFINE modifiers? SHARED_SYMBOLS_T variabl
 shared_symbols_definition_tail ::= END SHARED_SYMBOLS_T variable_name? | END variable_name?
 
 shared_symbols ::= (symbol (COMMA symbol)*)?
+
+definition_suite_definer ::= DEFINE SUITE variable_name LPAREN RPAREN suite_components? suite_definition_tail
+  {
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
+  }
+
+suite_components ::= suite_component (SEMICOLON suite_component?)*
+
+suite_component ::= test_suite_component | suite_suite_component
+
+test_suite_component ::= TEST variable_name
+
+suite_suite_component ::= SUITE variable_name
+
+suite_definition_tail ::= END SUITE variable_name? | END variable_name?
+
+definition_test_definer ::= DEFINE TEST variable_name LPAREN RPAREN body? test_definition_tail
+  {
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
+  }
+
+test_definition_tail ::= END TEST variable_name? | END variable_name?
 
 definition_variable_definer ::= DEFINE modifiers? VARIABLE_T (variable | variable_list) EQUAL expression
   {

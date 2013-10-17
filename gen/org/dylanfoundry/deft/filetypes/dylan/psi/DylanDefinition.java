@@ -45,6 +45,12 @@ public interface DylanDefinition extends PsiElement {
   DylanDefinitionSharedSymbolsDefiner getDefinitionSharedSymbolsDefiner();
 
   @Nullable
+  DylanDefinitionSuiteDefiner getDefinitionSuiteDefiner();
+
+  @Nullable
+  DylanDefinitionTestDefiner getDefinitionTestDefiner();
+
+  @Nullable
   DylanDefinitionVariableDefiner getDefinitionVariableDefiner();
 
   @Nullable

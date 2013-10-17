@@ -263,8 +263,16 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitDefinitionSuiteDefiner(@NotNull DylanDefinitionSuiteDefiner o) {
+    visitDefiner(o);
+  }
+
   public void visitDefinitionTail(@NotNull DylanDefinitionTail o) {
     visitPsiElement(o);
+  }
+
+  public void visitDefinitionTestDefiner(@NotNull DylanDefinitionTestDefiner o) {
+    visitDefiner(o);
   }
 
   public void visitDefinitionVariableDefiner(@NotNull DylanDefinitionVariableDefiner o) {
@@ -823,6 +831,22 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSuiteComponent(@NotNull DylanSuiteComponent o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteComponents(@NotNull DylanSuiteComponents o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteDefinitionTail(@NotNull DylanSuiteDefinitionTail o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteSuiteComponent(@NotNull DylanSuiteSuiteComponent o) {
+    visitSuiteComponent(o);
+  }
+
   public void visitSupers(@NotNull DylanSupers o) {
     visitPsiElement(o);
   }
@@ -841,6 +865,14 @@ public class DylanVisitor extends PsiElementVisitor {
 
   public void visitTemplateElement(@NotNull DylanTemplateElement o) {
     visitPsiElement(o);
+  }
+
+  public void visitTestDefinitionTail(@NotNull DylanTestDefinitionTail o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTestSuiteComponent(@NotNull DylanTestSuiteComponent o) {
+    visitSuiteComponent(o);
   }
 
   public void visitToken(@NotNull DylanToken o) {
