@@ -14,7 +14,9 @@
     <li>Improvements to the icons used in structure and go-to-X views.</li>
     <li>Improvements to function and method names in structure and go-to-symbol views.</li>
     <li>Dylan syntax highlighting colors can be configured in the preferences.</li>
-    <li>Method separators are now supported when enabled in preferences.</li>
+    <li>Method separators are now supported when enabled in preferences. However, they separate
+        definers instead of only methods.</li>
+    <li>Next / Previous Method work, but navigate between definers.
   </ul>
   <p>0.2</p>
   <ul>
@@ -66,6 +68,7 @@
     <lang.commenter language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanCommenter"/>
     <lang.foldingBuilder language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanFoldingBuilder"/>
     <lang.psiStructureViewFactory language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.structure.DylanStructureViewFactory"/>
+    <methodNavigationOffsetProvider implementation="org.dylanfoundry.deft.filetypes.dylan.DylanMethodNavigationOffsetProvider"/>
     <annotator language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanSyntaxAnnotator"/>
 
     <!-- Template Group -->
