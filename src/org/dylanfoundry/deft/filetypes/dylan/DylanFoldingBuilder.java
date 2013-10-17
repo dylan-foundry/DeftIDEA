@@ -69,6 +69,14 @@ public class DylanFoldingBuilder implements FoldingBuilder, DumbAware {
       DylanDefinitionModuleDefiner m = ((DylanDefinitionModuleDefiner)element);
       beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
       canFold = true;
+    } else if (node.getElementType() == DylanTypes.DEFINITION_SUITE_DEFINER) {
+      DylanDefinitionSuiteDefiner s = ((DylanDefinitionSuiteDefiner)element);
+      beginOffset = s.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
+    } else if (node.getElementType() == DylanTypes.DEFINITION_TEST_DEFINER) {
+      DylanDefinitionTestDefiner t = ((DylanDefinitionTestDefiner)element);
+      beginOffset = t.getVariableName().getTextRange().getEndOffset() - 1;
+      canFold = true;
     }
     if (canFold) {
       TextRange textRange = new TextRange(beginOffset, endOffset);
