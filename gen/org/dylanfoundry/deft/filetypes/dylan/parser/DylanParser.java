@@ -6655,7 +6655,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS | DOMAIN | LIBRARY | MODULE | GENERIC
+  // NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS | DOMAIN | LIBRARY | MODULE | GENERIC | SUITE | TEST
   public static boolean nonexpression_word(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "nonexpression_word")) return false;
     boolean result_ = false;
@@ -6670,6 +6670,8 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, LIBRARY);
     if (!result_) result_ = consumeToken(builder_, MODULE);
     if (!result_) result_ = consumeToken(builder_, GENERIC);
+    if (!result_) result_ = consumeToken(builder_, SUITE);
+    if (!result_) result_ = consumeToken(builder_, TEST);
     if (result_) {
       marker_.done(NONEXPRESSION_WORD);
     }
