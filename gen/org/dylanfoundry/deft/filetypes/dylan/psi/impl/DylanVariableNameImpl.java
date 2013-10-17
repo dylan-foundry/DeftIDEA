@@ -23,12 +23,6 @@ public class DylanVariableNameImpl extends ASTWrapperPsiElement implements Dylan
     return findChildByClass(DylanEscapedName.class);
   }
 
-  @Override
-  @Nullable
-  public DylanNonexpressionWord getNonexpressionWord() {
-    return findChildByClass(DylanNonexpressionWord.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitVariableName(this);
     else super.accept(visitor);

@@ -159,7 +159,6 @@ public interface DylanTypes {
   IElementType NEXT_REST_KEY_PARAMETER_LIST = new DylanElementType("NEXT_REST_KEY_PARAMETER_LIST");
   IElementType NONDEFINING_NAME = new DylanElementType("NONDEFINING_NAME");
   IElementType NONDEFINING_WORD = new DylanElementType("NONDEFINING_WORD");
-  IElementType NONEXPRESSION_WORD = new DylanElementType("NONEXPRESSION_WORD");
   IElementType NONIDENT_EXPR = new DylanElementType("NONIDENT_EXPR");
   IElementType NON_BRACKETING_PUNCTUATION = new DylanElementType("NON_BRACKETING_PUNCTUATION");
   IElementType NON_END_CORE_WORD = new DylanElementType("NON_END_CORE_WORD");
@@ -167,6 +166,7 @@ public interface DylanTypes {
   IElementType NON_STATEMENT_BODY_FRAGMENT = new DylanElementType("NON_STATEMENT_BODY_FRAGMENT");
   IElementType NUMERIC_CLAUSES = new DylanElementType("NUMERIC_CLAUSES");
   IElementType OPERAND_EXPR = new DylanElementType("OPERAND_EXPR");
+  IElementType ORDINARY_BINDING_NAME = new DylanElementType("ORDINARY_BINDING_NAME");
   IElementType OR_EXPR = new DylanElementType("OR_EXPR");
   IElementType PARAMETERS = new DylanElementType("PARAMETERS");
   IElementType PARAMETER_LIST = new DylanElementType("PARAMETER_LIST");
@@ -825,9 +825,6 @@ public interface DylanTypes {
       else if (type == NONDEFINING_WORD) {
         return new DylanNondefiningWordImpl(node);
       }
-      else if (type == NONEXPRESSION_WORD) {
-        return new DylanNonexpressionWordImpl(node);
-      }
       else if (type == NONIDENT_EXPR) {
         return new DylanNonidentExprImpl(node);
       }
@@ -848,6 +845,9 @@ public interface DylanTypes {
       }
       else if (type == OPERAND_EXPR) {
         return new DylanOperandExprImpl(node);
+      }
+      else if (type == ORDINARY_BINDING_NAME) {
+        return new DylanOrdinaryBindingNameImpl(node);
       }
       else if (type == OR_EXPR) {
         return new DylanOrExprImpl(node);

@@ -11,14 +11,20 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanNonexpressionWordImpl extends ASTWrapperPsiElement implements DylanNonexpressionWord {
+public class DylanOrdinaryBindingNameImpl extends ASTWrapperPsiElement implements DylanOrdinaryBindingName {
 
-  public DylanNonexpressionWordImpl(ASTNode node) {
+  public DylanOrdinaryBindingNameImpl(ASTNode node) {
     super(node);
   }
 
+  @Override
+  @Nullable
+  public DylanEscapedName getEscapedName() {
+    return findChildByClass(DylanEscapedName.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitNonexpressionWord(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitOrdinaryBindingName(this);
     else super.accept(visitor);
   }
 

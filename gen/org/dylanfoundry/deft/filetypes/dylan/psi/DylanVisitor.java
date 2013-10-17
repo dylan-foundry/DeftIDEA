@@ -627,10 +627,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNonexpressionWord(@NotNull DylanNonexpressionWord o) {
-    visitPsiElement(o);
-  }
-
   public void visitNonidentExpr(@NotNull DylanNonidentExpr o) {
     visitExpr(o);
   }
@@ -645,6 +641,10 @@ public class DylanVisitor extends PsiElementVisitor {
 
   public void visitOrExpr(@NotNull DylanOrExpr o) {
     visitExpr(o);
+  }
+
+  public void visitOrdinaryBindingName(@NotNull DylanOrdinaryBindingName o) {
+    visitPsiElement(o);
   }
 
   public void visitParameterList(@NotNull DylanParameterList o) {

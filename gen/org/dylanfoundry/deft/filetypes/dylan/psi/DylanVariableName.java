@@ -10,7 +10,4 @@ public interface DylanVariableName extends PsiElement {
   @Nullable
   DylanEscapedName getEscapedName();
 
-  @Nullable
-  DylanNonexpressionWord getNonexpressionWord();
-
 }

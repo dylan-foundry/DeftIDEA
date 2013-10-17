@@ -19,14 +19,8 @@ public class DylanCreateClauseImpl extends ASTWrapperPsiElement implements Dylan
 
   @Override
   @NotNull
-  public List<DylanEscapedName> getEscapedNameList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanEscapedName.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanNonexpressionWord> getNonexpressionWordList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanNonexpressionWord.class);
+  public List<DylanOrdinaryBindingName> getOrdinaryBindingNameList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanOrdinaryBindingName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

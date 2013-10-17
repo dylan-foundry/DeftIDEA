@@ -10,10 +10,7 @@ public interface DylanUseClause extends PsiElement {
   @NotNull
   List<DylanClauseOption> getClauseOptionList();
 
-  @Nullable
-  DylanEscapedName getEscapedName();
-
-  @Nullable
-  DylanNonexpressionWord getNonexpressionWord();
+  @NotNull
+  DylanOrdinaryBindingName getOrdinaryBindingName();
 
 }

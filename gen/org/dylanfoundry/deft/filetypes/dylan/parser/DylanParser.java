@@ -488,9 +488,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == NONDEFINING_WORD) {
       result_ = nondefining_word(builder_, level_ + 1);
     }
-    else if (root_ == NONEXPRESSION_WORD) {
-      result_ = nonexpression_word(builder_, level_ + 1);
-    }
     else if (root_ == NONIDENT_EXPR) {
       result_ = expr(builder_, level_ + 1, 1);
     }
@@ -502,6 +499,9 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == OR_EXPR) {
       result_ = expr(builder_, level_ + 1, 0);
+    }
+    else if (root_ == ORDINARY_BINDING_NAME) {
+      result_ = ordinary_binding_name(builder_, level_ + 1);
     }
     else if (root_ == PARAMETER_LIST) {
       result_ = parameter_list(builder_, level_ + 1);
@@ -2663,7 +2663,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // CREATE (ordinary_name (COMMA ordinary_name)*)?
+  // CREATE (ordinary_binding_name (COMMA ordinary_binding_name)*)?
   public static boolean create_clause(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "create_clause")) return false;
     if (!nextTokenIs(builder_, CREATE)) return false;
@@ -2680,19 +2680,19 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (ordinary_name (COMMA ordinary_name)*)?
+  // (ordinary_binding_name (COMMA ordinary_binding_name)*)?
   private static boolean create_clause_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "create_clause_1")) return false;
     create_clause_1_0(builder_, level_ + 1);
     return true;
   }
 
-  // ordinary_name (COMMA ordinary_name)*
+  // ordinary_binding_name (COMMA ordinary_binding_name)*
   private static boolean create_clause_1_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "create_clause_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = ordinary_name(builder_, level_ + 1);
+    result_ = ordinary_binding_name(builder_, level_ + 1);
     result_ = result_ && create_clause_1_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -2703,7 +2703,7 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (COMMA ordinary_name)*
+  // (COMMA ordinary_binding_name)*
   private static boolean create_clause_1_0_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "create_clause_1_0_1")) return false;
     int offset_ = builder_.getCurrentOffset();
@@ -2719,13 +2719,13 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // COMMA ordinary_name
+  // COMMA ordinary_binding_name
   private static boolean create_clause_1_0_1_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "create_clause_1_0_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && ordinary_name(builder_, level_ + 1);
+    result_ = result_ && ordinary_binding_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -3878,7 +3878,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // EXPORT (ordinary_name (COMMA ordinary_name)*)?
+  // EXPORT (ordinary_binding_name (COMMA ordinary_binding_name)*)?
   public static boolean export_clause(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "export_clause")) return false;
     if (!nextTokenIs(builder_, EXPORT)) return false;
@@ -3895,19 +3895,19 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (ordinary_name (COMMA ordinary_name)*)?
+  // (ordinary_binding_name (COMMA ordinary_binding_name)*)?
   private static boolean export_clause_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "export_clause_1")) return false;
     export_clause_1_0(builder_, level_ + 1);
     return true;
   }
 
-  // ordinary_name (COMMA ordinary_name)*
+  // ordinary_binding_name (COMMA ordinary_binding_name)*
   private static boolean export_clause_1_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "export_clause_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = ordinary_name(builder_, level_ + 1);
+    result_ = ordinary_binding_name(builder_, level_ + 1);
     result_ = result_ && export_clause_1_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
@@ -3918,7 +3918,7 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // (COMMA ordinary_name)*
+  // (COMMA ordinary_binding_name)*
   private static boolean export_clause_1_0_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "export_clause_1_0_1")) return false;
     int offset_ = builder_.getCurrentOffset();
@@ -3934,13 +3934,13 @@ public class DylanParser implements PsiParser {
     return true;
   }
 
-  // COMMA ordinary_name
+  // COMMA ordinary_binding_name
   private static boolean export_clause_1_0_1_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "export_clause_1_0_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, COMMA);
-    result_ = result_ && ordinary_name(builder_, level_ + 1);
+    result_ = result_ && ordinary_binding_name(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -6656,11 +6656,10 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS | DOMAIN | LIBRARY | MODULE | GENERIC | SUITE | TEST
-  public static boolean nonexpression_word(PsiBuilder builder_, int level_) {
+  static boolean nonexpression_word(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "nonexpression_word")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<nonexpression word>");
     result_ = consumeToken(builder_, NONDEFINING_NONEXPRESSION_WORD);
     if (!result_) result_ = consumeToken(builder_, DEFINE_BODY_NONEXPRESSION_WORD);
     if (!result_) result_ = consumeToken(builder_, DEFINE_LIST_NONEXPRESSION_WORD);
@@ -6672,13 +6671,12 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, GENERIC);
     if (!result_) result_ = consumeToken(builder_, SUITE);
     if (!result_) result_ = consumeToken(builder_, TEST);
-    if (result_) {
-      marker_.done(NONEXPRESSION_WORD);
-    }
-    else {
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -6878,6 +6876,24 @@ public class DylanParser implements PsiParser {
     else {
       marker_.drop();
     }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // ordinary_name
+  public static boolean ordinary_binding_name(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "ordinary_binding_name")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<ordinary binding name>");
+    result_ = ordinary_name(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(ORDINARY_BINDING_NAME);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 
@@ -9713,14 +9729,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // USE ordinary_name (COMMA clause_option)*
+  // USE ordinary_binding_name (COMMA clause_option)*
   public static boolean use_clause(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "use_clause")) return false;
     if (!nextTokenIs(builder_, USE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, USE);
-    result_ = result_ && ordinary_name(builder_, level_ + 1);
+    result_ = result_ && ordinary_binding_name(builder_, level_ + 1);
     result_ = result_ && use_clause_2(builder_, level_ + 1);
     if (result_) {
       marker_.done(USE_CLAUSE);

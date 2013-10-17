@@ -70,7 +70,7 @@ define_body_word ::= DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_BODY_BEGIN_WORD | D
 
 define_list_word ::= DEFINE_LIST_NONEXPRESSION_WORD | DEFINE_LIST_BEGIN_WORD | DEFINE_LIST_FUNCTION_WORD
 
-nonexpression_word ::= NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS | DOMAIN | LIBRARY | MODULE | GENERIC | SUITE | TEST
+private nonexpression_word ::= NONDEFINING_NONEXPRESSION_WORD | DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_LIST_NONEXPRESSION_WORD | FUNCTION | CLASS | DOMAIN | LIBRARY | MODULE | GENERIC | SUITE | TEST
 
 begin_word ::= NONDEFINING_BEGIN_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_LIST_BEGIN_WORD | METHOD
 
@@ -87,6 +87,8 @@ unreserved_name ::= unreserved_word | escaped_name
 word_name ::= reserved_word | unreserved_name
 
 nondefining_name ::= nondefining_word | escaped_name
+
+ordinary_binding_name ::= ordinary_name
 
 private ordinary_name ::= nonexpression_word | escaped_name
 
@@ -308,11 +310,11 @@ definition_module_definer ::= DEFINE MODULE variable_name ((export_clause|create
 
 module_definition_tail ::= END MODULE variable_name? | END variable_name?
 
-export_clause ::= EXPORT (ordinary_name (COMMA ordinary_name)*)?
+export_clause ::= EXPORT (ordinary_binding_name (COMMA ordinary_binding_name)*)?
 
-create_clause ::= CREATE (ordinary_name (COMMA ordinary_name)*)?
+create_clause ::= CREATE (ordinary_binding_name (COMMA ordinary_binding_name)*)?
 
-use_clause ::= USE ordinary_name (COMMA clause_option)*
+use_clause ::= USE ordinary_binding_name (COMMA clause_option)*
 
 clause_option ::= <<clauseOption>>
 

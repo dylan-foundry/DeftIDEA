@@ -24,15 +24,9 @@ public class DylanUseClauseImpl extends ASTWrapperPsiElement implements DylanUse
   }
 
   @Override
-  @Nullable
-  public DylanEscapedName getEscapedName() {
-    return findChildByClass(DylanEscapedName.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanNonexpressionWord getNonexpressionWord() {
-    return findChildByClass(DylanNonexpressionWord.class);
+  @NotNull
+  public DylanOrdinaryBindingName getOrdinaryBindingName() {
+    return findNotNullChildByClass(DylanOrdinaryBindingName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

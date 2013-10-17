@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanExportClause extends PsiElement {
 
   @NotNull
-  List<DylanEscapedName> getEscapedNameList();
-
-  @NotNull
-  List<DylanNonexpressionWord> getNonexpressionWordList();
+  List<DylanOrdinaryBindingName> getOrdinaryBindingNameList();
 
 }
