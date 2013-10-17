@@ -5,10 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanBlockStatement extends PsiElement {
-
-  @Nullable
-  DylanAfterwardsStatement getAfterwardsStatement();
+public interface DylanBlockStatement extends DylanStatement {
 
   @Nullable
   DylanBlockTail getBlockTail();
@@ -16,11 +13,8 @@ public interface DylanBlockStatement extends PsiElement {
   @Nullable
   DylanBody getBody();
 
-  @Nullable
-  DylanCleanupStatement getCleanupStatement();
-
   @NotNull
-  List<DylanExceptionStatement> getExceptionStatementList();
+  List<DylanStatement> getStatementList();
 
   @Nullable
   DylanVariableName getVariableName();

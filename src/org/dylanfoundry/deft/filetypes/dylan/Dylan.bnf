@@ -18,6 +18,7 @@
   // Support for Pratt-style left-recursive expressions
   extends(".*_expr|expr")=expr
 
+  extends(".*_statement|statement")=statement
   extends(".*_suite_component|suite_component")=suite_component
 }
  
@@ -534,7 +535,9 @@ statement ::=
     | until_statement
     | when_statement
     | while_statement
-    | begin_word body_fragment? end_clause
+    | macro_statement
+
+macro_statement ::= begin_word body_fragment? end_clause
 
 end_clause ::= END begin_word?
 

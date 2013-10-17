@@ -7,46 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanStatement extends PsiElement {
 
-  @Nullable
-  DylanBeginStatement getBeginStatement();
-
-  @Nullable
-  DylanBeginWord getBeginWord();
-
-  @Nullable
-  DylanBlockStatement getBlockStatement();
-
-  @Nullable
-  DylanBodyFragment getBodyFragment();
-
-  @Nullable
-  DylanCaseStatement getCaseStatement();
-
-  @Nullable
-  DylanEndClause getEndClause();
-
-  @Nullable
-  DylanForStatement getForStatement();
-
-  @Nullable
-  DylanIfStatement getIfStatement();
-
-  @Nullable
-  DylanMethodStatement getMethodStatement();
-
-  @Nullable
-  DylanSelectStatement getSelectStatement();
-
-  @Nullable
-  DylanUnlessStatement getUnlessStatement();
-
-  @Nullable
-  DylanUntilStatement getUntilStatement();
-
-  @Nullable
-  DylanWhenStatement getWhenStatement();
-
-  @Nullable
-  DylanWhileStatement getWhileStatement();
-
 }

@@ -5,21 +5,18 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanIfStatement extends PsiElement {
+public interface DylanIfStatement extends DylanStatement {
 
   @Nullable
   DylanBody getBody();
-
-  @Nullable
-  DylanElseStatement getElseStatement();
-
-  @NotNull
-  List<DylanElseifStatement> getElseifStatementList();
 
   @NotNull
   DylanExpression getExpression();
 
   @NotNull
   DylanIfTail getIfTail();
+
+  @NotNull
+  List<DylanStatement> getStatementList();
 
 }

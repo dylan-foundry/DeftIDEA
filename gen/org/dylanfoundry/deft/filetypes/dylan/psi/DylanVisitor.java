@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public class DylanVisitor extends PsiElementVisitor {
 
   public void visitAfterwardsStatement(@NotNull DylanAfterwardsStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitAllocation(@NotNull DylanAllocation o) {
@@ -56,7 +56,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitBeginStatement(@NotNull DylanBeginStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitBeginWord(@NotNull DylanBeginWord o) {
@@ -76,7 +76,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitBlockStatement(@NotNull DylanBlockStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitBlockTail(@NotNull DylanBlockTail o) {
@@ -128,7 +128,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitCaseStatement(@NotNull DylanCaseStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitCaseStmtClause(@NotNull DylanCaseStmtClause o) {
@@ -164,7 +164,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitCleanupStatement(@NotNull DylanCleanupStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitCollectionClause(@NotNull DylanCollectionClause o) {
@@ -284,11 +284,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitElseStatement(@NotNull DylanElseStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitElseifStatement(@NotNull DylanElseifStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitEndClause(@NotNull DylanEndClause o) {
@@ -312,7 +312,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitExceptionStatement(@NotNull DylanExceptionStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitExcludeOption(@NotNull DylanExcludeOption o) {
@@ -360,7 +360,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitForStatement(@NotNull DylanForStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitFunctionDefinitionTail(@NotNull DylanFunctionDefinitionTail o) {
@@ -416,7 +416,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitIfStatement(@NotNull DylanIfStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitIfTail(@NotNull DylanIfTail o) {
@@ -539,6 +539,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitMacroStatement(@NotNull DylanMacroStatement o) {
+    visitStatement(o);
+  }
+
   public void visitMainRuleSet(@NotNull DylanMainRuleSet o) {
     visitPsiElement(o);
   }
@@ -556,7 +560,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitMethodStatement(@NotNull DylanMethodStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitMinusExpr(@NotNull DylanMinusExpr o) {
@@ -736,7 +740,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitSelectStatement(@NotNull DylanSelectStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitSelectStmtClause(@NotNull DylanSelectStmtClause o) {
@@ -888,7 +892,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitUnlessStatement(@NotNull DylanUnlessStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitUnreservedName(@NotNull DylanUnreservedName o) {
@@ -900,7 +904,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitUntilStatement(@NotNull DylanUntilStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitUseClause(@NotNull DylanUseClause o) {
@@ -932,11 +936,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitWhenStatement(@NotNull DylanWhenStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitWhileStatement(@NotNull DylanWhileStatement o) {
-    visitPsiElement(o);
+    visitStatement(o);
   }
 
   public void visitWordName(@NotNull DylanWordName o) {

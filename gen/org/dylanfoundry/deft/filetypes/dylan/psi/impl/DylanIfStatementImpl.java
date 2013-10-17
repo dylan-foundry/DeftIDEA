@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanIfStatementImpl extends ASTWrapperPsiElement implements DylanIfStatement {
+public class DylanIfStatementImpl extends DylanStatementImpl implements DylanIfStatement {
 
   public DylanIfStatementImpl(ASTNode node) {
     super(node);
@@ -24,18 +23,6 @@ public class DylanIfStatementImpl extends ASTWrapperPsiElement implements DylanI
   }
 
   @Override
-  @Nullable
-  public DylanElseStatement getElseStatement() {
-    return findChildByClass(DylanElseStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanElseifStatement> getElseifStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanElseifStatement.class);
-  }
-
-  @Override
   @NotNull
   public DylanExpression getExpression() {
     return findNotNullChildByClass(DylanExpression.class);
@@ -45,6 +32,12 @@ public class DylanIfStatementImpl extends ASTWrapperPsiElement implements DylanI
   @NotNull
   public DylanIfTail getIfTail() {
     return findNotNullChildByClass(DylanIfTail.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanStatement> getStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanStatement.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

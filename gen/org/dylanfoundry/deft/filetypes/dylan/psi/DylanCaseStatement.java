@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCaseStatement extends PsiElement {
+public interface DylanCaseStatement extends DylanStatement {
 
   @NotNull
   List<DylanCaseStmtClause> getCaseStmtClauseList();

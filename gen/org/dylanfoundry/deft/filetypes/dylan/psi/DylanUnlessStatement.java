@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanUnlessStatement extends PsiElement {
+public interface DylanUnlessStatement extends DylanStatement {
 
   @Nullable
   DylanBody getBody();

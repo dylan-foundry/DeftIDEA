@@ -5,15 +5,15 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanExceptionStatement extends DylanStatement {
+public interface DylanMacroStatement extends DylanStatement {
+
+  @NotNull
+  DylanBeginWord getBeginWord();
 
   @Nullable
-  DylanBody getBody();
+  DylanBodyFragment getBodyFragment();
 
   @NotNull
-  List<DylanExceptionOptions> getExceptionOptionsList();
-
-  @NotNull
-  DylanVariable getVariable();
+  DylanEndClause getEndClause();
 
 }

@@ -422,6 +422,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == MACRO_NAME) {
       result_ = macro_name(builder_, level_ + 1);
     }
+    else if (root_ == MACRO_STATEMENT) {
+      result_ = macro_statement(builder_, level_ + 1);
+    }
     else if (root_ == MAIN_RULE_SET) {
       result_ = main_rule_set(builder_, level_ + 1);
     }
@@ -745,6 +748,11 @@ public class DylanParser implements PsiParser {
       GT_EXPR, IDENT_EXPR, LOG_NEG_EXPR, LTEQ_EXPR,
       LT_EXPR, MINUS_EXPR, MUL_EXPR, NEQ_EXPR,
       NONIDENT_EXPR, OPERAND_EXPR, OR_EXPR, PLUS_EXPR),
+    TokenSet.create(AFTERWARDS_STATEMENT, BEGIN_STATEMENT, BLOCK_STATEMENT, CASE_STATEMENT,
+      CLEANUP_STATEMENT, ELSEIF_STATEMENT, ELSE_STATEMENT, EXCEPTION_STATEMENT,
+      FOR_STATEMENT, IF_STATEMENT, MACRO_STATEMENT, METHOD_STATEMENT,
+      SELECT_STATEMENT, STATEMENT, UNLESS_STATEMENT, UNTIL_STATEMENT,
+      WHEN_STATEMENT, WHILE_STATEMENT),
     TokenSet.create(SUITE_COMPONENT, SUITE_SUITE_COMPONENT, TEST_SUITE_COMPONENT),
   };
 
@@ -5822,6 +5830,33 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // begin_word body_fragment? end_clause
+  public static boolean macro_statement(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_statement")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<macro statement>");
+    result_ = begin_word(builder_, level_ + 1);
+    result_ = result_ && macro_statement_1(builder_, level_ + 1);
+    result_ = result_ && end_clause(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(MACRO_STATEMENT);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // body_fragment?
+  private static boolean macro_statement_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_statement_1")) return false;
+    body_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
   // body_style_definition_rules
   //     | list_style_definition_rules
   //     | statement_rules
@@ -8705,10 +8740,11 @@ public class DylanParser implements PsiParser {
   //     | until_statement
   //     | when_statement
   //     | while_statement
-  //     | begin_word body_fragment? end_clause
+  //     | macro_statement
   public static boolean statement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "statement")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<statement>");
     result_ = begin_statement(builder_, level_ + 1);
@@ -8722,8 +8758,12 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = until_statement(builder_, level_ + 1);
     if (!result_) result_ = when_statement(builder_, level_ + 1);
     if (!result_) result_ = while_statement(builder_, level_ + 1);
-    if (!result_) result_ = statement_11(builder_, level_ + 1);
-    if (result_) {
+    if (!result_) result_ = macro_statement(builder_, level_ + 1);
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), STATEMENT)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(STATEMENT);
     }
     else {
@@ -8731,30 +8771,6 @@ public class DylanParser implements PsiParser {
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
-  }
-
-  // begin_word body_fragment? end_clause
-  private static boolean statement_11(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "statement_11")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = begin_word(builder_, level_ + 1);
-    result_ = result_ && statement_11_1(builder_, level_ + 1);
-    result_ = result_ && end_clause(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // body_fragment?
-  private static boolean statement_11_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "statement_11_1")) return false;
-    body_fragment(builder_, level_ + 1);
-    return true;
   }
 
   /* ********************************************************** */

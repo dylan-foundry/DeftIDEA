@@ -141,6 +141,7 @@ public interface DylanTypes {
   IElementType MACRO_DEFINITION = new DylanElementType("MACRO_DEFINITION");
   IElementType MACRO_DEFINITION_TAIL = new DylanElementType("MACRO_DEFINITION_TAIL");
   IElementType MACRO_NAME = new DylanElementType("MACRO_NAME");
+  IElementType MACRO_STATEMENT = new DylanElementType("MACRO_STATEMENT");
   IElementType MAIN_RULE_SET = new DylanElementType("MAIN_RULE_SET");
   IElementType MAYBE_PATTERN_AND_SEMICOLON = new DylanElementType("MAYBE_PATTERN_AND_SEMICOLON");
   IElementType METHOD_DEFINITION = new DylanElementType("METHOD_DEFINITION");
@@ -771,6 +772,9 @@ public interface DylanTypes {
       }
       else if (type == MACRO_NAME) {
         return new DylanMacroNameImpl(node);
+      }
+      else if (type == MACRO_STATEMENT) {
+        return new DylanMacroStatementImpl(node);
       }
       else if (type == MAIN_RULE_SET) {
         return new DylanMainRuleSetImpl(node);

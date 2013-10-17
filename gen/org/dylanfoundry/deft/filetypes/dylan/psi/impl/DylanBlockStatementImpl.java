@@ -8,19 +8,12 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanBlockStatementImpl extends ASTWrapperPsiElement implements DylanBlockStatement {
+public class DylanBlockStatementImpl extends DylanStatementImpl implements DylanBlockStatement {
 
   public DylanBlockStatementImpl(ASTNode node) {
     super(node);
-  }
-
-  @Override
-  @Nullable
-  public DylanAfterwardsStatement getAfterwardsStatement() {
-    return findChildByClass(DylanAfterwardsStatement.class);
   }
 
   @Override
@@ -36,15 +29,9 @@ public class DylanBlockStatementImpl extends ASTWrapperPsiElement implements Dyl
   }
 
   @Override
-  @Nullable
-  public DylanCleanupStatement getCleanupStatement() {
-    return findChildByClass(DylanCleanupStatement.class);
-  }
-
-  @Override
   @NotNull
-  public List<DylanExceptionStatement> getExceptionStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExceptionStatement.class);
+  public List<DylanStatement> getStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanStatement.class);
   }
 
   @Override

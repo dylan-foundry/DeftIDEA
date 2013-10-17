@@ -10,26 +10,32 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanWhileStatementImpl extends DylanStatementImpl implements DylanWhileStatement {
+public class DylanMacroStatementImpl extends DylanStatementImpl implements DylanMacroStatement {
 
-  public DylanWhileStatementImpl(ASTNode node) {
+  public DylanMacroStatementImpl(ASTNode node) {
     super(node);
   }
 
   @Override
+  @NotNull
+  public DylanBeginWord getBeginWord() {
+    return findNotNullChildByClass(DylanBeginWord.class);
+  }
+
+  @Override
   @Nullable
-  public DylanBody getBody() {
-    return findChildByClass(DylanBody.class);
+  public DylanBodyFragment getBodyFragment() {
+    return findChildByClass(DylanBodyFragment.class);
   }
 
   @Override
   @NotNull
-  public DylanExpression getExpression() {
-    return findNotNullChildByClass(DylanExpression.class);
+  public DylanEndClause getEndClause() {
+    return findNotNullChildByClass(DylanEndClause.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitWhileStatement(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitMacroStatement(this);
     else super.accept(visitor);
   }
 
