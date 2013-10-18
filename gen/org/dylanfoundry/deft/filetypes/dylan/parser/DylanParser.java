@@ -1092,7 +1092,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL
+  // BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL | COLON_EQUAL
   public static boolean binary_operator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binary_operator")) return false;
     boolean result_ = false;
@@ -1102,6 +1102,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, UNARY_AND_BINARY_OPERATOR);
     if (!result_) result_ = consumeToken(builder_, EQUAL);
     if (!result_) result_ = consumeToken(builder_, EQUAL_EQUAL);
+    if (!result_) result_ = consumeToken(builder_, COLON_EQUAL);
     if (result_) {
       marker_.done(BINARY_OPERATOR);
     }
