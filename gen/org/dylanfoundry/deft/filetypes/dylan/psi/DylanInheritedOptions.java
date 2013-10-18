@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanInheritedOptions extends PsiElement {
 
   @NotNull
-  List<DylanInheritedOption> getInheritedOptionList();
+  List<DylanSlotOption> getSlotOptionList();
 
 }

@@ -332,9 +332,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == IMPORT_OPTION) {
       result_ = import_option(builder_, level_ + 1);
     }
-    else if (root_ == INHERITED_OPTION) {
-      result_ = inherited_option(builder_, level_ + 1);
-    }
     else if (root_ == INHERITED_OPTIONS) {
       result_ = inherited_options(builder_, level_ + 1);
     }
@@ -353,14 +350,14 @@ public class DylanParser implements PsiParser {
     else if (root_ == INIT_EXPRESSION) {
       result_ = init_expression(builder_, level_ + 1);
     }
-    else if (root_ == INIT_FUNCTION_OPTION) {
-      result_ = init_function_option(builder_, level_ + 1);
+    else if (root_ == INIT_FUNCTION_SLOT_OPTION) {
+      result_ = init_function_slot_option(builder_, level_ + 1);
     }
-    else if (root_ == INIT_KEYWORD_OPTION) {
-      result_ = init_keyword_option(builder_, level_ + 1);
+    else if (root_ == INIT_KEYWORD_SLOT_OPTION) {
+      result_ = init_keyword_slot_option(builder_, level_ + 1);
     }
-    else if (root_ == INIT_VALUE_OPTION) {
-      result_ = init_value_option(builder_, level_ + 1);
+    else if (root_ == INIT_VALUE_SLOT_OPTION) {
+      result_ = init_value_slot_option(builder_, level_ + 1);
     }
     else if (root_ == KEY_PARAMETER_LIST) {
       result_ = key_parameter_list(builder_, level_ + 1);
@@ -545,8 +542,8 @@ public class DylanParser implements PsiParser {
     else if (root_ == RENAME_OPTION) {
       result_ = rename_option(builder_, level_ + 1);
     }
-    else if (root_ == REQUIRED_INIT_KEYWORD_OPTION) {
-      result_ = required_init_keyword_option(builder_, level_ + 1);
+    else if (root_ == REQUIRED_INIT_KEYWORD_SLOT_OPTION) {
+      result_ = required_init_keyword_slot_option(builder_, level_ + 1);
     }
     else if (root_ == REQUIRED_PARAMETER) {
       result_ = required_parameter(builder_, level_ + 1);
@@ -587,8 +584,8 @@ public class DylanParser implements PsiParser {
     else if (root_ == SEPARATOR) {
       result_ = separator(builder_, level_ + 1);
     }
-    else if (root_ == SETTER_OPTION) {
-      result_ = setter_option(builder_, level_ + 1);
+    else if (root_ == SETTER_SLOT_OPTION) {
+      result_ = setter_slot_option(builder_, level_ + 1);
     }
     else if (root_ == SHARED_SYMBOLS) {
       result_ = shared_symbols(builder_, level_ + 1);
@@ -671,8 +668,8 @@ public class DylanParser implements PsiParser {
     else if (root_ == TOKEN) {
       result_ = token(builder_, level_ + 1);
     }
-    else if (root_ == TYPE_OPTION) {
-      result_ = type_option(builder_, level_ + 1);
+    else if (root_ == TYPE_SLOT_OPTION) {
+      result_ = type_slot_option(builder_, level_ + 1);
     }
     else if (root_ == UNIQUE_STRING) {
       result_ = unique_string(builder_, level_ + 1);
@@ -739,6 +736,8 @@ public class DylanParser implements PsiParser {
       GT_EXPR, IDENT_EXPR, LOG_NEG_EXPR, LTEQ_EXPR,
       LT_EXPR, MINUS_EXPR, MUL_EXPR, NEQ_EXPR,
       NONIDENT_EXPR, OPERAND_EXPR, OR_EXPR, PLUS_EXPR),
+    TokenSet.create(INIT_FUNCTION_SLOT_OPTION, INIT_KEYWORD_SLOT_OPTION, INIT_VALUE_SLOT_OPTION, REQUIRED_INIT_KEYWORD_SLOT_OPTION,
+      SETTER_SLOT_OPTION, SLOT_OPTION, TYPE_SLOT_OPTION),
     TokenSet.create(AFTERWARDS_STATEMENT, BEGIN_STATEMENT, BLOCK_STATEMENT, CASE_STATEMENT,
       CLEANUP_STATEMENT, ELSEIF_STATEMENT, ELSE_STATEMENT, EXCEPTION_STATEMENT,
       FOR_STATEMENT, IF_STATEMENT, MACRO_STATEMENT, METHOD_STATEMENT,
@@ -4780,21 +4779,19 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // init_value_option | init_function_option
-  public static boolean inherited_option(PsiBuilder builder_, int level_) {
+  // init_value_slot_option | init_function_slot_option
+  static boolean inherited_option(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "inherited_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<inherited option>");
-    result_ = init_value_option(builder_, level_ + 1);
-    if (!result_) result_ = init_function_option(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(INHERITED_OPTION);
-    }
-    else {
+    result_ = init_value_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = init_function_slot_option(builder_, level_ + 1);
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -4872,15 +4869,15 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // type_option | init_value_option | init_function_option
+  // type_slot_option | init_value_slot_option | init_function_slot_option
   public static boolean init_arg_option(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "init_arg_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init arg option>");
-    result_ = type_option(builder_, level_ + 1);
-    if (!result_) result_ = init_value_option(builder_, level_ + 1);
-    if (!result_) result_ = init_function_option(builder_, level_ + 1);
+    result_ = type_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = init_value_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = init_function_slot_option(builder_, level_ + 1);
     if (result_) {
       marker_.done(INIT_ARG_OPTION);
     }
@@ -4991,15 +4988,15 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // <<keywordWithValue "init-function:">> expression
-  public static boolean init_function_option(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "init_function_option")) return false;
+  public static boolean init_function_slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_function_slot_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init function option>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init function slot option>");
     result_ = keywordWithValue(builder_, level_ + 1, "init-function:");
     result_ = result_ && expression(builder_, level_ + 1, -1);
     if (result_) {
-      marker_.done(INIT_FUNCTION_OPTION);
+      marker_.done(INIT_FUNCTION_SLOT_OPTION);
     }
     else {
       marker_.rollbackTo();
@@ -5010,15 +5007,15 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // <<keywordWithValue "init-keyword:">> symbol
-  public static boolean init_keyword_option(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "init_keyword_option")) return false;
+  public static boolean init_keyword_slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_keyword_slot_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init keyword option>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init keyword slot option>");
     result_ = keywordWithValue(builder_, level_ + 1, "init-keyword:");
     result_ = result_ && symbol(builder_, level_ + 1);
     if (result_) {
-      marker_.done(INIT_KEYWORD_OPTION);
+      marker_.done(INIT_KEYWORD_SLOT_OPTION);
     }
     else {
       marker_.rollbackTo();
@@ -5029,15 +5026,15 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // <<keywordWithValue "init-value:">> expression
-  public static boolean init_value_option(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "init_value_option")) return false;
+  public static boolean init_value_slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "init_value_slot_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init value option>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<init value slot option>");
     result_ = keywordWithValue(builder_, level_ + 1, "init-value:");
     result_ = result_ && expression(builder_, level_ + 1, -1);
     if (result_) {
-      marker_.done(INIT_VALUE_OPTION);
+      marker_.done(INIT_VALUE_SLOT_OPTION);
     }
     else {
       marker_.rollbackTo();
@@ -7647,15 +7644,15 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // <<keywordWithValue "required-init-keyword:">> symbol
-  public static boolean required_init_keyword_option(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "required_init_keyword_option")) return false;
+  public static boolean required_init_keyword_slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "required_init_keyword_slot_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<required init keyword option>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<required init keyword slot option>");
     result_ = keywordWithValue(builder_, level_ + 1, "required-init-keyword:");
     result_ = result_ && symbol(builder_, level_ + 1);
     if (result_) {
-      marker_.done(REQUIRED_INIT_KEYWORD_OPTION);
+      marker_.done(REQUIRED_INIT_KEYWORD_SLOT_OPTION);
     }
     else {
       marker_.rollbackTo();
@@ -8216,15 +8213,20 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // <<keywordWithValue "setter:">> (variable_name|HASH_F)
-  public static boolean setter_option(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "setter_option")) return false;
+  public static boolean setter_slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "setter_slot_option")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<setter option>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<setter slot option>");
     result_ = keywordWithValue(builder_, level_ + 1, "setter:");
-    result_ = result_ && setter_option_1(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(SETTER_OPTION);
+    result_ = result_ && setter_slot_option_1(builder_, level_ + 1);
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), SETTER_SLOT_OPTION)) {
+      marker_.drop();
+    }
+    else if (result_) {
+      marker_.done(SETTER_SLOT_OPTION);
     }
     else {
       marker_.rollbackTo();
@@ -8234,8 +8236,8 @@ public class DylanParser implements PsiParser {
   }
 
   // variable_name|HASH_F
-  private static boolean setter_option_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "setter_option_1")) return false;
+  private static boolean setter_slot_option_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "setter_slot_option_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variable_name(builder_, level_ + 1);
@@ -8521,24 +8523,29 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // setter_option
-  //     | init_keyword_option
-  //     | required_init_keyword_option
-  //     | init_value_option
-  //     | init_function_option
-  //     | type_option
+  // setter_slot_option
+  //     | init_keyword_slot_option
+  //     | required_init_keyword_slot_option
+  //     | init_value_slot_option
+  //     | init_function_slot_option
+  //     | type_slot_option
   public static boolean slot_option(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "slot_option")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<slot option>");
-    result_ = setter_option(builder_, level_ + 1);
-    if (!result_) result_ = init_keyword_option(builder_, level_ + 1);
-    if (!result_) result_ = required_init_keyword_option(builder_, level_ + 1);
-    if (!result_) result_ = init_value_option(builder_, level_ + 1);
-    if (!result_) result_ = init_function_option(builder_, level_ + 1);
-    if (!result_) result_ = type_option(builder_, level_ + 1);
-    if (result_) {
+    result_ = setter_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = init_keyword_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = required_init_keyword_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = init_value_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = init_function_slot_option(builder_, level_ + 1);
+    if (!result_) result_ = type_slot_option(builder_, level_ + 1);
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), SLOT_OPTION)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(SLOT_OPTION);
     }
     else {
@@ -9539,15 +9546,15 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // <<keywordWithValue "type:">> expression
-  public static boolean type_option(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "type_option")) return false;
+  public static boolean type_slot_option(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "type_slot_option")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<type option>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<type slot option>");
     result_ = keywordWithValue(builder_, level_ + 1, "type:");
     result_ = result_ && expression(builder_, level_ + 1, -1);
     if (result_) {
-      marker_.done(TYPE_OPTION);
+      marker_.done(TYPE_SLOT_OPTION);
     }
     else {
       marker_.rollbackTo();

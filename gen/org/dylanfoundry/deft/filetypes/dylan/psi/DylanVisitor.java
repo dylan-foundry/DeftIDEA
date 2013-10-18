@@ -419,10 +419,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitInheritedOption(@NotNull DylanInheritedOption o) {
-    visitPsiElement(o);
-  }
-
   public void visitInheritedOptions(@NotNull DylanInheritedOptions o) {
     visitPsiElement(o);
   }
@@ -447,16 +443,16 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitInitFunctionOption(@NotNull DylanInitFunctionOption o) {
-    visitPsiElement(o);
+  public void visitInitFunctionSlotOption(@NotNull DylanInitFunctionSlotOption o) {
+    visitSlotOption(o);
   }
 
-  public void visitInitKeywordOption(@NotNull DylanInitKeywordOption o) {
-    visitPsiElement(o);
+  public void visitInitKeywordSlotOption(@NotNull DylanInitKeywordSlotOption o) {
+    visitSlotOption(o);
   }
 
-  public void visitInitValueOption(@NotNull DylanInitValueOption o) {
-    visitPsiElement(o);
+  public void visitInitValueSlotOption(@NotNull DylanInitValueSlotOption o) {
+    visitSlotOption(o);
   }
 
   public void visitKeyParameterList(@NotNull DylanKeyParameterList o) {
@@ -703,8 +699,8 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitRequiredInitKeywordOption(@NotNull DylanRequiredInitKeywordOption o) {
-    visitPsiElement(o);
+  public void visitRequiredInitKeywordSlotOption(@NotNull DylanRequiredInitKeywordSlotOption o) {
+    visitSlotOption(o);
   }
 
   public void visitRequiredParameter(@NotNull DylanRequiredParameter o) {
@@ -759,8 +755,8 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitSetterOption(@NotNull DylanSetterOption o) {
-    visitPsiElement(o);
+  public void visitSetterSlotOption(@NotNull DylanSetterSlotOption o) {
+    visitSlotOption(o);
   }
 
   public void visitSharedSymbols(@NotNull DylanSharedSymbols o) {
@@ -871,8 +867,8 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitTypeOption(@NotNull DylanTypeOption o) {
-    visitPsiElement(o);
+  public void visitTypeSlotOption(@NotNull DylanTypeSlotOption o) {
+    visitSlotOption(o);
   }
 
   public void visitUniqueString(@NotNull DylanUniqueString o) {

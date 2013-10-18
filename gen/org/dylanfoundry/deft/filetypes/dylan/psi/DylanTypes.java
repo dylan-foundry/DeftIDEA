@@ -111,16 +111,15 @@ public interface DylanTypes {
   IElementType IF_STATEMENT = new DylanElementType("IF_STATEMENT");
   IElementType IF_TAIL = new DylanElementType("IF_TAIL");
   IElementType IMPORT_OPTION = new DylanElementType("IMPORT_OPTION");
-  IElementType INHERITED_OPTION = new DylanElementType("INHERITED_OPTION");
   IElementType INHERITED_OPTIONS = new DylanElementType("INHERITED_OPTIONS");
   IElementType INHERITED_SLOT_SPEC = new DylanElementType("INHERITED_SLOT_SPEC");
   IElementType INIT_ARG_OPTION = new DylanElementType("INIT_ARG_OPTION");
   IElementType INIT_ARG_OPTIONS = new DylanElementType("INIT_ARG_OPTIONS");
   IElementType INIT_ARG_SPEC = new DylanElementType("INIT_ARG_SPEC");
   IElementType INIT_EXPRESSION = new DylanElementType("INIT_EXPRESSION");
-  IElementType INIT_FUNCTION_OPTION = new DylanElementType("INIT_FUNCTION_OPTION");
-  IElementType INIT_KEYWORD_OPTION = new DylanElementType("INIT_KEYWORD_OPTION");
-  IElementType INIT_VALUE_OPTION = new DylanElementType("INIT_VALUE_OPTION");
+  IElementType INIT_FUNCTION_SLOT_OPTION = new DylanElementType("INIT_FUNCTION_SLOT_OPTION");
+  IElementType INIT_KEYWORD_SLOT_OPTION = new DylanElementType("INIT_KEYWORD_SLOT_OPTION");
+  IElementType INIT_VALUE_SLOT_OPTION = new DylanElementType("INIT_VALUE_SLOT_OPTION");
   IElementType KEYED_BY_CLAUSE = new DylanElementType("KEYED_BY_CLAUSE");
   IElementType KEYWORD_PARAMETER = new DylanElementType("KEYWORD_PARAMETER");
   IElementType KEYWORD_PARAMETERS = new DylanElementType("KEYWORD_PARAMETERS");
@@ -182,7 +181,7 @@ public interface DylanTypes {
   IElementType PROPERTY_LIST_PATTERN = new DylanElementType("PROPERTY_LIST_PATTERN");
   IElementType PUNCTUATION = new DylanElementType("PUNCTUATION");
   IElementType RENAME_OPTION = new DylanElementType("RENAME_OPTION");
-  IElementType REQUIRED_INIT_KEYWORD_OPTION = new DylanElementType("REQUIRED_INIT_KEYWORD_OPTION");
+  IElementType REQUIRED_INIT_KEYWORD_SLOT_OPTION = new DylanElementType("REQUIRED_INIT_KEYWORD_SLOT_OPTION");
   IElementType REQUIRED_PARAMETER = new DylanElementType("REQUIRED_PARAMETER");
   IElementType REQUIRED_PARAMETERS = new DylanElementType("REQUIRED_PARAMETERS");
   IElementType RESERVED_WORD = new DylanElementType("RESERVED_WORD");
@@ -196,7 +195,7 @@ public interface DylanTypes {
   IElementType SELECT_STMT_TAIL = new DylanElementType("SELECT_STMT_TAIL");
   IElementType SEMICOLON_FRAGMENT = new DylanElementType("SEMICOLON_FRAGMENT");
   IElementType SEPARATOR = new DylanElementType("SEPARATOR");
-  IElementType SETTER_OPTION = new DylanElementType("SETTER_OPTION");
+  IElementType SETTER_SLOT_OPTION = new DylanElementType("SETTER_SLOT_OPTION");
   IElementType SHARED_SYMBOLS = new DylanElementType("SHARED_SYMBOLS");
   IElementType SHARED_SYMBOLS_DEFINITION_TAIL = new DylanElementType("SHARED_SYMBOLS_DEFINITION_TAIL");
   IElementType SIMPLE_PATTERN = new DylanElementType("SIMPLE_PATTERN");
@@ -224,7 +223,7 @@ public interface DylanTypes {
   IElementType TEST_DEFINITION_TAIL = new DylanElementType("TEST_DEFINITION_TAIL");
   IElementType TEST_SUITE_COMPONENT = new DylanElementType("TEST_SUITE_COMPONENT");
   IElementType TOKEN = new DylanElementType("TOKEN");
-  IElementType TYPE_OPTION = new DylanElementType("TYPE_OPTION");
+  IElementType TYPE_SLOT_OPTION = new DylanElementType("TYPE_SLOT_OPTION");
   IElementType UNIQUE_STRING = new DylanElementType("UNIQUE_STRING");
   IElementType UNLESS_STATEMENT = new DylanElementType("UNLESS_STATEMENT");
   IElementType UNRESERVED_NAME = new DylanElementType("UNRESERVED_NAME");
@@ -681,9 +680,6 @@ public interface DylanTypes {
       else if (type == IMPORT_OPTION) {
         return new DylanImportOptionImpl(node);
       }
-      else if (type == INHERITED_OPTION) {
-        return new DylanInheritedOptionImpl(node);
-      }
       else if (type == INHERITED_OPTIONS) {
         return new DylanInheritedOptionsImpl(node);
       }
@@ -702,14 +698,14 @@ public interface DylanTypes {
       else if (type == INIT_EXPRESSION) {
         return new DylanInitExpressionImpl(node);
       }
-      else if (type == INIT_FUNCTION_OPTION) {
-        return new DylanInitFunctionOptionImpl(node);
+      else if (type == INIT_FUNCTION_SLOT_OPTION) {
+        return new DylanInitFunctionSlotOptionImpl(node);
       }
-      else if (type == INIT_KEYWORD_OPTION) {
-        return new DylanInitKeywordOptionImpl(node);
+      else if (type == INIT_KEYWORD_SLOT_OPTION) {
+        return new DylanInitKeywordSlotOptionImpl(node);
       }
-      else if (type == INIT_VALUE_OPTION) {
-        return new DylanInitValueOptionImpl(node);
+      else if (type == INIT_VALUE_SLOT_OPTION) {
+        return new DylanInitValueSlotOptionImpl(node);
       }
       else if (type == KEYED_BY_CLAUSE) {
         return new DylanKeyedByClauseImpl(node);
@@ -894,8 +890,8 @@ public interface DylanTypes {
       else if (type == RENAME_OPTION) {
         return new DylanRenameOptionImpl(node);
       }
-      else if (type == REQUIRED_INIT_KEYWORD_OPTION) {
-        return new DylanRequiredInitKeywordOptionImpl(node);
+      else if (type == REQUIRED_INIT_KEYWORD_SLOT_OPTION) {
+        return new DylanRequiredInitKeywordSlotOptionImpl(node);
       }
       else if (type == REQUIRED_PARAMETER) {
         return new DylanRequiredParameterImpl(node);
@@ -936,8 +932,8 @@ public interface DylanTypes {
       else if (type == SEPARATOR) {
         return new DylanSeparatorImpl(node);
       }
-      else if (type == SETTER_OPTION) {
-        return new DylanSetterOptionImpl(node);
+      else if (type == SETTER_SLOT_OPTION) {
+        return new DylanSetterSlotOptionImpl(node);
       }
       else if (type == SHARED_SYMBOLS) {
         return new DylanSharedSymbolsImpl(node);
@@ -1020,8 +1016,8 @@ public interface DylanTypes {
       else if (type == TOKEN) {
         return new DylanTokenImpl(node);
       }
-      else if (type == TYPE_OPTION) {
-        return new DylanTypeOptionImpl(node);
+      else if (type == TYPE_SLOT_OPTION) {
+        return new DylanTypeSlotOptionImpl(node);
       }
       else if (type == UNIQUE_STRING) {
         return new DylanUniqueStringImpl(node);

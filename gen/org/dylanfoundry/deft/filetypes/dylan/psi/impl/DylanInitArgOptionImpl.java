@@ -18,21 +18,9 @@ public class DylanInitArgOptionImpl extends ASTWrapperPsiElement implements Dyla
   }
 
   @Override
-  @Nullable
-  public DylanInitFunctionOption getInitFunctionOption() {
-    return findChildByClass(DylanInitFunctionOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanInitValueOption getInitValueOption() {
-    return findChildByClass(DylanInitValueOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanTypeOption getTypeOption() {
-    return findChildByClass(DylanTypeOption.class);
+  @NotNull
+  public DylanSlotOption getSlotOption() {
+    return findNotNullChildByClass(DylanSlotOption.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

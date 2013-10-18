@@ -8,23 +8,22 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanInitKeywordOptionImpl extends ASTWrapperPsiElement implements DylanInitKeywordOption {
+public class DylanInitValueSlotOptionImpl extends DylanSlotOptionImpl implements DylanInitValueSlotOption {
 
-  public DylanInitKeywordOptionImpl(ASTNode node) {
+  public DylanInitValueSlotOptionImpl(ASTNode node) {
     super(node);
   }
 
   @Override
   @NotNull
-  public DylanSymbol getSymbol() {
-    return findNotNullChildByClass(DylanSymbol.class);
+  public DylanExpression getExpression() {
+    return findNotNullChildByClass(DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitInitKeywordOption(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitInitValueSlotOption(this);
     else super.accept(visitor);
   }
 

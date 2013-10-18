@@ -17,42 +17,6 @@ public class DylanSlotOptionImpl extends ASTWrapperPsiElement implements DylanSl
     super(node);
   }
 
-  @Override
-  @Nullable
-  public DylanInitFunctionOption getInitFunctionOption() {
-    return findChildByClass(DylanInitFunctionOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanInitKeywordOption getInitKeywordOption() {
-    return findChildByClass(DylanInitKeywordOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanInitValueOption getInitValueOption() {
-    return findChildByClass(DylanInitValueOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanRequiredInitKeywordOption getRequiredInitKeywordOption() {
-    return findChildByClass(DylanRequiredInitKeywordOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanSetterOption getSetterOption() {
-    return findChildByClass(DylanSetterOption.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanTypeOption getTypeOption() {
-    return findChildByClass(DylanTypeOption.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitSlotOption(this);
     else super.accept(visitor);

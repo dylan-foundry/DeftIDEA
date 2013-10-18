@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanInitFunctionOption extends PsiElement {
+public interface DylanInitValueSlotOption extends DylanSlotOption {
 
   @NotNull
   DylanExpression getExpression();

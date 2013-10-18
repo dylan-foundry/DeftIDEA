@@ -18,6 +18,7 @@
   // Support for Pratt-style left-recursive expressions
   extends(".*_expr|expression")=expression
 
+  extends(".*slot_option|slot_option")=slot_option
   extends(".*_statement|statement")=statement
   extends(".*_suite_component|suite_component")=suite_component
 }
@@ -226,32 +227,32 @@ init_expression ::= EQUAL expression
 slot_options ::= (COMMA slot_option)*
 
 slot_option ::=
-      setter_option
-    | init_keyword_option
-    | required_init_keyword_option
-    | init_value_option
-    | init_function_option
-    | type_option
+      setter_slot_option
+    | init_keyword_slot_option
+    | required_init_keyword_slot_option
+    | init_value_slot_option
+    | init_function_slot_option
+    | type_slot_option
 
 init_arg_options ::= (COMMA init_arg_option)*
 
-init_arg_option ::=  type_option | init_value_option | init_function_option
+init_arg_option ::=  type_slot_option | init_value_slot_option | init_function_slot_option
 
 inherited_options ::= (COMMA inherited_option)*
 
-inherited_option ::= init_value_option | init_function_option
+private inherited_option ::= init_value_slot_option | init_function_slot_option
 
-setter_option ::= <<keywordWithValue "setter:">> (variable_name|HASH_F)
+setter_slot_option ::= <<keywordWithValue "setter:">> (variable_name|HASH_F)
 
-init_keyword_option ::= <<keywordWithValue "init-keyword:">> symbol
+init_keyword_slot_option ::= <<keywordWithValue "init-keyword:">> symbol
 
-required_init_keyword_option ::= <<keywordWithValue "required-init-keyword:">> symbol
+required_init_keyword_slot_option ::= <<keywordWithValue "required-init-keyword:">> symbol
 
-init_value_option ::= <<keywordWithValue "init-value:">> expression
+init_value_slot_option ::= <<keywordWithValue "init-value:">> expression
 
-init_function_option ::= <<keywordWithValue "init-function:">> expression
+init_function_slot_option ::= <<keywordWithValue "init-function:">> expression
 
-type_option ::= <<keywordWithValue "type:">> expression
+type_slot_option ::= <<keywordWithValue "type:">> expression
 
 definition_constant_definer ::= DEFINE modifiers? CONSTANT_T (variable | variable_list) EQUAL expression
   {

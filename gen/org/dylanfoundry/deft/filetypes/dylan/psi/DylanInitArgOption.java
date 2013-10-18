@@ -7,13 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanInitArgOption extends PsiElement {
 
-  @Nullable
-  DylanInitFunctionOption getInitFunctionOption();
-
-  @Nullable
-  DylanInitValueOption getInitValueOption();
-
-  @Nullable
-  DylanTypeOption getTypeOption();
+  @NotNull
+  DylanSlotOption getSlotOption();
 
 }

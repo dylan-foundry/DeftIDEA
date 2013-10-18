@@ -19,8 +19,8 @@ public class DylanInheritedOptionsImpl extends ASTWrapperPsiElement implements D
 
   @Override
   @NotNull
-  public List<DylanInheritedOption> getInheritedOptionList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanInheritedOption.class);
+  public List<DylanSlotOption> getSlotOptionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanSlotOption.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
