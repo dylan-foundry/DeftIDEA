@@ -19,6 +19,12 @@ public class DylanNameNotEndImpl extends ASTWrapperPsiElement implements DylanNa
 
   @Override
   @Nullable
+  public DylanDylanUnreservedName getDylanUnreservedName() {
+    return findChildByClass(DylanDylanUnreservedName.class);
+  }
+
+  @Override
+  @Nullable
   public DylanMacroName getMacroName() {
     return findChildByClass(DylanMacroName.class);
   }

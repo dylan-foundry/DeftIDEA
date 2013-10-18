@@ -108,12 +108,6 @@ public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDe
     return findChildByClass(DylanDefinitionVariableDefiner.class);
   }
 
-  @Override
-  @Nullable
-  public DylanMacroDefinition getMacroDefinition() {
-    return findChildByClass(DylanMacroDefinition.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitDefinition(this);
     else super.accept(visitor);

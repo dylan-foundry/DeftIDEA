@@ -19,6 +19,12 @@ public class DylanUnreservedNameImpl extends ASTWrapperPsiElement implements Dyl
 
   @Override
   @Nullable
+  public DylanDylanUnreservedName getDylanUnreservedName() {
+    return findChildByClass(DylanDylanUnreservedName.class);
+  }
+
+  @Override
+  @Nullable
   public DylanEscapedName getEscapedName() {
     return findChildByClass(DylanEscapedName.class);
   }

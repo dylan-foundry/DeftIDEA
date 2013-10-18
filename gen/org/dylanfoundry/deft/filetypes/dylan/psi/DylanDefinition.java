@@ -53,9 +53,6 @@ public interface DylanDefinition extends PsiElement {
   @Nullable
   DylanDefinitionVariableDefiner getDefinitionVariableDefiner();
 
-  @Nullable
-  DylanMacroDefinition getMacroDefinition();
-
   ItemPresentation getPresentation();
 
 }

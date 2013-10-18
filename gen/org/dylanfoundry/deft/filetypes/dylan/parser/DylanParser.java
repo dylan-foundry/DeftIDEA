@@ -227,6 +227,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == DIV_EXPR) {
       result_ = expression(builder_, level_ + 1, 3);
     }
+    else if (root_ == DYLAN_UNRESERVED_NAME) {
+      result_ = dylan_unreserved_name(builder_, level_ + 1);
+    }
     else if (root_ == ELSE_STATEMENT) {
       result_ = else_statement(builder_, level_ + 1);
     }
@@ -2786,7 +2789,6 @@ public class DylanParser implements PsiParser {
   //     | definition_test_definer
   //     | definition_variable_definer
   //     | definition_macro_call
-  //     | DEFINE MACRO_T macro_definition
   //     | PARSED_DEFINITION
   public static boolean definition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition")) return false;
@@ -2810,7 +2812,6 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = definition_test_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_variable_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_macro_call(builder_, level_ + 1);
-    if (!result_) result_ = definition_15(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_DEFINITION);
     if (result_) {
       marker_.done(DEFINITION);
@@ -2819,22 +2820,6 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
-    return result_;
-  }
-
-  // DEFINE MACRO_T macro_definition
-  private static boolean definition_15(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_15")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, MACRO_T);
-    result_ = result_ && macro_definition(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
     return result_;
   }
 
@@ -3553,6 +3538,82 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "dylanFile_1")) return false;
     source_records(builder_, level_ + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // ABOVE
+  //     | AFTERWARDS
+  //     | ALL
+  //     | BELOW
+  //     | BY
+  //     | COPY_DOWN_METHOD
+  //     | CLEANUP
+  //     | CREATE
+  //     | EXPORT
+  //     | FINALLY
+  //     | FROM
+  //     | IN
+  //     | KEYED_BY
+  //     | THEN
+  //     | TO
+  //     | USE
+  //     | USING
+  //     | CLASS
+  //     | DOMAIN
+  //     | EXCEPTION
+  //     | FUNCTION
+  //     | GENERIC
+  //     | LIBRARY
+  //     | METHOD
+  //     | MODULE
+  //     | SHARED_SYMBOLS_T
+  //     | SLOT
+  //     | SUITE
+  //     | TEST
+  //     | VARIABLE_T
+  public static boolean dylan_unreserved_name(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "dylan_unreserved_name")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<dylan unreserved name>");
+    result_ = consumeToken(builder_, ABOVE);
+    if (!result_) result_ = consumeToken(builder_, AFTERWARDS);
+    if (!result_) result_ = consumeToken(builder_, ALL);
+    if (!result_) result_ = consumeToken(builder_, BELOW);
+    if (!result_) result_ = consumeToken(builder_, BY);
+    if (!result_) result_ = consumeToken(builder_, COPY_DOWN_METHOD);
+    if (!result_) result_ = consumeToken(builder_, CLEANUP);
+    if (!result_) result_ = consumeToken(builder_, CREATE);
+    if (!result_) result_ = consumeToken(builder_, EXPORT);
+    if (!result_) result_ = consumeToken(builder_, FINALLY);
+    if (!result_) result_ = consumeToken(builder_, FROM);
+    if (!result_) result_ = consumeToken(builder_, IN);
+    if (!result_) result_ = consumeToken(builder_, KEYED_BY);
+    if (!result_) result_ = consumeToken(builder_, THEN);
+    if (!result_) result_ = consumeToken(builder_, TO);
+    if (!result_) result_ = consumeToken(builder_, USE);
+    if (!result_) result_ = consumeToken(builder_, USING);
+    if (!result_) result_ = consumeToken(builder_, CLASS);
+    if (!result_) result_ = consumeToken(builder_, DOMAIN);
+    if (!result_) result_ = consumeToken(builder_, EXCEPTION);
+    if (!result_) result_ = consumeToken(builder_, FUNCTION);
+    if (!result_) result_ = consumeToken(builder_, GENERIC);
+    if (!result_) result_ = consumeToken(builder_, LIBRARY);
+    if (!result_) result_ = consumeToken(builder_, METHOD);
+    if (!result_) result_ = consumeToken(builder_, MODULE);
+    if (!result_) result_ = consumeToken(builder_, SHARED_SYMBOLS_T);
+    if (!result_) result_ = consumeToken(builder_, SLOT);
+    if (!result_) result_ = consumeToken(builder_, SUITE);
+    if (!result_) result_ = consumeToken(builder_, TEST);
+    if (!result_) result_ = consumeToken(builder_, VARIABLE_T);
+    if (result_) {
+      marker_.done(DYLAN_UNRESERVED_NAME);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
   }
 
   /* ********************************************************** */
@@ -6054,7 +6115,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // macro_name | non_end_core_word
+  // macro_name | non_end_core_word | dylan_unreserved_name
   public static boolean name_not_end(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "name_not_end")) return false;
     boolean result_ = false;
@@ -6062,6 +6123,7 @@ public class DylanParser implements PsiParser {
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<name not end>");
     result_ = macro_name(builder_, level_ + 1);
     if (!result_) result_ = non_end_core_word(builder_, level_ + 1);
+    if (!result_) result_ = dylan_unreserved_name(builder_, level_ + 1);
     if (result_) {
       marker_.done(NAME_NOT_END);
     }
@@ -9208,9 +9270,6 @@ public class DylanParser implements PsiParser {
   //     | PARSED_LIST_CONSTANT
   //     | PARSED_VECTOR_CONSTANT
   //     | substitution
-  //     // FIXME
-  //     | METHOD
-  //     | FUNCTION
   public static boolean template_element(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element")) return false;
     boolean result_ = false;
@@ -9235,8 +9294,6 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, PARSED_LIST_CONSTANT);
     if (!result_) result_ = consumeToken(builder_, PARSED_VECTOR_CONSTANT);
     if (!result_) result_ = substitution(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, METHOD);
-    if (!result_) result_ = consumeToken(builder_, FUNCTION);
     if (result_) {
       marker_.done(TEMPLATE_ELEMENT);
     }
@@ -9557,7 +9614,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // unreserved_word | escaped_name
+  // unreserved_word | escaped_name | dylan_unreserved_name
   public static boolean unreserved_name(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "unreserved_name")) return false;
     boolean result_ = false;
@@ -9565,6 +9622,7 @@ public class DylanParser implements PsiParser {
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<unreserved name>");
     result_ = unreserved_word(builder_, level_ + 1);
     if (!result_) result_ = escaped_name(builder_, level_ + 1);
+    if (!result_) result_ = dylan_unreserved_name(builder_, level_ + 1);
     if (result_) {
       marker_.done(UNRESERVED_NAME);
     }

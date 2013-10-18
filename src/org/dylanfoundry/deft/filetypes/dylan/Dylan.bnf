@@ -83,7 +83,40 @@ unreserved_word ::= NONDEFINING_NONEXPRESSION_WORD
 
 escaped_name ::= ESCAPED_WORD | OPERATOR_NAME
 
-unreserved_name ::= unreserved_word | escaped_name
+// Tokens that are also unreserved_names
+dylan_unreserved_name ::=
+      ABOVE
+    | AFTERWARDS
+    | ALL
+    | BELOW
+    | BY
+    | COPY_DOWN_METHOD
+    | CLEANUP
+    | CREATE
+    | EXPORT
+    | FINALLY
+    | FROM
+    | IN
+    | KEYED_BY
+    | THEN
+    | TO
+    | USE
+    | USING
+    | CLASS
+    | DOMAIN
+    | EXCEPTION
+    | FUNCTION
+    | GENERIC
+    | LIBRARY
+    | METHOD
+    | MODULE
+    | SHARED_SYMBOLS_T
+    | SLOT
+    | SUITE
+    | TEST
+    | VARIABLE_T
+
+unreserved_name ::= unreserved_word | escaped_name | dylan_unreserved_name
 
 word_name ::= reserved_word | unreserved_name
 
@@ -95,7 +128,7 @@ private ordinary_name ::= nonexpression_word | escaped_name
 
 macro_name ::= nondefining_name | define_body_word | define_list_word
 
-name_not_end ::= macro_name | non_end_core_word
+name_not_end ::= macro_name | non_end_core_word | dylan_unreserved_name
 
 hash_word ::= HASH_T | HASH_F | HASH_NEXT | HASH_REST | HASH_KEY | HASH_ALL_KEYS | HASH_INCLUDE
 
@@ -823,9 +856,6 @@ template_element ::=
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
     | substitution
-    // FIXME
-    | METHOD
-    | FUNCTION
 
 separator ::=
       SEMICOLON

@@ -8,6 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface DylanUnreservedName extends PsiElement {
 
   @Nullable
+  DylanDylanUnreservedName getDylanUnreservedName();
+
+  @Nullable
   DylanEscapedName getEscapedName();
 
   @Nullable
