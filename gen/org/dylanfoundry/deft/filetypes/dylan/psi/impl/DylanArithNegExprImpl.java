@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanArithNegExprImpl extends DylanExprImpl implements DylanArithNegExpr {
+public class DylanArithNegExprImpl extends DylanExpressionImpl implements DylanArithNegExpr {
 
   public DylanArithNegExprImpl(ASTNode node) {
     super(node);
@@ -18,8 +18,8 @@ public class DylanArithNegExprImpl extends DylanExprImpl implements DylanArithNe
 
   @Override
   @NotNull
-  public DylanExpr getExpr() {
-    return findNotNullChildByClass(DylanExpr.class);
+  public DylanExpression getExpression() {
+    return findNotNullChildByClass(DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -37,8 +37,8 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
 
   @Override
   @Nullable
-  public DylanConstituent getConstituent() {
-    return findChildByClass(DylanConstituent.class);
+  public DylanDefinition getDefinition() {
+    return findChildByClass(DylanDefinition.class);
   }
 
   @Override
@@ -51,6 +51,12 @@ public class DylanNonStatementBodyFragmentImpl extends ASTWrapperPsiElement impl
   @Nullable
   public DylanHashWord getHashWord() {
     return findChildByClass(DylanHashWord.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanLocalDeclaration getLocalDeclaration() {
+    return findChildByClass(DylanLocalDeclaration.class);
   }
 
   @Override

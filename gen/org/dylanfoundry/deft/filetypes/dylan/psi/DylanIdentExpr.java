@@ -5,9 +5,9 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanIdentExpr extends DylanExpr {
+public interface DylanIdentExpr extends DylanExpression {
 
   @NotNull
-  List<DylanExpr> getExprList();
+  List<DylanExpression> getExpressionList();
 
 }

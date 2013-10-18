@@ -8,18 +8,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanExpressionImpl extends DylanConstituentImpl implements DylanExpression {
+public class DylanExpressionImpl extends ASTWrapperPsiElement implements DylanExpression {
 
   public DylanExpressionImpl(ASTNode node) {
     super(node);
-  }
-
-  @Override
-  @NotNull
-  public DylanExpr getExpr() {
-    return findNotNullChildByClass(DylanExpr.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

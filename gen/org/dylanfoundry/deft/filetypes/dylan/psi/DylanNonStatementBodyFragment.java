@@ -17,13 +17,16 @@ public interface DylanNonStatementBodyFragment extends PsiElement {
   DylanConstantFragment getConstantFragment();
 
   @Nullable
-  DylanConstituent getConstituent();
+  DylanDefinition getDefinition();
 
   @Nullable
   DylanFunctionMacroCall getFunctionMacroCall();
 
   @Nullable
   DylanHashWord getHashWord();
+
+  @Nullable
+  DylanLocalDeclaration getLocalDeclaration();
 
   @Nullable
   DylanSemicolonFragment getSemicolonFragment();

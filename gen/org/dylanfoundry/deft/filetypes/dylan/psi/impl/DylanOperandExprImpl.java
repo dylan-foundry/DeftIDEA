@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanOperandExprImpl extends DylanExprImpl implements DylanOperandExpr {
+public class DylanOperandExprImpl extends DylanExpressionImpl implements DylanOperandExpr {
 
   public DylanOperandExprImpl(ASTNode node) {
     super(node);
@@ -18,38 +18,8 @@ public class DylanOperandExprImpl extends DylanExprImpl implements DylanOperandE
 
   @Override
   @NotNull
-  public List<DylanArguments> getArgumentsList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanArguments.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanExpression getExpression() {
-    return findChildByClass(DylanExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanFunctionMacroCall getFunctionMacroCall() {
-    return findChildByClass(DylanFunctionMacroCall.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanLiteral getLiteral() {
-    return findChildByClass(DylanLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanStatement getStatement() {
-    return findChildByClass(DylanStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanVariableName> getVariableNameList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
+  public DylanOperand getOperand() {
+    return findNotNullChildByClass(DylanOperand.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -19,8 +19,20 @@ public class DylanBodyImpl extends ASTWrapperPsiElement implements DylanBody {
 
   @Override
   @NotNull
-  public List<DylanConstituent> getConstituentList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanConstituent.class);
+  public List<DylanDefinition> getDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanDefinition.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<DylanLocalDeclaration> getLocalDeclarationList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanLocalDeclaration.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

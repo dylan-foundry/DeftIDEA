@@ -8,6 +8,12 @@ import com.intellij.psi.PsiElement;
 public interface DylanBody extends PsiElement {
 
   @NotNull
-  List<DylanConstituent> getConstituentList();
+  List<DylanDefinition> getDefinitionList();
+
+  @NotNull
+  List<DylanExpression> getExpressionList();
+
+  @NotNull
+  List<DylanLocalDeclaration> getLocalDeclarationList();
 
 }

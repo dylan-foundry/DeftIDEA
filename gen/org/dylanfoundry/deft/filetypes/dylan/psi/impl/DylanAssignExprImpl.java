@@ -10,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanAssignExprImpl extends DylanExprImpl implements DylanAssignExpr {
+public class DylanAssignExprImpl extends DylanExpressionImpl implements DylanAssignExpr {
 
   public DylanAssignExprImpl(ASTNode node) {
     super(node);
@@ -18,8 +18,8 @@ public class DylanAssignExprImpl extends DylanExprImpl implements DylanAssignExp
 
   @Override
   @NotNull
-  public List<DylanExpr> getExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpr.class);
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

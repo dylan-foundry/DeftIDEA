@@ -53,7 +53,6 @@ public interface DylanTypes {
   IElementType CONSTANT = new DylanElementType("CONSTANT");
   IElementType CONSTANTS = new DylanElementType("CONSTANTS");
   IElementType CONSTANT_FRAGMENT = new DylanElementType("CONSTANT_FRAGMENT");
-  IElementType CONSTITUENT = new DylanElementType("CONSTITUENT");
   IElementType CORE_WORD = new DylanElementType("CORE_WORD");
   IElementType CREATE_CLAUSE = new DylanElementType("CREATE_CLAUSE");
   IElementType DEFAULT_VALUE = new DylanElementType("DEFAULT_VALUE");
@@ -89,7 +88,6 @@ public interface DylanTypes {
   IElementType EXPLICIT_STEP_CLAUSE = new DylanElementType("EXPLICIT_STEP_CLAUSE");
   IElementType EXPORT_CLAUSE = new DylanElementType("EXPORT_CLAUSE");
   IElementType EXPORT_OPTION = new DylanElementType("EXPORT_OPTION");
-  IElementType EXPR = new DylanElementType("EXPR");
   IElementType EXPRESSION = new DylanElementType("EXPRESSION");
   IElementType EXPRESSIONS = new DylanElementType("EXPRESSIONS");
   IElementType EXP_EXPR = new DylanElementType("EXP_EXPR");
@@ -165,6 +163,7 @@ public interface DylanTypes {
   IElementType NON_STATEMENT_BASIC_FRAGMENT = new DylanElementType("NON_STATEMENT_BASIC_FRAGMENT");
   IElementType NON_STATEMENT_BODY_FRAGMENT = new DylanElementType("NON_STATEMENT_BODY_FRAGMENT");
   IElementType NUMERIC_CLAUSES = new DylanElementType("NUMERIC_CLAUSES");
+  IElementType OPERAND = new DylanElementType("OPERAND");
   IElementType OPERAND_EXPR = new DylanElementType("OPERAND_EXPR");
   IElementType ORDINARY_BINDING_NAME = new DylanElementType("ORDINARY_BINDING_NAME");
   IElementType OR_EXPR = new DylanElementType("OR_EXPR");
@@ -284,6 +283,7 @@ public interface DylanTypes {
   IElementType ESCAPED_WORD = new DylanTokenType("ESCAPED_WORD");
   IElementType EXCEPTION = new DylanTokenType("EXCEPTION");
   IElementType EXPORT = new DylanTokenType("EXPORT");
+  IElementType EXPR = new DylanTokenType("expr");
   IElementType FINALLY = new DylanTokenType("FINALLY");
   IElementType FOR = new DylanTokenType("FOR");
   IElementType FROM = new DylanTokenType("FROM");
@@ -507,9 +507,6 @@ public interface DylanTypes {
       else if (type == CONSTANT_FRAGMENT) {
         return new DylanConstantFragmentImpl(node);
       }
-      else if (type == CONSTITUENT) {
-        return new DylanConstituentImpl(node);
-      }
       else if (type == CORE_WORD) {
         return new DylanCoreWordImpl(node);
       }
@@ -614,9 +611,6 @@ public interface DylanTypes {
       }
       else if (type == EXPORT_OPTION) {
         return new DylanExportOptionImpl(node);
-      }
-      else if (type == EXPR) {
-        return new DylanExprImpl(node);
       }
       else if (type == EXPRESSION) {
         return new DylanExpressionImpl(node);
@@ -842,6 +836,9 @@ public interface DylanTypes {
       }
       else if (type == NUMERIC_CLAUSES) {
         return new DylanNumericClausesImpl(node);
+      }
+      else if (type == OPERAND) {
+        return new DylanOperandImpl(node);
       }
       else if (type == OPERAND_EXPR) {
         return new DylanOperandExprImpl(node);

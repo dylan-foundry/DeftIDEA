@@ -16,9 +16,8 @@
   psiImplUtilClass="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanPsiImplUtil"
 
   // Support for Pratt-style left-recursive expressions
-  extends(".*_expr|expr")=expr
+  extends(".*_expr|expression")=expression
 
-  extends("definition|local_declaration|expression|constituent")=constituent
   extends(".*_statement|statement")=statement
   extends(".*_suite_component|suite_component")=suite_component
 }
@@ -110,7 +109,7 @@ body ::= constituents SEMICOLON?
 
 private constituents ::= constituent (SEMICOLON constituent)* | COMMENT
 
-constituent ::= definition | local_declaration | expression
+private constituent ::= definition | local_declaration | expression
 
 macro ::= definition_macro_call | statement | function_macro_call | PARSED_MACRO_CALL
 
@@ -429,9 +428,7 @@ variable_name ::= ordinary_name | VARIABLE_IGNORE
 
 expressions ::= expression (COMMA expression)*
 
-expression ::= expr
-
-expr ::=
+expression ::=
       assign_expr
     | logical_group
     | comparison_group
@@ -450,27 +447,27 @@ private comparison_group ::=
 private logical_group ::= and_expr | or_expr
 
 // public rules for each expression
-assign_expr ::= expr COLON_EQUAL expr { rightAssociative=true }
-arith_neg_expr ::= MINUS expr
-log_neg_expr ::= TILDE expr
-div_expr ::= expr SLASH expr
-mul_expr ::= expr STAR expr
-minus_expr ::= expr MINUS expr
-plus_expr ::= expr PLUS expr
-exp_expr ::= expr CARET expr { rightAssociative=true }
-ident_expr ::= expr EQUAL_EQUAL expr
-eq_expr ::= expr EQUAL expr
-nonident_expr ::= expr TILDE_EQUAL_EQUAL expr
-neq_expr ::= expr TILDE_EQUAL expr
-lt_expr ::= expr LESS_THAN expr
-gt_expr ::= expr GREATER_THAN expr
-lteq_expr ::= expr LESS_THAN_EQUAL expr
-gteq_expr ::= expr GREATER_THAN_EQUAL expr
-and_expr ::= expr AMPERSAND expr
-or_expr ::= expr VERT_BAR expr
+assign_expr ::= expression COLON_EQUAL expression { rightAssociative=true }
+arith_neg_expr ::= MINUS expression
+log_neg_expr ::= TILDE expression
+div_expr ::= expression SLASH expression
+mul_expr ::= expression STAR expression
+minus_expr ::= expression MINUS expression
+plus_expr ::= expression PLUS expression
+exp_expr ::= expression CARET expr { rightAssociative=true }
+ident_expr ::= expression EQUAL_EQUAL expression
+eq_expr ::= expression EQUAL expression
+nonident_expr ::= expression TILDE_EQUAL_EQUAL expression
+neq_expr ::= expression TILDE_EQUAL expression
+lt_expr ::= expression LESS_THAN expression
+gt_expr ::= expression GREATER_THAN expression
+lteq_expr ::= expression LESS_THAN_EQUAL expression
+gteq_expr ::= expression GREATER_THAN_EQUAL expression
+and_expr ::= expression AMPERSAND expression
+or_expr ::= expression VERT_BAR expression
 operand_expr ::= operand
 
-private operand ::= leaf ( LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name )*
+operand ::= leaf ( LPAREN arguments? RPAREN | LBRACKET arguments? RBRACKET | DOT variable_name )*
 
 function_macro_call ::= function_word LPAREN body_fragment? RPAREN
 

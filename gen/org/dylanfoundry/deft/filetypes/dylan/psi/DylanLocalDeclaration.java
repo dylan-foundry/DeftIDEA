@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanLocalDeclaration extends DylanConstituent {
+public interface DylanLocalDeclaration extends PsiElement {
 
   @Nullable
   DylanBindings getBindings();
