@@ -135,7 +135,6 @@ public interface DylanTypes {
   IElementType LT_EXPR = new DylanElementType("LT_EXPR");
   IElementType MACRO = new DylanElementType("MACRO");
   IElementType MACRO_DEFINITION = new DylanElementType("MACRO_DEFINITION");
-  IElementType MACRO_DEFINITION_TAIL = new DylanElementType("MACRO_DEFINITION_TAIL");
   IElementType MACRO_NAME = new DylanElementType("MACRO_NAME");
   IElementType MACRO_STATEMENT = new DylanElementType("MACRO_STATEMENT");
   IElementType MAIN_RULE_SET = new DylanElementType("MAIN_RULE_SET");
@@ -751,9 +750,6 @@ public interface DylanTypes {
       }
       else if (type == MACRO_DEFINITION) {
         return new DylanMacroDefinitionImpl(node);
-      }
-      else if (type == MACRO_DEFINITION_TAIL) {
-        return new DylanMacroDefinitionTailImpl(node);
       }
       else if (type == MACRO_NAME) {
         return new DylanMacroNameImpl(node);

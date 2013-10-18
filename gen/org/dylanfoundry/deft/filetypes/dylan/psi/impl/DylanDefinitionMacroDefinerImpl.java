@@ -20,26 +20,14 @@ public class DylanDefinitionMacroDefinerImpl extends DylanDefinerImpl implements
 
   @Override
   @NotNull
-  public DylanMacroDefinitionTail getMacroDefinitionTail() {
-    return findNotNullChildByClass(DylanMacroDefinitionTail.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanMainRuleSet getMainRuleSet() {
-    return findChildByClass(DylanMainRuleSet.class);
+  public DylanMacroDefinition getMacroDefinition() {
+    return findNotNullChildByClass(DylanMacroDefinition.class);
   }
 
   @Override
   @Nullable
   public DylanModifiers getModifiers() {
     return findChildByClass(DylanModifiers.class);
-  }
-
-  @Override
-  @NotNull
-  public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

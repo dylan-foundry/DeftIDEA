@@ -7,8 +7,8 @@ import com.intellij.psi.PsiElement;
 
 public interface DylanAuxRule extends PsiElement {
 
-  @NotNull
-  List<DylanPattern> getPatternList();
+  @Nullable
+  DylanPattern getPattern();
 
   @NotNull
   DylanRhs getRhs();

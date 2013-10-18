@@ -10,16 +10,10 @@ import com.intellij.navigation.ItemPresentation;
 public interface DylanDefinitionMacroDefiner extends DylanDefiner {
 
   @NotNull
-  DylanMacroDefinitionTail getMacroDefinitionTail();
-
-  @Nullable
-  DylanMainRuleSet getMainRuleSet();
+  DylanMacroDefinition getMacroDefinition();
 
   @Nullable
   DylanModifiers getModifiers();
-
-  @NotNull
-  DylanVariableName getVariableName();
 
   String getName();
 

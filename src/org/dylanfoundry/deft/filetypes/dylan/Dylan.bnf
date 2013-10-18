@@ -202,7 +202,6 @@ definition ::=
     | definition_test_definer
     | definition_variable_definer
     | definition_macro_call
-    | DEFINE MACRO_T macro_definition
     | PARSED_DEFINITION {methods=[getPresentation]}
 
 definition_class_definer ::= DEFINE modifiers? CLASS variable_name LPAREN supers? RPAREN slot_declarations? class_definition_tail
@@ -338,14 +337,12 @@ rename_option ::= KEYWORD LBRACE (variable_name EQUAL_ARROW variable_name (COMMA
 
 export_option ::= KEYWORD (ALL|LBRACE ((variable_name | NONDEFINING_BEGIN_WORD) (COMMA (variable_name | NONDEFINING_BEGIN_WORD))*)? RBRACE)
 
-definition_macro_definer ::= DEFINE modifiers? MACRO_T variable_name main_rule_set? macro_definition_tail
+definition_macro_definer ::= DEFINE modifiers? MACRO_T macro_definition
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
-
-macro_definition_tail ::= END MACRO_T variable_name? | END variable_name?
 
 definition_method_definer ::= DEFINE modifiers? METHOD variable_name parameter_list body? method_definition_tail
   {
@@ -856,4 +853,4 @@ aux_rule_set ::= symbol aux_rules
 
 aux_rules ::= aux_rule+
 
-aux_rule ::= LBRACE pattern+ RBRACE EQUAL_ARROW rhs
+aux_rule ::= LBRACE pattern? RBRACE EQUAL_ARROW rhs

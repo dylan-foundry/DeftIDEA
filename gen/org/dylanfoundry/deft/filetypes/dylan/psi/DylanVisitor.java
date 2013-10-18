@@ -515,10 +515,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMacroDefinitionTail(@NotNull DylanMacroDefinitionTail o) {
-    visitPsiElement(o);
-  }
-
   public void visitMacroName(@NotNull DylanMacroName o) {
     visitPsiElement(o);
   }

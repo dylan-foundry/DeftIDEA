@@ -404,9 +404,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == MACRO_DEFINITION) {
       result_ = macro_definition(builder_, level_ + 1);
     }
-    else if (root_ == MACRO_DEFINITION_TAIL) {
-      result_ = macro_definition_tail(builder_, level_ + 1);
-    }
     else if (root_ == MACRO_NAME) {
       result_ = macro_name(builder_, level_ + 1);
     }
@@ -894,7 +891,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // LBRACE pattern+ RBRACE EQUAL_ARROW rhs
+  // LBRACE pattern? RBRACE EQUAL_ARROW rhs
   public static boolean aux_rule(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rule")) return false;
     if (!nextTokenIs(builder_, LBRACE)) return false;
@@ -913,29 +910,11 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // pattern+
+  // pattern?
   private static boolean aux_rule_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "aux_rule_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = pattern(builder_, level_ + 1);
-    int offset_ = builder_.getCurrentOffset();
-    while (result_) {
-      if (!pattern(builder_, level_ + 1)) break;
-      int next_offset_ = builder_.getCurrentOffset();
-      if (offset_ == next_offset_) {
-        empty_element_parsed_guard_(builder_, offset_, "aux_rule_1");
-        break;
-      }
-      offset_ = next_offset_;
-    }
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
+    pattern(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -3231,7 +3210,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? MACRO_T variable_name main_rule_set? macro_definition_tail
+  // DEFINE modifiers? MACRO_T macro_definition
   public static boolean definition_macro_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_macro_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -3240,9 +3219,7 @@ public class DylanParser implements PsiParser {
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_macro_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, MACRO_T);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_macro_definer_4(builder_, level_ + 1);
-    result_ = result_ && macro_definition_tail(builder_, level_ + 1);
+    result_ = result_ && macro_definition(builder_, level_ + 1);
     if (result_) {
       marker_.done(DEFINITION_MACRO_DEFINER);
     }
@@ -3256,13 +3233,6 @@ public class DylanParser implements PsiParser {
   private static boolean definition_macro_definer_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_macro_definer_1")) return false;
     modifiers(builder_, level_ + 1);
-    return true;
-  }
-
-  // main_rule_set?
-  private static boolean definition_macro_definer_4(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "definition_macro_definer_4")) return false;
-    main_rule_set(builder_, level_ + 1);
     return true;
   }
 
@@ -5712,70 +5682,6 @@ public class DylanParser implements PsiParser {
   private static boolean macro_definition_5(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "macro_definition_5")) return false;
     macro_name(builder_, level_ + 1);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // END MACRO_T variable_name? | END variable_name?
-  public static boolean macro_definition_tail(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "macro_definition_tail")) return false;
-    if (!nextTokenIs(builder_, END)) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = macro_definition_tail_0(builder_, level_ + 1);
-    if (!result_) result_ = macro_definition_tail_1(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(MACRO_DEFINITION_TAIL);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    return result_;
-  }
-
-  // END MACRO_T variable_name?
-  private static boolean macro_definition_tail_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "macro_definition_tail_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, END, MACRO_T);
-    result_ = result_ && macro_definition_tail_0_2(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // variable_name?
-  private static boolean macro_definition_tail_0_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "macro_definition_tail_0_2")) return false;
-    variable_name(builder_, level_ + 1);
-    return true;
-  }
-
-  // END variable_name?
-  private static boolean macro_definition_tail_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "macro_definition_tail_1")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, END);
-    result_ = result_ && macro_definition_tail_1_1(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  // variable_name?
-  private static boolean macro_definition_tail_1_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "macro_definition_tail_1_1")) return false;
-    variable_name(builder_, level_ + 1);
     return true;
   }
 

@@ -169,7 +169,8 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionMacroDefiner element) {
-    return element.getVariableName().getText();
+    // macro_definition has 2 macro_name, the first and the one after end
+    return element.getMacroDefinition().getMacroNameList().get(0).getText();
   }
 
   public static PsiElement setName(DylanDefinitionMacroDefiner element, @NotNull String newName) {
@@ -177,7 +178,7 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionMacroDefiner element) {
-    return element.getVariableName();
+    return element.getMacroDefinition().getMacroNameList().get(0);
   }
 
   public static Icon getPresentationIcon(DylanDefinitionMacroDefiner element) {
