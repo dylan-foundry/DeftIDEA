@@ -25,6 +25,12 @@ public class DylanDefinitionTestDefinerImpl extends DylanDefinerImpl implements 
   }
 
   @Override
+  @Nullable
+  public DylanTestArguments getTestArguments() {
+    return findChildByClass(DylanTestArguments.class);
+  }
+
+  @Override
   @NotNull
   public DylanTestDefinitionTail getTestDefinitionTail() {
     return findNotNullChildByClass(DylanTestDefinitionTail.class);

@@ -20,6 +20,12 @@ public class DylanDefinitionSuiteDefinerImpl extends DylanDefinerImpl implements
 
   @Override
   @Nullable
+  public DylanSuiteArguments getSuiteArguments() {
+    return findChildByClass(DylanSuiteArguments.class);
+  }
+
+  @Override
+  @Nullable
   public DylanSuiteComponents getSuiteComponents() {
     return findChildByClass(DylanSuiteComponents.class);
   }

@@ -400,12 +400,24 @@ shared_symbols_definition_tail ::= END SHARED_SYMBOLS_T variable_name? | END var
 
 shared_symbols ::= (symbol (COMMA symbol)*)?
 
-definition_suite_definer ::= DEFINE SUITE variable_name LPAREN RPAREN suite_components? suite_definition_tail
+definition_suite_definer ::= DEFINE SUITE variable_name LPAREN suite_arguments? RPAREN suite_components? suite_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
+
+suite_arguments ::= suite_argument (COMMA suite_argument)*
+
+suite_argument ::= suite_argument_description | suite_argument_setup_function | suite_argument_cleanup_function | suite_test_tags
+
+suite_argument_description ::= <<keywordWithValue "description:">> string
+
+suite_argument_setup_function ::= <<keywordWithValue "setup-function:">> variable_name
+
+suite_argument_cleanup_function ::= <<keywordWithValue "cleanup-function:">> variable_name
+
+suite_test_tags ::= <<keywordWithValue "tags:">> (HASH_BRACKET constants? RBRACKET | <<unreservedNameWithValues "$all">>)
 
 suite_components ::= suite_component (SEMICOLON suite_component?)*
 
@@ -417,12 +429,16 @@ suite_suite_component ::= SUITE variable_name
 
 suite_definition_tail ::= END SUITE variable_name? | END variable_name?
 
-definition_test_definer ::= DEFINE TEST variable_name LPAREN RPAREN body? test_definition_tail
+definition_test_definer ::= DEFINE TEST variable_name LPAREN test_arguments? RPAREN body? test_definition_tail
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
+
+test_arguments ::= test_argument (COMMA test_argument)*
+
+test_argument ::= (<<keywordWithValue "description:">> string | suite_test_tags)
 
 test_definition_tail ::= END TEST variable_name? | END variable_name?
 

@@ -26,15 +26,23 @@ public class DylanParserUtil extends GeneratedParserUtilBase {
     return false;
   }
 
-  public static boolean keywordWithValue(PsiBuilder builder, int level, String value) {
+  public static boolean keywordWithValues(PsiBuilder builder, int level, String... values) {
     if (!nextTokenIs(builder, KEYWORD)) return false;
     boolean result = false;
     String tokenText = builder.getTokenText();
-    if (tokenText != null) {
-      result = (builder.getTokenType() == KEYWORD) && value.equals(tokenText.toLowerCase());
+    if (tokenText == null) return false;
+    if (builder.getTokenType() != KEYWORD) return false;
+
+    for (String value : values) {
+      if (value.equals(tokenText.toLowerCase()))
+        result = true;
     }
     if (result) consumeToken(builder, KEYWORD);
     return result;
+  }
+
+  public static boolean keywordWithValue(PsiBuilder builder, int level, String value) {
+    return keywordWithValues(builder, level, value);
   }
 
   public static boolean unreservedNameWithValues(PsiBuilder builder, int level, String... values) {

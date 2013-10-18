@@ -10,6 +10,9 @@ import com.intellij.navigation.ItemPresentation;
 public interface DylanDefinitionSuiteDefiner extends DylanDefiner {
 
   @Nullable
+  DylanSuiteArguments getSuiteArguments();
+
+  @Nullable
   DylanSuiteComponents getSuiteComponents();
 
   @NotNull

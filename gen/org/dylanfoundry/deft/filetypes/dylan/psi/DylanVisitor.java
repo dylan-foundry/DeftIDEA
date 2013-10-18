@@ -831,6 +831,26 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSuiteArgument(@NotNull DylanSuiteArgument o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteArgumentCleanupFunction(@NotNull DylanSuiteArgumentCleanupFunction o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteArgumentDescription(@NotNull DylanSuiteArgumentDescription o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteArgumentSetupFunction(@NotNull DylanSuiteArgumentSetupFunction o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSuiteArguments(@NotNull DylanSuiteArguments o) {
+    visitPsiElement(o);
+  }
+
   public void visitSuiteComponent(@NotNull DylanSuiteComponent o) {
     visitPsiElement(o);
   }
@@ -845,6 +865,10 @@ public class DylanVisitor extends PsiElementVisitor {
 
   public void visitSuiteSuiteComponent(@NotNull DylanSuiteSuiteComponent o) {
     visitSuiteComponent(o);
+  }
+
+  public void visitSuiteTestTags(@NotNull DylanSuiteTestTags o) {
+    visitPsiElement(o);
   }
 
   public void visitSupers(@NotNull DylanSupers o) {
@@ -864,6 +888,14 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitTemplateElement(@NotNull DylanTemplateElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTestArgument(@NotNull DylanTestArgument o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTestArguments(@NotNull DylanTestArguments o) {
     visitPsiElement(o);
   }
 

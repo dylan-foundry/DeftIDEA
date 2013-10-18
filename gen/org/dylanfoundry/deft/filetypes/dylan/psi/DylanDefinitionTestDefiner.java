@@ -12,6 +12,9 @@ public interface DylanDefinitionTestDefiner extends DylanDefiner {
   @Nullable
   DylanBody getBody();
 
+  @Nullable
+  DylanTestArguments getTestArguments();
+
   @NotNull
   DylanTestDefinitionTail getTestDefinitionTail();
 
