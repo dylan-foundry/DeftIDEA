@@ -25,6 +25,12 @@ public class DylanTemplateElementImpl extends ASTWrapperPsiElement implements Dy
 
   @Override
   @Nullable
+  public DylanNondefiningBeginWordToken getNondefiningBeginWordToken() {
+    return findChildByClass(DylanNondefiningBeginWordToken.class);
+  }
+
+  @Override
+  @Nullable
   public DylanSeparator getSeparator() {
     return findChildByClass(DylanSeparator.class);
   }
@@ -51,6 +57,12 @@ public class DylanTemplateElementImpl extends ASTWrapperPsiElement implements Dy
   @Nullable
   public DylanTemplate getTemplate() {
     return findChildByClass(DylanTemplate.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanUnaryOperatorOnly getUnaryOperatorOnly() {
+    return findChildByClass(DylanUnaryOperatorOnly.class);
   }
 
   @Override

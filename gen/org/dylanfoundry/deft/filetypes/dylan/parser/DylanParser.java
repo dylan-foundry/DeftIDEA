@@ -68,6 +68,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == BINARY_OPERATOR) {
       result_ = binary_operator(builder_, level_ + 1);
     }
+    else if (root_ == BINARY_OPERATOR_ONLY) {
+      result_ = binary_operator_only(builder_, level_ + 1);
+    }
     else if (root_ == BINDING_PATTERN) {
       result_ = binding_pattern(builder_, level_ + 1);
     }
@@ -473,6 +476,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == NON_STATEMENT_BODY_FRAGMENT) {
       result_ = non_statement_body_fragment(builder_, level_ + 1);
     }
+    else if (root_ == NONDEFINING_BEGIN_WORD_TOKEN) {
+      result_ = nondefining_begin_word_token(builder_, level_ + 1);
+    }
     else if (root_ == NONDEFINING_NAME) {
       result_ = nondefining_name(builder_, level_ + 1);
     }
@@ -673,6 +679,12 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == TYPE_SLOT_OPTION) {
       result_ = type_slot_option(builder_, level_ + 1);
+    }
+    else if (root_ == UNARY_AND_BINARY_OPERATOR) {
+      result_ = unary_and_binary_operator(builder_, level_ + 1);
+    }
+    else if (root_ == UNARY_OPERATOR_ONLY) {
+      result_ = unary_operator_only(builder_, level_ + 1);
     }
     else if (root_ == UNIQUE_STRING) {
       result_ = unique_string(builder_, level_ + 1);
@@ -1092,19 +1104,50 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL | COLON_EQUAL
+  // binary_operator_only | unary_and_binary_operator
   public static boolean binary_operator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "binary_operator")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<binary operator>");
-    result_ = consumeToken(builder_, BINARY_OPERATOR_ONLY);
-    if (!result_) result_ = consumeToken(builder_, UNARY_AND_BINARY_OPERATOR);
-    if (!result_) result_ = consumeToken(builder_, EQUAL);
-    if (!result_) result_ = consumeToken(builder_, EQUAL_EQUAL);
-    if (!result_) result_ = consumeToken(builder_, COLON_EQUAL);
+    result_ = binary_operator_only(builder_, level_ + 1);
+    if (!result_) result_ = unary_and_binary_operator(builder_, level_ + 1);
     if (result_) {
       marker_.done(BINARY_OPERATOR);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // PLUS | STAR | SLASH | CARET | EQUAL | EQUAL_EQUAL | TILDE_EQUAL | TILDE_EQUAL_EQUAL
+  //                        | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | AMPERSAND | VERT_BAR
+  //                        | COLON_EQUAL
+  public static boolean binary_operator_only(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "binary_operator_only")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<binary operator only>");
+    result_ = consumeToken(builder_, PLUS);
+    if (!result_) result_ = consumeToken(builder_, STAR);
+    if (!result_) result_ = consumeToken(builder_, SLASH);
+    if (!result_) result_ = consumeToken(builder_, CARET);
+    if (!result_) result_ = consumeToken(builder_, EQUAL);
+    if (!result_) result_ = consumeToken(builder_, EQUAL_EQUAL);
+    if (!result_) result_ = consumeToken(builder_, TILDE_EQUAL);
+    if (!result_) result_ = consumeToken(builder_, TILDE_EQUAL_EQUAL);
+    if (!result_) result_ = consumeToken(builder_, LESS_THAN);
+    if (!result_) result_ = consumeToken(builder_, LESS_THAN_EQUAL);
+    if (!result_) result_ = consumeToken(builder_, GREATER_THAN);
+    if (!result_) result_ = consumeToken(builder_, GREATER_THAN_EQUAL);
+    if (!result_) result_ = consumeToken(builder_, AMPERSAND);
+    if (!result_) result_ = consumeToken(builder_, VERT_BAR);
+    if (!result_) result_ = consumeToken(builder_, COLON_EQUAL);
+    if (result_) {
+      marker_.done(BINARY_OPERATOR_ONLY);
     }
     else {
       marker_.rollbackTo();
@@ -6530,6 +6573,33 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // BEGIN | BLOCK | CASE | FOR | IF | METHOD | SELECT | UNLESS | UNTIL | WHILE
+  public static boolean nondefining_begin_word_token(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "nondefining_begin_word_token")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<nondefining begin word token>");
+    result_ = consumeToken(builder_, BEGIN);
+    if (!result_) result_ = consumeToken(builder_, BLOCK);
+    if (!result_) result_ = consumeToken(builder_, CASE);
+    if (!result_) result_ = consumeToken(builder_, FOR);
+    if (!result_) result_ = consumeToken(builder_, IF);
+    if (!result_) result_ = consumeToken(builder_, METHOD);
+    if (!result_) result_ = consumeToken(builder_, SELECT);
+    if (!result_) result_ = consumeToken(builder_, UNLESS);
+    if (!result_) result_ = consumeToken(builder_, UNTIL);
+    if (!result_) result_ = consumeToken(builder_, WHILE);
+    if (result_) {
+      marker_.done(NONDEFINING_BEGIN_WORD_TOKEN);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
   // nondefining_word | escaped_name
   public static boolean nondefining_name(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "nondefining_name")) return false;
@@ -9257,7 +9327,7 @@ public class DylanParser implements PsiParser {
   //     | NUMBER
   //     | CHARACTER_LITERAL
   //     | string
-  //     | UNARY_OPERATOR_ONLY
+  //     | unary_operator_only
   //     | separator
   //     | hash_word
   //     | DOT
@@ -9271,6 +9341,7 @@ public class DylanParser implements PsiParser {
   //     | PARSED_LIST_CONSTANT
   //     | PARSED_VECTOR_CONSTANT
   //     | substitution
+  //     | nondefining_begin_word_token
   public static boolean template_element(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "template_element")) return false;
     boolean result_ = false;
@@ -9281,7 +9352,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, NUMBER);
     if (!result_) result_ = consumeToken(builder_, CHARACTER_LITERAL);
     if (!result_) result_ = string(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, UNARY_OPERATOR_ONLY);
+    if (!result_) result_ = unary_operator_only(builder_, level_ + 1);
     if (!result_) result_ = separator(builder_, level_ + 1);
     if (!result_) result_ = hash_word(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, DOT);
@@ -9295,6 +9366,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, PARSED_LIST_CONSTANT);
     if (!result_) result_ = consumeToken(builder_, PARSED_VECTOR_CONSTANT);
     if (!result_) result_ = substitution(builder_, level_ + 1);
+    if (!result_) result_ = nondefining_begin_word_token(builder_, level_ + 1);
     if (result_) {
       marker_.done(TEMPLATE_ELEMENT);
     }
@@ -9543,6 +9615,44 @@ public class DylanParser implements PsiParser {
     result_ = result_ && expression(builder_, level_ + 1, -1);
     if (result_) {
       marker_.done(TYPE_SLOT_OPTION);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // MINUS
+  public static boolean unary_and_binary_operator(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unary_and_binary_operator")) return false;
+    if (!nextTokenIs(builder_, MINUS)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, MINUS);
+    if (result_) {
+      marker_.done(UNARY_AND_BINARY_OPERATOR);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // MINUS | TILDE
+  public static boolean unary_operator_only(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "unary_operator_only")) return false;
+    if (!nextTokenIs(builder_, MINUS) && !nextTokenIs(builder_, TILDE)
+        && replaceVariants(builder_, 2, "<unary operator only>")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<unary operator only>");
+    result_ = consumeToken(builder_, MINUS);
+    if (!result_) result_ = consumeToken(builder_, TILDE);
+    if (result_) {
+      marker_.done(UNARY_OPERATOR_ONLY);
     }
     else {
       marker_.rollbackTo();

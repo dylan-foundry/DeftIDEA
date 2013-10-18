@@ -11,26 +11,14 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanBinaryOperatorImpl extends ASTWrapperPsiElement implements DylanBinaryOperator {
+public class DylanDylanUnreservedNameImpl extends ASTWrapperPsiElement implements DylanDylanUnreservedName {
 
-  public DylanBinaryOperatorImpl(ASTNode node) {
+  public DylanDylanUnreservedNameImpl(ASTNode node) {
     super(node);
   }
 
-  @Override
-  @Nullable
-  public DylanBinaryOperatorOnly getBinaryOperatorOnly() {
-    return findChildByClass(DylanBinaryOperatorOnly.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanUnaryAndBinaryOperator getUnaryAndBinaryOperator() {
-    return findChildByClass(DylanUnaryAndBinaryOperator.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBinaryOperator(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitDylanUnreservedName(this);
     else super.accept(visitor);
   }
 

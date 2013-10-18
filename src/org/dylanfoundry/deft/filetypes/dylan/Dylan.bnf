@@ -65,6 +65,8 @@ core_word ::= non_end_core_word | END
 
 non_end_core_word ::= DEFINE | HANDLER_T | LET | LOCAL | MACRO_T | OTHERWISE
 
+nondefining_begin_word_token ::= BEGIN | BLOCK | CASE | FOR | IF | METHOD | SELECT | UNLESS | UNTIL | WHILE
+
 nondefining_word ::= NONDEFINING_BEGIN_WORD | NONDEFINING_FUNCTION_WORD | NONDEFINING_NONEXPRESSION_WORD
 
 define_body_word ::= DEFINE_BODY_NONEXPRESSION_WORD | DEFINE_BODY_BEGIN_WORD | DEFINE_BODY_FUNCTION_WORD
@@ -138,7 +140,13 @@ operator ::=
     | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL
     | AMPERSAND | VERT_BAR | COLON_EQUAL
 
-binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL | COLON_EQUAL
+binary_operator_only ::= PLUS | STAR | SLASH | CARET | EQUAL | EQUAL_EQUAL | TILDE_EQUAL | TILDE_EQUAL_EQUAL
+                       | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL | AMPERSAND | VERT_BAR
+                       | COLON_EQUAL
+
+unary_operator_only ::= MINUS | TILDE
+unary_and_binary_operator ::= MINUS
+binary_operator ::=  binary_operator_only | unary_and_binary_operator
 
 /* Program Structure, page 420 */
 
@@ -842,7 +850,7 @@ template_element ::=
     | NUMBER
     | CHARACTER_LITERAL
     | string
-    | UNARY_OPERATOR_ONLY
+    | unary_operator_only
     | separator
     | hash_word
     | DOT
@@ -856,6 +864,7 @@ template_element ::=
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
     | substitution
+    | nondefining_begin_word_token // FIXME: allows begin words
 
 separator ::=
       SEMICOLON

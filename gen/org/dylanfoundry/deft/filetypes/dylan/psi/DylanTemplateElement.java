@@ -11,6 +11,9 @@ public interface DylanTemplateElement extends PsiElement {
   DylanHashWord getHashWord();
 
   @Nullable
+  DylanNondefiningBeginWordToken getNondefiningBeginWordToken();
+
+  @Nullable
   DylanSeparator getSeparator();
 
   @Nullable
@@ -24,6 +27,9 @@ public interface DylanTemplateElement extends PsiElement {
 
   @Nullable
   DylanTemplate getTemplate();
+
+  @Nullable
+  DylanUnaryOperatorOnly getUnaryOperatorOnly();
 
   @Nullable
   DylanWordName getWordName();

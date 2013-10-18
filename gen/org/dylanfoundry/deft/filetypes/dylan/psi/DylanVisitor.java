@@ -67,6 +67,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitBinaryOperatorOnly(@NotNull DylanBinaryOperatorOnly o) {
+    visitPsiElement(o);
+  }
+
   public void visitBindingPattern(@NotNull DylanBindingPattern o) {
     visitPsiElement(o);
   }
@@ -607,6 +611,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitNondefiningBeginWordToken(@NotNull DylanNondefiningBeginWordToken o) {
+    visitPsiElement(o);
+  }
+
   public void visitNondefiningName(@NotNull DylanNondefiningName o) {
     visitPsiElement(o);
   }
@@ -873,6 +881,14 @@ public class DylanVisitor extends PsiElementVisitor {
 
   public void visitTypeSlotOption(@NotNull DylanTypeSlotOption o) {
     visitSlotOption(o);
+  }
+
+  public void visitUnaryAndBinaryOperator(@NotNull DylanUnaryAndBinaryOperator o) {
+    visitPsiElement(o);
+  }
+
+  public void visitUnaryOperatorOnly(@NotNull DylanUnaryOperatorOnly o) {
+    visitPsiElement(o);
   }
 
   public void visitUniqueString(@NotNull DylanUniqueString o) {
