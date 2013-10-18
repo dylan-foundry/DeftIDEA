@@ -6,6 +6,7 @@
   ]]></description>
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
   <version>0.3</version>
+  <depends>com.intellij.modules.lang</depends>
   <changes><![CDATA[
   <p>0.3</p>
   <ul>
