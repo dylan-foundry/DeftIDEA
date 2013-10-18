@@ -99,6 +99,12 @@ name_not_end ::= macro_name | non_end_core_word
 
 hash_word ::= HASH_T | HASH_F | HASH_NEXT | HASH_REST | HASH_KEY | HASH_ALL_KEYS | HASH_INCLUDE
 
+operator ::=
+      TILDE | PLUS | MINUS | STAR | SLASH | CARET
+    | EQUAL | EQUAL_EQUAL | TILDE_EQUAL | TILDE_EQUAL_EQUAL
+    | LESS_THAN | LESS_THAN_EQUAL | GREATER_THAN | GREATER_THAN_EQUAL
+    | AMPERSAND | VERT_BAR | COLON_EQUAL
+
 binary_operator ::= BINARY_OPERATOR_ONLY | UNARY_AND_BINARY_OPERATOR | EQUAL | EQUAL_EQUAL
 
 /* Program Structure, page 420 */
@@ -124,18 +130,18 @@ symbol_value ::= basic_fragment
 
 /* Fragments, page 421-422 */
 
-body_fragment ::= non_statement_body_fragment | statement non_statement_body_fragment?
+body_fragment ::= statement non_statement_body_fragment? | non_statement_body_fragment
 
-private list_fragment ::= non_statement_list_fragment | statement non_statement_list_fragment?
+private list_fragment ::= statement non_statement_list_fragment? | non_statement_list_fragment
 
-basic_fragment ::= non_statement_basic_fragment | statement non_statement_basic_fragment?
+basic_fragment ::= statement non_statement_basic_fragment? | non_statement_basic_fragment
 
 non_statement_body_fragment ::=
       definition semicolon_fragment?
     | local_declaration semicolon_fragment?
     | simple_fragment body_fragment?
     | COMMA body_fragment?
-    | SEMICOLON body_fragment?
+    | semicolon_fragment?
 
 semicolon_fragment ::= SEMICOLON body_fragment?
 
@@ -144,11 +150,11 @@ private non_statement_list_fragment ::= simple_fragment list_fragment? | COMMA l
 non_statement_basic_fragment ::= simple_fragment basic_fragment?
 
 private simple_fragment ::=
-      variable_name
+      function_macro_call
+    | variable_name
     | constant_fragment
     | operator
     | bracketed_fragment
-    | function_macro_call
     | hash_word
     | DOT
     | COLON_COLON

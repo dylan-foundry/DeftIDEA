@@ -29,12 +29,12 @@ public interface DylanNonStatementBodyFragment extends PsiElement {
   DylanLocalDeclaration getLocalDeclaration();
 
   @Nullable
+  DylanOperator getOperator();
+
+  @Nullable
   DylanSemicolonFragment getSemicolonFragment();
 
   @Nullable
   DylanVariableName getVariableName();
-
-  @Nullable
-  PsiElement getOperator();
 
 }

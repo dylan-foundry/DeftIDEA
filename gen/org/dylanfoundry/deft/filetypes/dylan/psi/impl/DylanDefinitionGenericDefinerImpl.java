@@ -50,6 +50,12 @@ public class DylanDefinitionGenericDefinerImpl extends DylanDefinerImpl implemen
 
   @Override
   @Nullable
+  public DylanOperator getOperator() {
+    return findChildByClass(DylanOperator.class);
+  }
+
+  @Override
+  @Nullable
   public DylanStatement getStatement() {
     return findChildByClass(DylanStatement.class);
   }
@@ -58,12 +64,6 @@ public class DylanDefinitionGenericDefinerImpl extends DylanDefinerImpl implemen
   @NotNull
   public List<DylanVariableName> getVariableNameList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOperator() {
-    return findChildByType(OPERATOR);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

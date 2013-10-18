@@ -49,14 +49,14 @@ public class DylanNonStatementBasicFragmentImpl extends ASTWrapperPsiElement imp
 
   @Override
   @Nullable
-  public DylanVariableName getVariableName() {
-    return findChildByClass(DylanVariableName.class);
+  public DylanOperator getOperator() {
+    return findChildByClass(DylanOperator.class);
   }
 
   @Override
   @Nullable
-  public PsiElement getOperator() {
-    return findChildByType(OPERATOR);
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
