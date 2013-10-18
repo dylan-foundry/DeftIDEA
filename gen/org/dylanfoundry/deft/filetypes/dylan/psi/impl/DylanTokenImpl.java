@@ -25,6 +25,12 @@ public class DylanTokenImpl extends ASTWrapperPsiElement implements DylanToken {
 
   @Override
   @Nullable
+  public DylanOperator getOperator() {
+    return findChildByClass(DylanOperator.class);
+  }
+
+  @Override
+  @Nullable
   public DylanPunctuation getPunctuation() {
     return findChildByClass(DylanPunctuation.class);
   }
@@ -45,12 +51,6 @@ public class DylanTokenImpl extends ASTWrapperPsiElement implements DylanToken {
   @Nullable
   public DylanWordName getWordName() {
     return findChildByClass(DylanWordName.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOperator() {
-    return findChildByType(OPERATOR);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

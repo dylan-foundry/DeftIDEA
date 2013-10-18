@@ -639,6 +639,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
+  public void visitOperator(@NotNull DylanOperator o) {
+    visitPsiElement(o);
+  }
+
   public void visitOrExpr(@NotNull DylanOrExpr o) {
     visitExpr(o);
   }

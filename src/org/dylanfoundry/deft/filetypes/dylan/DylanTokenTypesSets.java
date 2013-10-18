@@ -38,9 +38,23 @@ public interface DylanTokenTypesSets {
   );
 
   TokenSet OPERATOR = TokenSet.create(
-    DylanTypes.UNARY_AND_BINARY_OPERATOR,
-    DylanTypes.BINARY_OPERATOR_ONLY,
-    DylanTypes.UNARY_OPERATOR_ONLY
+    DylanTypes.TILDE,
+    DylanTypes.PLUS,
+    DylanTypes.MINUS,
+    DylanTypes.STAR,
+    DylanTypes.SLASH,
+    DylanTypes.CARET,
+    DylanTypes.EQUAL,
+    DylanTypes.EQUAL_EQUAL,
+    DylanTypes.TILDE_EQUAL,
+    DylanTypes.TILDE_EQUAL_EQUAL,
+    DylanTypes.LESS_THAN,
+    DylanTypes.LESS_THAN_EQUAL,
+    DylanTypes.GREATER_THAN,
+    DylanTypes.GREATER_THAN_EQUAL,
+    DylanTypes.AMPERSAND,
+    DylanTypes.VERT_BAR,
+    DylanTypes.COLON_EQUAL
   );
 
   TokenSet RESERVED = TokenSet.create(

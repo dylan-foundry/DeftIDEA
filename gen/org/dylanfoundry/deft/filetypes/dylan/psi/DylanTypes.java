@@ -166,6 +166,7 @@ public interface DylanTypes {
   IElementType NON_STATEMENT_BODY_FRAGMENT = new DylanElementType("NON_STATEMENT_BODY_FRAGMENT");
   IElementType NUMERIC_CLAUSES = new DylanElementType("NUMERIC_CLAUSES");
   IElementType OPERAND_EXPR = new DylanElementType("OPERAND_EXPR");
+  IElementType OPERATOR = new DylanElementType("OPERATOR");
   IElementType ORDINARY_BINDING_NAME = new DylanElementType("ORDINARY_BINDING_NAME");
   IElementType OR_EXPR = new DylanElementType("OR_EXPR");
   IElementType PARAMETERS = new DylanElementType("PARAMETERS");
@@ -324,7 +325,6 @@ public interface DylanTypes {
   IElementType NONDEFINING_FUNCTION_WORD = new DylanTokenType("NONDEFINING_FUNCTION_WORD");
   IElementType NONDEFINING_NONEXPRESSION_WORD = new DylanTokenType("NONDEFINING_NONEXPRESSION_WORD");
   IElementType NUMBER = new DylanTokenType("NUMBER");
-  IElementType OPERATOR = new DylanTokenType("operator");
   IElementType OPERATOR_NAME = new DylanTokenType("OPERATOR_NAME");
   IElementType OTHERWISE = new DylanTokenType("OTHERWISE");
   IElementType PARSED_DEFINITION = new DylanTokenType("PARSED_DEFINITION");
@@ -845,6 +845,9 @@ public interface DylanTypes {
       }
       else if (type == OPERAND_EXPR) {
         return new DylanOperandExprImpl(node);
+      }
+      else if (type == OPERATOR) {
+        return new DylanOperatorImpl(node);
       }
       else if (type == ORDINARY_BINDING_NAME) {
         return new DylanOrdinaryBindingNameImpl(node);
