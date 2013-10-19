@@ -18,14 +18,8 @@ public class DylanExpExprImpl extends DylanExpressionImpl implements DylanExpExp
 
   @Override
   @NotNull
-  public DylanExpression getExpression() {
-    return findNotNullChildByClass(DylanExpression.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getExpr() {
-    return findNotNullChildByType(EXPR);
+  public List<DylanExpression> getExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanExpression.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

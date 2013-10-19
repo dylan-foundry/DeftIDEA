@@ -295,7 +295,6 @@ public interface DylanTypes {
   IElementType ESCAPED_WORD = new DylanTokenType("ESCAPED_WORD");
   IElementType EXCEPTION = new DylanTokenType("EXCEPTION");
   IElementType EXPORT = new DylanTokenType("EXPORT");
-  IElementType EXPR = new DylanTokenType("expr");
   IElementType FINALLY = new DylanTokenType("FINALLY");
   IElementType FOR = new DylanTokenType("FOR");
   IElementType FROM = new DylanTokenType("FROM");

@@ -517,7 +517,7 @@ div_expr ::= expression SLASH expression
 mul_expr ::= expression STAR expression
 minus_expr ::= expression MINUS expression
 plus_expr ::= expression PLUS expression
-exp_expr ::= expression CARET expr { rightAssociative=true }
+exp_expr ::= expression CARET expression { rightAssociative=true }
 ident_expr ::= expression EQUAL_EQUAL expression
 eq_expr ::= expression EQUAL expression
 nonident_expr ::= expression TILDE_EQUAL_EQUAL expression

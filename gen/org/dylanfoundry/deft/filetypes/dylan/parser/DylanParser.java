@@ -10621,7 +10621,7 @@ public class DylanParser implements PsiParser {
   // 2: BINARY(ident_expr) BINARY(eq_expr) BINARY(nonident_expr) BINARY(neq_expr) BINARY(lt_expr) BINARY(gt_expr) BINARY(lteq_expr) BINARY(gteq_expr)
   // 3: BINARY(plus_expr) BINARY(minus_expr)
   // 4: BINARY(mul_expr) BINARY(div_expr)
-  // 5: POSTFIX(exp_expr)
+  // 5: BINARY(exp_expr)
   // 6: PREFIX(arith_neg_expr) PREFIX(log_neg_expr)
   // 7: ATOM(operand_expr)
   public static boolean expression(PsiBuilder builder_, int level_, int priority_) {
@@ -10727,8 +10727,8 @@ public class DylanParser implements PsiParser {
         marker_.drop();
         left_marker_.precede().done(DIV_EXPR);
       }
-      else if (priority_ < 5 && exp_expr_0(builder_, level_ + 1)) {
-        result_ = true;
+      else if (priority_ < 5 && consumeToken(builder_, CARET)) {
+        result_ = report_error_(builder_, expression(builder_, level_, 4));
         marker_.drop();
         left_marker_.precede().done(EXP_EXPR);
       }
@@ -10758,21 +10758,6 @@ public class DylanParser implements PsiParser {
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
     return result_ || pinned_;
-  }
-
-  // CARET expr
-  private static boolean exp_expr_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "exp_expr_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, CARET, EXPR);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
   }
 
   public static boolean log_neg_expr(PsiBuilder builder_, int level_) {
