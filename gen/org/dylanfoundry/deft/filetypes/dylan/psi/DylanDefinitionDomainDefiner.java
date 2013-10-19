@@ -12,8 +12,8 @@ public interface DylanDefinitionDomainDefiner extends DylanDefiner {
   @NotNull
   DylanBracketedFragment getBracketedFragment();
 
-  @Nullable
-  DylanModifiers getModifiers();
+  @NotNull
+  DylanDomainModifiers getDomainModifiers();
 
   @NotNull
   DylanVariableName getVariableName();

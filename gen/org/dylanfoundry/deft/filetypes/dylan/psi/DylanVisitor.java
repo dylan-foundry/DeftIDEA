@@ -283,6 +283,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitExpression(o);
   }
 
+  public void visitDomainModifiers(@NotNull DylanDomainModifiers o) {
+    visitPsiElement(o);
+  }
+
   public void visitDylanUnreservedName(@NotNull DylanDylanUnreservedName o) {
     visitPsiElement(o);
   }
