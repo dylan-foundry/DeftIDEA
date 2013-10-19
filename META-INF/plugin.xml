@@ -75,6 +75,7 @@
     <lang.psiStructureViewFactory language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.structure.DylanStructureViewFactory"/>
     <methodNavigationOffsetProvider implementation="org.dylanfoundry.deft.filetypes.dylan.DylanMethodNavigationOffsetProvider"/>
     <annotator language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanSyntaxAnnotator"/>
+    <annotator language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanSanityAnnotator"/>
     <langCodeStyleSettingsProvider implementation="org.dylanfoundry.deft.filetypes.dylan.formatter.settings.DylanLanguageCodeStyleSettingsProvider"/>
 
     <!-- Template Group -->
