@@ -68,6 +68,7 @@
     <gotoSymbolContributor implementation="org.dylanfoundry.deft.filetypes.dylan.DylanSymbolContributor"/>
     <gotoClassContributor implementation="org.dylanfoundry.deft.filetypes.dylan.DylanClassContributor"/>
     <inspectionToolProvider implementation="org.dylanfoundry.deft.filetypes.dylan.inspections.InspectionProvider"/>
+    <lang.braceMatcher language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.highlight.DylanBraceMatcher"/>
     <lang.commenter language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanCommenter"/>
     <lang.foldingBuilder language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.DylanFoldingBuilder"/>
     <lang.formatter language="Dylan" implementationClass="org.dylanfoundry.deft.filetypes.dylan.formatter.DylanFormattingModelBuilder"/>
