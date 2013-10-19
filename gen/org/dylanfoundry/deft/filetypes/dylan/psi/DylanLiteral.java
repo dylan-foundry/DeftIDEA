@@ -17,6 +17,6 @@ public interface DylanLiteral extends PsiElement {
   DylanStringLiteral getStringLiteral();
 
   @Nullable
-  DylanUniqueString getUniqueString();
+  DylanSymbol getSymbol();
 
 }

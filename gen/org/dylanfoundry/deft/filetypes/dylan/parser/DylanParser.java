@@ -5555,7 +5555,7 @@ public class DylanParser implements PsiParser {
   // NUMBER
   //     | CHARACTER_LITERAL
   //     | string_literal
-  //     | unique_string
+  //     | symbol
   //     | HASH_T
   //     | HASH_F
   //     | HASH_PAREN constants DOT constant RPAREN
@@ -5571,7 +5571,7 @@ public class DylanParser implements PsiParser {
     result_ = consumeToken(builder_, NUMBER);
     if (!result_) result_ = consumeToken(builder_, CHARACTER_LITERAL);
     if (!result_) result_ = string_literal(builder_, level_ + 1);
-    if (!result_) result_ = unique_string(builder_, level_ + 1);
+    if (!result_) result_ = symbol(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, HASH_T);
     if (!result_) result_ = consumeToken(builder_, HASH_F);
     if (!result_) result_ = literal_6(builder_, level_ + 1);

@@ -551,7 +551,7 @@ literal ::=
       NUMBER
     | CHARACTER_LITERAL
     | string_literal
-    | unique_string
+    | symbol
     | HASH_T
     | HASH_F
     | HASH_PAREN constants DOT constant RPAREN

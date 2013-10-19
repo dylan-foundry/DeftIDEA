@@ -37,8 +37,8 @@ public class DylanLiteralImpl extends ASTWrapperPsiElement implements DylanLiter
 
   @Override
   @Nullable
-  public DylanUniqueString getUniqueString() {
-    return findChildByClass(DylanUniqueString.class);
+  public DylanSymbol getSymbol() {
+    return findChildByClass(DylanSymbol.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
