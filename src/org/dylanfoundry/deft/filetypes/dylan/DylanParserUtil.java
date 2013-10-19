@@ -21,7 +21,7 @@ public class DylanParserUtil extends GeneratedParserUtilBase {
     } else if ("rename:".equals(lowercaseTokenText)) {
       return DylanParser.rename_option(builder, level);
     } else if ("export:".equals(lowercaseTokenText)) {
-      return DylanParser.export_clause(builder, level);
+      return DylanParser.export_option(builder, level);
     }
     return false;
   }
