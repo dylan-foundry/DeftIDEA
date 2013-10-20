@@ -8,6 +8,17 @@
   <version>0.3</version>
   <depends>com.intellij.modules.lang</depends>
   <changes><![CDATA[
+  <p>0.4</p>
+  <ul>
+    <li>Improvements to Dylan parsing, including better handling of macro
+        definitions, multiple variables or constants in a single definer,
+        and many other things.</li>
+    <li>Improvements to code folding.</li>
+    <li>Improvements to testworks parsing when keywords are passed to a
+        suite or test definer.</li>
+    <li>Added support for various sanity and style checks via code annotation.</li>
+    <li>Initial support for brace / parenthesis matching.</li>
+  </ul>
   <p>0.3</p>
   <ul>
     <li>Further improvements to parsing the Dylan language.</li>
