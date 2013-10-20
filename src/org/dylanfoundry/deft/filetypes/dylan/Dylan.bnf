@@ -314,14 +314,12 @@ definition_copy_down_method_definer ::= DEFINE modifiers? COPY_DOWN_METHOD varia
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
-definition_domain_definer ::= DEFINE domain_modifiers DOMAIN variable_name bracketed_fragment
+definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_fragment
   {
     mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
     implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
-
-domain_modifiers ::= <<unreservedNameWithValues "sealed">>
 
 definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name parameter_list body? function_definition_tail
   {

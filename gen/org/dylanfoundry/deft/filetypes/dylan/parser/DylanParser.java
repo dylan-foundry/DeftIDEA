@@ -230,9 +230,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == DIV_EXPR) {
       result_ = expression(builder_, level_ + 1, 3);
     }
-    else if (root_ == DOMAIN_MODIFIERS) {
-      result_ = domain_modifiers(builder_, level_ + 1);
-    }
     else if (root_ == DYLAN_UNRESERVED_NAME) {
       result_ = dylan_unreserved_name(builder_, level_ + 1);
     }
@@ -3017,14 +3014,14 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE domain_modifiers DOMAIN variable_name bracketed_fragment
+  // DEFINE modifiers? DOMAIN variable_name bracketed_fragment
   public static boolean definition_domain_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_domain_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, DEFINE);
-    result_ = result_ && domain_modifiers(builder_, level_ + 1);
+    result_ = result_ && definition_domain_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, DOMAIN);
     result_ = result_ && variable_name(builder_, level_ + 1);
     result_ = result_ && bracketed_fragment(builder_, level_ + 1);
@@ -3035,6 +3032,13 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     return result_;
+  }
+
+  // modifiers?
+  private static boolean definition_domain_definer_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_domain_definer_1")) return false;
+    modifiers(builder_, level_ + 1);
+    return true;
   }
 
   /* ********************************************************** */
@@ -3591,24 +3595,6 @@ public class DylanParser implements PsiParser {
     else {
       marker_.drop();
     }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // <<unreservedNameWithValues "sealed">>
-  public static boolean domain_modifiers(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "domain_modifiers")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<domain modifiers>");
-    result_ = unreservedNameWithValues(builder_, level_ + 1, "sealed");
-    if (result_) {
-      marker_.done(DOMAIN_MODIFIERS);
-    }
-    else {
-      marker_.rollbackTo();
-    }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 

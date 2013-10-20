@@ -44,6 +44,9 @@ public class DylanSanityAnnotator implements Annotator {
     } else if (element instanceof  DylanDefinitionVariableDefiner) {
       DylanDefinitionVariableDefiner variable = (DylanDefinitionVariableDefiner) element;
       validateVariable(variable, holder);
+    } else if (element instanceof DylanDefinitionDomainDefiner) {
+      DylanDefinitionDomainDefiner domain = (DylanDefinitionDomainDefiner) element;
+      validateDomain(domain, holder);
     }
   }
 
@@ -83,6 +86,10 @@ public class DylanSanityAnnotator implements Annotator {
         validateVariableName(var.getVariableName(), holder);
       }
     }
+  }
+
+  private void validateDomain(@NotNull DylanDefinitionDomainDefiner domain, @NotNull AnnotationHolder holder) {
+    validateModifiers(domain.getModifiers(), DOMAIN_MODIFIERS, holder);
   }
 
   private void validateDefinitionTail(PsiElement tail, PsiElement variableName, @NotNull AnnotationHolder holder) {
@@ -167,6 +174,11 @@ public class DylanSanityAnnotator implements Annotator {
   ));
   private final static Set<String> VARIABLE_MODIFIERS = new HashSet<String>(Arrays.asList(
           "thread"
+  ));
+  private final static Set<String> DOMAIN_MODIFIERS = new HashSet<String>(Arrays.asList(
+          "sealed",
+          "sideways",
+          "compiler-sideways"
   ));
   private final static Set<String> INLINE_POLICIES = new HashSet<String>(Arrays.asList(
           "default-inline",

@@ -25,9 +25,9 @@ public class DylanDefinitionDomainDefinerImpl extends DylanDefinerImpl implement
   }
 
   @Override
-  @NotNull
-  public DylanDomainModifiers getDomainModifiers() {
-    return findNotNullChildByClass(DylanDomainModifiers.class);
+  @Nullable
+  public DylanModifiers getModifiers() {
+    return findChildByClass(DylanModifiers.class);
   }
 
   @Override

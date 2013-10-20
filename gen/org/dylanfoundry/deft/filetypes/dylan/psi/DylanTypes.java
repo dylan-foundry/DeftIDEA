@@ -77,7 +77,6 @@ public interface DylanTypes {
   IElementType DEFINITION_TEST_DEFINER = new DylanElementType("DEFINITION_TEST_DEFINER");
   IElementType DEFINITION_VARIABLE_DEFINER = new DylanElementType("DEFINITION_VARIABLE_DEFINER");
   IElementType DIV_EXPR = new DylanElementType("DIV_EXPR");
-  IElementType DOMAIN_MODIFIERS = new DylanElementType("DOMAIN_MODIFIERS");
   IElementType DYLAN_UNRESERVED_NAME = new DylanElementType("DYLAN_UNRESERVED_NAME");
   IElementType ELSEIF_STATEMENT = new DylanElementType("ELSEIF_STATEMENT");
   IElementType ELSE_STATEMENT = new DylanElementType("ELSE_STATEMENT");
@@ -585,9 +584,6 @@ public interface DylanTypes {
       }
       else if (type == DIV_EXPR) {
         return new DylanDivExprImpl(node);
-      }
-      else if (type == DOMAIN_MODIFIERS) {
-        return new DylanDomainModifiersImpl(node);
       }
       else if (type == DYLAN_UNRESERVED_NAME) {
         return new DylanDylanUnreservedNameImpl(node);
