@@ -16,14 +16,10 @@
 
 package org.dylanfoundry.deft.filetypes.dylan;
 
-import com.intellij.codeInspection.ProblemHighlightType;
-import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinitionClassDefiner;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinitionFunctionDefiner;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinitionMethodDefiner;
+import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 public class DylanSanityAnnotator implements Annotator {
@@ -38,6 +34,9 @@ public class DylanSanityAnnotator implements Annotator {
     } else if (element instanceof DylanDefinitionMethodDefiner) {
       DylanDefinitionMethodDefiner method = (DylanDefinitionMethodDefiner) element;
       validateMethod(method, holder);
+    } else if (element instanceof  DylanDefinitionVariableDefiner) {
+      DylanDefinitionVariableDefiner variable = (DylanDefinitionVariableDefiner) element;
+      validateVariable(variable, holder);
     }
   }
 
@@ -57,12 +56,23 @@ public class DylanSanityAnnotator implements Annotator {
     validateDefinitionTail(tail, method.getVariableName(), holder);
   }
 
+  private void validateVariable(@NotNull DylanDefinitionVariableDefiner variable, @NotNull AnnotationHolder holder) {
+    if (variable.getVariable() != null) {
+      validateVariableName(variable.getVariable().getVariableName(), holder);
+    } else {
+      for (DylanVariable var : variable.getVariableList().getVariableList()) {
+        validateVariableName(var.getVariableName(), holder);
+      }
+    }
+  }
+
   private void validateDefinitionTail(PsiElement tail, PsiElement variableName, @NotNull AnnotationHolder holder) {
     if (tail.getChildren().length > 0) {
       PsiElement tailName = tail.getChildren()[0];
-      if (!tailName.getText().equals(variableName.getText())) {
-        Annotation annotation = holder.createErrorAnnotation(tailName, "Definer end has wrong name, expected '" + variableName.getText() + "'.");
-        annotation.setHighlightType(ProblemHighlightType.ERROR);
+      String tailNameText = tailName.getText().trim().toLowerCase();
+      String nameText = variableName.getText().trim().toLowerCase();
+      if (!tailNameText.equals(nameText)) {
+        holder.createErrorAnnotation(tailName, "Definer end has wrong name, expected '" + variableName.getText() + "'.");
       }
     }
   }
@@ -70,7 +80,14 @@ public class DylanSanityAnnotator implements Annotator {
   private void validateClassName(PsiElement className, @NotNull AnnotationHolder holder) {
     String name = className.getText();
     if (!name.startsWith("<") || !name.endsWith(">")) {
-      Annotation annotation = holder.createWarningAnnotation(className, "Class names usually begin with '<' and end with '>'.");
+      holder.createWarningAnnotation(className, "Class names usually begin with '<' and end with '>'.");
+    }
+  }
+
+  private void validateVariableName(PsiElement variableName, @NotNull AnnotationHolder holder) {
+    String name = variableName.getText();
+    if (!name.startsWith("*") || !name.endsWith("*")) {
+      holder.createWarningAnnotation(variableName, "Variable names usually begin with '*' and end with '*'.");
     }
   }
 }
