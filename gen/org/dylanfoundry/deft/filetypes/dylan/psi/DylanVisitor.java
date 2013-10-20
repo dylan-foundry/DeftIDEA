@@ -971,10 +971,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitVariables(@NotNull DylanVariables o) {
-    visitPsiElement(o);
-  }
-
   public void visitWhenStatement(@NotNull DylanWhenStatement o) {
     visitStatement(o);
   }

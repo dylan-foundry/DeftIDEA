@@ -246,7 +246,6 @@ public interface DylanTypes {
   IElementType USE_CLAUSE = new DylanElementType("USE_CLAUSE");
   IElementType VALUES_LIST = new DylanElementType("VALUES_LIST");
   IElementType VARIABLE = new DylanElementType("VARIABLE");
-  IElementType VARIABLES = new DylanElementType("VARIABLES");
   IElementType VARIABLE_LIST = new DylanElementType("VARIABLE_LIST");
   IElementType VARIABLE_NAME = new DylanElementType("VARIABLE_NAME");
   IElementType VARIABLE_SPEC = new DylanElementType("VARIABLE_SPEC");
@@ -1093,9 +1092,6 @@ public interface DylanTypes {
       }
       else if (type == VARIABLE) {
         return new DylanVariableImpl(node);
-      }
-      else if (type == VARIABLES) {
-        return new DylanVariablesImpl(node);
       }
       else if (type == VARIABLE_LIST) {
         return new DylanVariableListImpl(node);

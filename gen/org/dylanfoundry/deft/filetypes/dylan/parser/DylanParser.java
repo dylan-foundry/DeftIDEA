@@ -746,9 +746,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == VARIABLE_SPEC) {
       result_ = variable_spec(builder_, level_ + 1);
     }
-    else if (root_ == VARIABLES) {
-      result_ = variables(builder_, level_ + 1);
-    }
     else if (root_ == WHEN_STATEMENT) {
       result_ = when_statement(builder_, level_ + 1);
     }
@@ -1261,7 +1258,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variable EQUAL expression | LPAREN variable_list RPAREN EQUAL expression
+  // variable EQUAL expression | variable_list EQUAL expression
   public static boolean bindings(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bindings")) return false;
     boolean result_ = false;
@@ -1296,14 +1293,13 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // LPAREN variable_list RPAREN EQUAL expression
+  // variable_list EQUAL expression
   private static boolean bindings_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bindings_1")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeToken(builder_, LPAREN);
-    result_ = result_ && variable_list(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, RPAREN, EQUAL);
+    result_ = variable_list(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, EQUAL);
     result_ = result_ && expression(builder_, level_ + 1, -1);
     if (!result_) {
       marker_.rollbackTo();
@@ -10270,28 +10266,44 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name
+  // LPAREN (variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name) RPAREN
   public static boolean variable_list(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variable_list")) return false;
+    if (!nextTokenIs(builder_, LPAREN)) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<variable list>");
-    result_ = variable_list_0(builder_, level_ + 1);
-    if (!result_) result_ = variables(builder_, level_ + 1);
-    if (!result_) result_ = variable_list_2(builder_, level_ + 1);
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && variable_list_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
     if (result_) {
       marker_.done(VARIABLE_LIST);
     }
     else {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name
+  private static boolean variable_list_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "variable_list_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = variable_list_1_0(builder_, level_ + 1);
+    if (!result_) result_ = variables(builder_, level_ + 1);
+    if (!result_) result_ = variable_list_1_2(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
   // variables COMMA HASH_REST variable_name
-  private static boolean variable_list_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "variable_list_0")) return false;
+  private static boolean variable_list_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "variable_list_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = variables(builder_, level_ + 1);
@@ -10307,8 +10319,8 @@ public class DylanParser implements PsiParser {
   }
 
   // HASH_REST variable_name
-  private static boolean variable_list_2(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "variable_list_2")) return false;
+  private static boolean variable_list_1_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "variable_list_1_2")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, HASH_REST);
@@ -10473,20 +10485,18 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // variable (COMMA variable)*
-  public static boolean variables(PsiBuilder builder_, int level_) {
+  static boolean variables(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variables")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<variables>");
     result_ = variable(builder_, level_ + 1);
     result_ = result_ && variables_1(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(VARIABLES);
-    }
-    else {
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 

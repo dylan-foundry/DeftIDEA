@@ -477,11 +477,11 @@ handler ::= expression
 
 local_methods ::= method_definition (COMMA method_definition)*
 
-bindings ::= variable EQUAL expression | LPAREN variable_list RPAREN EQUAL expression
+bindings ::= variable EQUAL expression | variable_list EQUAL expression
 
-variable_list ::= variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name
+variable_list ::= LPAREN (variables COMMA HASH_REST variable_name | variables | HASH_REST variable_name) RPAREN
 
-variables ::= variable (COMMA variable)*
+private variables ::= variable (COMMA variable)*
 
 variable ::= variable_name COLON_COLON operand_expr | variable_name
 
