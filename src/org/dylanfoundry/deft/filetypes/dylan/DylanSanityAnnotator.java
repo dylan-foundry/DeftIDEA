@@ -104,14 +104,14 @@ public class DylanSanityAnnotator implements Annotator {
   }
 
   private void validateClassName(PsiElement className, @NotNull AnnotationHolder holder) {
-    String name = className.getText();
+    String name = className.getText().trim();
     if (!name.startsWith("<") || !name.endsWith(">")) {
       holder.createWarningAnnotation(className, "Class names usually begin with '<' and end with '>'.");
     }
   }
 
   private void validateVariableName(PsiElement variableName, @NotNull AnnotationHolder holder) {
-    String name = variableName.getText();
+    String name = variableName.getText().trim();
     if (!name.startsWith("*") || !name.endsWith("*")) {
       holder.createWarningAnnotation(variableName, "Variable names usually begin with '*' and end with '*'.");
     }
