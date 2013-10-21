@@ -41,6 +41,9 @@ public class DylanSanityAnnotator implements Annotator {
     } else if (element instanceof DylanDefinitionMethodDefiner) {
       DylanDefinitionMethodDefiner method = (DylanDefinitionMethodDefiner) element;
       validateMethod(method, holder);
+    } else if (element instanceof DylanDefinitionTableDefiner) {
+      DylanDefinitionTableDefiner table = (DylanDefinitionTableDefiner) element;
+      validateTable(table, holder);
     } else if (element instanceof  DylanDefinitionVariableDefiner) {
       DylanDefinitionVariableDefiner variable = (DylanDefinitionVariableDefiner) element;
       validateVariable(variable, holder);
@@ -76,6 +79,10 @@ public class DylanSanityAnnotator implements Annotator {
     validateInlineModifiers(method.getModifiers(), holder);
   }
 
+  private void validateTable(@NotNull DylanDefinitionTableDefiner table, @NotNull AnnotationHolder holder) {
+    validateConstantName(table.getVariable().getVariableName(), holder);
+  }
+
   private void validateVariable(@NotNull DylanDefinitionVariableDefiner variable, @NotNull AnnotationHolder holder) {
     validateModifiers(variable.getModifiers(), VARIABLE_MODIFIERS, holder);
     if (variable.getVariable() != null) {
@@ -107,6 +114,13 @@ public class DylanSanityAnnotator implements Annotator {
     String name = className.getText().trim();
     if (!name.startsWith("<") || !name.endsWith(">")) {
       holder.createWarningAnnotation(className, "Class names usually begin with '<' and end with '>'.");
+    }
+  }
+
+  private void validateConstantName(PsiElement constantName, @NotNull AnnotationHolder holder) {
+    String name = constantName.getText().trim();
+    if (!name.startsWith("$")) {
+      holder.createWarningAnnotation(constantName, "Constant names usually begin with '$'.");
     }
   }
 
