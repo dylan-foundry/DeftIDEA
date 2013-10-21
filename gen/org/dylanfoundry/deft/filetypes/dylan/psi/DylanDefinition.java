@@ -48,6 +48,9 @@ public interface DylanDefinition extends PsiElement {
   DylanDefinitionSuiteDefiner getDefinitionSuiteDefiner();
 
   @Nullable
+  DylanDefinitionTableDefiner getDefinitionTableDefiner();
+
+  @Nullable
   DylanDefinitionTestDefiner getDefinitionTestDefiner();
 
   @Nullable

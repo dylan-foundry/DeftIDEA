@@ -240,6 +240,7 @@ definition ::=
     | definition_method_definer
     | definition_shared_symbols_definer
     | definition_suite_definer
+    | definition_table_definer
     | definition_test_definer
     | definition_variable_definer
     | definition_macro_call
@@ -428,6 +429,17 @@ test_suite_component ::= TEST variable_name
 suite_suite_component ::= SUITE variable_name
 
 suite_definition_tail ::= END SUITE variable_name? | END variable_name?
+
+definition_table_definer ::= DEFINE <<unreservedNameWithValues "table">> variable EQUAL LBRACE table_entries? RBRACE
+  {
+    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
+    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
+    methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
+  }
+
+private table_entries ::= table_entry (COMMA table_entry?)*
+
+table_entry ::= expression EQUAL_ARROW expression
 
 definition_test_definer ::= DEFINE TEST variable_name LPAREN test_arguments? RPAREN body? test_definition_tail
   {

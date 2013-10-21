@@ -218,6 +218,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == DEFINITION_SUITE_DEFINER) {
       result_ = definition_suite_definer(builder_, level_ + 1);
     }
+    else if (root_ == DEFINITION_TABLE_DEFINER) {
+      result_ = definition_table_definer(builder_, level_ + 1);
+    }
     else if (root_ == DEFINITION_TAIL) {
       result_ = definition_tail(builder_, level_ + 1);
     }
@@ -679,6 +682,9 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == SYMBOL_VALUE) {
       result_ = symbol_value(builder_, level_ + 1);
+    }
+    else if (root_ == TABLE_ENTRY) {
+      result_ = table_entry(builder_, level_ + 1);
     }
     else if (root_ == TEMPLATE) {
       result_ = template(builder_, level_ + 1);
@@ -2850,6 +2856,7 @@ public class DylanParser implements PsiParser {
   //     | definition_method_definer
   //     | definition_shared_symbols_definer
   //     | definition_suite_definer
+  //     | definition_table_definer
   //     | definition_test_definer
   //     | definition_variable_definer
   //     | definition_macro_call
@@ -2873,6 +2880,7 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = definition_method_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_shared_symbols_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_suite_definer(builder_, level_ + 1);
+    if (!result_) result_ = definition_table_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_test_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_variable_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_macro_call(builder_, level_ + 1);
@@ -3461,6 +3469,35 @@ public class DylanParser implements PsiParser {
   private static boolean definition_suite_definer_6(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_suite_definer_6")) return false;
     suite_components(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // DEFINE <<unreservedNameWithValues "table">> variable EQUAL LBRACE table_entries? RBRACE
+  public static boolean definition_table_definer(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_table_definer")) return false;
+    if (!nextTokenIs(builder_, DEFINE)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, DEFINE);
+    result_ = result_ && unreservedNameWithValues(builder_, level_ + 1, "table");
+    result_ = result_ && variable(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, EQUAL, LBRACE);
+    result_ = result_ && definition_table_definer_5(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RBRACE);
+    if (result_) {
+      marker_.done(DEFINITION_TABLE_DEFINER);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // table_entries?
+  private static boolean definition_table_definer_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "definition_table_definer_5")) return false;
+    table_entries(builder_, level_ + 1);
     return true;
   }
 
@@ -9511,6 +9548,82 @@ public class DylanParser implements PsiParser {
     result_ = basic_fragment(builder_, level_ + 1);
     if (result_) {
       marker_.done(SYMBOL_VALUE);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // table_entry (COMMA table_entry?)*
+  static boolean table_entries(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_entries")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = table_entry(builder_, level_ + 1);
+    result_ = result_ && table_entries_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // (COMMA table_entry?)*
+  private static boolean table_entries_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_entries_1")) return false;
+    int offset_ = builder_.getCurrentOffset();
+    while (true) {
+      if (!table_entries_1_0(builder_, level_ + 1)) break;
+      int next_offset_ = builder_.getCurrentOffset();
+      if (offset_ == next_offset_) {
+        empty_element_parsed_guard_(builder_, offset_, "table_entries_1");
+        break;
+      }
+      offset_ = next_offset_;
+    }
+    return true;
+  }
+
+  // COMMA table_entry?
+  private static boolean table_entries_1_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_entries_1_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    result_ = result_ && table_entries_1_0_1(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // table_entry?
+  private static boolean table_entries_1_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_entries_1_0_1")) return false;
+    table_entry(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // expression EQUAL_ARROW expression
+  public static boolean table_entry(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_entry")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<table entry>");
+    result_ = expression(builder_, level_ + 1, -1);
+    result_ = result_ && consumeToken(builder_, EQUAL_ARROW);
+    result_ = result_ && expression(builder_, level_ + 1, -1);
+    if (result_) {
+      marker_.done(TABLE_ENTRY);
     }
     else {
       marker_.rollbackTo();

@@ -73,6 +73,7 @@ public interface DylanTypes {
   IElementType DEFINITION_MODULE_DEFINER = new DylanElementType("DEFINITION_MODULE_DEFINER");
   IElementType DEFINITION_SHARED_SYMBOLS_DEFINER = new DylanElementType("DEFINITION_SHARED_SYMBOLS_DEFINER");
   IElementType DEFINITION_SUITE_DEFINER = new DylanElementType("DEFINITION_SUITE_DEFINER");
+  IElementType DEFINITION_TABLE_DEFINER = new DylanElementType("DEFINITION_TABLE_DEFINER");
   IElementType DEFINITION_TAIL = new DylanElementType("DEFINITION_TAIL");
   IElementType DEFINITION_TEST_DEFINER = new DylanElementType("DEFINITION_TEST_DEFINER");
   IElementType DEFINITION_VARIABLE_DEFINER = new DylanElementType("DEFINITION_VARIABLE_DEFINER");
@@ -227,6 +228,7 @@ public interface DylanTypes {
   IElementType SUPERS = new DylanElementType("SUPERS");
   IElementType SYMBOL = new DylanElementType("SYMBOL");
   IElementType SYMBOL_VALUE = new DylanElementType("SYMBOL_VALUE");
+  IElementType TABLE_ENTRY = new DylanElementType("TABLE_ENTRY");
   IElementType TEMPLATE = new DylanElementType("TEMPLATE");
   IElementType TEMPLATE_ELEMENT = new DylanElementType("TEMPLATE_ELEMENT");
   IElementType TEST_ARGUMENT = new DylanElementType("TEST_ARGUMENT");
@@ -572,6 +574,9 @@ public interface DylanTypes {
       }
       else if (type == DEFINITION_SUITE_DEFINER) {
         return new DylanDefinitionSuiteDefinerImpl(node);
+      }
+      else if (type == DEFINITION_TABLE_DEFINER) {
+        return new DylanDefinitionTableDefinerImpl(node);
       }
       else if (type == DEFINITION_TAIL) {
         return new DylanDefinitionTailImpl(node);
@@ -1034,6 +1039,9 @@ public interface DylanTypes {
       }
       else if (type == SYMBOL_VALUE) {
         return new DylanSymbolValueImpl(node);
+      }
+      else if (type == TABLE_ENTRY) {
+        return new DylanTableEntryImpl(node);
       }
       else if (type == TEMPLATE) {
         return new DylanTemplateImpl(node);

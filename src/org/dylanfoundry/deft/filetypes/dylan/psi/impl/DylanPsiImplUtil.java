@@ -237,6 +237,26 @@ public class DylanPsiImplUtil {
     return DeftIcons.DEFINER_SUITE;
   }
 
+  public static String getName(DylanDefinitionTableDefiner element) {
+    PsiElement nameIdentifier = getNameIdentifier(element);
+    if (nameIdentifier != null) {
+      return nameIdentifier.getText();
+    }
+    return null;
+  }
+
+  public static PsiElement setName(DylanDefinitionTableDefiner element, @NotNull String newName) {
+    return null;
+  }
+
+  public static PsiElement getNameIdentifier(DylanDefinitionTableDefiner element) {
+    return element.getVariable();
+  }
+
+  public static Icon getPresentationIcon(DylanDefinitionTableDefiner element) {
+    return DeftIcons.DEFINER_CONSTANT;
+  }
+
   public static String getName(DylanDefinitionTestDefiner element) {
     PsiElement nameIdentifier = getNameIdentifier(element);
     if (nameIdentifier != null) {

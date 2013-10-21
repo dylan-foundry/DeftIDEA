@@ -267,6 +267,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitDefiner(o);
   }
 
+  public void visitDefinitionTableDefiner(@NotNull DylanDefinitionTableDefiner o) {
+    visitDefiner(o);
+  }
+
   public void visitDefinitionTail(@NotNull DylanDefinitionTail o) {
     visitPsiElement(o);
   }
@@ -880,6 +884,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitSymbolValue(@NotNull DylanSymbolValue o) {
+    visitPsiElement(o);
+  }
+
+  public void visitTableEntry(@NotNull DylanTableEntry o) {
     visitPsiElement(o);
   }
 

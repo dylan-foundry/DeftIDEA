@@ -98,6 +98,12 @@ public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDe
 
   @Override
   @Nullable
+  public DylanDefinitionTableDefiner getDefinitionTableDefiner() {
+    return findChildByClass(DylanDefinitionTableDefiner.class);
+  }
+
+  @Override
+  @Nullable
   public DylanDefinitionTestDefiner getDefinitionTestDefiner() {
     return findChildByClass(DylanDefinitionTestDefiner.class);
   }
