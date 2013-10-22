@@ -22,4 +22,4 @@ items ::= item*
  
 item ::= (KEY SEPARATOR values) {methods=[getKey]}
 
-values ::= (VALUE CRLF?)* {methods=[getValues]}
+values ::= CRLF | (VALUE CRLF)+ {methods=[getValues]}
