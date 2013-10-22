@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionGenericDefiner extends DylanDefiner {
+public interface DylanDefinitionGenericDefiner extends DylanDefinition {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();

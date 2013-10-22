@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionConstantDefiner extends DylanDefiner {
+public interface DylanDefinitionConstantDefiner extends DylanDefinition {
 
   @NotNull
   DylanExpression getExpression();

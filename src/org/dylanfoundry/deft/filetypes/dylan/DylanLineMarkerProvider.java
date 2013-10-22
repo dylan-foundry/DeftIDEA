@@ -27,7 +27,7 @@ import com.intellij.openapi.editor.markup.GutterIconRenderer;
 import com.intellij.openapi.editor.markup.SeparatorPlacement;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.FunctionUtil;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +48,7 @@ public class DylanLineMarkerProvider implements LineMarkerProvider {
   @Nullable
   public LineMarkerInfo getLineMarkerInfo(@NotNull PsiElement element) {
     if (myDaemonSettings.SHOW_METHOD_SEPARATORS) {
-      if (element instanceof DylanDefiner) {
+      if (element instanceof DylanDefinition) {
         LineMarkerInfo info = new LineMarkerInfo<PsiElement>(element, element.getTextRange(), null, Pass.UPDATE_ALL,
                                                              FunctionUtil.<Object, String>nullConstant(), null,
                                                              GutterIconRenderer.Alignment.RIGHT);

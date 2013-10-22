@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionModuleDefiner extends DylanDefiner {
+public interface DylanDefinitionModuleDefiner extends DylanDefinition {
 
   @NotNull
   List<DylanCreateClause> getCreateClauseList();

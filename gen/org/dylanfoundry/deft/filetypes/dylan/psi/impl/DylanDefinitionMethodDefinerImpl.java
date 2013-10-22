@@ -12,7 +12,7 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public class DylanDefinitionMethodDefinerImpl extends DylanDefinerImpl implements DylanDefinitionMethodDefiner {
+public class DylanDefinitionMethodDefinerImpl extends DylanDefinitionImpl implements DylanDefinitionMethodDefiner {
 
   public DylanDefinitionMethodDefinerImpl(ASTNode node) {
     super(node);

@@ -12,7 +12,7 @@ import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public class DylanDefinitionCopyDownMethodDefinerImpl extends DylanDefinerImpl implements DylanDefinitionCopyDownMethodDefiner {
+public class DylanDefinitionCopyDownMethodDefinerImpl extends DylanDefinitionImpl implements DylanDefinitionCopyDownMethodDefiner {
 
   public DylanDefinitionCopyDownMethodDefinerImpl(ASTNode node) {
     super(node);

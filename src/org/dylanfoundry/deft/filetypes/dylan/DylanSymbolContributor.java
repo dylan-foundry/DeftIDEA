@@ -22,7 +22,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.ArrayUtil;
 import org.dylanfoundry.deft.filetypes.dylan.index.DylanSymbolIndex;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class DylanSymbolContributor implements ChooseByNameContributor {
   @Override
   public NavigationItem[] getItemsByName(String name, String pattern, Project project, boolean includeNonProjectItems) {
     GlobalSearchScope scope = includeNonProjectItems ? GlobalSearchScope.allScope(project) : GlobalSearchScope.projectScope(project);
-    Collection<DylanDefiner> result = DylanSymbolIndex.getItemsByName(project, name, scope);
+    Collection<DylanDefinition> result = DylanSymbolIndex.getItemsByName(project, name, scope);
     return result.toArray(new NavigationItem[result.size()]);
   }
 }

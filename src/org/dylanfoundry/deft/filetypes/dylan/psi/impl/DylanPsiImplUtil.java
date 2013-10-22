@@ -47,6 +47,22 @@ public class DylanPsiImplUtil {
     });
   }
 
+  public static String getName(DylanDefinition element) {
+    return null;
+  }
+
+  public static PsiElement setName(DylanDefinition element, @NotNull String newName) {
+    return null;
+  }
+
+  public static PsiElement getNameIdentifier(DylanDefinition element) {
+    return null;
+  }
+
+  public static Icon getPresentationIcon(DylanDefinition element) {
+    return DeftIcons.DEFINER_UNKNOWN;
+  }
+
   public static String getName(DylanDefinitionClassDefiner element) {
     return element.getVariableName().getText();
   }
@@ -303,28 +319,6 @@ public class DylanPsiImplUtil {
   }
 
   public static ItemPresentation getPresentation(final DylanDefinition element) {
-    return new ItemPresentation() {
-      @Nullable
-      @Override
-      public String getPresentableText() {
-        return ((DylanDefiner)(element.getFirstChild())).getName();
-      }
-
-      @Nullable
-      @Override
-      public String getLocationString() {
-        return element.getContainingFile().getName();
-      }
-
-      @Nullable
-      @Override
-      public Icon getIcon(boolean unused) {
-        return ((DylanDefiner)(element.getFirstChild())).getPresentationIcon();
-      }
-    };
-  }
-
-  public static ItemPresentation getPresentation(final DylanDefiner element) {
     return new ItemPresentation() {
       @Nullable
       @Override

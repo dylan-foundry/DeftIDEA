@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionTableDefiner extends DylanDefiner {
+public interface DylanDefinitionTableDefiner extends DylanDefinition {
 
   @NotNull
   List<DylanTableEntry> getTableEntryList();

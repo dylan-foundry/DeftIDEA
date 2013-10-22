@@ -19,7 +19,7 @@ package org.dylanfoundry.deft.filetypes.dylan;
 import com.intellij.codeInsight.navigation.MethodNavigationOffsetProvider;
 import com.intellij.psi.*;
 import gnu.trove.TIntArrayList;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanFile;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +41,7 @@ public class DylanMethodNavigationOffsetProvider implements MethodNavigationOffs
   private static void addNavigationElements(ArrayList<PsiElement> array, PsiElement element) {
     PsiElement[] children = element.getChildren();
     for (PsiElement child : children) {
-      if (child instanceof DylanDefiner) {
+      if (child instanceof DylanDefinition) {
         array.add(child);
       } else {
         addNavigationElements(array, child);

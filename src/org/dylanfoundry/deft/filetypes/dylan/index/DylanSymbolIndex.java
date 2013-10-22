@@ -28,7 +28,6 @@ import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import gnu.trove.THashMap;
 import gnu.trove.THashSet;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefinition;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanSourceRecords;
 import org.jetbrains.annotations.NotNull;
@@ -76,17 +75,17 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
     return FileBasedIndex.getInstance().getAllKeys(DYLAN_SYMBOL_INDEX, project);
   }
 
-  public static List<DylanDefiner> getItemsByName(Project project, final String name, GlobalSearchScope searchScope) {
+  public static List<DylanDefinition> getItemsByName(Project project, final String name, GlobalSearchScope searchScope) {
     final Collection<VirtualFile> files = FileBasedIndex.getInstance().getContainingFiles(DYLAN_SYMBOL_INDEX, name, searchScope);
-    final Set<DylanDefiner> result = new THashSet<DylanDefiner>();
+    final Set<DylanDefinition> result = new THashSet<DylanDefinition>();
     for (VirtualFile vFile : files) {
       final PsiFile psiFile = PsiManager.getInstance(project).findFile(vFile);
       if (psiFile == null || !DylanIndexUtil.isDylanFileType(psiFile.getFileType())) {
         continue;
       }
-      processComponents(psiFile, new PsiElementProcessor<DylanDefiner>() {
+      processComponents(psiFile, new PsiElementProcessor<DylanDefinition>() {
         @Override
-        public boolean execute(@NotNull DylanDefiner component) {
+        public boolean execute(@NotNull DylanDefinition component) {
           if (name.equals(component.getName())) {
             result.add(component);
           }
@@ -94,7 +93,7 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
         }
       });
     }
-    return new ArrayList<DylanDefiner>(result);
+    return new ArrayList<DylanDefinition>(result);
   }
 
   private static class MyDataIndexer implements DataIndexer<String, Void, FileContent> {
@@ -103,9 +102,9 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
     public Map<String, Void> map(final FileContent inputData) {
       final PsiFile psiFile = inputData.getPsiFile();
       final Map<String, Void> result = new THashMap<String, Void>();
-      processComponents(psiFile, new PsiElementProcessor<DylanDefiner>() {
+      processComponents(psiFile, new PsiElementProcessor<DylanDefinition>() {
         @Override
-        public boolean execute(@NotNull DylanDefiner component) {
+        public boolean execute(@NotNull DylanDefinition component) {
           if (component.getName() != null) {
             result.put(component.getName(), null);
           }
@@ -116,7 +115,7 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
     }
   }
 
-  private static void processComponents(PsiFile psiFile, PsiElementProcessor<DylanDefiner> processor) {
+  private static void processComponents(PsiFile psiFile, PsiElementProcessor<DylanDefinition> processor) {
     final DylanSourceRecords records = PsiTreeUtil.getChildOfType(psiFile, DylanSourceRecords.class);
     if (records == null) {
       return;
@@ -129,17 +128,9 @@ public class DylanSymbolIndex extends ScalarIndexExtension<String> {
       return;
     }
     for (DylanDefinition definition : definitions) {
-      final DylanDefiner[] components = PsiTreeUtil.getChildrenOfType(definition, DylanDefiner.class);
-      if (components == null) {
-        continue;
-      }
-      for (DylanDefiner component : components) {
-        final String componentName = component.getName();
-        if (componentName != null) {
-          if (!processor.execute(component)) {
-            continue;
-          }
-        }
+      final String definitionName = definition.getName();
+      if (definitionName != null) {
+        processor.execute(definition);
       }
     }
   }

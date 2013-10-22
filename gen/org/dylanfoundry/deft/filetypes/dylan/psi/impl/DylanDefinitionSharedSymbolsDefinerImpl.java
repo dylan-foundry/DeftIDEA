@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanDefinitionSharedSymbolsDefinerImpl extends ASTWrapperPsiElement implements DylanDefinitionSharedSymbolsDefiner {
+public class DylanDefinitionSharedSymbolsDefinerImpl extends DylanDefinitionImpl implements DylanDefinitionSharedSymbolsDefiner {
 
   public DylanDefinitionSharedSymbolsDefinerImpl(ASTNode node) {
     super(node);

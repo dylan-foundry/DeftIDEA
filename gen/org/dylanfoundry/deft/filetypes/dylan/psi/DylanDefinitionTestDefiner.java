@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionTestDefiner extends DylanDefiner {
+public interface DylanDefinitionTestDefiner extends DylanDefinition {
 
   @Nullable
   DylanBody getBody();

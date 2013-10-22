@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanDefinitionSharedSymbolsDefiner extends PsiElement {
+public interface DylanDefinitionSharedSymbolsDefiner extends DylanDefinition {
 
   @Nullable
   DylanModifiers getModifiers();

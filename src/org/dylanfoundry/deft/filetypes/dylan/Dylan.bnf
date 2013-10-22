@@ -18,6 +18,7 @@
   // Support for Pratt-style left-recursive expressions
   extends(".*_expr|expression")=expression
 
+  extends("definition.*definer|definition_macro_call|definition")=definition
   extends(".*slot_option|slot_option")=slot_option
   extends(".*_statement|statement")=statement
   extends(".*_suite_component|suite_component")=suite_component
@@ -244,12 +245,13 @@ definition ::=
     | definition_test_definer
     | definition_variable_definer
     | definition_macro_call
-    | PARSED_DEFINITION {methods=[getPresentation]}
+    | PARSED_DEFINITION
+    {
+      methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
+    }
 
 definition_class_definer ::= DEFINE modifiers? CLASS variable_name LPAREN supers? RPAREN slot_declarations? class_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -303,29 +305,21 @@ type_slot_option ::= <<keywordWithValue "type:">> expression
 
 definition_constant_definer ::= DEFINE modifiers? CONSTANT_T (variable | variable_list) EQUAL expression
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_copy_down_method_definer ::= DEFINE modifiers? COPY_DOWN_METHOD variable_name list_fragment?
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_domain_definer ::= DEFINE modifiers? DOMAIN variable_name bracketed_fragment
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name parameter_list body? function_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -333,15 +327,11 @@ function_definition_tail ::= END FUNCTION variable_name? | END variable_name?
 
 definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_fragment
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_library_definer ::= DEFINE LIBRARY variable_name ((export_clause|use_clause) SEMICOLON)* library_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -349,8 +339,6 @@ library_definition_tail ::= END LIBRARY variable_name? | END variable_name?
 
 definition_module_definer ::= DEFINE MODULE variable_name ((export_clause|create_clause|use_clause) SEMICOLON)* module_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -381,15 +369,11 @@ export_option ::= KEYWORD (ALL|LBRACE ((variable_name | NONDEFINING_BEGIN_WORD) 
 
 definition_macro_definer ::= DEFINE modifiers? MACRO_T macro_definition
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
 definition_method_definer ::= DEFINE modifiers? METHOD variable_name parameter_list body? method_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -403,8 +387,6 @@ shared_symbols ::= (symbol (COMMA symbol)*)?
 
 definition_suite_definer ::= DEFINE SUITE variable_name LPAREN suite_arguments? RPAREN suite_components? suite_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -432,8 +414,6 @@ suite_definition_tail ::= END SUITE variable_name? | END variable_name?
 
 definition_table_definer ::= DEFINE <<unreservedNameWithValues "table">> variable EQUAL LBRACE table_entries? RBRACE
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -443,8 +423,6 @@ table_entry ::= expression EQUAL_ARROW expression
 
 definition_test_definer ::= DEFINE TEST variable_name LPAREN test_arguments? RPAREN body? test_definition_tail
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 
@@ -456,8 +434,6 @@ test_definition_tail ::= END TEST variable_name? | END variable_name?
 
 definition_variable_definer ::= DEFINE modifiers? VARIABLE_T (variable | variable_list) EQUAL expression
   {
-    mixin="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanDefinerImpl"
-    implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanDefiner"
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
   }
 

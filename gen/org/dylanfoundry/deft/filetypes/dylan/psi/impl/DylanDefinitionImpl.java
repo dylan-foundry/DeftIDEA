@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
+import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
 public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDefinition {
@@ -18,105 +19,25 @@ public class DylanDefinitionImpl extends ASTWrapperPsiElement implements DylanDe
     super(node);
   }
 
-  @Override
-  @Nullable
-  public DylanDefinitionClassDefiner getDefinitionClassDefiner() {
-    return findChildByClass(DylanDefinitionClassDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionConstantDefiner getDefinitionConstantDefiner() {
-    return findChildByClass(DylanDefinitionConstantDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionCopyDownMethodDefiner getDefinitionCopyDownMethodDefiner() {
-    return findChildByClass(DylanDefinitionCopyDownMethodDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionDomainDefiner getDefinitionDomainDefiner() {
-    return findChildByClass(DylanDefinitionDomainDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionFunctionDefiner getDefinitionFunctionDefiner() {
-    return findChildByClass(DylanDefinitionFunctionDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionGenericDefiner getDefinitionGenericDefiner() {
-    return findChildByClass(DylanDefinitionGenericDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionLibraryDefiner getDefinitionLibraryDefiner() {
-    return findChildByClass(DylanDefinitionLibraryDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionMacroCall getDefinitionMacroCall() {
-    return findChildByClass(DylanDefinitionMacroCall.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionMacroDefiner getDefinitionMacroDefiner() {
-    return findChildByClass(DylanDefinitionMacroDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionMethodDefiner getDefinitionMethodDefiner() {
-    return findChildByClass(DylanDefinitionMethodDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionModuleDefiner getDefinitionModuleDefiner() {
-    return findChildByClass(DylanDefinitionModuleDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionSharedSymbolsDefiner getDefinitionSharedSymbolsDefiner() {
-    return findChildByClass(DylanDefinitionSharedSymbolsDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionSuiteDefiner getDefinitionSuiteDefiner() {
-    return findChildByClass(DylanDefinitionSuiteDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionTableDefiner getDefinitionTableDefiner() {
-    return findChildByClass(DylanDefinitionTableDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionTestDefiner getDefinitionTestDefiner() {
-    return findChildByClass(DylanDefinitionTestDefiner.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanDefinitionVariableDefiner getDefinitionVariableDefiner() {
-    return findChildByClass(DylanDefinitionVariableDefiner.class);
-  }
-
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitDefinition(this);
     else super.accept(visitor);
+  }
+
+  public String getName() {
+    return DylanPsiImplUtil.getName(this);
+  }
+
+  public PsiElement setName(String newName) {
+    return DylanPsiImplUtil.setName(this, newName);
+  }
+
+  public PsiElement getNameIdentifier() {
+    return DylanPsiImplUtil.getNameIdentifier(this);
+  }
+
+  public Icon getPresentationIcon() {
+    return DylanPsiImplUtil.getPresentationIcon(this);
   }
 
   public ItemPresentation getPresentation() {

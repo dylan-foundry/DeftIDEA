@@ -773,6 +773,11 @@ public class DylanParser implements PsiParser {
   }
 
   private static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
+    TokenSet.create(DEFINITION, DEFINITION_CLASS_DEFINER, DEFINITION_CONSTANT_DEFINER, DEFINITION_COPY_DOWN_METHOD_DEFINER,
+      DEFINITION_DOMAIN_DEFINER, DEFINITION_FUNCTION_DEFINER, DEFINITION_GENERIC_DEFINER, DEFINITION_LIBRARY_DEFINER,
+      DEFINITION_MACRO_CALL, DEFINITION_MACRO_DEFINER, DEFINITION_METHOD_DEFINER, DEFINITION_MODULE_DEFINER,
+      DEFINITION_SHARED_SYMBOLS_DEFINER, DEFINITION_SUITE_DEFINER, DEFINITION_TABLE_DEFINER, DEFINITION_TEST_DEFINER,
+      DEFINITION_VARIABLE_DEFINER),
     TokenSet.create(AND_EXPR, ARITH_NEG_EXPR, ASSIGN_EXPR, DIV_EXPR,
       EQ_EXPR, EXPRESSION, EXP_EXPR, GTEQ_EXPR,
       GT_EXPR, IDENT_EXPR, LOG_NEG_EXPR, LTEQ_EXPR,
@@ -2866,6 +2871,7 @@ public class DylanParser implements PsiParser {
     if (!nextTokenIs(builder_, DEFINE) && !nextTokenIs(builder_, PARSED_DEFINITION)
         && replaceVariants(builder_, 2, "<definition>")) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<definition>");
     result_ = definition_class_definer(builder_, level_ + 1);
@@ -2885,7 +2891,11 @@ public class DylanParser implements PsiParser {
     if (!result_) result_ = definition_variable_definer(builder_, level_ + 1);
     if (!result_) result_ = definition_macro_call(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, PARSED_DEFINITION);
-    if (result_) {
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), DEFINITION)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(DEFINITION);
     }
     else {
@@ -3189,10 +3199,15 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_macro_call")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    int start_ = builder_.getCurrentOffset();
     Marker marker_ = builder_.mark();
     result_ = definition_macro_call_0(builder_, level_ + 1);
     if (!result_) result_ = definition_macro_call_1(builder_, level_ + 1);
-    if (result_) {
+    LighterASTNode last_ = result_? builder_.getLatestDoneMarker() : null;
+    if (last_ != null && last_.getStartOffset() == start_ && type_extends_(last_.getTokenType(), DEFINITION_MACRO_CALL)) {
+      marker_.drop();
+    }
+    else if (result_) {
       marker_.done(DEFINITION_MACRO_CALL);
     }
     else {

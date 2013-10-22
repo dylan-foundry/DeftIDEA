@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionClassDefiner extends DylanDefiner {
+public interface DylanDefinitionClassDefiner extends DylanDefinition {
 
   @NotNull
   DylanClassDefinitionTail getClassDefinitionTail();

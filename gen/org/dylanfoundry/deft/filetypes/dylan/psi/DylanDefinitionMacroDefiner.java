@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 import javax.swing.Icon;
 import com.intellij.navigation.ItemPresentation;
 
-public interface DylanDefinitionMacroDefiner extends DylanDefiner {
+public interface DylanDefinitionMacroDefiner extends DylanDefinition {
 
   @NotNull
   DylanMacroDefinition getMacroDefinition();
