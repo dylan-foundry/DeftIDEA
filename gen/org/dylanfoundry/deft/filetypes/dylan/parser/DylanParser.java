@@ -1448,7 +1448,7 @@ public class DylanParser implements PsiParser {
     else {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, constituents_recovery_parser_);
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, body_recovery_parser_);
     return result_;
   }
 
@@ -1499,6 +1499,58 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "body_fragment_0_1")) return false;
     non_statement_body_fragment(builder_, level_ + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // !(function_definition_tail | method_definition_tail | test_definition_tail | END
+  //     | afterwards_statement | block_tail | cleanup_statement | exception_statement | finally_clause | for_statement_tail
+  //     | elseif_statement | else_statement | if_tail | method_tail | unless_tail | until_tail | when_tail | while_tail
+  //     | method_definition_tail)
+  static boolean body_recovery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "body_recovery")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_NOT_, null);
+    result_ = !body_recovery_0(builder_, level_ + 1);
+    marker_.rollbackTo();
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_NOT_, null);
+    return result_;
+  }
+
+  // function_definition_tail | method_definition_tail | test_definition_tail | END
+  //     | afterwards_statement | block_tail | cleanup_statement | exception_statement | finally_clause | for_statement_tail
+  //     | elseif_statement | else_statement | if_tail | method_tail | unless_tail | until_tail | when_tail | while_tail
+  //     | method_definition_tail
+  private static boolean body_recovery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "body_recovery_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = function_definition_tail(builder_, level_ + 1);
+    if (!result_) result_ = method_definition_tail(builder_, level_ + 1);
+    if (!result_) result_ = test_definition_tail(builder_, level_ + 1);
+    if (!result_) result_ = consumeToken(builder_, END);
+    if (!result_) result_ = afterwards_statement(builder_, level_ + 1);
+    if (!result_) result_ = block_tail(builder_, level_ + 1);
+    if (!result_) result_ = cleanup_statement(builder_, level_ + 1);
+    if (!result_) result_ = exception_statement(builder_, level_ + 1);
+    if (!result_) result_ = finally_clause(builder_, level_ + 1);
+    if (!result_) result_ = for_statement_tail(builder_, level_ + 1);
+    if (!result_) result_ = elseif_statement(builder_, level_ + 1);
+    if (!result_) result_ = else_statement(builder_, level_ + 1);
+    if (!result_) result_ = if_tail(builder_, level_ + 1);
+    if (!result_) result_ = method_tail(builder_, level_ + 1);
+    if (!result_) result_ = unless_tail(builder_, level_ + 1);
+    if (!result_) result_ = until_tail(builder_, level_ + 1);
+    if (!result_) result_ = when_tail(builder_, level_ + 1);
+    if (!result_) result_ = while_tail(builder_, level_ + 1);
+    if (!result_) result_ = method_definition_tail(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
   }
 
   /* ********************************************************** */
@@ -2755,58 +2807,6 @@ public class DylanParser implements PsiParser {
     Marker marker_ = builder_.mark();
     result_ = consumeToken(builder_, SEMICOLON);
     result_ = result_ && constituent(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
-    }
-    else {
-      marker_.drop();
-    }
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // !(function_definition_tail | method_definition_tail | test_definition_tail | END
-  //     | afterwards_statement | block_tail | cleanup_statement | exception_statement | finally_clause | for_statement_tail
-  //     | elseif_statement | else_statement | if_tail | method_tail | unless_tail | until_tail | when_tail | while_tail
-  //     | method_definition_tail)
-  static boolean constituents_recovery(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "constituents_recovery")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_NOT_, null);
-    result_ = !constituents_recovery_0(builder_, level_ + 1);
-    marker_.rollbackTo();
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_NOT_, null);
-    return result_;
-  }
-
-  // function_definition_tail | method_definition_tail | test_definition_tail | END
-  //     | afterwards_statement | block_tail | cleanup_statement | exception_statement | finally_clause | for_statement_tail
-  //     | elseif_statement | else_statement | if_tail | method_tail | unless_tail | until_tail | when_tail | while_tail
-  //     | method_definition_tail
-  private static boolean constituents_recovery_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "constituents_recovery_0")) return false;
-    boolean result_ = false;
-    Marker marker_ = builder_.mark();
-    result_ = function_definition_tail(builder_, level_ + 1);
-    if (!result_) result_ = method_definition_tail(builder_, level_ + 1);
-    if (!result_) result_ = test_definition_tail(builder_, level_ + 1);
-    if (!result_) result_ = consumeToken(builder_, END);
-    if (!result_) result_ = afterwards_statement(builder_, level_ + 1);
-    if (!result_) result_ = block_tail(builder_, level_ + 1);
-    if (!result_) result_ = cleanup_statement(builder_, level_ + 1);
-    if (!result_) result_ = exception_statement(builder_, level_ + 1);
-    if (!result_) result_ = finally_clause(builder_, level_ + 1);
-    if (!result_) result_ = for_statement_tail(builder_, level_ + 1);
-    if (!result_) result_ = elseif_statement(builder_, level_ + 1);
-    if (!result_) result_ = else_statement(builder_, level_ + 1);
-    if (!result_) result_ = if_tail(builder_, level_ + 1);
-    if (!result_) result_ = method_tail(builder_, level_ + 1);
-    if (!result_) result_ = unless_tail(builder_, level_ + 1);
-    if (!result_) result_ = until_tail(builder_, level_ + 1);
-    if (!result_) result_ = when_tail(builder_, level_ + 1);
-    if (!result_) result_ = while_tail(builder_, level_ + 1);
-    if (!result_) result_ = method_definition_tail(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -11239,14 +11239,14 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  final static Parser body_recovery_parser_ = new Parser() {
+    public boolean parse(PsiBuilder builder_, int level_) {
+      return body_recovery(builder_, level_ + 1);
+    }
+  };
   final static Parser bracketed_fragment_recovery_parser_ = new Parser() {
     public boolean parse(PsiBuilder builder_, int level_) {
       return bracketed_fragment_recovery(builder_, level_ + 1);
-    }
-  };
-  final static Parser constituents_recovery_parser_ = new Parser() {
-    public boolean parse(PsiBuilder builder_, int level_) {
-      return constituents_recovery(builder_, level_ + 1);
     }
   };
   final static Parser for_clauses_recovery_parser_ = new Parser() {

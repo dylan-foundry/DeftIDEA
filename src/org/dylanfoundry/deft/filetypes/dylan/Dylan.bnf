@@ -156,14 +156,14 @@ private source_record ::= body
 
 body ::= constituents SEMICOLON?
   {
-    recoverUntil="constituents_recovery"
+    recoverUntil="body_recovery"
   }
 
 private constituents ::= constituent (SEMICOLON constituent)* | COMMENT
 
 // Every token / expression that can follow a body
 // If you add a rule that follow a body you need to add it here!
-private constituents_recovery ::= !(function_definition_tail | method_definition_tail | test_definition_tail | END
+private body_recovery ::= !(function_definition_tail | method_definition_tail | test_definition_tail | END
     | afterwards_statement | block_tail | cleanup_statement | exception_statement | finally_clause | for_statement_tail
     | elseif_statement | else_statement | if_tail | method_tail | unless_tail | until_tail | when_tail | while_tail
     | method_definition_tail)

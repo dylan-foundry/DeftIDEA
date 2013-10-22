@@ -19,6 +19,7 @@
     <li>Added support for various sanity and style checks via code annotation.</li>
     <li>Initial support for brace / parenthesis matching.</li>
     <li>"define table" is now supported.</li>
+    <li>Added error recovery to the Dylan parser.</li>
   </ul>
   <p>0.3</p>
   <ul>
