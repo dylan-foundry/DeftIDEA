@@ -418,6 +418,11 @@ definition_table_definer ::= DEFINE <<unreservedNameWithValues "table">> variabl
   }
 
 private table_entries ::= table_entry (COMMA table_entry?)*
+  {
+    recoverUntil="table_entries_recovery"
+  }
+
+private table_entries_recovery ::= !RBRACE
 
 table_entry ::= expression EQUAL_ARROW expression
 

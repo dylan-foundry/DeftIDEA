@@ -9577,6 +9577,7 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "table_entries")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, null);
     result_ = table_entry(builder_, level_ + 1);
     result_ = result_ && table_entries_1(builder_, level_ + 1);
     if (!result_) {
@@ -9585,6 +9586,7 @@ public class DylanParser implements PsiParser {
     else {
       marker_.drop();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, table_entries_recovery_parser_);
     return result_;
   }
 
@@ -9625,6 +9627,19 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "table_entries_1_0_1")) return false;
     table_entry(builder_, level_ + 1);
     return true;
+  }
+
+  /* ********************************************************** */
+  // !RBRACE
+  static boolean table_entries_recovery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "table_entries_recovery")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_NOT_, null);
+    result_ = !consumeToken(builder_, RBRACE);
+    marker_.rollbackTo();
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_NOT_, null);
+    return result_;
   }
 
   /* ********************************************************** */
@@ -10921,4 +10936,9 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
+  final static Parser table_entries_recovery_parser_ = new Parser() {
+    public boolean parse(PsiBuilder builder_, int level_) {
+      return table_entries_recovery(builder_, level_ + 1);
+    }
+  };
 }
