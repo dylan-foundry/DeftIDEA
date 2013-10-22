@@ -34,6 +34,12 @@ public class DylanForStatementImpl extends DylanStatementImpl implements DylanFo
     return findNotNullChildByClass(DylanForClauses.class);
   }
 
+  @Override
+  @NotNull
+  public DylanForStatementTail getForStatementTail() {
+    return findNotNullChildByClass(DylanForStatementTail.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitForStatement(this);
     else super.accept(visitor);

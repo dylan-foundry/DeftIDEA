@@ -23,15 +23,15 @@ public class DylanIfStatementImpl extends DylanStatementImpl implements DylanIfS
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanExpression getExpression() {
-    return findNotNullChildByClass(DylanExpression.class);
+    return findChildByClass(DylanExpression.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanIfTail getIfTail() {
-    return findNotNullChildByClass(DylanIfTail.class);
+    return findChildByClass(DylanIfTail.class);
   }
 
   @Override

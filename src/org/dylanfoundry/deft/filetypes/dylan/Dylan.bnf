@@ -155,8 +155,18 @@ binary_operator ::=  binary_operator_only | unary_and_binary_operator
 private source_record ::= body
 
 body ::= constituents SEMICOLON?
+  {
+    recoverUntil="constituents_recovery"
+  }
 
 private constituents ::= constituent (SEMICOLON constituent)* | COMMENT
+
+// Every token / expression that can follow a body
+// If you add a rule that follow a body you need to add it here!
+private constituents_recovery ::= !(function_definition_tail | method_definition_tail | test_definition_tail | END
+    | afterwards_statement | block_tail | cleanup_statement | exception_statement | finally_clause | for_statement_tail
+    | elseif_statement | else_statement | if_tail | method_tail | unless_tail | until_tail | when_tail | while_tail
+    | method_definition_tail)
 
 private constituent ::= definition | local_declaration | expression
 
@@ -628,9 +638,16 @@ exception_statement ::= EXCEPTION LPAREN variable (COMMA exception_options)* RPA
 
 exception_options ::= KEYWORD expression // KEYWORD should be only test: or init-arguments:
 
-for_statement ::= FOR LPAREN for_clauses RPAREN body? finally_clause? END FOR?
+for_statement ::= FOR LPAREN for_clauses RPAREN body? finally_clause? for_statement_tail
+
+for_statement_tail ::= END FOR?
 
 for_clauses ::= ((for_clause COMMA)* end_for_clause) | (for_clause (COMMA for_clause)*)
+  {
+    recoverUntil="for_clauses_recovery"
+  }
+
+private for_clauses_recovery ::= !RPAREN
 
 for_clause ::= explicit_step_clause | collection_clause | numeric_clauses | keyed_by_clause
 
@@ -646,24 +663,38 @@ keyed_by_clause ::= variable KEYED_BY variable IN expression
 
 finally_clause ::= FINALLY body?
 
-if_statement ::= IF LPAREN expression RPAREN body? elseif_statement* else_statement? if_tail
+if_statement ::= IF LPAREN statement_test RPAREN body? elseif_statement* else_statement? if_tail { pin=IF }
 
 if_tail ::= END IF?
 
-elseif_statement ::= ELSEIF LPAREN expression RPAREN body?
+private statement_test ::= expression { recoverUntil="statement_test_recovery" }
 
-else_statement ::= ELSE body?
+private statement_test_recovery ::= !RPAREN
 
-method_statement ::= METHOD parameter_list body? END METHOD?
-    { pin=1 }
+elseif_statement ::= ELSEIF LPAREN expression RPAREN body? { pin=ELSEIF }
 
-unless_statement ::= UNLESS LPAREN expression RPAREN body? END UNLESS?
+else_statement ::= ELSE body? { pin=ELSE }
 
-until_statement ::= UNTIL LPAREN expression RPAREN body? END UNTIL?
+method_statement ::= METHOD parameter_list body? method_tail
+    { pin=METHOD }
 
-when_statement ::= WHEN LPAREN expression RPAREN body? END WHEN?
+method_tail ::= END METHOD?
 
-while_statement ::= WHILE LPAREN expression RPAREN body? END WHILE?
+unless_statement ::= UNLESS LPAREN statement_test RPAREN body? unless_tail
+
+unless_tail ::= END UNLESS?
+
+until_statement ::= UNTIL LPAREN statement_test RPAREN body? until_tail
+
+until_tail ::= END UNTIL?
+
+when_statement ::= WHEN LPAREN statement_test RPAREN body? when_tail
+
+when_tail ::= END WHEN?
+
+while_statement ::= WHILE LPAREN statement_test RPAREN body? while_tail
+
+while_tail ::= END WHILE?
 
 select_statement ::= SELECT LPAREN expression (BY expression)? RPAREN select_stmt_clause* select_stmt_tail
 

@@ -28,6 +28,12 @@ public class DylanUnlessStatementImpl extends DylanStatementImpl implements Dyla
     return findNotNullChildByClass(DylanExpression.class);
   }
 
+  @Override
+  @NotNull
+  public DylanUnlessTail getUnlessTail() {
+    return findNotNullChildByClass(DylanUnlessTail.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitUnlessStatement(this);
     else super.accept(visitor);

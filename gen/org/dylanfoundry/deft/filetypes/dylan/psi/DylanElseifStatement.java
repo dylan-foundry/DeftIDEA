@@ -10,7 +10,7 @@ public interface DylanElseifStatement extends DylanStatement {
   @Nullable
   DylanBody getBody();
 
-  @NotNull
+  @Nullable
   DylanExpression getExpression();
 
 }

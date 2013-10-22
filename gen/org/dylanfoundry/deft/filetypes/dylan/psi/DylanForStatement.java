@@ -16,4 +16,7 @@ public interface DylanForStatement extends DylanStatement {
   @NotNull
   DylanForClauses getForClauses();
 
+  @NotNull
+  DylanForStatementTail getForStatementTail();
+
 }

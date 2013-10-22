@@ -13,4 +13,7 @@ public interface DylanUntilStatement extends DylanStatement {
   @NotNull
   DylanExpression getExpression();
 
+  @NotNull
+  DylanUntilTail getUntilTail();
+
 }

@@ -11,6 +11,9 @@ public interface DylanMethodStatement extends DylanStatement {
   DylanBody getBody();
 
   @Nullable
+  DylanMethodTail getMethodTail();
+
+  @Nullable
   DylanParameterList getParameterList();
 
 }

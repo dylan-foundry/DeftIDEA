@@ -367,6 +367,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitStatement(o);
   }
 
+  public void visitForStatementTail(@NotNull DylanForStatementTail o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionDefinitionTail(@NotNull DylanFunctionDefinitionTail o) {
     visitPsiElement(o);
   }
@@ -553,6 +557,10 @@ public class DylanVisitor extends PsiElementVisitor {
 
   public void visitMethodStatement(@NotNull DylanMethodStatement o) {
     visitStatement(o);
+  }
+
+  public void visitMethodTail(@NotNull DylanMethodTail o) {
+    visitPsiElement(o);
   }
 
   public void visitMinusExpr(@NotNull DylanMinusExpr o) {
@@ -939,6 +947,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitStatement(o);
   }
 
+  public void visitUnlessTail(@NotNull DylanUnlessTail o) {
+    visitPsiElement(o);
+  }
+
   public void visitUnreservedName(@NotNull DylanUnreservedName o) {
     visitPsiElement(o);
   }
@@ -949,6 +961,10 @@ public class DylanVisitor extends PsiElementVisitor {
 
   public void visitUntilStatement(@NotNull DylanUntilStatement o) {
     visitStatement(o);
+  }
+
+  public void visitUntilTail(@NotNull DylanUntilTail o) {
+    visitPsiElement(o);
   }
 
   public void visitUseClause(@NotNull DylanUseClause o) {
@@ -979,8 +995,16 @@ public class DylanVisitor extends PsiElementVisitor {
     visitStatement(o);
   }
 
+  public void visitWhenTail(@NotNull DylanWhenTail o) {
+    visitPsiElement(o);
+  }
+
   public void visitWhileStatement(@NotNull DylanWhileStatement o) {
     visitStatement(o);
+  }
+
+  public void visitWhileTail(@NotNull DylanWhileTail o) {
+    visitPsiElement(o);
   }
 
   public void visitWordName(@NotNull DylanWordName o) {

@@ -5,15 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanWhenStatement extends DylanStatement {
-
-  @Nullable
-  DylanBody getBody();
-
-  @NotNull
-  DylanExpression getExpression();
-
-  @NotNull
-  DylanWhenTail getWhenTail();
+public interface DylanMethodTail extends PsiElement {
 
 }

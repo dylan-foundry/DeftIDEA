@@ -28,6 +28,12 @@ public class DylanWhenStatementImpl extends DylanStatementImpl implements DylanW
     return findNotNullChildByClass(DylanExpression.class);
   }
 
+  @Override
+  @NotNull
+  public DylanWhenTail getWhenTail() {
+    return findNotNullChildByClass(DylanWhenTail.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitWhenStatement(this);
     else super.accept(visitor);

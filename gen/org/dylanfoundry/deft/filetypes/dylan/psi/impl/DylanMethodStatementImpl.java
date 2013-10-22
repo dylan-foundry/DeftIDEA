@@ -24,6 +24,12 @@ public class DylanMethodStatementImpl extends DylanStatementImpl implements Dyla
 
   @Override
   @Nullable
+  public DylanMethodTail getMethodTail() {
+    return findChildByClass(DylanMethodTail.class);
+  }
+
+  @Override
+  @Nullable
   public DylanParameterList getParameterList() {
     return findChildByClass(DylanParameterList.class);
   }

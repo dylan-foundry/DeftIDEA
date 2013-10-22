@@ -28,6 +28,12 @@ public class DylanUntilStatementImpl extends DylanStatementImpl implements Dylan
     return findNotNullChildByClass(DylanExpression.class);
   }
 
+  @Override
+  @NotNull
+  public DylanUntilTail getUntilTail() {
+    return findNotNullChildByClass(DylanUntilTail.class);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitUntilStatement(this);
     else super.accept(visitor);

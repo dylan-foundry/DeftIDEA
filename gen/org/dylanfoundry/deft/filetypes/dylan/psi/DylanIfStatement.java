@@ -10,10 +10,10 @@ public interface DylanIfStatement extends DylanStatement {
   @Nullable
   DylanBody getBody();
 
-  @NotNull
+  @Nullable
   DylanExpression getExpression();
 
-  @NotNull
+  @Nullable
   DylanIfTail getIfTail();
 
   @NotNull
