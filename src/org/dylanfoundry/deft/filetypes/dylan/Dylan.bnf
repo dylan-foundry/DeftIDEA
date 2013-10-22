@@ -211,9 +211,16 @@ private simple_fragment ::=
     | PARSED_MACRO_CALL
 
 bracketed_fragment ::=
-      LPAREN body_fragment? RPAREN
-    | LBRACKET body_fragment? RBRACKET
-    | LBRACE body_fragment? RBRACE
+      LPAREN bracketed_fragment_body? RPAREN
+    | LBRACKET bracketed_fragment_body? RBRACKET
+    | LBRACE bracketed_fragment_body? RBRACE
+
+private bracketed_fragment_body ::= body_fragment
+    {
+      recoverUntil="bracketed_fragment_recovery"
+    }
+
+private bracketed_fragment_recovery ::= !(RPAREN | RBRACKET | RBRACE)
 
 constant_fragment ::=
       NUMBER
@@ -258,8 +265,20 @@ definition_class_definer ::= DEFINE modifiers? CLASS variable_name LPAREN supers
 class_definition_tail ::= END CLASS variable_name? | END variable_name?
 
 supers ::= variable_name (COMMA variable_name)*
+  {
+    recoverUntil="supers_recovery"
+  }
 
-slot_declarations ::= ((slot_spec|init_arg_spec|inherited_slot_spec) SEMICOLON)*
+private supers_recovery ::= !RPAREN
+
+slot_declarations ::= (slot_declaration SEMICOLON)*
+  {
+    recoverUntil="slot_declarations_recovery"
+  }
+
+private slot_declarations_recovery ::= !class_definition_tail
+
+private slot_declaration ::= (slot_spec|init_arg_spec|inherited_slot_spec)
 
 slot_spec ::= slot_adjective* allocation? SLOT variable_name (COLON_COLON operand_expr)? init_expression? slot_options?
 
