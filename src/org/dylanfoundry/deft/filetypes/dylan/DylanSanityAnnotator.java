@@ -70,6 +70,7 @@ public class DylanSanityAnnotator implements Annotator {
     validateDefinitionTail(tail, function.getVariableName(), holder);
     validateModifiers(function.getModifiers(), FUNCTION_MODIFIERS, holder);
     validateInlineModifiers(function.getModifiers(), holder);
+    suggestBooleanReturnNaming(function.getVariableName(), function.getParameterList(), holder);
   }
 
   private void validateMethod(@NotNull DylanDefinitionMethodDefiner method, @NotNull AnnotationHolder holder) {
@@ -77,6 +78,7 @@ public class DylanSanityAnnotator implements Annotator {
     validateDefinitionTail(tail, method.getVariableName(), holder);
     validateModifiers(method.getModifiers(), FUNCTION_MODIFIERS, holder);
     validateInlineModifiers(method.getModifiers(), holder);
+    suggestBooleanReturnNaming(method.getVariableName(), method.getParameterList(), holder);
   }
 
   private void validateTable(@NotNull DylanDefinitionTableDefiner table, @NotNull AnnotationHolder holder) {
@@ -154,6 +156,31 @@ public class DylanSanityAnnotator implements Annotator {
         }
         hasInlinePolicy = true;
       }
+    }
+  }
+
+  private void suggestBooleanReturnNaming(DylanVariableName name, DylanParameterList parameterList, @NotNull AnnotationHolder holder) {
+    boolean nameIsQuery = name.getText().trim().endsWith("?");
+    boolean hasValue = false;
+    boolean hasBooleanValue = false;
+    if ((parameterList != null) && (parameterList.getValuesList() != null) && (parameterList.getValuesList().getVariableList() != null)) {
+      DylanVariable returnValue = parameterList.getValuesList().getVariableList().get(0);
+      if ((returnValue != null) && (returnValue.getOperandExpr() != null)) {
+        hasValue = true;
+        hasBooleanValue = returnValue.getOperandExpr().getText().trim().equalsIgnoreCase("<boolean>");
+      }
+    }
+    if ((parameterList != null) && (parameterList.getVariable() != null)) {
+      DylanVariable returnValue = parameterList.getVariable();
+      if (returnValue.getOperandExpr() != null) {
+        hasValue = true;
+        hasBooleanValue = returnValue.getOperandExpr().getText().trim().equalsIgnoreCase("<boolean>");
+      }
+    }
+    if (hasValue && !nameIsQuery && hasBooleanValue) {
+      holder.createWeakWarningAnnotation(name, "Functions returning <boolean> should have a name ending in '?'");
+    } else if (hasValue && nameIsQuery && !hasBooleanValue) {
+      holder.createWeakWarningAnnotation(name, "Functions not returning <boolean> shouldn't have a name ending in '?'");
     }
   }
 
