@@ -92,7 +92,7 @@ public class LIDParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // CRLF | (VALUE CRLF)+
+  // CRLF | (VALUE CRLF?)+
   public static boolean values(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values")) return false;
     if (!nextTokenIs(builder_, CRLF) && !nextTokenIs(builder_, VALUE)
@@ -112,7 +112,7 @@ public class LIDParser implements PsiParser {
     return result_;
   }
 
-  // (VALUE CRLF)+
+  // (VALUE CRLF?)+
   private static boolean values_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values_1")) return false;
     boolean result_ = false;
@@ -137,12 +137,13 @@ public class LIDParser implements PsiParser {
     return result_;
   }
 
-  // VALUE CRLF
+  // VALUE CRLF?
   private static boolean values_1_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "values_1_0")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, VALUE, CRLF);
+    result_ = consumeToken(builder_, VALUE);
+    result_ = result_ && values_1_0_1(builder_, level_ + 1);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -150,6 +151,13 @@ public class LIDParser implements PsiParser {
       marker_.drop();
     }
     return result_;
+  }
+
+  // CRLF?
+  private static boolean values_1_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "values_1_0_1")) return false;
+    consumeToken(builder_, CRLF);
+    return true;
   }
 
 }
