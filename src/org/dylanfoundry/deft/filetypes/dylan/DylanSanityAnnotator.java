@@ -211,7 +211,8 @@ public class DylanSanityAnnotator implements Annotator {
           "may-inline",
           "not-inline",
           "open",
-          "sealed"
+          "sealed",
+          "sideways"
   ));
   private final static Set<String> VARIABLE_MODIFIERS = new HashSet<String>(Arrays.asList(
           "thread"
