@@ -4,6 +4,7 @@ Other contributors, listed alphabetically:
 
 * Dustin Voss
 * Francesco Ceccon
+* Robert Roland
 * Ṣeyi Ogunyẹ́mi
 * Wim Vander Schelden
 
