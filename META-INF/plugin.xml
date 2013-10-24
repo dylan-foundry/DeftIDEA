@@ -93,5 +93,8 @@
 
     <!-- Template Group -->
     <fileTemplateGroup implementation="org.dylanfoundry.deft.actions.DeftTemplatesFactory"/>
+
+    <!-- Libraries -->
+    <library.type implementation="org.dylanfoundry.deft.library.DeftLibraryType"/>
   </extensions>
 </idea-plugin>
