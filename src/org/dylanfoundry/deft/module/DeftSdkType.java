@@ -19,7 +19,11 @@ package org.dylanfoundry.deft.module;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.projectRoots.*;
+import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.dylanfoundry.deft.DeftIcons;
 import org.dylanfoundry.deft.util.DeftSystemUtil;
@@ -129,5 +133,22 @@ public class DeftSdkType extends SdkType {
         return null;
     }
     return stdout;
+  }
+
+  @Override
+  public void setupSdkPaths(@NotNull final Sdk sdk) {
+    configureSdkPaths(sdk);
+  }
+
+  protected static void configureSdkPaths(@NotNull final Sdk sdk) {
+    final SdkModificator sdkModificator = sdk.getSdkModificator();
+
+    final VirtualFile sourceDir = LocalFileSystem.getInstance().findFileByIoFile(
+        new File(String.format("%s%s%s", sdk.getHomePath(), File.separator, "sources")));
+
+    if(null != sourceDir && sourceDir.isValid()) {
+      sdkModificator.addRoot(sourceDir, OrderRootType.SOURCES);
+      sdkModificator.commitChanges();
+    }
   }
 }
