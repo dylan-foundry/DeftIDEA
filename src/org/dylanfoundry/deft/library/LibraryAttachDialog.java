@@ -24,6 +24,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import org.dylanfoundry.deft.registry.DeftRegistryEntryInfo;
+import org.dylanfoundry.deft.registry.DeftRegistryInfo;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +70,7 @@ public class LibraryAttachDialog extends DialogWrapper {
 
           registryEntries.clear();
 
-          registryEntries.add(LibraryAttachHandler.parseRegistryEntry(myDirectoryField.getTextField().getText()));
+          registryEntries.add(DeftRegistryInfo.parseRegistryEntry(registryFile));
 
           matchedRegistryEntries.setListData(registryEntries.toArray(new DeftRegistryEntryInfo[registryEntries.size()]));
         }

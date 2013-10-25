@@ -19,7 +19,6 @@ package org.dylanfoundry.deft.library;
 import com.intellij.CommonBundle;
 import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.libraries.NewLibraryConfiguration;
@@ -36,18 +35,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryAttachHandler {
-  public static final Logger LOG = Logger.getInstance("#org.dylanfoundry.deft.library");
-
   @Nullable
   public static NewLibraryConfiguration chooseLibrary(final @NotNull Project project,
                                                       JComponent parentComponent) {
@@ -91,49 +83,6 @@ public class LibraryAttachHandler {
     return result.get();
   }
 
-  @Nullable
-  public static DeftRegistryEntryInfo parseRegistryEntry(String location) {
-    File file = new File(location);
-
-    // registry files are relative
-    File sourceRoot = file.getParentFile().getParentFile().getParentFile();
-
-    try {
-      // Registry entry files are a single line with a URL on the first line.
-      BufferedReader reader = new BufferedReader(new FileReader(file));
-      String line = reader.readLine();
-
-      URI registryUri = new URI(line);
-      if (!registryUri.getScheme().equals("abstract")) {
-        LOG.warn("Registry entries should begin with abstract://");
-        return null;
-      }
-
-      String[] pathComponents = registryUri.getPath().split("/");
-
-      StringBuilder sourcePath = new StringBuilder();
-      sourcePath.append(sourceRoot.getAbsolutePath());
-      sourcePath.append(File.separator);
-      for (int i = 1; i < pathComponents.length; i++) {
-        if (i > 1) {
-          sourcePath.append(File.separator);
-        }
-
-        sourcePath.append(pathComponents[i]);
-      }
-
-      String libraryName = file.getName();
-      String platformName = file.getParentFile().getName();
-      return new DeftRegistryEntryInfo(libraryName, platformName,
-              sourcePath.toString());
-    } catch (URISyntaxException use) {
-      LOG.warn("Invalid registry entry", use);
-    } catch (IOException ioe) {
-      LOG.warn("Invalid registry file", ioe);
-    }
-
-    return null;
-  }
 
   public static List<OrderRoot> createRoots(@NotNull DeftRegistryEntryInfo registryInfo) {
     final List<OrderRoot> result = new ArrayList<OrderRoot>();
