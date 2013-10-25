@@ -31,7 +31,7 @@ import com.intellij.openapi.util.Ref;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
-import org.dylanfoundry.deft.registry.DeftRegistryInfo;
+import org.dylanfoundry.deft.registry.DeftRegistryEntryInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -67,10 +67,10 @@ public class LibraryAttachHandler {
 
   @Nullable
   public static NewLibraryConfiguration attachLibrary(final @NotNull Project project,
-                                                      List<DeftRegistryInfo> registryEntries) {
+                                                      List<DeftRegistryEntryInfo> registryEntries) {
     final Ref<NewLibraryConfiguration> result = Ref.create(null);
 
-    for (DeftRegistryInfo registryEntry : registryEntries) {
+    for (DeftRegistryEntryInfo registryEntry : registryEntries) {
       AccessToken accessToken = WriteAction.start();
       try {
         final List<OrderRoot> roots = createRoots(registryEntry);
@@ -92,7 +92,7 @@ public class LibraryAttachHandler {
   }
 
   @Nullable
-  public static DeftRegistryInfo parseRegistryEntry(String location) {
+  public static DeftRegistryEntryInfo parseRegistryEntry(String location) {
     File file = new File(location);
 
     // registry files are relative
@@ -124,7 +124,7 @@ public class LibraryAttachHandler {
 
       String libraryName = file.getName();
       String platformName = file.getParentFile().getName();
-      return new DeftRegistryInfo(libraryName, platformName,
+      return new DeftRegistryEntryInfo(libraryName, platformName,
               sourcePath.toString());
     } catch (URISyntaxException use) {
       LOG.warn("Invalid registry entry", use);
@@ -135,7 +135,7 @@ public class LibraryAttachHandler {
     return null;
   }
 
-  public static List<OrderRoot> createRoots(@NotNull DeftRegistryInfo registryInfo) {
+  public static List<OrderRoot> createRoots(@NotNull DeftRegistryEntryInfo registryInfo) {
     final List<OrderRoot> result = new ArrayList<OrderRoot>();
     final VirtualFileManager manager = VirtualFileManager.getInstance();
 

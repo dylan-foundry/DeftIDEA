@@ -23,7 +23,7 @@ import com.intellij.openapi.fileChooser.FileChooserDialog;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import org.dylanfoundry.deft.registry.DeftRegistryInfo;
+import org.dylanfoundry.deft.registry.DeftRegistryEntryInfo;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +39,7 @@ public class LibraryAttachDialog extends DialogWrapper {
 
   private final Project project;
   private String registryFile;
-  private List<DeftRegistryInfo> registryEntries = new ArrayList<DeftRegistryInfo>();
+  private List<DeftRegistryEntryInfo> registryEntries = new ArrayList<DeftRegistryEntryInfo>();
   private JPanel mainPanel;
   private TextFieldWithBrowseButton myDirectoryField;
   private JList matchedRegistryEntries;
@@ -71,7 +71,7 @@ public class LibraryAttachDialog extends DialogWrapper {
 
           registryEntries.add(LibraryAttachHandler.parseRegistryEntry(myDirectoryField.getTextField().getText()));
 
-          matchedRegistryEntries.setListData(registryEntries.toArray(new DeftRegistryInfo[registryEntries.size()]));
+          matchedRegistryEntries.setListData(registryEntries.toArray(new DeftRegistryEntryInfo[registryEntries.size()]));
         }
 
         setOKActionEnabled(!registryEntries.isEmpty());
@@ -113,7 +113,7 @@ public class LibraryAttachDialog extends DialogWrapper {
     return registryFile;
   }
 
-  public List<DeftRegistryInfo> getRegistryEntries() {
+  public List<DeftRegistryEntryInfo> getRegistryEntries() {
     return registryEntries;
   }
 }

@@ -4,12 +4,12 @@ package org.dylanfoundry.deft.registry;
  * @author robert@robertroland.org
  * @since 10/23/13
  */
-public class DeftRegistryInfo {
+public class DeftRegistryEntryInfo {
   private String libraryName;
   private String platformName;
   private String location;
 
-  public DeftRegistryInfo(String libraryName, String platformName, String location) {
+  public DeftRegistryEntryInfo(String libraryName, String platformName, String location) {
     this.libraryName = libraryName;
     this.platformName = platformName;
     this.location = location;
@@ -29,7 +29,7 @@ public class DeftRegistryInfo {
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder("DeftRegistryInfo{");
+    final StringBuilder sb = new StringBuilder("DeftRegistryEntryInfo{");
     sb.append("libraryName='").append(libraryName).append('\'');
     sb.append(", platformName='").append(platformName).append('\'');
     sb.append(", location='").append(location).append('\'');
