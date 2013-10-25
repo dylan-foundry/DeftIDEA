@@ -58,7 +58,7 @@ public class DeftLibraryType extends LibraryType<DeftLibraryProperties> {
   public NewLibraryConfiguration createNewLibrary(@NotNull JComponent parentComponent,
                                                   @Nullable VirtualFile contextDirectory,
                                                   @NotNull Project project) {
-    // LibraryAttachHandler.parseRegistryFile(contextDirectory.getCanonicalPath())
+    // LibraryAttachHandler.parseRegistryEntry(contextDirectory.getCanonicalPath())
     return LibraryAttachHandler.chooseLibrary(project,
         parentComponent);
   }

@@ -69,7 +69,7 @@ public class LibraryAttachDialog extends DialogWrapper {
 
           registryEntries.clear();
 
-          registryEntries.addAll(LibraryAttachHandler.parseRegistryFile(myDirectoryField.getTextField().getText()));
+          registryEntries.add(LibraryAttachHandler.parseRegistryEntry(myDirectoryField.getTextField().getText()));
 
           matchedRegistryEntries.setListData(registryEntries.toArray(new DeftRegistryInfo[registryEntries.size()]));
         }

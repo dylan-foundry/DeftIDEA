@@ -91,55 +91,45 @@ public class LibraryAttachHandler {
     return result.get();
   }
 
-  public static List<DeftRegistryInfo> parseRegistryFile(String location) {
-    List<DeftRegistryInfo> results = new ArrayList<DeftRegistryInfo>();
-
+  @Nullable
+  public static DeftRegistryInfo parseRegistryEntry(String location) {
     File file = new File(location);
 
     // registry files are relative
     File sourceRoot = file.getParentFile().getParentFile().getParentFile();
 
     try {
+      // Registry entry files are a single line with a URL on the first line.
       BufferedReader reader = new BufferedReader(new FileReader(file));
+      String line = reader.readLine();
 
-      String line;
-      while ((line = reader.readLine()) != null) {
-
-        try {
-          URI registryUri = new URI(line);
-
-          if (!registryUri.getScheme().equals("abstract")) {
-            LOG.warn("Registry entries should begin with abstract://");
-            continue;
-          }
-
-          String[] pathComponents = registryUri.getPath().split("/");
-
-          StringBuilder sourcePath = new StringBuilder();
-          sourcePath.append(sourceRoot.getAbsolutePath());
-          sourcePath.append(File.separator);
-          for (int i = 1; i < pathComponents.length; i++) {
-            if (i > 1) {
-              sourcePath.append(File.separator);
-            }
-
-            sourcePath.append(pathComponents[i]);
-          }
-
-          // TODO: Wire up a LID parser here, so we get the name from the library itself
-          DeftRegistryInfo registryInfo = new DeftRegistryInfo(pathComponents[pathComponents.length - 1],
-              sourcePath.toString());
-
-          results.add(registryInfo);
-        } catch (URISyntaxException use) {
-          LOG.warn("Invalid registry entry", use);
-        }
+      URI registryUri = new URI(line);
+      if (!registryUri.getScheme().equals("abstract")) {
+        LOG.warn("Registry entries should begin with abstract://");
+        return null;
       }
+
+      String[] pathComponents = registryUri.getPath().split("/");
+
+      StringBuilder sourcePath = new StringBuilder();
+      sourcePath.append(sourceRoot.getAbsolutePath());
+      sourcePath.append(File.separator);
+      for (int i = 1; i < pathComponents.length; i++) {
+        if (i > 1) {
+          sourcePath.append(File.separator);
+        }
+
+        sourcePath.append(pathComponents[i]);
+      }
+
+      return new DeftRegistryInfo(file.getName(), sourcePath.toString());
+    } catch (URISyntaxException use) {
+      LOG.warn("Invalid registry entry", use);
     } catch (IOException ioe) {
       LOG.warn("Invalid registry file", ioe);
     }
 
-    return results;
+    return null;
   }
 
   public static List<OrderRoot> createRoots(@NotNull DeftRegistryInfo registryInfo) {
