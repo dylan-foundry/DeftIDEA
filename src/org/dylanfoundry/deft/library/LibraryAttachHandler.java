@@ -76,13 +76,13 @@ public class LibraryAttachHandler {
         final List<OrderRoot> roots = createRoots(registryEntry);
 
         result.set(new NewLibraryConfiguration(registryEntry.getLibraryName(),
-            DeftLibraryType.getInstance(),
-            new DeftLibraryProperties(registryEntry.getLibraryName())) {
-          @Override
-          public void addRoots(@NotNull LibraryEditor editor) {
-            editor.addRoots(roots);
-          }
-        });
+                       DeftLibraryType.getInstance(),
+                       new DeftLibraryProperties(registryEntry.getLibraryName())) {
+                           @Override
+                           public void addRoots(@NotNull LibraryEditor editor) {
+                             editor.addRoots(roots);
+                           }
+                         });
       } finally {
         accessToken.finish();
       }
