@@ -15,10 +15,10 @@ public interface DylanDefinitionTestDefiner extends DylanDefinition {
   @Nullable
   DylanTestArguments getTestArguments();
 
-  @NotNull
+  @Nullable
   DylanTestDefinitionTail getTestDefinitionTail();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

@@ -12,16 +12,16 @@ public interface DylanDefinitionFunctionDefiner extends DylanDefinition {
   @Nullable
   DylanBody getBody();
 
-  @NotNull
+  @Nullable
   DylanFunctionDefinitionTail getFunctionDefinitionTail();
 
   @Nullable
   DylanModifiers getModifiers();
 
-  @NotNull
+  @Nullable
   DylanParameterList getParameterList();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

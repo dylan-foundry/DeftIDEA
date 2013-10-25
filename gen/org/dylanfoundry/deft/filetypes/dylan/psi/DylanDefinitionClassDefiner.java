@@ -9,7 +9,7 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionClassDefiner extends DylanDefinition {
 
-  @NotNull
+  @Nullable
   DylanClassDefinitionTail getClassDefinitionTail();
 
   @Nullable
@@ -21,7 +21,7 @@ public interface DylanDefinitionClassDefiner extends DylanDefinition {
   @Nullable
   DylanSupers getSupers();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

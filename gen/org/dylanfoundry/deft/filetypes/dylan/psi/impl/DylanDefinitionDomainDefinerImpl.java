@@ -19,9 +19,9 @@ public class DylanDefinitionDomainDefinerImpl extends DylanDefinitionImpl implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanBracketedFragment getBracketedFragment() {
-    return findNotNullChildByClass(DylanBracketedFragment.class);
+    return findChildByClass(DylanBracketedFragment.class);
   }
 
   @Override
@@ -31,9 +31,9 @@ public class DylanDefinitionDomainDefinerImpl extends DylanDefinitionImpl implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

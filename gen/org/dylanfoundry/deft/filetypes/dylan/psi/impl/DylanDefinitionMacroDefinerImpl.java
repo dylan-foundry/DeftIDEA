@@ -19,9 +19,9 @@ public class DylanDefinitionMacroDefinerImpl extends DylanDefinitionImpl impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanMacroDefinition getMacroDefinition() {
-    return findNotNullChildByClass(DylanMacroDefinition.class);
+    return findChildByClass(DylanMacroDefinition.class);
   }
 
   @Override

@@ -15,13 +15,13 @@ public interface DylanDefinitionModuleDefiner extends DylanDefinition {
   @NotNull
   List<DylanExportClause> getExportClauseList();
 
-  @NotNull
+  @Nullable
   DylanModuleDefinitionTail getModuleDefinitionTail();
 
   @NotNull
   List<DylanUseClause> getUseClauseList();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

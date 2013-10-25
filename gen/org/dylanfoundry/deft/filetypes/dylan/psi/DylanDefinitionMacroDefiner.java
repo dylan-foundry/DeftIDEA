@@ -9,7 +9,7 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionMacroDefiner extends DylanDefinition {
 
-  @NotNull
+  @Nullable
   DylanMacroDefinition getMacroDefinition();
 
   @Nullable

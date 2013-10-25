@@ -12,13 +12,13 @@ public interface DylanDefinitionLibraryDefiner extends DylanDefinition {
   @NotNull
   List<DylanExportClause> getExportClauseList();
 
-  @NotNull
+  @Nullable
   DylanLibraryDefinitionTail getLibraryDefinitionTail();
 
   @NotNull
   List<DylanUseClause> getUseClauseList();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

@@ -19,9 +19,9 @@ public class DylanDefinitionVariableDefinerImpl extends DylanDefinitionImpl impl
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanExpression getExpression() {
-    return findNotNullChildByClass(DylanExpression.class);
+    return findChildByClass(DylanExpression.class);
   }
 
   @Override

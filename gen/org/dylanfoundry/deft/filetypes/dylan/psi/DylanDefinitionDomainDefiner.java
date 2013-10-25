@@ -9,13 +9,13 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionDomainDefiner extends DylanDefinition {
 
-  @NotNull
+  @Nullable
   DylanBracketedFragment getBracketedFragment();
 
   @Nullable
   DylanModifiers getModifiers();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

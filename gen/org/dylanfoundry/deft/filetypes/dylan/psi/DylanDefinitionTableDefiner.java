@@ -12,7 +12,7 @@ public interface DylanDefinitionTableDefiner extends DylanDefinition {
   @NotNull
   List<DylanTableEntry> getTableEntryList();
 
-  @NotNull
+  @Nullable
   DylanVariable getVariable();
 
   String getName();

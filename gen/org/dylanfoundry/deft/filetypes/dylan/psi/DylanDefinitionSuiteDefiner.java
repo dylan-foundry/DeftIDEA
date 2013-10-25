@@ -15,10 +15,10 @@ public interface DylanDefinitionSuiteDefiner extends DylanDefinition {
   @Nullable
   DylanSuiteComponents getSuiteComponents();
 
-  @NotNull
+  @Nullable
   DylanSuiteDefinitionTail getSuiteDefinitionTail();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
   String getName();

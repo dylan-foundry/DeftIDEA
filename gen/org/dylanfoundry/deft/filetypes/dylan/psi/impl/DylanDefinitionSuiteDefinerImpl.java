@@ -31,15 +31,15 @@ public class DylanDefinitionSuiteDefinerImpl extends DylanDefinitionImpl impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanSuiteDefinitionTail getSuiteDefinitionTail() {
-    return findNotNullChildByClass(DylanSuiteDefinitionTail.class);
+    return findChildByClass(DylanSuiteDefinitionTail.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -31,9 +31,9 @@ public class DylanDefinitionModuleDefinerImpl extends DylanDefinitionImpl implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanModuleDefinitionTail getModuleDefinitionTail() {
-    return findNotNullChildByClass(DylanModuleDefinitionTail.class);
+    return findChildByClass(DylanModuleDefinitionTail.class);
   }
 
   @Override
@@ -43,9 +43,9 @@ public class DylanDefinitionModuleDefinerImpl extends DylanDefinitionImpl implem
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -13,10 +13,10 @@ public interface DylanDefinitionSharedSymbolsDefiner extends DylanDefinition {
   @Nullable
   DylanSharedSymbols getSharedSymbols();
 
-  @NotNull
+  @Nullable
   DylanSharedSymbolsDefinitionTail getSharedSymbolsDefinitionTail();
 
-  @NotNull
+  @Nullable
   DylanVariableName getVariableName();
 
 }

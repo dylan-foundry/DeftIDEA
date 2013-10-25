@@ -29,15 +29,15 @@ public class DylanDefinitionSharedSymbolsDefinerImpl extends DylanDefinitionImpl
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanSharedSymbolsDefinitionTail getSharedSymbolsDefinitionTail() {
-    return findNotNullChildByClass(DylanSharedSymbolsDefinitionTail.class);
+    return findChildByClass(DylanSharedSymbolsDefinitionTail.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

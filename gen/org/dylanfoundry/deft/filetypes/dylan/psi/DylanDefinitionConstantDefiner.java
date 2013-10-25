@@ -9,7 +9,7 @@ import com.intellij.navigation.ItemPresentation;
 
 public interface DylanDefinitionConstantDefiner extends DylanDefinition {
 
-  @NotNull
+  @Nullable
   DylanExpression getExpression();
 
   @Nullable

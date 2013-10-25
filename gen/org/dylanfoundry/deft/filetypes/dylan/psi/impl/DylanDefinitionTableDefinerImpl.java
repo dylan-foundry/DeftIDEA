@@ -25,9 +25,9 @@ public class DylanDefinitionTableDefinerImpl extends DylanDefinitionImpl impleme
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanVariable getVariable() {
-    return findNotNullChildByClass(DylanVariable.class);
+    return findChildByClass(DylanVariable.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

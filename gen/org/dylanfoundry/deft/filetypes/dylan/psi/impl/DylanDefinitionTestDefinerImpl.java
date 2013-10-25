@@ -31,15 +31,15 @@ public class DylanDefinitionTestDefinerImpl extends DylanDefinitionImpl implemen
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanTestDefinitionTail getTestDefinitionTail() {
-    return findNotNullChildByClass(DylanTestDefinitionTail.class);
+    return findChildByClass(DylanTestDefinitionTail.class);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanVariableName getVariableName() {
-    return findNotNullChildByClass(DylanVariableName.class);
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

@@ -3029,23 +3029,27 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_class_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_class_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, CLASS);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, LPAREN);
-    result_ = result_ && definition_class_definer_5(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAREN);
-    result_ = result_ && definition_class_definer_7(builder_, level_ + 1);
-    result_ = result_ && class_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = CLASS
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, LPAREN)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_class_definer_5(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, RPAREN)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_class_definer_7(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && class_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_CLASS_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3075,20 +3079,24 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_constant_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_constant_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, CONSTANT_T);
-    result_ = result_ && definition_constant_definer_3(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, EQUAL);
-    result_ = result_ && expression(builder_, level_ + 1, -1);
-    if (result_) {
+    pinned_ = result_; // pin = CONSTANT_T
+    result_ = result_ && report_error_(builder_, definition_constant_definer_3(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, EQUAL)) && result_;
+    result_ = pinned_ && expression(builder_, level_ + 1, -1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_CONSTANT_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3120,19 +3128,23 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_copy_down_method_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_copy_down_method_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, COPY_DOWN_METHOD);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_copy_down_method_definer_4(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = COPY_DOWN_METHOD
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && definition_copy_down_method_definer_4(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_COPY_DOWN_METHOD_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3155,19 +3167,23 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_domain_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_domain_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, DOMAIN);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && bracketed_fragment(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = DOMAIN
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && bracketed_fragment(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_DOMAIN_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3183,21 +3199,25 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_function_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_function_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, FUNCTION);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && parameter_list(builder_, level_ + 1);
-    result_ = result_ && definition_function_definer_5(builder_, level_ + 1);
-    result_ = result_ && function_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = FUNCTION
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, parameter_list(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_function_definer_5(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && function_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_FUNCTION_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3220,19 +3240,23 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_generic_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_generic_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, GENERIC);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && list_fragment(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = GENERIC
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && list_fragment(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_GENERIC_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3248,18 +3272,22 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_library_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, LIBRARY);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_library_definer_3(builder_, level_ + 1);
-    result_ = result_ && library_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
+    result_ = consumeTokens(builder_, 2, DEFINE, LIBRARY);
+    pinned_ = result_; // pin = LIBRARY
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, definition_library_definer_3(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && library_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_LIBRARY_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // ((export_clause|use_clause) SEMICOLON)*
@@ -3405,18 +3433,22 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_macro_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_macro_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, MACRO_T);
+    pinned_ = result_; // pin = MACRO_T
     result_ = result_ && macro_definition(builder_, level_ + 1);
-    if (result_) {
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_MACRO_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3432,21 +3464,25 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_method_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_method_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, METHOD);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && parameter_list(builder_, level_ + 1);
-    result_ = result_ && definition_method_definer_5(builder_, level_ + 1);
-    result_ = result_ && method_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = METHOD
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, parameter_list(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_method_definer_5(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && method_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_METHOD_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3469,18 +3505,22 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_module_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, MODULE);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_module_definer_3(builder_, level_ + 1);
-    result_ = result_ && module_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
+    result_ = consumeTokens(builder_, 2, DEFINE, MODULE);
+    pinned_ = result_; // pin = MODULE
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, definition_module_definer_3(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && module_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_MODULE_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // ((export_clause|create_clause|use_clause) SEMICOLON)*
@@ -3538,20 +3578,24 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_shared_symbols_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_shared_symbols_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, SHARED_SYMBOLS_T);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && definition_shared_symbols_definer_4(builder_, level_ + 1);
-    result_ = result_ && shared_symbols_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    pinned_ = result_; // pin = SHARED_SYMBOLS_T
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, definition_shared_symbols_definer_4(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && shared_symbols_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_SHARED_SYMBOLS_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -3574,21 +3618,25 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_suite_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, SUITE);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, LPAREN);
-    result_ = result_ && definition_suite_definer_4(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAREN);
-    result_ = result_ && definition_suite_definer_6(builder_, level_ + 1);
-    result_ = result_ && suite_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
+    result_ = consumeTokens(builder_, 2, DEFINE, SUITE);
+    pinned_ = result_; // pin = SUITE
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, LPAREN)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_suite_definer_4(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, RPAREN)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_suite_definer_6(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && suite_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_SUITE_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // suite_arguments?
@@ -3611,20 +3659,24 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_table_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && unreservedNameWithValues(builder_, level_ + 1, "table");
-    result_ = result_ && variable(builder_, level_ + 1);
-    result_ = result_ && consumeTokens(builder_, 0, EQUAL, LBRACE);
-    result_ = result_ && definition_table_definer_5(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RBRACE);
-    if (result_) {
+    pinned_ = result_; // pin = 2
+    result_ = result_ && report_error_(builder_, variable(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeTokens(builder_, -1, EQUAL, LBRACE)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_table_definer_5(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && consumeToken(builder_, RBRACE) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_TABLE_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // table_entries?
@@ -3692,21 +3744,25 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_test_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
-    result_ = consumeTokens(builder_, 0, DEFINE, TEST);
-    result_ = result_ && variable_name(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, LPAREN);
-    result_ = result_ && definition_test_definer_4(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, RPAREN);
-    result_ = result_ && definition_test_definer_6(builder_, level_ + 1);
-    result_ = result_ && test_definition_tail(builder_, level_ + 1);
-    if (result_) {
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
+    result_ = consumeTokens(builder_, 2, DEFINE, TEST);
+    pinned_ = result_; // pin = TEST
+    result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, LPAREN)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_test_definer_4(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, RPAREN)) && result_;
+    result_ = pinned_ && report_error_(builder_, definition_test_definer_6(builder_, level_ + 1)) && result_;
+    result_ = pinned_ && test_definition_tail(builder_, level_ + 1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_TEST_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // test_arguments?
@@ -3729,20 +3785,24 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "definition_variable_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
     boolean result_ = false;
+    boolean pinned_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, null);
     result_ = consumeToken(builder_, DEFINE);
     result_ = result_ && definition_variable_definer_1(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, VARIABLE_T);
-    result_ = result_ && definition_variable_definer_3(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, EQUAL);
-    result_ = result_ && expression(builder_, level_ + 1, -1);
-    if (result_) {
+    pinned_ = result_; // pin = VARIABLE_T
+    result_ = result_ && report_error_(builder_, definition_variable_definer_3(builder_, level_ + 1));
+    result_ = pinned_ && report_error_(builder_, consumeToken(builder_, EQUAL)) && result_;
+    result_ = pinned_ && expression(builder_, level_ + 1, -1) && result_;
+    if (result_ || pinned_) {
       marker_.done(DEFINITION_VARIABLE_DEFINER);
     }
     else {
       marker_.rollbackTo();
     }
-    return result_;
+    result_ = exitErrorRecordingSection(builder_, level_, result_, pinned_, _SECTION_GENERAL_, null);
+    return result_ || pinned_;
   }
 
   // modifiers?
@@ -9353,7 +9413,7 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "suite_argument")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<suite argument>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, "<suite argument>");
     result_ = suite_argument_description(builder_, level_ + 1);
     if (!result_) result_ = suite_argument_setup_function(builder_, level_ + 1);
     if (!result_) result_ = suite_argument_cleanup_function(builder_, level_ + 1);
@@ -9364,7 +9424,7 @@ public class DylanParser implements PsiParser {
     else {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, suite_argument_recovery_parser_);
     return result_;
   }
 
@@ -9403,6 +9463,35 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // !(COMMA | RPAREN)
+  static boolean suite_argument_recovery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "suite_argument_recovery")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_NOT_, null);
+    result_ = !suite_argument_recovery_0(builder_, level_ + 1);
+    marker_.rollbackTo();
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_NOT_, null);
+    return result_;
+  }
+
+  // COMMA | RPAREN
+  private static boolean suite_argument_recovery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "suite_argument_recovery_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    if (!result_) result_ = consumeToken(builder_, RPAREN);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -10107,7 +10196,7 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "test_argument")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<test argument>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, "<test argument>");
     result_ = test_argument_0(builder_, level_ + 1);
     if (!result_) result_ = suite_test_tags(builder_, level_ + 1);
     if (result_) {
@@ -10116,7 +10205,7 @@ public class DylanParser implements PsiParser {
     else {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, test_argument_recovery_parser_);
     return result_;
   }
 
@@ -10127,6 +10216,35 @@ public class DylanParser implements PsiParser {
     Marker marker_ = builder_.mark();
     result_ = keywordWithValue(builder_, level_ + 1, "description:");
     result_ = result_ && string(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // !(COMMA | RPAREN)
+  static boolean test_argument_recovery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "test_argument_recovery")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_NOT_, null);
+    result_ = !test_argument_recovery_0(builder_, level_ + 1);
+    marker_.rollbackTo();
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_NOT_, null);
+    return result_;
+  }
+
+  // COMMA | RPAREN
+  private static boolean test_argument_recovery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "test_argument_recovery_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, COMMA);
+    if (!result_) result_ = consumeToken(builder_, RPAREN);
     if (!result_) {
       marker_.rollbackTo();
     }
@@ -11264,6 +11382,11 @@ public class DylanParser implements PsiParser {
       return statement_test_recovery(builder_, level_ + 1);
     }
   };
+  final static Parser suite_argument_recovery_parser_ = new Parser() {
+    public boolean parse(PsiBuilder builder_, int level_) {
+      return suite_argument_recovery(builder_, level_ + 1);
+    }
+  };
   final static Parser supers_recovery_parser_ = new Parser() {
     public boolean parse(PsiBuilder builder_, int level_) {
       return supers_recovery(builder_, level_ + 1);
@@ -11272,6 +11395,11 @@ public class DylanParser implements PsiParser {
   final static Parser table_entries_recovery_parser_ = new Parser() {
     public boolean parse(PsiBuilder builder_, int level_) {
       return table_entries_recovery(builder_, level_ + 1);
+    }
+  };
+  final static Parser test_argument_recovery_parser_ = new Parser() {
+    public boolean parse(PsiBuilder builder_, int level_) {
+      return test_argument_recovery(builder_, level_ + 1);
     }
   };
 }
