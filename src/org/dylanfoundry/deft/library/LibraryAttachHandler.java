@@ -122,7 +122,10 @@ public class LibraryAttachHandler {
         sourcePath.append(pathComponents[i]);
       }
 
-      return new DeftRegistryInfo(file.getName(), sourcePath.toString());
+      String libraryName = file.getName();
+      String platformName = file.getParentFile().getName();
+      return new DeftRegistryInfo(libraryName, platformName,
+              sourcePath.toString());
     } catch (URISyntaxException use) {
       LOG.warn("Invalid registry entry", use);
     } catch (IOException ioe) {
