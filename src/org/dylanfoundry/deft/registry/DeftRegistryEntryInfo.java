@@ -16,6 +16,8 @@
 
 package org.dylanfoundry.deft.registry;
 
+import java.io.File;
+
 public class DeftRegistryEntryInfo {
   private String libraryName;
   private String platformName;
@@ -37,6 +39,11 @@ public class DeftRegistryEntryInfo {
 
   public String getLocation() {
     return location;
+  }
+
+  public String getSourceDirectory() {
+    File file = new File(location);
+    return file.getParent();
   }
 
   @Override
