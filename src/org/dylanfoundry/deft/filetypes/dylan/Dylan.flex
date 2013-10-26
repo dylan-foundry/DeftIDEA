@@ -39,7 +39,7 @@ BINARY_OPERATOR="+" | "*" | "/" | "^" | "~=" | "~==" | "<" | "<=" | ">" | ">=" |
 OPERATOR_NAME="\\" {UNARY_OPERATOR} | "\\" {BINARY_OPERATOR} | "\\" {UNARY_AND_BINARY_OPERATOR} | "\\=" | "\\=="
 NAME={WORD} | "\\" {WORD} | {OPERATOR_NAME}
 
-CHARACTER="'" [^'] "'" | "'\\" [abefnrt0\\\'] "'"
+CHARACTER="'" [^'] "'" | "'\\" [abefnrt0\\\'\"] "'"
 
 SIGN=(\+|-)
 DECIMAL_INTEGER={SIGN}? {DIGIT}+
