@@ -23,9 +23,10 @@ import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.xmlb.XmlSerializer;
 import org.dylanfoundry.deft.DeftIcons;
+import org.dylanfoundry.deft.registry.DeftRegistryEntryInfo;
+import org.dylanfoundry.deft.registry.DeftRegistryInfo;
 import org.dylanfoundry.deft.util.DeftSystemUtil;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
@@ -143,12 +144,17 @@ public class DeftSdkType extends SdkType {
   protected static void configureSdkPaths(@NotNull final Sdk sdk) {
     final SdkModificator sdkModificator = sdk.getSdkModificator();
 
-    final VirtualFile sourceDir = LocalFileSystem.getInstance().findFileByIoFile(
-        new File(String.format("%s%s%s", sdk.getHomePath(), File.separator, "sources")));
+    final String registryDir = sdk.getHomePath() + File.separator + "sources" + File.separator + "registry";
 
-    if(null != sourceDir && sourceDir.isValid()) {
-      sdkModificator.addRoot(sourceDir, OrderRootType.SOURCES);
-      sdkModificator.commitChanges();
+    DeftRegistryInfo registry = new DeftRegistryInfo(registryDir);
+    for (DeftRegistryEntryInfo registryEntry : registry.getEntries()) {
+      String sourceDirectory = registryEntry.getSourceDirectory();
+      VirtualFile sourceDir = LocalFileSystem.getInstance().findFileByPath(sourceDirectory);
+      if (null != sourceDir) {
+        sdkModificator.addRoot(sourceDir, OrderRootType.SOURCES);
+      }
     }
+
+    sdkModificator.commitChanges();
   }
 }
