@@ -17,6 +17,8 @@
 package org.dylanfoundry.deft.registry;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
@@ -30,13 +32,34 @@ import java.util.List;
 
 public class DeftRegistryInfo {
   public static final Logger LOG = Logger.getInstance("#org.dylanfoundry.deft.registry");
+  private String location;
   private List<DeftRegistryEntryInfo> entries = new ArrayList<DeftRegistryEntryInfo>();
 
   public DeftRegistryInfo(String location) {
+    this.location = location;
+    parseRegistry(location);
   }
 
   public List<DeftRegistryEntryInfo> getEntries() {
     return entries;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  private void parseRegistry(String location) {
+    VirtualFile registry = LocalFileSystem.getInstance().findFileByPath(location);
+    if (null != registry) {
+      for (VirtualFile platformFolder : registry.getChildren()) {
+        for (VirtualFile registryEntry : platformFolder.getChildren()) {
+          DeftRegistryEntryInfo entryInfo = parseRegistryEntry(registryEntry.getPath());
+          if (null != entryInfo) {
+            entries.add(entryInfo);
+          }
+        }
+      }
+    }
   }
 
   @Nullable
