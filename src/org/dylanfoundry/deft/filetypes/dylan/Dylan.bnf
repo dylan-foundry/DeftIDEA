@@ -758,6 +758,11 @@ case_statement ::= CASE case_stmt_clause* case_stmt_tail
 case_stmt_tail ::= END CASE?
 
 case_stmt_clause ::= case_stmt_label case_stmt_constituents? (SEMICOLON | &case_stmt_tail)
+  {
+    recoverUntil="case_stmt_clause_recovery"
+  }
+
+private case_stmt_clause_recovery ::= !(case_stmt_tail | case_stmt_clause)
 
 case_stmt_label ::=
       OTHERWISE EQUAL_ARROW?

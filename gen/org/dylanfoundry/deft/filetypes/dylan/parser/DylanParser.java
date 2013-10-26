@@ -2175,7 +2175,7 @@ public class DylanParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "case_stmt_clause")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<case stmt clause>");
+    enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, "<case stmt clause>");
     result_ = case_stmt_label(builder_, level_ + 1);
     result_ = result_ && case_stmt_clause_1(builder_, level_ + 1);
     result_ = result_ && case_stmt_clause_2(builder_, level_ + 1);
@@ -2185,7 +2185,7 @@ public class DylanParser implements PsiParser {
     else {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, case_stmt_clause_recovery_parser_);
     return result_;
   }
 
@@ -2221,6 +2221,35 @@ public class DylanParser implements PsiParser {
     result_ = case_stmt_tail(builder_, level_ + 1);
     marker_.rollbackTo();
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_AND_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // !(case_stmt_tail | case_stmt_clause)
+  static boolean case_stmt_clause_recovery(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_stmt_clause_recovery")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_NOT_, null);
+    result_ = !case_stmt_clause_recovery_0(builder_, level_ + 1);
+    marker_.rollbackTo();
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_NOT_, null);
+    return result_;
+  }
+
+  // case_stmt_tail | case_stmt_clause
+  private static boolean case_stmt_clause_recovery_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "case_stmt_clause_recovery_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = case_stmt_tail(builder_, level_ + 1);
+    if (!result_) result_ = case_stmt_clause(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -11511,6 +11540,11 @@ public class DylanParser implements PsiParser {
   final static Parser bracketed_fragment_recovery_parser_ = new Parser() {
     public boolean parse(PsiBuilder builder_, int level_) {
       return bracketed_fragment_recovery(builder_, level_ + 1);
+    }
+  };
+  final static Parser case_stmt_clause_recovery_parser_ = new Parser() {
+    public boolean parse(PsiBuilder builder_, int level_) {
+      return case_stmt_clause_recovery(builder_, level_ + 1);
     }
   };
   final static Parser definition_macro_call_body_fragment_recovery_parser_ = new Parser() {
