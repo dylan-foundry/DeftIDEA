@@ -24,9 +24,9 @@ public class DylanBodyStyleDefinitionRuleImpl extends ASTWrapperPsiElement imple
   }
 
   @Override
-  @NotNull
+  @Nullable
   public DylanRhs getRhs() {
-    return findNotNullChildByClass(DylanRhs.class);
+    return findChildByClass(DylanRhs.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

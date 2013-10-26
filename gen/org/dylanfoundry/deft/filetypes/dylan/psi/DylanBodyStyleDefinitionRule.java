@@ -10,7 +10,7 @@ public interface DylanBodyStyleDefinitionRule extends PsiElement {
   @NotNull
   DylanPattern getPattern();
 
-  @NotNull
+  @Nullable
   DylanRhs getRhs();
 
 }

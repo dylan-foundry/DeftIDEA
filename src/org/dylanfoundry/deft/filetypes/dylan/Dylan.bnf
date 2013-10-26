@@ -499,8 +499,17 @@ definition_variable_definer ::= DEFINE modifiers? VARIABLE_T (variable | variabl
   }
 
 definition_macro_call ::=
-      DEFINE modifiers? define_body_word body_fragment? definition_tail
+      DEFINE definition_macro_call_body definition_tail
     | DEFINE modifiers? define_list_word list_fragment?
+
+// Handle unknown macros
+// FIXME: define_body_word is optional because sometimes the parser is confused and treat it like a modifier
+private definition_macro_call_body ::= modifiers? define_body_word? body_fragment?
+  {
+    recoverUntil="definition_macro_call_body_fragment_recovery"
+  }
+
+private definition_macro_call_body_fragment_recovery ::= !definition_tail
 
 modifier ::= nondefining_name
 
@@ -857,11 +866,28 @@ function_rules ::= function_rule+
  * to leave these rules as simple as possible.
  */
 
-body_style_definition_rule ::= LBRACE DEFINE pattern SEMICOLON? END RBRACE EQUAL_ARROW rhs
+body_style_definition_rule ::= LBRACE body_style_definition_rule_body RBRACE EQUAL_ARROW rhs
+  {
+    pin=2
+  }
+
+private body_style_definition_rule_body ::= DEFINE pattern SEMICOLON? END
+  {
+    recoverUntil="body_style_definition_rule_recovery"
+  }
+
+private body_style_definition_rule_body_recovery ::= !RBRACE
 
 list_style_definition_rule ::= LBRACE DEFINE pattern RBRACE EQUAL_ARROW rhs
 
-rhs ::= LBRACE template? RBRACE SEMICOLON?
+rhs ::= LBRACE rhs_body? RBRACE SEMICOLON?
+
+private rhs_body ::= template
+  {
+    recoverUntil="rhs_body_recovery"
+  }
+
+private rhs_body_recovery ::= !RBRACE
 
 statement_rule ::= LBRACE macro_name maybe_pattern_and_semicolon END RBRACE EQUAL_ARROW rhs
 
@@ -902,8 +928,10 @@ bracketed_pattern ::=
 
 binding_pattern ::=
       pattern_variable COLON_COLON pattern_variable EQUAL pattern_variable
+    | pattern_variable COLON_COLON pattern_variable LESS_THAN MINUS pattern_variable
     | pattern_variable COLON_COLON pattern_variable
     | pattern_variable EQUAL pattern_variable
+    | pattern_variable LESS_THAN MINUS pattern_variable
 
 pattern_variable ::=
       QUERY CONSTRAINED_NAME
@@ -935,6 +963,7 @@ template_element ::=
     | symbol
     | NUMBER
     | CHARACTER_LITERAL
+    | substitution
     | string
     | unary_operator_only
     | separator
@@ -949,7 +978,6 @@ template_element ::=
     | HASH_BRACKET template? RBRACKET
     | PARSED_LIST_CONSTANT
     | PARSED_VECTOR_CONSTANT
-    | substitution
     | nondefining_begin_word_token // FIXME: allows begin words
 
 separator ::=
