@@ -12,6 +12,7 @@ import com.intellij.psi.TokenType;
 %unicode
 %function advance
 %type IElementType
+%ignorecase
 %eof{  return;
 %eof}
 
@@ -48,7 +49,7 @@ OCTAL_INTEGER="#"[oO][0-7]+
 HEX_INTEGER="#"[xX][0-9a-fA-F]+
 RATIO={SIGN}? {DIGIT}+ "/" {DIGIT}+
 EXPONENT=[eE] {SIGN}? {DECIMAL_INTEGER}
-PRECISION=[sd]"0"
+PRECISION=[sSdD]"0"
 FLOAT=({SIGN}? {DECIMAL_INTEGER}? "." {DECIMAL_INTEGER} {EXPONENT}?) | ({SIGN}? {DECIMAL_INTEGER} "." {DECIMAL_INTEGER}? {EXPONENT}?) | ({SIGN}? {DECIMAL_INTEGER} {EXPONENT})
 
 NUMBER=({DECIMAL_INTEGER}|{BINARY_INTEGER}|{OCTAL_INTEGER}|{HEX_INTEGER}|{RATIO}|{FLOAT}{PRECISION}?)
