@@ -32,10 +32,11 @@
         <option name="OTHER" value="false" />
       </context>
     </template>
-    <template name="deff" value="define function $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;end function $NAME$;&#10;" description="define function" toReformat="true" toShortenFQNames="true">
+    <template name="deff" value="define function $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;  $BODY$&#10;end function $NAME$;&#10;" description="define function" toReformat="true" toShortenFQNames="true">
       <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
       <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
       <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
       <context>
         <option name="DYLAN_DEFINITION" value="true" />
         <option name="OTHER" value="false" />
@@ -50,10 +51,11 @@
         <option name="OTHER" value="false" />
       </context>
     </template>
-    <template name="defm" value="define method $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;end method $NAME$;&#10;" description="define method" toReformat="true" toShortenFQNames="true">
+    <template name="defm" value="define method $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;  $BODY$&#10;end method $NAME$;&#10;" description="define method" toReformat="true" toShortenFQNames="true">
       <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
       <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
       <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
       <context>
         <option name="DYLAN_DEFINITION" value="true" />
         <option name="OTHER" value="false" />
