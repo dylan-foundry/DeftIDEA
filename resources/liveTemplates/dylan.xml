@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2013, Bruce Mitchener, Jr.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<templateSet group="dylan">
+    <template name="defcl" value="define class &lt;$NAME$&gt; ($SUPERS$)&#10;end class &lt;$NAME$&gt;;&#10;" description="define class" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="SUPERS" expression="" defaultValue="&lt;object&gt;" alwaysStopAt="true" />
+      <context>
+        <option name="DYLAN_DEFINITION" value="true" />
+        <option name="OTHER" value="false" />
+      </context>
+    </template>
+    <template name="defco" value="define constant \$$NAME$ = $VALUE$;&#10;" description="define constant" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="DYLAN_DEFINITION" value="true" />
+        <option name="OTHER" value="false" />
+      </context>
+    </template>
+    <template name="deff" value="define function $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;end function $NAME$;&#10;" description="define function" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="DYLAN_DEFINITION" value="true" />
+        <option name="OTHER" value="false" />
+      </context>
+    </template>
+    <template name="defg" value="define generic $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;" description="define generic" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="DYLAN_DEFINITION" value="true" />
+        <option name="OTHER" value="false" />
+      </context>
+    </template>
+    <template name="defm" value="define method $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;end method $NAME$;&#10;" description="define method" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="DYLAN_DEFINITION" value="true" />
+        <option name="OTHER" value="false" />
+      </context>
+    </template>
+    <template name="defv" value="define variable *$NAME$* = $VALUE$;&#10;" description="define variable" toReformat="true" toShortenFQNames="true">
+      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+      <context>
+        <option name="DYLAN_DEFINITION" value="true" />
+        <option name="OTHER" value="false" />
+      </context>
+    </template>
+</templateSet>
+

@@ -20,6 +20,7 @@
     <li>Initial support for brace / parenthesis matching.</li>
     <li>"define table" is now supported.</li>
     <li>Added error recovery to the Dylan parser.</li>
+    <li>Live templating</li>
   </ul>
   <p>0.3</p>
   <ul>
@@ -61,6 +62,11 @@
     <sdkType implementation="org.dylanfoundry.deft.module.DeftSdkType"/>
     <moduleType id="DEFT_MODULE" implementationClass="org.dylanfoundry.deft.module.DeftModuleType"/>
     <projectStructureDetector implementation="org.dylanfoundry.deft.module.DeftProjectStructureDetector"/>
+
+    <defaultLiveTemplatesProvider implementation="org.dylanfoundry.deft.filetypes.dylan.template.DylanLiveTemplateProvider"/>
+    <liveTemplateContext implementation="org.dylanfoundry.deft.filetypes.dylan.template.DylanContextType$Generic"/>
+    <liveTemplateContext implementation="org.dylanfoundry.deft.filetypes.dylan.template.DylanContextType$Definition"/>
+    <liveTemplateContext implementation="org.dylanfoundry.deft.filetypes.dylan.template.DylanContextType$Expression"/>
 
     <!-- LID files -->
     <lang.parserDefinition language="LID" implementationClass="org.dylanfoundry.deft.filetypes.lid.LIDParserDefinition"/>
