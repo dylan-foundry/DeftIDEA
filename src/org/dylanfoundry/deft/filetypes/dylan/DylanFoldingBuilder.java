@@ -51,36 +51,52 @@ public class DylanFoldingBuilder implements FoldingBuilder, DumbAware {
     boolean canFold = false;
     if (node.getElementType() == DylanTypes.DEFINITION_CLASS_DEFINER) {
       DylanDefinitionClassDefiner c = ((DylanDefinitionClassDefiner)element);
-      beginOffset = c.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (c.getVariableName() != null) {
+        beginOffset = c.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_METHOD_DEFINER) {
       DylanDefinitionMethodDefiner m = ((DylanDefinitionMethodDefiner)element);
-      beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (m.getVariableName() != null) {
+        beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_FUNCTION_DEFINER) {
       DylanDefinitionFunctionDefiner f = ((DylanDefinitionFunctionDefiner)element);
-      beginOffset = f.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (f.getVariableName() != null) {
+        beginOffset = f.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_LIBRARY_DEFINER) {
       DylanDefinitionLibraryDefiner l = ((DylanDefinitionLibraryDefiner)element);
-      beginOffset = l.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (l.getVariableName() != null) {
+        beginOffset = l.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_MODULE_DEFINER) {
       DylanDefinitionModuleDefiner m = ((DylanDefinitionModuleDefiner)element);
-      beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (m.getVariableName() != null) {
+        beginOffset = m.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_SUITE_DEFINER) {
       DylanDefinitionSuiteDefiner s = ((DylanDefinitionSuiteDefiner)element);
-      beginOffset = s.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (s.getVariableName() != null) {
+        beginOffset = s.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_TABLE_DEFINER) {
       DylanDefinitionTableDefiner t = ((DylanDefinitionTableDefiner)element);
-      beginOffset = t.getVariable().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (t.getVariable() != null) {
+        beginOffset = t.getVariable().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.DEFINITION_TEST_DEFINER) {
       DylanDefinitionTestDefiner t = ((DylanDefinitionTestDefiner)element);
-      beginOffset = t.getVariableName().getTextRange().getEndOffset() - 1;
-      canFold = true;
+      if (t.getVariableName() != null) {
+        beginOffset = t.getVariableName().getTextRange().getEndOffset() - 1;
+        canFold = true;
+      }
     } else if (node.getElementType() == DylanTypes.BEGIN_STATEMENT) {
       DylanBeginStatement b = ((DylanBeginStatement)element);
       beginOffset = b.getFirstChild().getTextRange().getEndOffset() - 1;
