@@ -71,6 +71,7 @@ public class DylanSanityAnnotator implements Annotator {
     validateModifiers(function.getModifiers(), FUNCTION_MODIFIERS, holder);
     validateInlineModifiers(function.getModifiers(), holder);
     suggestBooleanReturnNaming(function.getVariableName(), function.getParameterList(), holder);
+    validateReturnValueNotType(function.getParameterList(), holder);
   }
 
   private void validateMethod(@NotNull DylanDefinitionMethodDefiner method, @NotNull AnnotationHolder holder) {
@@ -79,6 +80,7 @@ public class DylanSanityAnnotator implements Annotator {
     validateModifiers(method.getModifiers(), FUNCTION_MODIFIERS, holder);
     validateInlineModifiers(method.getModifiers(), holder);
     suggestBooleanReturnNaming(method.getVariableName(), method.getParameterList(), holder);
+    validateReturnValueNotType(method.getParameterList(), holder);
   }
 
   private void validateTable(@NotNull DylanDefinitionTableDefiner table, @NotNull AnnotationHolder holder) {
@@ -181,6 +183,32 @@ public class DylanSanityAnnotator implements Annotator {
       holder.createWeakWarningAnnotation(name, "Functions returning <boolean> should have a name ending in '?'");
     } else if (hasValue && nameIsQuery && !hasBooleanValue) {
       holder.createWeakWarningAnnotation(name, "Functions not returning <boolean> shouldn't have a name ending in '?'");
+    }
+  }
+
+  private void validateReturnValueNotType(DylanParameterList parameterList, @NotNull AnnotationHolder holder) {
+    if (null == parameterList) {
+      return;
+    }
+    boolean hasValue = false;
+    DylanVariable returnValue = null;
+    if ((parameterList.getValuesList() != null) && (parameterList.getValuesList().getVariableList() != null)) {
+      returnValue = parameterList.getValuesList().getVariableList().get(0);
+      if ((returnValue != null) && (returnValue.getVariableName() != null)) {
+        hasValue = true;
+      }
+    }
+    if (parameterList.getVariable() != null) {
+      returnValue = parameterList.getVariable();
+      if (returnValue.getVariableName() != null) {
+        hasValue = true;
+      }
+    }
+    if (hasValue) {
+      String returnText = returnValue.getVariableName().getText().trim();
+      if (returnText.startsWith("<") && returnText.endsWith(">")) {
+        holder.createWarningAnnotation(returnValue, "Non-type return value looks like a type.");
+      }
     }
   }
 
