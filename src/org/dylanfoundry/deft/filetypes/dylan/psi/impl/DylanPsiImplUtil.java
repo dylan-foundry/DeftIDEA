@@ -64,7 +64,10 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionClassDefiner element) {
-    return element.getVariableName().getText();
+    if (element.getVariableName() != null) {
+      return element.getVariableName().getText();
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionClassDefiner element, @NotNull String newName) {
@@ -121,7 +124,10 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionDomainDefiner element) {
-    return "sealed domain" + element.getVariableName().getText();
+    if (element.getVariableName() != null) {
+      return "sealed domain" + element.getVariableName().getText();
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionDomainDefiner element, @NotNull String newName) {
@@ -137,7 +143,12 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionFunctionDefiner element) {
-    return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
+    if ((element.getVariableName() != null) && (element.getParameterList() != null)) {
+      return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
+    } else if (element.getVariableName() != null) {
+      return cleanText(element.getVariableName().getText());
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionFunctionDefiner element, @NotNull String newName) {
@@ -169,7 +180,10 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionLibraryDefiner element) {
-    return element.getVariableName().getText();
+    if (element.getVariableName() != null) {
+      return element.getVariableName().getText();
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionLibraryDefiner element, @NotNull String newName) {
@@ -202,7 +216,12 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionMethodDefiner element) {
-    return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
+    if ((element.getVariableName() != null) && (element.getParameterList() != null)) {
+      return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
+    } else if (element.getVariableName() != null) {
+      return cleanText(element.getVariableName().getText());
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionMethodDefiner element, @NotNull String newName) {
@@ -218,7 +237,10 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionModuleDefiner element) {
-    return element.getVariableName().getText();
+    if (element.getVariableName() != null) {
+      return element.getVariableName().getText();
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionModuleDefiner element, @NotNull String newName) {
