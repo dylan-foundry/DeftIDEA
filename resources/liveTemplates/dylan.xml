@@ -14,60 +14,159 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<templateSet group="dylan">
-    <template name="defcl" value="define class &lt;$NAME$&gt; ($SUPERS$)&#10;end class &lt;$NAME$&gt;;&#10;" description="define class" toReformat="true" toShortenFQNames="true">
-      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="SUPERS" expression="" defaultValue="&lt;object&gt;" alwaysStopAt="true" />
-      <context>
-        <option name="DYLAN_DEFINITION" value="true" />
-        <option name="OTHER" value="false" />
-      </context>
-    </template>
-    <template name="defco" value="define constant \$$NAME$ = $VALUE$;&#10;" description="define constant" toReformat="true" toShortenFQNames="true">
-      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="DYLAN_DEFINITION" value="true" />
-        <option name="OTHER" value="false" />
-      </context>
-    </template>
-    <template name="deff" value="define function $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;  $BODY$&#10;end function $NAME$;&#10;" description="define function" toReformat="true" toShortenFQNames="true">
-      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="DYLAN_DEFINITION" value="true" />
-        <option name="OTHER" value="false" />
-      </context>
-    </template>
-    <template name="defg" value="define generic $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;" description="define generic" toReformat="true" toShortenFQNames="true">
-      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="DYLAN_DEFINITION" value="true" />
-        <option name="OTHER" value="false" />
-      </context>
-    </template>
-    <template name="defm" value="define method $NAME$ ($ARGUMENTS$) => ($VALUE$);&#10;  $BODY$&#10;end method $NAME$;&#10;" description="define method" toReformat="true" toShortenFQNames="true">
-      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="DYLAN_DEFINITION" value="true" />
-        <option name="OTHER" value="false" />
-      </context>
-    </template>
-    <template name="defv" value="define variable *$NAME$* = $VALUE$;&#10;" description="define variable" toReformat="true" toShortenFQNames="true">
-      <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
-      <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
-      <context>
-        <option name="DYLAN_DEFINITION" value="true" />
-        <option name="OTHER" value="false" />
-      </context>
-    </template>
+<templateSet group="Dylan">
+  <template name="block" value="block ($RETURN$)&#10;  $BODY$&#10;end block;&#10;" description="block statement" toReformat="true" toShortenFQNames="true">
+    <variable name="RETURN" expression="" defaultValue="return" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="defcl" value="define class &lt;$NAME$&gt; ($SUPERS$)&#10;end class &lt;$NAME$&gt;;&#10;" description="define class" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="SUPERS" expression="" defaultValue="&lt;object&gt;" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="defco" value="define constant \$$NAME$ = $VALUE$;&#10;" description="define constant" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="deff" value="define function $NAME$ ($ARGUMENTS$) =&gt; ($VALUE$);&#10;  $BODY$&#10;end function $NAME$;&#10;" description="define function" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="defg" value="define generic $NAME$ ($ARGUMENTS$) =&gt; ($VALUE$);&#10;" description="define generic" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="defm" value="define method $NAME$ ($ARGUMENTS$) =&gt; ($VALUE$);&#10;  $BODY$&#10;end method $NAME$;&#10;" description="define method" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="ARGUMENTS" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="deftv" value="define thread variable *$NAME$* = $VALUE$;&#10;" description="define thread variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="defv" value="define variable *$NAME$* = $VALUE$;&#10;" description="define variable" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="for" value="for ($FOR$)&#10;  $BODY$&#10;end for;&#10;" description="for statement" toReformat="true" toShortenFQNames="true">
+    <variable name="FOR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="forf" value="for ($FOR$)&#10;  $BODY1$&#10;finally&#10;  $BODY2$&#10;end for;&#10;" description="for/finally statement" toReformat="true" toShortenFQNames="true">
+    <variable name="FOR" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY1" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY2" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="fori" value="for ($VALUE$ in $COLLECTION$)&#10;  $BODY$&#10;end for;&#10;" description="for statement (in)" toReformat="true" toShortenFQNames="true">
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="COLLECTION" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="if" value="if ($GUARD$)&#10;  $BODY$&#10;end if;&#10;" description="if statement" toReformat="true" toShortenFQNames="true">
+    <variable name="GUARD" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ifei" value="if ($GUARD1$)&#10;  $BODY1$&#10;elseif ($GUARD2$)&#10;  $BODY2$&#10;end if;&#10;" description="if/elseif statement" toReformat="true" toShortenFQNames="true">
+    <variable name="GUARD1" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY1" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="GUARD2" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY2" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="ifel" value="if ($GUARD$)&#10;  $BODY1$&#10;else&#10;  $BODY2$&#10;end if;&#10;" description="if/else statement" toReformat="true" toShortenFQNames="true">
+    <variable name="GUARD" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY1" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY2" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="let" value="let $NAME$ = $VALUE$;&#10;" description="let statement" toReformat="true" toShortenFQNames="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="unless" value="unless ($GUARD$)&#10;  $BODY$&#10;end unless;&#10;" description="unless statement" toReformat="true" toShortenFQNames="true">
+    <variable name="GUARD" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="until" value="until ($GUARD$)&#10;  $BODY$&#10;end until;&#10;" description="until statement" toReformat="true" toShortenFQNames="true">
+    <variable name="GUARD" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="while" value="while ($GUARD$)&#10;  $BODY$&#10;end while;&#10;" description="while statement" toReformat="true" toShortenFQNames="true">
+    <variable name="GUARD" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_EXPRESSION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
 </templateSet>
-
