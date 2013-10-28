@@ -15,6 +15,18 @@
   ~ limitations under the License.
   -->
 <templateSet group="Dylan">
+  <template name="&lt;i" value="&lt;integer&gt;" description="&lt;integer&gt;" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="DYLAN_CODE" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="&lt;s" value="&lt;string&gt;" description="&lt;string&gt;" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="DYLAN_CODE" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
   <template name="block" value="block ($RETURN$)&#10;  $BODY$&#10;end block;&#10;" description="block statement" toReformat="true" toShortenFQNames="true">
     <variable name="RETURN" expression="" defaultValue="return" alwaysStopAt="true" />
     <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
