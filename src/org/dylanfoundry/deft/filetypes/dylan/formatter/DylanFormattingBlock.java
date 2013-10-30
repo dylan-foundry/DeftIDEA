@@ -17,14 +17,15 @@
 package org.dylanfoundry.deft.filetypes.dylan.formatter;
 
 import com.intellij.formatting.*;
-import com.intellij.formatting.alignment.AlignmentStrategy;
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiErrorElement;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.TokenType;
-import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
-import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.dylanfoundry.deft.filetypes.dylan.formatter.settings.DylanCodeStyleSettings;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,73 +34,197 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DylanFormattingBlock extends AbstractBlock {
+public class DylanFormattingBlock implements ASTBlock {
+  private final DylanFormattingBlock myParent;
+  private final Alignment _alignment;
+  private final Indent _indent;
+  private final ASTNode _node;
+  private final Wrap _wrap;
+  private final DylanFormattingBlockContext myContext;
+  private List<DylanFormattingBlock> _subBlocks = null;
+  private Alignment myChildAlignment;
+
   private static final TokenSet BLOCK_TOKEN_SET = TokenSet.create(
-    DylanTypes.BEGIN,
-    DylanTypes.BLOCK,
-    DylanTypes.FOR,
-    DylanTypes.IF,
-    DylanTypes.METHOD,
-    DylanTypes.UNLESS,
-    DylanTypes.UNTIL,
-    DylanTypes.WHEN,
-    DylanTypes.WHILE
+    DylanTypes.IF_STATEMENT,
+    DylanTypes.BEGIN_STATEMENT,
+    DylanTypes.FOR_STATEMENT,
+    DylanTypes.METHOD_STATEMENT,
+    DylanTypes.UNLESS_STATEMENT,
+    DylanTypes.UNTIL_STATEMENT,
+    DylanTypes.WHEN_STATEMENT,
+    DylanTypes.WHILE_STATEMENT,
+    DylanTypes.SELECT_STATEMENT,
+    DylanTypes.CASE_STATEMENT
   );
-  private final AlignmentStrategy myAlignmentStrategy;
-  private final SpacingBuilder mySpacingBuilder;
-  private final CommonCodeStyleSettings mySettings;
-  private final DylanCodeStyleSettings myDylanSettings;
-  private final Indent myIndent;
-  private List<Block> mySubBlocks;
 
-  public DylanFormattingBlock(@NotNull ASTNode node,
-                              @Nullable Wrap wrap,
-                              @Nullable Alignment alignment,
-                              @Nullable AlignmentStrategy alignmentStrategy,
-                              @NotNull CommonCodeStyleSettings settings,
-                              @NotNull DylanCodeStyleSettings dylanSettings,
-                              @NotNull SpacingBuilder spacingBuilder) {
-    super(node, wrap, alignment);
-    mySpacingBuilder = spacingBuilder;
-    myAlignmentStrategy = alignmentStrategy;
-    mySettings = settings;
-    myDylanSettings = dylanSettings;
-    myIndent = new DylanIndentProcessor().getChildIndent(node);
+  private static final TokenSet DEFINITION_TOKEN_SET = TokenSet.create(
+    DylanTypes.DEFINITION_CLASS_DEFINER,
+    DylanTypes.DEFINITION_CONSTANT_DEFINER,
+    DylanTypes.DEFINITION_COPY_DOWN_METHOD_DEFINER,
+    DylanTypes.DEFINITION_DOMAIN_DEFINER,
+    DylanTypes.DEFINITION_FUNCTION_DEFINER,
+    DylanTypes.DEFINITION_GENERIC_DEFINER,
+    DylanTypes.DEFINITION_LIBRARY_DEFINER,
+    DylanTypes.DEFINITION_MODULE_DEFINER,
+    DylanTypes.DEFINITION_MACRO_DEFINER,
+    DylanTypes.DEFINITION_METHOD_DEFINER,
+    DylanTypes.DEFINITION_SHARED_SYMBOLS_DEFINER,
+    DylanTypes.DEFINITION_SUITE_DEFINER,
+    DylanTypes.DEFINITION_TABLE_DEFINER,
+    DylanTypes.DEFINITION_TEST_DEFINER,
+    DylanTypes.DEFINITION_VARIABLE_DEFINER,
+    DylanTypes.DEFINITION_MACRO_CALL
+  );
+
+  public DylanFormattingBlock(final DylanFormattingBlock parent,
+                              final ASTNode node,
+                              final Alignment alignment,
+                              final Indent indent,
+                              final Wrap wrap,
+                              final DylanFormattingBlockContext context) {
+    myParent = parent;
+    _alignment = alignment;
+    _node = node;
+    _indent = indent;
+    _wrap = wrap;
+    myContext = context;
   }
 
+  @NotNull
   @Override
-  protected List<Block> buildChildren() {
-    if (mySubBlocks == null) {
-      mySubBlocks = buildSubBlocks();
-    }
-    return new ArrayList<Block>(mySubBlocks);
+  public ASTNode getNode() {
+    return _node;
   }
 
-  private List<Block> buildSubBlocks() {
-    List<Block> blocks = new ArrayList<Block>();
-    for (ASTNode child = myNode.getFirstChildNode(); child != null; child = child.getTreeNext()) {
-      IElementType childType = child.getElementType();
-      if (child.getTextRange().getLength() == 0 || childType == TokenType.WHITE_SPACE) continue;
+  @NotNull
+  @Override
+  public TextRange getTextRange() {
+    return _node.getTextRange();
+  }
 
-      Alignment alignment = Alignment.createAlignment();
-      blocks.add(new DylanFormattingBlock(child, Wrap.createWrap(WrapType.NONE, false), alignment, null, mySettings, myDylanSettings, mySpacingBuilder));
+  @NotNull
+  @Override
+  public List<Block> getSubBlocks() {
+    if (_subBlocks == null) {
+      _subBlocks = buildSubBlocks();
+    }
+    return new ArrayList<Block>(_subBlocks);
+  }
+
+  private List<DylanFormattingBlock> buildSubBlocks() {
+    List<DylanFormattingBlock> blocks = new ArrayList<DylanFormattingBlock>();
+    for (ASTNode child = _node.getFirstChildNode(); child != null; child = child.getTreeNext()) {
+      IElementType childType = child.getElementType();
+
+      if (child.getTextRange().getLength() == 0) continue;
+      if (childType == TokenType.WHITE_SPACE) continue;
+
+      blocks.add(buildSubBlock(child));
     }
     return Collections.unmodifiableList(blocks);
   }
 
-  @Override
-  public Indent getIndent() {
-    return myIndent;
+  private DylanFormattingBlock buildSubBlock(ASTNode child) {
+    IElementType parentType = _node.getElementType();
+    IElementType grandParentType = _node.getTreeParent() == null ? null : _node.getTreeParent().getElementType();
+    IElementType childType = child.getElementType();
+    Wrap wrap = null;
+    Indent childIndent = Indent.getNoneIndent();
+    Alignment childAlignment = null;
+
+    if ((BLOCK_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {
+      childIndent = Indent.getNormalIndent();
+    }
+
+    if ((DEFINITION_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {
+      childIndent = Indent.getNormalIndent();
+    }
+
+    // TODO: Add settings to set this type of indent.
+    if ((DEFINITION_TOKEN_SET.contains(grandParentType)) && (parentType == DylanTypes.PARAMETER_LIST)) {
+      if (childType == DylanTypes.EQUAL_ARROW) {
+        childIndent = Indent.getSpaceIndent(1);
+      } else if (childType == DylanTypes.LPAREN) {
+        childIndent = Indent.getSpaceIndent(4);
+      }
+    }
+
+    return new DylanFormattingBlock(this, child, childAlignment, childIndent, wrap, myContext);
   }
 
   @Nullable
   @Override
-  public Spacing getSpacing(@Nullable Block child1, @NotNull Block child2) {
-    return mySpacingBuilder.getSpacing(this, child1, child2);
+  public Wrap getWrap() {
+    return _wrap;
+  }
+
+  @Nullable
+  @Override
+  public Indent getIndent() {
+    assert _indent != null;
+    return _indent;
+  }
+
+  @Nullable
+  @Override
+  public Alignment getAlignment() {
+    return _alignment;
+  }
+
+  @Nullable
+  @Override
+  public Spacing getSpacing(@Nullable Block block, @NotNull Block block2) {
+    return myContext.getSpacingBuilder().getSpacing(this, block, block2);
+  }
+
+  @NotNull
+  @Override
+  public ChildAttributes getChildAttributes(int newChildIndex) {
+    Indent childIndent = getChildIndent(newChildIndex);
+    Alignment childAlignment = getChildAlignment();
+    return new ChildAttributes(childIndent, childAlignment);
+  }
+
+  private Indent getChildIndent(int newChildIndex) {
+    return Indent.getNoneIndent();
+  }
+
+  @Nullable
+  private Alignment getChildAlignment() {
+    return null;
+  }
+
+  @Override
+  public boolean isIncomplete() {
+    // If there's something following, it's not incomplete
+    if (!PsiTreeUtil.hasErrorElements(_node.getPsi())) {
+      PsiElement element = _node.getPsi().getNextSibling();
+      while (element instanceof PsiWhiteSpace) {
+        element = element.getNextSibling();
+      }
+      if (element != null) {
+        return false;
+      }
+    }
+
+    ASTNode lastChild = getLastNonSpaceChild(_node, false);
+    if (lastChild != null) {
+      // TODO: do this for real
+    }
+    return false; // TODO: Until we properly implement this method we always consider it as incomplete
+  }
+
+  private static ASTNode getLastNonSpaceChild(ASTNode node, boolean acceptError) {
+    ASTNode lastChild = node.getLastChildNode();
+    while (lastChild != null &&
+      (lastChild.getElementType() == TokenType.WHITE_SPACE || (!acceptError && lastChild.getPsi() instanceof PsiErrorElement))) {
+      lastChild = lastChild.getTreePrev();
+    }
+    return lastChild;
   }
 
   @Override
   public boolean isLeaf() {
-    return myNode.getFirstChildNode() == null;
+    return _node.getFirstChildNode() == null;
   }
 }

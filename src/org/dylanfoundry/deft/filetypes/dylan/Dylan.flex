@@ -443,7 +443,7 @@ STRING=\" ({STRING_ESCAPE}|[^\"])* \"
     "_"                                             { return DylanTypes.VARIABLE_IGNORE; }
 
     {WHITE_SPACE}+                                  { return TokenType.WHITE_SPACE; }
-    {CRLF}                                          { /* return DylanTypes.CRLF; */ }
+    {CRLF}                                          { return TokenType.WHITE_SPACE; }
 }
 
 // Comment block ( /* ... */ )

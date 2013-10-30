@@ -31,20 +31,36 @@ import org.jetbrains.annotations.Nullable;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 
 public class DylanFormattingModelBuilder implements FormattingModelBuilder {
+  private static final boolean DUMP_FORMATTING_AST = true;
+
   @NotNull
-  @Override
-  public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
-    CommonCodeStyleSettings commonSettings = settings.getCommonSettings(DylanLanguage.INSTANCE);
-    DylanCodeStyleSettings dylanSettings = settings.getCustomSettings(DylanCodeStyleSettings.class);
-    SpacingBuilder spacingBuilder = createSpacingBuilder(commonSettings, dylanSettings);
-    final DylanFormattingBlock block = new DylanFormattingBlock(element.getNode(), null, null, null, commonSettings, dylanSettings, spacingBuilder);
+  public FormattingModel createModel(@NotNull PsiElement element,
+                                     @NotNull CodeStyleSettings settings,
+                                     @NotNull FormattingMode mode) {
+    if (DUMP_FORMATTING_AST) {
+      ASTNode fileNode = element.getContainingFile().getNode();
+      System.out.println("AST tree for " + element.getContainingFile().getName() + ":");
+      printAST(fileNode, 0);
+    }
+    final DylanFormattingBlockContext context = new DylanFormattingBlockContext(settings, createSpacingBuilder(settings), mode);
+    final DylanFormattingBlock block = new DylanFormattingBlock(null, element.getNode(), null, Indent.getNoneIndent(), null, context);
+    if (DUMP_FORMATTING_AST) {
+      FormattingModelDumper.dumpFormattingModel(block, 2, System.out);
+    }
     return FormattingModelProvider.createFormattingModelForPsiFile(element.getContainingFile(), block, settings);
   }
 
-  private static SpacingBuilder createSpacingBuilder(CommonCodeStyleSettings settings, DylanCodeStyleSettings dylanSettings) {
-    return new SpacingBuilder(settings.getRootSettings())
-      .before(COMMA).spaceIf(settings.SPACE_BEFORE_COMMA)
-      .after(COMMA).spaceIf(settings.SPACE_AFTER_COMMA)
+  @NotNull
+  @Override
+  public FormattingModel createModel(PsiElement psiElement, CodeStyleSettings codeStyleSettings) {
+    return createModel(psiElement, codeStyleSettings, FormattingMode.REFORMAT);
+  }
+
+  private static SpacingBuilder createSpacingBuilder(CodeStyleSettings settings) {
+    final CommonCodeStyleSettings commonSettings = settings.getCommonSettings(DylanLanguage.INSTANCE);
+    return new SpacingBuilder(commonSettings.getRootSettings())
+      .before(COMMA).spaceIf(commonSettings.SPACE_BEFORE_COMMA)
+      .after(COMMA).spaceIf(commonSettings.SPACE_AFTER_COMMA)
       .before(SEMICOLON).none()
 
       .around(BINARY_OPERATOR).spaces(1)
@@ -56,4 +72,16 @@ public class DylanFormattingModelBuilder implements FormattingModelBuilder {
   public TextRange getRangeAffectingIndent(PsiFile file, int offset, ASTNode elementAtOffset) {
     return null;
   }
+
+  private static void printAST(ASTNode node, int indent) {
+    while (node != null) {
+      for (int i = 0; i < indent; i++) {
+        System.out.print(" ");
+      }
+      System.out.println(node.toString() + " " + node.getTextRange().toString());
+      printAST(node.getFirstChildNode(), indent + 2);
+      node = node.getTreeNext();
+    }
+  }
+
 }
