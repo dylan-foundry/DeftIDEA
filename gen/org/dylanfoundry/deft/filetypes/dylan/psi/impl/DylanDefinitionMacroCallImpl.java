@@ -24,18 +24,6 @@ public class DylanDefinitionMacroCallImpl extends DylanDefinitionImpl implements
 
   @Override
   @Nullable
-  public DylanBracketedFragment getBracketedFragment() {
-    return findChildByClass(DylanBracketedFragment.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanConstantFragment getConstantFragment() {
-    return findChildByClass(DylanConstantFragment.class);
-  }
-
-  @Override
-  @Nullable
   public DylanDefineBodyWord getDefineBodyWord() {
     return findChildByClass(DylanDefineBodyWord.class);
   }
@@ -54,38 +42,14 @@ public class DylanDefinitionMacroCallImpl extends DylanDefinitionImpl implements
 
   @Override
   @Nullable
-  public DylanFunctionMacroCall getFunctionMacroCall() {
-    return findChildByClass(DylanFunctionMacroCall.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanHashWord getHashWord() {
-    return findChildByClass(DylanHashWord.class);
+  public DylanListFragment getListFragment() {
+    return findChildByClass(DylanListFragment.class);
   }
 
   @Override
   @Nullable
   public DylanModifiers getModifiers() {
     return findChildByClass(DylanModifiers.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanOperator getOperator() {
-    return findChildByClass(DylanOperator.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanStatement getStatement() {
-    return findChildByClass(DylanStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanVariableName getVariableName() {
-    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

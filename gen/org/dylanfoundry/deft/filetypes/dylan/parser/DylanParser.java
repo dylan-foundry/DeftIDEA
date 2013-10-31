@@ -386,6 +386,9 @@ public class DylanParser implements PsiParser {
     else if (root_ == LIBRARY_DEFINITION_TAIL) {
       result_ = library_definition_tail(builder_, level_ + 1);
     }
+    else if (root_ == LIST_FRAGMENT) {
+      result_ = list_fragment(builder_, level_ + 1);
+    }
     else if (root_ == LIST_STYLE_DEFINITION_RULE) {
       result_ = list_style_definition_rule(builder_, level_ + 1);
     }
@@ -5864,18 +5867,20 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // statement non_statement_list_fragment? | non_statement_list_fragment
-  static boolean list_fragment(PsiBuilder builder_, int level_) {
+  public static boolean list_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "list_fragment")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<list fragment>");
     result_ = list_fragment_0(builder_, level_ + 1);
     if (!result_) result_ = non_statement_list_fragment(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
+    if (result_) {
+      marker_.done(LIST_FRAGMENT);
     }
     else {
-      marker_.drop();
+      marker_.rollbackTo();
     }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
     return result_;
   }
 

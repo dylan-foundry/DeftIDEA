@@ -20,26 +20,8 @@ public class DylanDefinitionGenericDefinerImpl extends DylanDefinitionImpl imple
 
   @Override
   @Nullable
-  public DylanBracketedFragment getBracketedFragment() {
-    return findChildByClass(DylanBracketedFragment.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanConstantFragment getConstantFragment() {
-    return findChildByClass(DylanConstantFragment.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanFunctionMacroCall getFunctionMacroCall() {
-    return findChildByClass(DylanFunctionMacroCall.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanHashWord getHashWord() {
-    return findChildByClass(DylanHashWord.class);
+  public DylanListFragment getListFragment() {
+    return findChildByClass(DylanListFragment.class);
   }
 
   @Override
@@ -50,20 +32,8 @@ public class DylanDefinitionGenericDefinerImpl extends DylanDefinitionImpl imple
 
   @Override
   @Nullable
-  public DylanOperator getOperator() {
-    return findChildByClass(DylanOperator.class);
-  }
-
-  @Override
-  @Nullable
-  public DylanStatement getStatement() {
-    return findChildByClass(DylanStatement.class);
-  }
-
-  @Override
-  @NotNull
-  public List<DylanVariableName> getVariableNameList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, DylanVariableName.class);
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

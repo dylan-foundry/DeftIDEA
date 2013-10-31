@@ -491,6 +491,10 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitListFragment(@NotNull DylanListFragment o) {
+    visitPsiElement(o);
+  }
+
   public void visitListStyleDefinitionRule(@NotNull DylanListStyleDefinitionRule o) {
     visitPsiElement(o);
   }

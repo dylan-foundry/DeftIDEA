@@ -11,12 +11,6 @@ public interface DylanDefinitionMacroCall extends DylanDefinition {
   DylanBodyFragment getBodyFragment();
 
   @Nullable
-  DylanBracketedFragment getBracketedFragment();
-
-  @Nullable
-  DylanConstantFragment getConstantFragment();
-
-  @Nullable
   DylanDefineBodyWord getDefineBodyWord();
 
   @Nullable
@@ -26,21 +20,9 @@ public interface DylanDefinitionMacroCall extends DylanDefinition {
   DylanDefinitionTail getDefinitionTail();
 
   @Nullable
-  DylanFunctionMacroCall getFunctionMacroCall();
-
-  @Nullable
-  DylanHashWord getHashWord();
+  DylanListFragment getListFragment();
 
   @Nullable
   DylanModifiers getModifiers();
-
-  @Nullable
-  DylanOperator getOperator();
-
-  @Nullable
-  DylanStatement getStatement();
-
-  @Nullable
-  DylanVariableName getVariableName();
 
 }

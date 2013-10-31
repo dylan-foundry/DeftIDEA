@@ -10,28 +10,13 @@ import com.intellij.navigation.ItemPresentation;
 public interface DylanDefinitionCopyDownMethodDefiner extends DylanDefinition {
 
   @Nullable
-  DylanBracketedFragment getBracketedFragment();
-
-  @Nullable
-  DylanConstantFragment getConstantFragment();
-
-  @Nullable
-  DylanFunctionMacroCall getFunctionMacroCall();
-
-  @Nullable
-  DylanHashWord getHashWord();
+  DylanListFragment getListFragment();
 
   @Nullable
   DylanModifiers getModifiers();
 
   @Nullable
-  DylanOperator getOperator();
-
-  @Nullable
-  DylanStatement getStatement();
-
-  @NotNull
-  List<DylanVariableName> getVariableNameList();
+  DylanVariableName getVariableName();
 
   String getName();
 
