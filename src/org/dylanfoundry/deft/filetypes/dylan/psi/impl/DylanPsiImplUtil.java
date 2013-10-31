@@ -108,7 +108,12 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionCopyDownMethodDefiner element) {
-    return element.getText();
+    if ((element.getVariableName() != null) && (element.getListFragment() != null)) {
+      return cleanText(element.getVariableName().getText() + element.getListFragment().getText());
+    } else if (element.getVariableName() != null) {
+      return cleanText(element.getVariableName().getText());
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionCopyDownMethodDefiner element, @NotNull String newName) {
@@ -120,7 +125,7 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionCopyDownMethodDefiner element) {
-    return element;
+    return element.getVariableName();
   }
 
   public static String getName(DylanDefinitionDomainDefiner element) {
@@ -164,7 +169,12 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionGenericDefiner element) {
-    return cleanText(element.getText());
+    if ((element.getVariableName() != null) && (element.getListFragment() != null)) {
+      return cleanText(element.getVariableName().getText() + element.getListFragment().getText());
+    } else if (element.getVariableName() != null) {
+      return cleanText(element.getVariableName().getText());
+    }
+    return null;
   }
 
   public static PsiElement setName(DylanDefinitionGenericDefiner element, @NotNull String newName) {
@@ -172,7 +182,7 @@ public class DylanPsiImplUtil {
   }
 
   public static PsiElement getNameIdentifier(DylanDefinitionGenericDefiner element) {
-    return element;
+    return element.getVariableName();
   }
 
   public static Icon getPresentationIcon(DylanDefinitionGenericDefiner element) {
