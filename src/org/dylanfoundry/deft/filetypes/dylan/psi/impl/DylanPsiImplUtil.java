@@ -373,11 +373,7 @@ public class DylanPsiImplUtil {
   }
 
   static String cleanText(String text) {
-    if (text.startsWith("define ")) {
-      text = text.substring(7, text.length());
-    }
     // collapse all whitespace
-    text = text.replaceAll("\\s+", " ");
-    return text;
+    return text.replaceAll("\\s+", " ");
   }
 }
