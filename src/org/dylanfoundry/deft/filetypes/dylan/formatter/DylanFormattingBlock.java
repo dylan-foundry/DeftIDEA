@@ -75,6 +75,12 @@ public class DylanFormattingBlock implements ASTBlock {
     DylanTypes.DEFINITION_VARIABLE_DEFINER,
     DylanTypes.DEFINITION_MACRO_CALL
   );
+  private static final TokenSet ourListElementTypes = TokenSet.create(
+    DylanTypes.ARGUMENT,
+    DylanTypes.REQUIRED_PARAMETER,
+    DylanTypes.NEXT_REST_KEY_PARAMETER_LIST,
+    DylanTypes.VARIABLE
+  );
 
   public DylanFormattingBlock(final DylanFormattingBlock parent,
                               final ASTNode node,
@@ -149,6 +155,10 @@ public class DylanFormattingBlock implements ASTBlock {
       }
     }
 
+    if ((childType == DylanTypes.PARAMETERS) || (childType == DylanTypes.ARGUMENTS) || (childType == DylanTypes.VALUES_LIST)) {
+      childAlignment = getAlignmentForChildren();
+    }
+
     return new DylanFormattingBlock(this, child, childAlignment, childIndent, wrap, myContext);
   }
 
@@ -191,6 +201,9 @@ public class DylanFormattingBlock implements ASTBlock {
 
   @Nullable
   private Alignment getChildAlignment() {
+    if (ourListElementTypes.contains(_node.getElementType())) {
+      return getAlignmentForChildren();
+    }
     return null;
   }
 
@@ -226,5 +239,12 @@ public class DylanFormattingBlock implements ASTBlock {
   @Override
   public boolean isLeaf() {
     return _node.getFirstChildNode() == null;
+  }
+
+  public Alignment getAlignmentForChildren() {
+    if (myChildAlignment == null) {
+      myChildAlignment = Alignment.createAlignment();
+    }
+    return myChildAlignment;
   }
 }
