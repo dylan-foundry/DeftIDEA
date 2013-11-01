@@ -22,6 +22,8 @@ import com.intellij.util.indexing.FileBasedIndex;
 import org.dylanfoundry.deft.filetypes.dylan.DylanFileType;
 
 public class DylanIndexUtil {
+  public static final int DYLAN_BASE_INDEX_VERSION = 1;
+
   public static final FileBasedIndex.InputFilter DYLAN_INPUT_FILTER = new FileBasedIndex.InputFilter() {
     @Override
     public boolean acceptInput(VirtualFile file) {

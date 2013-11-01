@@ -36,7 +36,7 @@ import java.util.*;
 
 public class DylanSymbolIndex extends ScalarIndexExtension<String> {
   public static final ID<String, Void> DYLAN_SYMBOL_INDEX = ID.create("DylanSymbolIndex");
-  private static final int INDEX_VERSION = 4;
+  private static final int INDEX_VERSION = DylanIndexUtil.DYLAN_BASE_INDEX_VERSION + 1;
   private DataIndexer<String, Void, FileContent> myDataIndexer = new MyDataIndexer();
 
   @NotNull
