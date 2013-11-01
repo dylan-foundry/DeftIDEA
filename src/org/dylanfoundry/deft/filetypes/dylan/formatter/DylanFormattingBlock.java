@@ -46,8 +46,15 @@ public class DylanFormattingBlock implements ASTBlock {
 
   private static final TokenSet BLOCK_TOKEN_SET = TokenSet.create(
     DylanTypes.IF_STATEMENT,
+    DylanTypes.ELSE_STATEMENT,
+    DylanTypes.ELSEIF_STATEMENT,
     DylanTypes.BEGIN_STATEMENT,
+    DylanTypes.BLOCK_STATEMENT,
+    DylanTypes.AFTERWARDS_STATEMENT,
+    DylanTypes.CLEANUP_STATEMENT,
+    DylanTypes.EXCEPTION_STATEMENT,
     DylanTypes.FOR_STATEMENT,
+    DylanTypes.FINALLY_CLAUSE,
     DylanTypes.METHOD_STATEMENT,
     DylanTypes.UNLESS_STATEMENT,
     DylanTypes.UNTIL_STATEMENT,
@@ -138,8 +145,10 @@ public class DylanFormattingBlock implements ASTBlock {
     Indent childIndent = Indent.getNoneIndent();
     Alignment childAlignment = null;
 
-    if ((BLOCK_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {
-      childIndent = Indent.getNormalIndent();
+    if (BLOCK_TOKEN_SET.contains(parentType)) {
+      if ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT)) {
+        childIndent = Indent.getNormalIndent();
+      }
     }
 
     if ((DEFINITION_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {
@@ -174,11 +183,6 @@ public class DylanFormattingBlock implements ASTBlock {
     if ((grandParentType == DylanTypes.SLOT_OPTIONS) || (grandParentType == DylanTypes.INIT_EXPRESSION) ||
         (grandParentType == DylanTypes.INIT_ARG_OPTIONS) || (grandParentType == DylanTypes.INHERITED_OPTIONS)) {
       childIndent = Indent.getNormalIndent();
-    }
-
-    if (childType == DylanTypes.COMMENT) {
-      // FIXME: this doesn't look right because of the assertion in getIndent, but it works.
-      childIndent = null; // Don't change indentation for comments
     }
 
     return new DylanFormattingBlock(this, child, childAlignment, childIndent, wrap, myContext);
