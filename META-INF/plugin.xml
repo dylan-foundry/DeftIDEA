@@ -21,6 +21,7 @@
     <li>"define table" is now supported.</li>
     <li>Added error recovery to the Dylan parser.</li>
     <li>Live templating</li>
+    <li>Start of code formatting and indenting.</li>
   </ul>
   <p>0.3</p>
   <ul>
