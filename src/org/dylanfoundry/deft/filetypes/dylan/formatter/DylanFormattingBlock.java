@@ -159,6 +159,28 @@ public class DylanFormattingBlock implements ASTBlock {
       childAlignment = getAlignmentForChildren();
     }
 
+    if (parentType == DylanTypes.DEFINITION_CLASS_DEFINER) {
+      if (childType == DylanTypes.SLOT_DECLARATIONS) {
+        childIndent = Indent.getNormalIndent();
+      }
+      if (childType == DylanTypes.SUPERS) {
+        childAlignment = getAlignmentForChildren();
+        childIndent = Indent.getSpaceIndent(4);
+      }
+      if (childType == DylanTypes.LPAREN) {
+        childIndent = Indent.getSpaceIndent(4);
+      }
+    }
+    if ((grandParentType == DylanTypes.SLOT_OPTIONS) || (grandParentType == DylanTypes.INIT_EXPRESSION) ||
+        (grandParentType == DylanTypes.INIT_ARG_OPTIONS) || (grandParentType == DylanTypes.INHERITED_OPTIONS)) {
+      childIndent = Indent.getNormalIndent();
+    }
+
+    if (childType == DylanTypes.COMMENT) {
+      // FIXME: this doesn't look right because of the assertion in getIndent, but it works.
+      childIndent = null; // Don't change indentation for comments
+    }
+
     return new DylanFormattingBlock(this, child, childAlignment, childIndent, wrap, myContext);
   }
 
