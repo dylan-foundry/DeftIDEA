@@ -623,10 +623,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNonStatementBodyFragment(@NotNull DylanNonStatementBodyFragment o) {
-    visitPsiElement(o);
-  }
-
   public void visitNondefiningBeginWordToken(@NotNull DylanNondefiningBeginWordToken o) {
     visitPsiElement(o);
   }

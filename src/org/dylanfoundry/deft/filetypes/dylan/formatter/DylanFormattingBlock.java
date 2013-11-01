@@ -150,6 +150,9 @@ public class DylanFormattingBlock implements ASTBlock {
         childIndent = Indent.getNormalIndent();
       }
     }
+    if ((grandParentType == DylanTypes.MACRO_STATEMENT) && (parentType == DylanTypes.BODY_FRAGMENT) && (childType == DylanTypes.BODY_FRAGMENT)) {
+      childIndent = Indent.getNormalIndent();
+    }
 
     if ((DEFINITION_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {
       childIndent = Indent.getNormalIndent();

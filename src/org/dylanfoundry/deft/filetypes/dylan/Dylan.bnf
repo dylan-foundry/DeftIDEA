@@ -188,7 +188,7 @@ list_fragment ::= statement non_statement_list_fragment? | non_statement_list_fr
 
 basic_fragment ::= statement non_statement_basic_fragment? | non_statement_basic_fragment
 
-non_statement_body_fragment ::=
+private non_statement_body_fragment ::=
       definition semicolon_fragment?
     | local_declaration semicolon_fragment?
     | simple_fragment body_fragment?

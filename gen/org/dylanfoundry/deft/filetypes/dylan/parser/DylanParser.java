@@ -485,9 +485,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == NON_STATEMENT_BASIC_FRAGMENT) {
       result_ = non_statement_basic_fragment(builder_, level_ + 1);
     }
-    else if (root_ == NON_STATEMENT_BODY_FRAGMENT) {
-      result_ = non_statement_body_fragment(builder_, level_ + 1);
-    }
     else if (root_ == NONDEFINING_BEGIN_WORD_TOKEN) {
       result_ = nondefining_begin_word_token(builder_, level_ + 1);
     }
@@ -6866,23 +6863,21 @@ public class DylanParser implements PsiParser {
   //     | simple_fragment body_fragment?
   //     | COMMA body_fragment?
   //     | semicolon_fragment?
-  public static boolean non_statement_body_fragment(PsiBuilder builder_, int level_) {
+  static boolean non_statement_body_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "non_statement_body_fragment")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<non statement body fragment>");
     result_ = non_statement_body_fragment_0(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment_1(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment_2(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment_3(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment_4(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(NON_STATEMENT_BODY_FRAGMENT);
-    }
-    else {
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 

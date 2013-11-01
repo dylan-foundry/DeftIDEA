@@ -166,7 +166,6 @@ public interface DylanTypes {
   IElementType NON_BRACKETING_PUNCTUATION = new DylanElementType("NON_BRACKETING_PUNCTUATION");
   IElementType NON_END_CORE_WORD = new DylanElementType("NON_END_CORE_WORD");
   IElementType NON_STATEMENT_BASIC_FRAGMENT = new DylanElementType("NON_STATEMENT_BASIC_FRAGMENT");
-  IElementType NON_STATEMENT_BODY_FRAGMENT = new DylanElementType("NON_STATEMENT_BODY_FRAGMENT");
   IElementType NUMERIC_CLAUSES = new DylanElementType("NUMERIC_CLAUSES");
   IElementType OPERAND = new DylanElementType("OPERAND");
   IElementType OPERAND_EXPR = new DylanElementType("OPERAND_EXPR");
@@ -860,9 +859,6 @@ public interface DylanTypes {
       }
       else if (type == NON_STATEMENT_BASIC_FRAGMENT) {
         return new DylanNonStatementBasicFragmentImpl(node);
-      }
-      else if (type == NON_STATEMENT_BODY_FRAGMENT) {
-        return new DylanNonStatementBodyFragmentImpl(node);
       }
       else if (type == NUMERIC_CLAUSES) {
         return new DylanNumericClausesImpl(node);
