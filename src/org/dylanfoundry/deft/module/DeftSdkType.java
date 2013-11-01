@@ -138,7 +138,8 @@ public class DeftSdkType extends SdkType {
 
   @Override
   public void setupSdkPaths(@NotNull final Sdk sdk) {
-    configureSdkPaths(sdk);
+    // Disable this for now.
+    // configureSdkPaths(sdk);
   }
 
   protected static void configureSdkPaths(@NotNull final Sdk sdk) {
