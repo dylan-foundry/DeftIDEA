@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.dylanfoundry.deft.filetypes.dylan;
+package org.dylanfoundry.deft.filetypes.dylan.highlight;
 
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
