@@ -79,10 +79,17 @@ public class DylanSyntaxAnnotator implements Annotator {
       DylanDefinitionVariableDefiner variable = (DylanDefinitionVariableDefiner) element;
       highlightModifiers(variable.getModifiers(), holder);
       highlightDefinerType(variable, DylanTypes.VARIABLE_T, holder);
+    } else if (element instanceof DylanSlotSpec) {
+      DylanSlotSpec slotSpec = (DylanSlotSpec) element;
+      highlightModifiers(slotSpec.getAllocation(), holder);
+      for (DylanSlotAdjective slotAdjective : slotSpec.getSlotAdjectiveList()) {
+        highlightModifiers(slotAdjective, holder);
+      }
+      highlightDefinerType(slotSpec, DylanTypes.SLOT, holder);
     }
   }
 
-  private static final void highlightModifiers(DylanModifiers modifiers, @NotNull AnnotationHolder holder) {
+  private static final void highlightModifiers(PsiElement modifiers, @NotNull AnnotationHolder holder) {
     if (modifiers != null) {
       Annotation annotation = holder.createInfoAnnotation(modifiers, null);
       annotation.setTextAttributes(DylanSyntaxHighlighterColors.MODIFIERS);
