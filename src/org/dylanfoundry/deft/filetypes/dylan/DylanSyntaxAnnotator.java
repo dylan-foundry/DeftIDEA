@@ -21,7 +21,7 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.highlight.DylanSyntaxHighlighterColors;
-import org.dylanfoundry.deft.filetypes.dylan.psi.DylanVariableName;
+import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 public class DylanSyntaxAnnotator implements Annotator {
@@ -38,6 +38,34 @@ public class DylanSyntaxAnnotator implements Annotator {
       } else if (name.startsWith("*") && name.endsWith("*")) {
         annotation.setTextAttributes(DylanSyntaxHighlighterColors.VARIABLE);
       }
+    } else if (element instanceof DylanDefinitionClassDefiner) {
+      DylanDefinitionClassDefiner cls = (DylanDefinitionClassDefiner) element;
+      highlightModifiers(cls.getModifiers(), holder);
+    } else if (element instanceof DylanDefinitionConstantDefiner) {
+      DylanDefinitionConstantDefiner constant = (DylanDefinitionConstantDefiner) element;
+      highlightModifiers(constant.getModifiers(), holder);
+    } else if (element instanceof DylanDefinitionDomainDefiner) {
+      DylanDefinitionDomainDefiner domain = (DylanDefinitionDomainDefiner) element;
+      highlightModifiers(domain.getModifiers(), holder);
+    } else if (element instanceof DylanDefinitionFunctionDefiner) {
+      DylanDefinitionFunctionDefiner function = (DylanDefinitionFunctionDefiner) element;
+      highlightModifiers(function.getModifiers(), holder);
+    } else if (element instanceof DylanDefinitionGenericDefiner) {
+      DylanDefinitionGenericDefiner generic = (DylanDefinitionGenericDefiner) element;
+      highlightModifiers(generic.getModifiers(), holder);
+    } else if (element instanceof DylanDefinitionMethodDefiner) {
+      DylanDefinitionMethodDefiner method = (DylanDefinitionMethodDefiner) element;
+      highlightModifiers(method.getModifiers(), holder);
+    } else if (element instanceof DylanDefinitionVariableDefiner) {
+      DylanDefinitionVariableDefiner variable = (DylanDefinitionVariableDefiner) element;
+      highlightModifiers(variable.getModifiers(), holder);
+    }
+  }
+
+  private static final void highlightModifiers(DylanModifiers modifiers, @NotNull AnnotationHolder holder) {
+    if (modifiers != null) {
+      Annotation annotation = holder.createInfoAnnotation(modifiers, null);
+      annotation.setTextAttributes(DylanSyntaxHighlighterColors.MODIFIERS);
     }
   }
 }

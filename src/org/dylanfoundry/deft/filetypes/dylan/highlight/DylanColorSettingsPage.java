@@ -52,6 +52,7 @@ public class DylanColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Brace", DylanSyntaxHighlighterColors.BRACE),
             new AttributesDescriptor("Semicolon", DylanSyntaxHighlighterColors.SEMICOLON),
             new AttributesDescriptor("Dot / Period", DylanSyntaxHighlighterColors.DOT),
+            new AttributesDescriptor("Modifiers", DylanSyntaxHighlighterColors.MODIFIERS),
     };
 
     @Nullable
@@ -79,7 +80,7 @@ public class DylanColorSettingsPage implements ColorSettingsPage {
                "\n" +
                "//// A hack at some scale utilities.\n" +
                "\n" +
-               "define method cycle (val, #rest vals) => (cycle :: <list>)\n" +
+               "define sealed method cycle (val, #rest vals) => (cycle :: <list>)\n" +
                "  let l = pair(val, as(<list>, vals));\n" +
                "  for (cursor = l then cursor.tail, until: cursor.tail == #())\n" +
                "  finally\n" +

@@ -46,6 +46,7 @@ public class DylanSyntaxHighlighterColors {
   public static final String DYLAN_BRACE = "DYLAN_BRACE";
   public static final String DYLAN_SEMICOLON = "DYLAN_SEMICOLON";
   public static final String DYLAN_DOT = "DYLAN_DOT";
+  public static final String DYLAN_MODIFIERS = "DYLAN_MODIFIERS";
 
 
   public static final TextAttributesKey SEPARATOR =
@@ -90,6 +91,8 @@ public class DylanSyntaxHighlighterColors {
     createTextAttributesKey(DYLAN_SEMICOLON, DefaultLanguageHighlighterColors.SEMICOLON);
   public static final TextAttributesKey DOT =
     createTextAttributesKey(DYLAN_DOT, DefaultLanguageHighlighterColors.DOT);
+  public static final TextAttributesKey MODIFIERS =
+    createTextAttributesKey(DYLAN_MODIFIERS, DefaultLanguageHighlighterColors.METADATA);
 
   public static final TextAttributesKey BAD_CHARACTER =
     createTextAttributesKey(DYLAN_BAD_CHARACTER, HighlighterColors.BAD_CHARACTER);
