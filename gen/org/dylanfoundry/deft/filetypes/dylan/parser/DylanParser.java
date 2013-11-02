@@ -6267,7 +6267,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // begin_word body_fragment? end_clause
+  // begin_word variable_name? bracketed_fragment? body? end_clause
   public static boolean macro_statement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "macro_statement")) return false;
     boolean result_ = false;
@@ -6275,6 +6275,8 @@ public class DylanParser implements PsiParser {
     enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<macro statement>");
     result_ = begin_word(builder_, level_ + 1);
     result_ = result_ && macro_statement_1(builder_, level_ + 1);
+    result_ = result_ && macro_statement_2(builder_, level_ + 1);
+    result_ = result_ && macro_statement_3(builder_, level_ + 1);
     result_ = result_ && end_clause(builder_, level_ + 1);
     if (result_) {
       marker_.done(MACRO_STATEMENT);
@@ -6286,10 +6288,24 @@ public class DylanParser implements PsiParser {
     return result_;
   }
 
-  // body_fragment?
+  // variable_name?
   private static boolean macro_statement_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "macro_statement_1")) return false;
-    body_fragment(builder_, level_ + 1);
+    variable_name(builder_, level_ + 1);
+    return true;
+  }
+
+  // bracketed_fragment?
+  private static boolean macro_statement_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_statement_2")) return false;
+    bracketed_fragment(builder_, level_ + 1);
+    return true;
+  }
+
+  // body?
+  private static boolean macro_statement_3(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "macro_statement_3")) return false;
+    body(builder_, level_ + 1);
     return true;
   }
 

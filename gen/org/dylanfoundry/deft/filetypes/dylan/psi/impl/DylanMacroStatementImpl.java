@@ -24,14 +24,26 @@ public class DylanMacroStatementImpl extends DylanStatementImpl implements Dylan
 
   @Override
   @Nullable
-  public DylanBodyFragment getBodyFragment() {
-    return findChildByClass(DylanBodyFragment.class);
+  public DylanBody getBody() {
+    return findChildByClass(DylanBody.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanBracketedFragment getBracketedFragment() {
+    return findChildByClass(DylanBracketedFragment.class);
   }
 
   @Override
   @NotNull
   public DylanEndClause getEndClause() {
     return findNotNullChildByClass(DylanEndClause.class);
+  }
+
+  @Override
+  @Nullable
+  public DylanVariableName getVariableName() {
+    return findChildByClass(DylanVariableName.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

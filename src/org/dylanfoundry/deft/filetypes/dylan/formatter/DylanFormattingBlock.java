@@ -61,7 +61,8 @@ public class DylanFormattingBlock implements ASTBlock {
     DylanTypes.WHEN_STATEMENT,
     DylanTypes.WHILE_STATEMENT,
     DylanTypes.SELECT_STATEMENT,
-    DylanTypes.CASE_STATEMENT
+    DylanTypes.CASE_STATEMENT,
+    DylanTypes.MACRO_STATEMENT
   );
 
   private static final TokenSet DEFINITION_TOKEN_SET = TokenSet.create(
@@ -149,9 +150,6 @@ public class DylanFormattingBlock implements ASTBlock {
       if ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT)) {
         childIndent = Indent.getNormalIndent();
       }
-    }
-    if ((grandParentType == DylanTypes.MACRO_STATEMENT) && (parentType == DylanTypes.BODY_FRAGMENT) && (childType == DylanTypes.BODY_FRAGMENT)) {
-      childIndent = Indent.getNormalIndent();
     }
 
     if ((DEFINITION_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {

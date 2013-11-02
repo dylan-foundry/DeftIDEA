@@ -11,9 +11,15 @@ public interface DylanMacroStatement extends DylanStatement {
   DylanBeginWord getBeginWord();
 
   @Nullable
-  DylanBodyFragment getBodyFragment();
+  DylanBody getBody();
+
+  @Nullable
+  DylanBracketedFragment getBracketedFragment();
 
   @NotNull
   DylanEndClause getEndClause();
+
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

@@ -654,7 +654,9 @@ statement ::=
     | while_statement
     | macro_statement
 
-macro_statement ::= begin_word body_fragment? end_clause
+// This won't parse any kind of macro statement, but only the ones we support at the moment. When custom macro support
+// is added this has to be changed.
+macro_statement ::= begin_word variable_name? bracketed_fragment? body? end_clause
 
 end_clause ::= END begin_word?
 
