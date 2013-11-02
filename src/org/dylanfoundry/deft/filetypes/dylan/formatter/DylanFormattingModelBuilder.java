@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 
 public class DylanFormattingModelBuilder implements FormattingModelBuilder {
-  private static final boolean DUMP_FORMATTING_AST = true;
+  private static final boolean DUMP_FORMATTING_AST = false;
 
   @NotNull
   public FormattingModel createModel(@NotNull PsiElement element,
