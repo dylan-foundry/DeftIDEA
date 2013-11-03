@@ -93,6 +93,11 @@ public class DylanSyntaxAnnotator implements Annotator {
       for (DylanSlotAdjective slotAdjective : slotSpec.getSlotAdjectiveList()) {
         highlightModifiers(slotAdjective, holder);
       }
+      if (slotSpec.getSlotOptions() != null) {
+        for (DylanSlotOption slotOption : slotSpec.getSlotOptions().getSlotOptionList()) {
+          highlightSlotOptionKeyword(slotOption, holder);
+        }
+      }
       highlightDefinerType(slotSpec, DylanTypes.SLOT, holder);
     }
   }
@@ -109,6 +114,14 @@ public class DylanSyntaxAnnotator implements Annotator {
     if (node != null) {
       Annotation annotation = holder.createInfoAnnotation(node, null);
       annotation.setTextAttributes(DylanSyntaxHighlighterColors.KEYWORD);
+    }
+  }
+
+  private static final void highlightSlotOptionKeyword(PsiElement element, @NotNull AnnotationHolder holder) {
+    ASTNode node = element.getNode().findChildByType(DylanTypes.KEYWORD);
+    if (node != null) {
+      Annotation annotation = holder.createInfoAnnotation(node, null);
+      annotation.setTextAttributes(DylanSyntaxHighlighterColors.MODIFIERS);
     }
   }
 }
