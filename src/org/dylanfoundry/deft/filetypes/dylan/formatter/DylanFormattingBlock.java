@@ -169,9 +169,22 @@ public class DylanFormattingBlock implements ASTBlock {
       childAlignment = getAlignmentForChildren();
     }
 
-    if ((parentType == DylanTypes.METHOD_DEFINITION) && ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT))) {
-      // Use compact style for now
-      childIndent = Indent.getNormalIndent();
+    if (parentType == DylanTypes.METHOD_DEFINITION) {
+      if ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT)) {
+        childIndent = Indent.getNormalIndent(true);
+      }
+      if ((childType == DylanTypes.METHOD_DEFINITION_TAIL)) {
+        childIndent = Indent.getSpaceIndent(0, true); // There is no getNoneIndent(bool relativeToParent);
+      }
+
+    }
+    if (parentType == DylanTypes.LOCAL_METHODS) {
+      if (childType == DylanTypes.METHOD_DEFINITION) {
+        childIndent = Indent.getNormalIndent();
+      }
+    }
+    if (childType == DylanTypes.METHOD_DEFINITION) {
+      childAlignment = getAlignmentForChildren();
     }
 
     if (parentType == DylanTypes.DEFINITION_CLASS_DEFINER) {
