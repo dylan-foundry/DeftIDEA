@@ -62,11 +62,19 @@ public class DylanSyntaxAnnotator implements Annotator {
       DylanDefinitionGenericDefiner generic = (DylanDefinitionGenericDefiner) element;
       highlightModifiers(generic.getModifiers(), holder);
       highlightDefinerType(generic, DylanTypes.GENERIC, holder);
+    } else if (element instanceof DylanDefinitionLibraryDefiner) {
+      DylanDefinitionLibraryDefiner library = (DylanDefinitionLibraryDefiner) element;
+      highlightDefinerType(library, DylanTypes.LIBRARY, holder);
+      highlightDefinerType(library.getLibraryDefinitionTail(), DylanTypes.LIBRARY, holder);
     } else if (element instanceof DylanDefinitionMethodDefiner) {
       DylanDefinitionMethodDefiner method = (DylanDefinitionMethodDefiner) element;
       highlightModifiers(method.getModifiers(), holder);
       highlightDefinerType(method, DylanTypes.METHOD, holder);
       highlightDefinerType(method.getMethodDefinitionTail(), DylanTypes.METHOD, holder);
+    } else if (element instanceof DylanDefinitionModuleDefiner) {
+      DylanDefinitionModuleDefiner module = (DylanDefinitionModuleDefiner) element;
+      highlightDefinerType(module, DylanTypes.MODULE, holder);
+      highlightDefinerType(module.getModuleDefinitionTail(), DylanTypes.MODULE, holder);
     } else if (element instanceof DylanDefinitionSuiteDefiner) {
       DylanDefinitionSuiteDefiner suite = (DylanDefinitionSuiteDefiner) element;
       highlightDefinerType(suite, DylanTypes.SUITE, holder);
