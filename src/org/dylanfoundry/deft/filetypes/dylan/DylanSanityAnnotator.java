@@ -38,6 +38,9 @@ public class DylanSanityAnnotator implements Annotator {
     } else if (element instanceof DylanDefinitionFunctionDefiner) {
       DylanDefinitionFunctionDefiner function = (DylanDefinitionFunctionDefiner) element;
       validateFunction(function, holder);
+    } else if (element instanceof DylanDefinitionGenericDefiner) {
+      DylanDefinitionGenericDefiner generic = (DylanDefinitionGenericDefiner) element;
+      validateGeneric(generic, holder);
     } else if (element instanceof DylanDefinitionMethodDefiner) {
       DylanDefinitionMethodDefiner method = (DylanDefinitionMethodDefiner) element;
       validateMethod(method, holder);
@@ -72,6 +75,11 @@ public class DylanSanityAnnotator implements Annotator {
     validateInlineModifiers(function.getModifiers(), holder);
     suggestBooleanReturnNaming(function.getVariableName(), function.getParameterList(), holder);
     validateReturnValueNotType(function.getParameterList(), holder);
+  }
+
+  private void validateGeneric(@NotNull DylanDefinitionGenericDefiner generic, @NotNull AnnotationHolder holder) {
+    validateModifiers(generic.getModifiers(), FUNCTION_MODIFIERS, holder);
+    validateInlineModifiers(generic.getModifiers(), holder);
   }
 
   private void validateMethod(@NotNull DylanDefinitionMethodDefiner method, @NotNull AnnotationHolder holder) {
