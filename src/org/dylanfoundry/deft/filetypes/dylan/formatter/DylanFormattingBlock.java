@@ -169,6 +169,11 @@ public class DylanFormattingBlock implements ASTBlock {
       childAlignment = getAlignmentForChildren();
     }
 
+    if ((parentType == DylanTypes.METHOD_DEFINITION) && ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT))) {
+      // Use compact style for now
+      childIndent = Indent.getNormalIndent();
+    }
+
     if (parentType == DylanTypes.DEFINITION_CLASS_DEFINER) {
       if (childType == DylanTypes.SLOT_DECLARATIONS) {
         childIndent = Indent.getNormalIndent();
