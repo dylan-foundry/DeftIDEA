@@ -99,6 +99,9 @@ public class DylanSyntaxAnnotator implements Annotator {
         }
       }
       highlightDefinerType(slotSpec, DylanTypes.SLOT, holder);
+    } else if (element instanceof DylanSuiteComponent) {
+      highlightDefinerType(element, DylanTypes.SUITE, holder);
+      highlightDefinerType(element, DylanTypes.TEST, holder);
     }
   }
 
