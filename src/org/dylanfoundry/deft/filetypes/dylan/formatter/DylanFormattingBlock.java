@@ -152,7 +152,7 @@ public class DylanFormattingBlock implements ASTBlock {
       }
     }
 
-    if ((DEFINITION_TOKEN_SET.contains(parentType)) && (childType == DylanTypes.BODY)) {
+    if ((DEFINITION_TOKEN_SET.contains(parentType)) && ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT))) {
       childIndent = Indent.getNormalIndent();
     }
 
