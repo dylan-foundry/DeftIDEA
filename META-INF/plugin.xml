@@ -5,7 +5,7 @@
     <p>This plugin provides support for the <a href="http://opendylan.org/">Dylan</a> programming language.</p>
   ]]></description>
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
-  <version>0.3</version>
+  <version>0.4</version>
   <depends>com.intellij.modules.lang</depends>
   <changes><![CDATA[
   <p>0.4</p>
