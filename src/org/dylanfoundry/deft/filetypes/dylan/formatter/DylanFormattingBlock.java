@@ -169,7 +169,7 @@ public class DylanFormattingBlock implements ASTBlock {
       childAlignment = getAlignmentForChildren();
     }
 
-    if (parentType == DylanTypes.METHOD_DEFINITION) {
+    if ((parentType == DylanTypes.METHOD_DEFINITION) || (parentType == DylanTypes.METHOD_STATEMENT)) {
       if ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT)) {
         childIndent = Indent.getNormalIndent(true);
       }
@@ -201,6 +201,14 @@ public class DylanFormattingBlock implements ASTBlock {
     }
     if ((grandParentType == DylanTypes.SLOT_OPTIONS) || (grandParentType == DylanTypes.INIT_EXPRESSION) ||
         (grandParentType == DylanTypes.INIT_ARG_OPTIONS) || (grandParentType == DylanTypes.INHERITED_OPTIONS)) {
+      childIndent = Indent.getNormalIndent();
+    }
+
+    if ((grandParentType == DylanTypes.LOCAL_DECLARATION) && (parentType == DylanTypes.BINDINGS) && (childType == DylanTypes.EQUAL)) {
+      childIndent = Indent.getNormalIndent();
+    }
+
+    if ((parentType == DylanTypes.LOCAL_DECLARATION) && (childType == DylanTypes.EQUAL)) {
       childIndent = Indent.getNormalIndent();
     }
 
