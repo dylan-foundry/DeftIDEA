@@ -43,50 +43,50 @@ public class DylanSyntaxAnnotator implements Annotator {
     } else if (element instanceof DylanDefinitionClassDefiner) {
       DylanDefinitionClassDefiner cls = (DylanDefinitionClassDefiner) element;
       highlightModifiers(cls.getModifiers(), holder);
-      highlightDefinerType(cls, DylanTypes.CLASS, holder);
-      highlightDefinerType(cls.getClassDefinitionTail(), DylanTypes.CLASS, holder);
+      highlightKeyword(cls, DylanTypes.CLASS, holder);
+      highlightKeyword(cls.getClassDefinitionTail(), DylanTypes.CLASS, holder);
     } else if (element instanceof DylanDefinitionConstantDefiner) {
       DylanDefinitionConstantDefiner constant = (DylanDefinitionConstantDefiner) element;
       highlightModifiers(constant.getModifiers(), holder);
-      highlightDefinerType(constant, DylanTypes.CONSTANT_T, holder);
+      highlightKeyword(constant, DylanTypes.CONSTANT_T, holder);
     } else if (element instanceof DylanDefinitionDomainDefiner) {
       DylanDefinitionDomainDefiner domain = (DylanDefinitionDomainDefiner) element;
       highlightModifiers(domain.getModifiers(), holder);
-      highlightDefinerType(domain, DylanTypes.DOMAIN, holder);
+      highlightKeyword(domain, DylanTypes.DOMAIN, holder);
     } else if (element instanceof DylanDefinitionFunctionDefiner) {
       DylanDefinitionFunctionDefiner function = (DylanDefinitionFunctionDefiner) element;
       highlightModifiers(function.getModifiers(), holder);
-      highlightDefinerType(function, DylanTypes.FUNCTION, holder);
-      highlightDefinerType(function.getFunctionDefinitionTail(), DylanTypes.FUNCTION, holder);
+      highlightKeyword(function, DylanTypes.FUNCTION, holder);
+      highlightKeyword(function.getFunctionDefinitionTail(), DylanTypes.FUNCTION, holder);
     } else if (element instanceof DylanDefinitionGenericDefiner) {
       DylanDefinitionGenericDefiner generic = (DylanDefinitionGenericDefiner) element;
       highlightModifiers(generic.getModifiers(), holder);
-      highlightDefinerType(generic, DylanTypes.GENERIC, holder);
+      highlightKeyword(generic, DylanTypes.GENERIC, holder);
     } else if (element instanceof DylanDefinitionLibraryDefiner) {
       DylanDefinitionLibraryDefiner library = (DylanDefinitionLibraryDefiner) element;
-      highlightDefinerType(library, DylanTypes.LIBRARY, holder);
-      highlightDefinerType(library.getLibraryDefinitionTail(), DylanTypes.LIBRARY, holder);
+      highlightKeyword(library, DylanTypes.LIBRARY, holder);
+      highlightKeyword(library.getLibraryDefinitionTail(), DylanTypes.LIBRARY, holder);
     } else if (element instanceof DylanDefinitionMethodDefiner) {
       DylanDefinitionMethodDefiner method = (DylanDefinitionMethodDefiner) element;
       highlightModifiers(method.getModifiers(), holder);
-      highlightDefinerType(method, DylanTypes.METHOD, holder);
-      highlightDefinerType(method.getMethodDefinitionTail(), DylanTypes.METHOD, holder);
+      highlightKeyword(method, DylanTypes.METHOD, holder);
+      highlightKeyword(method.getMethodDefinitionTail(), DylanTypes.METHOD, holder);
     } else if (element instanceof DylanDefinitionModuleDefiner) {
       DylanDefinitionModuleDefiner module = (DylanDefinitionModuleDefiner) element;
-      highlightDefinerType(module, DylanTypes.MODULE, holder);
-      highlightDefinerType(module.getModuleDefinitionTail(), DylanTypes.MODULE, holder);
+      highlightKeyword(module, DylanTypes.MODULE, holder);
+      highlightKeyword(module.getModuleDefinitionTail(), DylanTypes.MODULE, holder);
     } else if (element instanceof DylanDefinitionSuiteDefiner) {
       DylanDefinitionSuiteDefiner suite = (DylanDefinitionSuiteDefiner) element;
-      highlightDefinerType(suite, DylanTypes.SUITE, holder);
-      highlightDefinerType(suite.getSuiteDefinitionTail(), DylanTypes.SUITE, holder);
+      highlightKeyword(suite, DylanTypes.SUITE, holder);
+      highlightKeyword(suite.getSuiteDefinitionTail(), DylanTypes.SUITE, holder);
     } else if (element instanceof DylanDefinitionTestDefiner) {
       DylanDefinitionTestDefiner test = (DylanDefinitionTestDefiner) element;
-      highlightDefinerType(test, DylanTypes.TEST, holder);
-      highlightDefinerType(test.getTestDefinitionTail(), DylanTypes.TEST, holder);
+      highlightKeyword(test, DylanTypes.TEST, holder);
+      highlightKeyword(test.getTestDefinitionTail(), DylanTypes.TEST, holder);
     } else if (element instanceof DylanDefinitionVariableDefiner) {
       DylanDefinitionVariableDefiner variable = (DylanDefinitionVariableDefiner) element;
       highlightModifiers(variable.getModifiers(), holder);
-      highlightDefinerType(variable, DylanTypes.VARIABLE_T, holder);
+      highlightKeyword(variable, DylanTypes.VARIABLE_T, holder);
     } else if (element instanceof DylanSlotSpec) {
       DylanSlotSpec slotSpec = (DylanSlotSpec) element;
       highlightModifiers(slotSpec.getAllocation(), holder);
@@ -98,10 +98,10 @@ public class DylanSyntaxAnnotator implements Annotator {
           highlightSlotOptionKeyword(slotOption, holder);
         }
       }
-      highlightDefinerType(slotSpec, DylanTypes.SLOT, holder);
+      highlightKeyword(slotSpec, DylanTypes.SLOT, holder);
     } else if (element instanceof DylanSuiteComponent) {
-      highlightDefinerType(element, DylanTypes.SUITE, holder);
-      highlightDefinerType(element, DylanTypes.TEST, holder);
+      highlightKeyword(element, DylanTypes.SUITE, holder);
+      highlightKeyword(element, DylanTypes.TEST, holder);
     }
   }
 
@@ -112,7 +112,7 @@ public class DylanSyntaxAnnotator implements Annotator {
     }
   }
 
-  private static final void highlightDefinerType(PsiElement element, IElementType type, @NotNull AnnotationHolder holder) {
+  private static final void highlightKeyword(PsiElement element, IElementType type, @NotNull AnnotationHolder holder) {
     ASTNode node = element.getNode().findChildByType(type);
     if (node != null) {
       Annotation annotation = holder.createInfoAnnotation(node, null);
