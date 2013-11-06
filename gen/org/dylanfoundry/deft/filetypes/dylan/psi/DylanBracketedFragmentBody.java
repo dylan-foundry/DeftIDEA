@@ -5,10 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanBodyFragment extends PsiElement {
-
-  @Nullable
-  DylanBodyFragment getBodyFragment();
+public interface DylanBracketedFragmentBody extends PsiElement {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();

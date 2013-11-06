@@ -19,8 +19,8 @@ public class DylanBracketedFragmentImpl extends ASTWrapperPsiElement implements 
 
   @Override
   @Nullable
-  public DylanBodyFragment getBodyFragment() {
-    return findChildByClass(DylanBodyFragment.class);
+  public DylanBracketedFragmentBody getBracketedFragmentBody() {
+    return findChildByClass(DylanBracketedFragmentBody.class);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {

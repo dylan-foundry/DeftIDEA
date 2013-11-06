@@ -182,7 +182,7 @@ symbol_value ::= basic_fragment
 
 /* Fragments, page 421-422 */
 
-body_fragment ::= statement non_statement_body_fragment? | non_statement_body_fragment
+private body_fragment ::= statement non_statement_body_fragment? | non_statement_body_fragment
 
 list_fragment ::= statement non_statement_list_fragment? | non_statement_list_fragment
 
@@ -225,7 +225,7 @@ bracketed_fragment ::=
     | LBRACKET bracketed_fragment_body? RBRACKET
     | LBRACE bracketed_fragment_body? RBRACE
 
-private bracketed_fragment_body ::= body_fragment
+bracketed_fragment_body ::= body_fragment
   {
     recoverUntil="bracketed_fragment_recovery"
   }

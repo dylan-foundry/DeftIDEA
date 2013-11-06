@@ -8,7 +8,10 @@ import com.intellij.psi.PsiElement;
 public interface DylanDefinitionMacroCall extends DylanDefinition {
 
   @Nullable
-  DylanBodyFragment getBodyFragment();
+  DylanBracketedFragment getBracketedFragment();
+
+  @Nullable
+  DylanConstantFragment getConstantFragment();
 
   @Nullable
   DylanDefineBodyWord getDefineBodyWord();
@@ -20,9 +23,30 @@ public interface DylanDefinitionMacroCall extends DylanDefinition {
   DylanDefinitionTail getDefinitionTail();
 
   @Nullable
+  DylanFunctionMacroCall getFunctionMacroCall();
+
+  @Nullable
+  DylanHashWord getHashWord();
+
+  @Nullable
   DylanListFragment getListFragment();
 
   @Nullable
+  DylanLocalDeclaration getLocalDeclaration();
+
+  @Nullable
   DylanModifiers getModifiers();
+
+  @Nullable
+  DylanOperator getOperator();
+
+  @Nullable
+  DylanSemicolonFragment getSemicolonFragment();
+
+  @Nullable
+  DylanStatement getStatement();
+
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

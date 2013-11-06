@@ -86,9 +86,6 @@ public class DylanParser implements PsiParser {
     else if (root_ == BODY) {
       result_ = body(builder_, level_ + 1);
     }
-    else if (root_ == BODY_FRAGMENT) {
-      result_ = body_fragment(builder_, level_ + 1);
-    }
     else if (root_ == BODY_STYLE_DEFINITION_RULE) {
       result_ = body_style_definition_rule(builder_, level_ + 1);
     }
@@ -97,6 +94,9 @@ public class DylanParser implements PsiParser {
     }
     else if (root_ == BRACKETED_FRAGMENT) {
       result_ = bracketed_fragment(builder_, level_ + 1);
+    }
+    else if (root_ == BRACKETED_FRAGMENT_BODY) {
+      result_ = bracketed_fragment_body(builder_, level_ + 1);
     }
     else if (root_ == BRACKETED_PATTERN) {
       result_ = bracketed_pattern(builder_, level_ + 1);
@@ -1501,20 +1501,18 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // statement non_statement_body_fragment? | non_statement_body_fragment
-  public static boolean body_fragment(PsiBuilder builder_, int level_) {
+  static boolean body_fragment(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "body_fragment")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<body fragment>");
     result_ = body_fragment_0(builder_, level_ + 1);
     if (!result_) result_ = non_statement_body_fragment(builder_, level_ + 1);
-    if (result_) {
-      marker_.done(BODY_FRAGMENT);
-    }
-    else {
+    if (!result_) {
       marker_.rollbackTo();
     }
-    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 
@@ -1781,17 +1779,17 @@ public class DylanParser implements PsiParser {
 
   /* ********************************************************** */
   // body_fragment
-  static boolean bracketed_fragment_body(PsiBuilder builder_, int level_) {
+  public static boolean bracketed_fragment_body(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "bracketed_fragment_body")) return false;
     boolean result_ = false;
     Marker marker_ = builder_.mark();
-    enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, null);
+    enterErrorRecordingSection(builder_, level_, _SECTION_RECOVER_, "<bracketed fragment body>");
     result_ = body_fragment(builder_, level_ + 1);
-    if (!result_) {
-      marker_.rollbackTo();
+    if (result_) {
+      marker_.done(BRACKETED_FRAGMENT_BODY);
     }
     else {
-      marker_.drop();
+      marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_RECOVER_, bracketed_fragment_recovery_parser_);
     return result_;

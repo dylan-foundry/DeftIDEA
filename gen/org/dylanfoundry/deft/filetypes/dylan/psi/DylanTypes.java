@@ -29,10 +29,10 @@ public interface DylanTypes {
   IElementType BLOCK_STATEMENT = new DylanElementType("BLOCK_STATEMENT");
   IElementType BLOCK_TAIL = new DylanElementType("BLOCK_TAIL");
   IElementType BODY = new DylanElementType("BODY");
-  IElementType BODY_FRAGMENT = new DylanElementType("BODY_FRAGMENT");
   IElementType BODY_STYLE_DEFINITION_RULE = new DylanElementType("BODY_STYLE_DEFINITION_RULE");
   IElementType BODY_STYLE_DEFINITION_RULES = new DylanElementType("BODY_STYLE_DEFINITION_RULES");
   IElementType BRACKETED_FRAGMENT = new DylanElementType("BRACKETED_FRAGMENT");
+  IElementType BRACKETED_FRAGMENT_BODY = new DylanElementType("BRACKETED_FRAGMENT_BODY");
   IElementType BRACKETED_PATTERN = new DylanElementType("BRACKETED_PATTERN");
   IElementType BRACKETING_PUNCTUATION = new DylanElementType("BRACKETING_PUNCTUATION");
   IElementType CASES = new DylanElementType("CASES");
@@ -449,9 +449,6 @@ public interface DylanTypes {
       else if (type == BODY) {
         return new DylanBodyImpl(node);
       }
-      else if (type == BODY_FRAGMENT) {
-        return new DylanBodyFragmentImpl(node);
-      }
       else if (type == BODY_STYLE_DEFINITION_RULE) {
         return new DylanBodyStyleDefinitionRuleImpl(node);
       }
@@ -460,6 +457,9 @@ public interface DylanTypes {
       }
       else if (type == BRACKETED_FRAGMENT) {
         return new DylanBracketedFragmentImpl(node);
+      }
+      else if (type == BRACKETED_FRAGMENT_BODY) {
+        return new DylanBracketedFragmentBodyImpl(node);
       }
       else if (type == BRACKETED_PATTERN) {
         return new DylanBracketedPatternImpl(node);

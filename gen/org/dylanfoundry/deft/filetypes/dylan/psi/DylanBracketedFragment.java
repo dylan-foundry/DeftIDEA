@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface DylanBracketedFragment extends PsiElement {
 
   @Nullable
-  DylanBodyFragment getBodyFragment();
+  DylanBracketedFragmentBody getBracketedFragmentBody();
 
 }

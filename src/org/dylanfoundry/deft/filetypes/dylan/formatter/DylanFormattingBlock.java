@@ -169,6 +169,10 @@ public class DylanFormattingBlock implements ASTBlock {
       childAlignment = getAlignmentForChildren();
     }
 
+    if ((grandParentType == DylanTypes.BRACKETED_FRAGMENT) && (parentType == DylanTypes.BRACKETED_FRAGMENT_BODY)) {
+      childAlignment = getAlignmentForChildren();
+    }
+
     if ((parentType == DylanTypes.METHOD_DEFINITION) || (parentType == DylanTypes.METHOD_STATEMENT)) {
       if ((childType == DylanTypes.BODY) || (childType == DylanTypes.COMMENT)) {
         childIndent = Indent.getNormalIndent(true);

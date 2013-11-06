@@ -8,6 +8,33 @@ import com.intellij.psi.PsiElement;
 public interface DylanSemicolonFragment extends PsiElement {
 
   @Nullable
-  DylanBodyFragment getBodyFragment();
+  DylanBracketedFragment getBracketedFragment();
+
+  @Nullable
+  DylanConstantFragment getConstantFragment();
+
+  @Nullable
+  DylanDefinition getDefinition();
+
+  @Nullable
+  DylanFunctionMacroCall getFunctionMacroCall();
+
+  @Nullable
+  DylanHashWord getHashWord();
+
+  @Nullable
+  DylanLocalDeclaration getLocalDeclaration();
+
+  @Nullable
+  DylanOperator getOperator();
+
+  @Nullable
+  DylanSemicolonFragment getSemicolonFragment();
+
+  @Nullable
+  DylanStatement getStatement();
+
+  @Nullable
+  DylanVariableName getVariableName();
 
 }

@@ -11,16 +11,10 @@ import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanBodyFragmentImpl extends ASTWrapperPsiElement implements DylanBodyFragment {
+public class DylanBracketedFragmentBodyImpl extends ASTWrapperPsiElement implements DylanBracketedFragmentBody {
 
-  public DylanBodyFragmentImpl(ASTNode node) {
+  public DylanBracketedFragmentBodyImpl(ASTNode node) {
     super(node);
-  }
-
-  @Override
-  @Nullable
-  public DylanBodyFragment getBodyFragment() {
-    return findChildByClass(DylanBodyFragment.class);
   }
 
   @Override
@@ -84,7 +78,7 @@ public class DylanBodyFragmentImpl extends ASTWrapperPsiElement implements Dylan
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBodyFragment(this);
+    if (visitor instanceof DylanVisitor) ((DylanVisitor)visitor).visitBracketedFragmentBody(this);
     else super.accept(visitor);
   }
 

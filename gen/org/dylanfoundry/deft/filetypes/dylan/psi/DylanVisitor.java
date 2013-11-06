@@ -91,10 +91,6 @@ public class DylanVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitBodyFragment(@NotNull DylanBodyFragment o) {
-    visitPsiElement(o);
-  }
-
   public void visitBodyStyleDefinitionRule(@NotNull DylanBodyStyleDefinitionRule o) {
     visitPsiElement(o);
   }
@@ -104,6 +100,10 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitBracketedFragment(@NotNull DylanBracketedFragment o) {
+    visitPsiElement(o);
+  }
+
+  public void visitBracketedFragmentBody(@NotNull DylanBracketedFragmentBody o) {
     visitPsiElement(o);
   }
 
