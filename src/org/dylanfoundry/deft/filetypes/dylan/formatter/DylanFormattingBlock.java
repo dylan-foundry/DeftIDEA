@@ -208,6 +208,14 @@ public class DylanFormattingBlock implements ASTBlock {
       childIndent = Indent.getNormalIndent();
     }
 
+    if ((grandParentType == DylanTypes.DEFINITION_GENERIC_DEFINER) && (parentType == DylanTypes.LIST_FRAGMENT)) {
+      if (childType == DylanTypes.BRACKETED_FRAGMENT) {
+        childIndent = Indent.getContinuationIndent();
+      } else if (childType == DylanTypes.LIST_FRAGMENT) {
+        childIndent = Indent.getSpaceIndent(1);
+      }
+    }
+
     if ((grandParentType == DylanTypes.LOCAL_DECLARATION) && (parentType == DylanTypes.BINDINGS) && (childType == DylanTypes.EQUAL)) {
       childIndent = Indent.getNormalIndent();
     }
