@@ -115,18 +115,22 @@ public class DylanSyntaxAnnotator implements Annotator {
   }
 
   private void highlightKeyword(PsiElement element, IElementType type, @NotNull AnnotationHolder holder) {
-    ASTNode node = element.getNode().findChildByType(type);
-    if (node != null) {
-      Annotation annotation = holder.createInfoAnnotation(node, null);
-      annotation.setTextAttributes(DylanSyntaxHighlighterColors.KEYWORD);
+    if (element != null) {
+      ASTNode node = element.getNode().findChildByType(type);
+      if (node != null) {
+        Annotation annotation = holder.createInfoAnnotation(node, null);
+        annotation.setTextAttributes(DylanSyntaxHighlighterColors.KEYWORD);
+      }
     }
   }
 
   private void highlightSlotOptionKeyword(PsiElement element, @NotNull AnnotationHolder holder) {
-    ASTNode node = element.getNode().findChildByType(DylanTypes.KEYWORD);
-    if (node != null) {
-      Annotation annotation = holder.createInfoAnnotation(node, null);
-      annotation.setTextAttributes(DylanSyntaxHighlighterColors.MODIFIERS);
+    if (element != null) {
+      ASTNode node = element.getNode().findChildByType(DylanTypes.KEYWORD);
+      if (node != null) {
+        Annotation annotation = holder.createInfoAnnotation(node, null);
+        annotation.setTextAttributes(DylanSyntaxHighlighterColors.MODIFIERS);
+      }
     }
   }
 }
