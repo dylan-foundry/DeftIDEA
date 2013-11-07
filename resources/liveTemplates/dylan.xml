@@ -35,9 +35,10 @@
       <option name="OTHER" value="false" />
     </context>
   </template>
-  <template name="defcl" value="define class &lt;$NAME$&gt; ($SUPERS$)&#10;end class &lt;$NAME$&gt;;&#10;" description="define class" toReformat="true" toShortenFQNames="true">
+  <template name="defcl" value="define class &lt;$NAME$&gt; ($SUPERS$)&#10;  $SLOTS$&#10;end class &lt;$NAME$&gt;;&#10;" description="define class" toReformat="true" toShortenFQNames="true">
     <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="SUPERS" expression="" defaultValue="&lt;object&gt;" alwaysStopAt="true" />
+    <variable name="SLOTS" expression="" defaultValue="" alwaysStopAt="true" />
     <context>
       <option name="DYLAN_DEFINITION" value="true" />
       <option name="OTHER" value="false" />
