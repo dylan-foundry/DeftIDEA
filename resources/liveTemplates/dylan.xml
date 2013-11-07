@@ -81,6 +81,22 @@
       <option name="OTHER" value="false" />
     </context>
   </template>
+  <template name="defs" value="define suite $NAME$ ()&#10;  $BODY$&#10;end suite $NAME$;&#10;" description="define suite" toReformat="true" toShortFQNaes="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
+  <template name="defte" value="define test $NAME$ ()&#10;  $BODY$&#10;end test $NAME$;&#10;" description="define test" toReformat="true" toShortFQNaes="true">
+    <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="BODY" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="DYLAN_DEFINITION" value="true" />
+      <option name="OTHER" value="false" />
+    </context>
+  </template>
   <template name="deftv" value="define thread variable *$NAME$* = $VALUE$;&#10;" description="define thread variable" toReformat="true" toShortenFQNames="true">
     <variable name="NAME" expression="" defaultValue="" alwaysStopAt="true" />
     <variable name="VALUE" expression="" defaultValue="" alwaysStopAt="true" />

@@ -10,7 +10,7 @@
   <changes><![CDATA[
   <p>0.5</p>
   <ul>
-    <li>...</li>
+    <li>Add live templates for define suite (defs) and define test (defte).</li>
   </ul>
   <p>0.4.1</p>
   <ul>
