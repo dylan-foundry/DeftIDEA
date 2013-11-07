@@ -36,9 +36,6 @@ public abstract class DylanContextType extends TemplateContextType {
   public boolean isInContext(@NotNull PsiFile file, int offset) {
     if (!PsiUtilBase.getLanguageAtOffset(file, offset).isKindOf(DylanLanguage.INSTANCE)) return false;
     PsiElement element = file.findElementAt(offset);
-    if (element instanceof PsiWhiteSpace) {
-      return false;
-    }
     return element != null && isInContext(element);
   }
 

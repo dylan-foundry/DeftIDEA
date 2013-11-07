@@ -12,6 +12,7 @@
   <ul>
     <li>A common traceback in the syntax highlighting code that happens while entering code
         has been fixed.</li>
+    <li>Live templating now works at the start and end of files or in files without code.</li>
     <li>Further improvements to indenting.</li>
   </ul>
   <p>0.4</p>
