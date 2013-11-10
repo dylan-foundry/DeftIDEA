@@ -112,7 +112,7 @@ public class DylanSanityAnnotator implements Annotator {
   }
 
   private void validateDefinitionTail(PsiElement tail, PsiElement variableName, @NotNull AnnotationHolder holder) {
-    if (tail.getChildren().length > 0) {
+    if (tail != null && tail.getChildren().length > 0) {
       PsiElement tailName = tail.getChildren()[0];
       String tailNameText = tailName.getText().trim().toLowerCase();
       String nameText = variableName.getText().trim().toLowerCase();
