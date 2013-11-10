@@ -359,7 +359,7 @@ definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name paramet
 
 function_definition_tail ::= END FUNCTION variable_name? | END variable_name?
 
-definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name list_fragment
+definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name parameter_list
   {
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
     pin=GENERIC

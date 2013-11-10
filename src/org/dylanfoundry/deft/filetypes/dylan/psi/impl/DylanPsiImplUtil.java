@@ -169,8 +169,8 @@ public class DylanPsiImplUtil {
   }
 
   public static String getName(DylanDefinitionGenericDefiner element) {
-    if ((element.getVariableName() != null) && (element.getListFragment() != null)) {
-      return cleanText(element.getVariableName().getText() + element.getListFragment().getText());
+    if ((element.getVariableName() != null) && (element.getParameterList() != null)) {
+      return cleanText(element.getVariableName().getText() + element.getParameterList().getText());
     } else if (element.getVariableName() != null) {
       return cleanText(element.getVariableName().getText());
     }

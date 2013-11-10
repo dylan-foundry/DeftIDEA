@@ -3339,7 +3339,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? GENERIC variable_name list_fragment
+  // DEFINE modifiers? GENERIC variable_name parameter_list
   public static boolean definition_generic_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_generic_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -3352,7 +3352,7 @@ public class DylanParser implements PsiParser {
     result_ = result_ && consumeToken(builder_, GENERIC);
     pinned_ = result_; // pin = GENERIC
     result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
-    result_ = pinned_ && list_fragment(builder_, level_ + 1) && result_;
+    result_ = pinned_ && parameter_list(builder_, level_ + 1) && result_;
     if (result_ || pinned_) {
       marker_.done(DEFINITION_GENERIC_DEFINER);
     }
