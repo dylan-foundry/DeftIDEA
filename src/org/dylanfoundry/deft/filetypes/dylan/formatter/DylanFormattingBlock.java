@@ -190,6 +190,10 @@ public class DylanFormattingBlock extends AbstractBlock {
       childAlignment = getAlignmentForChildren();
     }
 
+    if ((parentType == DylanTypes.KEY_PARAMETER_LIST) && (childType == DylanTypes.KEYWORD_PARAMETERS)) {
+      childAlignment = getAlignmentForChildren();
+    }
+
     if (parentType == DylanTypes.DEFINITION_CLASS_DEFINER) {
       if (childType == DylanTypes.SLOT_DECLARATIONS) {
         childIndent = Indent.getNormalIndent();
