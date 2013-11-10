@@ -20,12 +20,12 @@ import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiErrorElement;
-import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.TokenType;
+import com.intellij.psi.formatter.common.AbstractBlock;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
-import com.intellij.psi.util.PsiTreeUtil;
+import org.dylanfoundry.deft.filetypes.dylan.psi.DylanTokenType;
 import org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class DylanFormattingBlock implements ASTBlock {
+public class DylanFormattingBlock extends AbstractBlock {
   private final DylanFormattingBlock myParent;
   private final Alignment _alignment;
   private final Indent _indent;
@@ -83,12 +83,6 @@ public class DylanFormattingBlock implements ASTBlock {
     DylanTypes.DEFINITION_VARIABLE_DEFINER,
     DylanTypes.DEFINITION_MACRO_CALL
   );
-  private static final TokenSet ourListElementTypes = TokenSet.create(
-    DylanTypes.ARGUMENT,
-    DylanTypes.REQUIRED_PARAMETER,
-    DylanTypes.NEXT_REST_KEY_PARAMETER_LIST,
-    DylanTypes.VARIABLE
-  );
 
   public DylanFormattingBlock(final DylanFormattingBlock parent,
                               final ASTNode node,
@@ -96,6 +90,7 @@ public class DylanFormattingBlock implements ASTBlock {
                               final Indent indent,
                               final Wrap wrap,
                               final DylanFormattingBlockContext context) {
+    super(node, wrap, alignment);
     myParent = parent;
     _alignment = alignment;
     _node = node;
@@ -118,7 +113,11 @@ public class DylanFormattingBlock implements ASTBlock {
 
   @NotNull
   @Override
-  public List<Block> getSubBlocks() {
+  public List<Block> buildChildren() {
+    if (isLeaf()) {
+      return EMPTY;
+    }
+
     if (_subBlocks == null) {
       _subBlocks = buildSubBlocks();
     }
@@ -255,53 +254,46 @@ public class DylanFormattingBlock implements ASTBlock {
   @NotNull
   @Override
   public ChildAttributes getChildAttributes(int newChildIndex) {
-    Indent childIndent = getChildIndent(newChildIndex);
-    Alignment childAlignment = getChildAlignment();
-    return new ChildAttributes(childIndent, childAlignment);
+    Indent childIndent = getChildIndent(_node.getElementType(), newChildIndex);
+    IElementType type = newChildIndex > 0 ? getIElementType(newChildIndex) : null;
+    Alignment childAlignment = getChildAlignment(type);
+    if (childIndent != null) return new ChildAttributes(childIndent, childAlignment);
+    if (type != null) childIndent = getChildIndent(type, newChildIndex);
+    return new ChildAttributes(childIndent == null ? Indent.getNoneIndent() : childIndent, childAlignment);
   }
 
-  private Indent getChildIndent(int newChildIndex) {
-    return Indent.getNoneIndent();
+  private IElementType getIElementType(int newChildIndex) {
+    Block block = getSubBlocks().get(newChildIndex - 1);
+    while (block instanceof DylanFormattingBlock && !block.getSubBlocks().isEmpty()) {
+      List<Block> subBlocks = block.getSubBlocks();
+      Block childBlock = subBlocks.get(subBlocks.size() - 1);
+      if (!(childBlock instanceof DylanFormattingBlock)) {
+        break;
+      } else {
+        ASTNode node = ((DylanFormattingBlock) childBlock).getNode();
+        PsiElement psi = node.getPsi();
+        IElementType elementType = node.getElementType();
+        if (elementType instanceof DylanTokenType) break;
+        if (psi instanceof LeafPsiElement) break;
+      }
+      block = childBlock;
+    }
+    return block instanceof DylanFormattingBlock ? ((DylanFormattingBlock) block).getNode().getElementType() : null;
   }
 
   @Nullable
-  private Alignment getChildAlignment() {
-    if (ourListElementTypes.contains(_node.getElementType())) {
-      return getAlignmentForChildren();
+  private Indent getChildIndent(@Nullable IElementType type, int newChildIndex) {
+    if (BLOCK_TOKEN_SET.contains(type) || DEFINITION_TOKEN_SET.contains(type)) {
+      return Indent.getNormalIndent();
     }
     return null;
   }
 
-  @Override
-  public boolean isIncomplete() {
-    // If there's something following, it's not incomplete
-    if (!PsiTreeUtil.hasErrorElements(_node.getPsi())) {
-      PsiElement element = _node.getPsi().getNextSibling();
-      while (element instanceof PsiWhiteSpace) {
-        element = element.getNextSibling();
-      }
-      if (element != null) {
-        return false;
-      }
-    }
-
-    ASTNode lastChild = getLastNonSpaceChild(_node, false);
-    if (lastChild != null) {
-      // TODO: do this for real
-    }
-    return false; // TODO: Until we properly implement this method we always consider it as incomplete
+  @Nullable
+  private Alignment getChildAlignment(@Nullable IElementType type) {
+    return null;
   }
 
-  private static ASTNode getLastNonSpaceChild(ASTNode node, boolean acceptError) {
-    ASTNode lastChild = node.getLastChildNode();
-    while (lastChild != null &&
-      (lastChild.getElementType() == TokenType.WHITE_SPACE || (!acceptError && lastChild.getPsi() instanceof PsiErrorElement))) {
-      lastChild = lastChild.getTreePrev();
-    }
-    return lastChild;
-  }
-
-  @Override
   public boolean isLeaf() {
     return _node.getFirstChildNode() == null;
   }
