@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCaseConstituents extends PsiElement {
+public interface DylanCaseConstituents extends DylanCompositeElement {
 
   @NotNull
   List<DylanCaseConstituent> getCaseConstituentList();

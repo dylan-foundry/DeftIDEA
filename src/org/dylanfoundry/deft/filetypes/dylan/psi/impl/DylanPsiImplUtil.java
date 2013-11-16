@@ -18,7 +18,11 @@ package org.dylanfoundry.deft.filetypes.dylan.psi.impl;
 
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveState;
+import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.util.PsiElementFilter;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.dylanfoundry.deft.DeftIcons;
@@ -376,6 +380,16 @@ public class DylanPsiImplUtil {
         return element.getPresentationIcon();
       }
     };
+  }
+
+  @Nullable
+  public static PsiReference getReference(@NotNull DylanVariableName o) {
+    return new DylanVariableNameReferenceImpl(o, TextRange.from(0, o.getTextLength()));
+  }
+
+  public static boolean processDeclarations(@NotNull DylanVariableName o, @NotNull PsiScopeProcessor processor,
+                                            @NotNull ResolveState state, PsiElement lastParent, @NotNull PsiElement place) {
+    return processor.execute(o, state);
   }
 
   static String cleanText(String text) {

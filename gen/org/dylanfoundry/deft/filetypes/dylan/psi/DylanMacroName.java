@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanMacroName extends PsiElement {
+public interface DylanMacroName extends DylanCompositeElement {
 
   @Nullable
   DylanDefineBodyWord getDefineBodyWord();

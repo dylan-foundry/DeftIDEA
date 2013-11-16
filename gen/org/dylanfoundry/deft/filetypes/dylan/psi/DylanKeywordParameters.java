@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanKeywordParameters extends PsiElement {
+public interface DylanKeywordParameters extends DylanCompositeElement {
 
   @NotNull
   List<DylanKeywordParameter> getKeywordParameterList();

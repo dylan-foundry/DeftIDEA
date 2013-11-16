@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNameNotEnd extends PsiElement {
+public interface DylanNameNotEnd extends DylanCompositeElement {
 
   @Nullable
   DylanDylanUnreservedName getDylanUnreservedName();

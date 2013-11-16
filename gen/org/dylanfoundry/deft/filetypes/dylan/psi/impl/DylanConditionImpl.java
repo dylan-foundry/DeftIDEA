@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanConditionImpl extends ASTWrapperPsiElement implements DylanCondition {
+public class DylanConditionImpl extends DylanCompositeElementImpl implements DylanCondition {
 
   public DylanConditionImpl(ASTNode node) {
     super(node);

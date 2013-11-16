@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanSelectStmtConstituents extends PsiElement {
+public interface DylanSelectStmtConstituents extends DylanCompositeElement {
 
   @NotNull
   List<DylanSelectStmtConstituent> getSelectStmtConstituentList();

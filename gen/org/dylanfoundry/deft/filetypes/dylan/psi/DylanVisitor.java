@@ -3,7 +3,6 @@ package org.dylanfoundry.deft.filetypes.dylan.psi;
 
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiElement;
 
 public class DylanVisitor extends PsiElementVisitor {
 
@@ -12,7 +11,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitAllocation(@NotNull DylanAllocation o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitAndExpr(@NotNull DylanAndExpr o) {
@@ -20,11 +19,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitArgument(@NotNull DylanArgument o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitArguments(@NotNull DylanArguments o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitArithNegExpr(@NotNull DylanArithNegExpr o) {
@@ -36,23 +35,23 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitAuxRule(@NotNull DylanAuxRule o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitAuxRuleSet(@NotNull DylanAuxRuleSet o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitAuxRuleSets(@NotNull DylanAuxRuleSets o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitAuxRules(@NotNull DylanAuxRules o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBasicFragment(@NotNull DylanBasicFragment o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBeginStatement(@NotNull DylanBeginStatement o) {
@@ -60,23 +59,23 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitBeginWord(@NotNull DylanBeginWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBinaryOperator(@NotNull DylanBinaryOperator o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBinaryOperatorOnly(@NotNull DylanBinaryOperatorOnly o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBindingPattern(@NotNull DylanBindingPattern o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBindings(@NotNull DylanBindings o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBlockStatement(@NotNull DylanBlockStatement o) {
@@ -84,51 +83,51 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitBlockTail(@NotNull DylanBlockTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBody(@NotNull DylanBody o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBodyStyleDefinitionRule(@NotNull DylanBodyStyleDefinitionRule o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBodyStyleDefinitionRules(@NotNull DylanBodyStyleDefinitionRules o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBracketedFragment(@NotNull DylanBracketedFragment o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBracketedFragmentBody(@NotNull DylanBracketedFragmentBody o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBracketedPattern(@NotNull DylanBracketedPattern o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitBracketingPunctuation(@NotNull DylanBracketingPunctuation o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseBody(@NotNull DylanCaseBody o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseConstituent(@NotNull DylanCaseConstituent o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseConstituents(@NotNull DylanCaseConstituents o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseLabel(@NotNull DylanCaseLabel o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseStatement(@NotNull DylanCaseStatement o) {
@@ -136,35 +135,35 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitCaseStmtClause(@NotNull DylanCaseStmtClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseStmtConstituent(@NotNull DylanCaseStmtConstituent o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseStmtConstituents(@NotNull DylanCaseStmtConstituents o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseStmtLabel(@NotNull DylanCaseStmtLabel o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCaseStmtTail(@NotNull DylanCaseStmtTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCases(@NotNull DylanCases o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitClassDefinitionTail(@NotNull DylanClassDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitClauseOption(@NotNull DylanClauseOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCleanupStatement(@NotNull DylanCleanupStatement o) {
@@ -172,47 +171,47 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitCollectionClause(@NotNull DylanCollectionClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCondition(@NotNull DylanCondition o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitConstant(@NotNull DylanConstant o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitConstantFragment(@NotNull DylanConstantFragment o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitConstants(@NotNull DylanConstants o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCoreWord(@NotNull DylanCoreWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitCreateClause(@NotNull DylanCreateClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitDefaultValue(@NotNull DylanDefaultValue o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitDefineBodyWord(@NotNull DylanDefineBodyWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitDefineListWord(@NotNull DylanDefineListWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitDefinition(@NotNull DylanDefinition o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitDefinitionClassDefiner(@NotNull DylanDefinitionClassDefiner o) {
@@ -272,7 +271,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitDefinitionTail(@NotNull DylanDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitDefinitionTestDefiner(@NotNull DylanDefinitionTestDefiner o) {
@@ -288,7 +287,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitDylanUnreservedName(@NotNull DylanDylanUnreservedName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitElseStatement(@NotNull DylanElseStatement o) {
@@ -300,11 +299,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitEndClause(@NotNull DylanEndClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitEndForClause(@NotNull DylanEndForClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitEqExpr(@NotNull DylanEqExpr o) {
@@ -312,11 +311,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitEscapedName(@NotNull DylanEscapedName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExceptionOptions(@NotNull DylanExceptionOptions o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExceptionStatement(@NotNull DylanExceptionStatement o) {
@@ -324,7 +323,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitExcludeOption(@NotNull DylanExcludeOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExpExpr(@NotNull DylanExpExpr o) {
@@ -332,35 +331,35 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitExplicitStepClause(@NotNull DylanExplicitStepClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExportClause(@NotNull DylanExportClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExportOption(@NotNull DylanExportOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExpression(@NotNull DylanExpression o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitExpressions(@NotNull DylanExpressions o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitFinallyClause(@NotNull DylanFinallyClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitForClause(@NotNull DylanForClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitForClauses(@NotNull DylanForClauses o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitForStatement(@NotNull DylanForStatement o) {
@@ -368,27 +367,27 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitForStatementTail(@NotNull DylanForStatementTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitFunctionDefinitionTail(@NotNull DylanFunctionDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitFunctionMacroCall(@NotNull DylanFunctionMacroCall o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitFunctionRule(@NotNull DylanFunctionRule o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitFunctionRules(@NotNull DylanFunctionRules o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitFunctionWord(@NotNull DylanFunctionWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitGenericParameterList(@NotNull DylanGenericParameterList o) {
@@ -408,23 +407,23 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitHandler(@NotNull DylanHandler o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitHashWord(@NotNull DylanHashWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitHeader(@NotNull DylanHeader o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitHeaderValues(@NotNull DylanHeaderValues o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitHeaders(@NotNull DylanHeaders o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitIdentExpr(@NotNull DylanIdentExpr o) {
@@ -436,35 +435,35 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitIfTail(@NotNull DylanIfTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitImportOption(@NotNull DylanImportOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInheritedOptions(@NotNull DylanInheritedOptions o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInheritedSlotSpec(@NotNull DylanInheritedSlotSpec o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInitArgOption(@NotNull DylanInitArgOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInitArgOptions(@NotNull DylanInitArgOptions o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInitArgSpec(@NotNull DylanInitArgSpec o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInitExpression(@NotNull DylanInitExpression o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitInitFunctionSlotOption(@NotNull DylanInitFunctionSlotOption o) {
@@ -480,47 +479,47 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitKeyParameterList(@NotNull DylanKeyParameterList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitKeyedByClause(@NotNull DylanKeyedByClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitKeywordParameter(@NotNull DylanKeywordParameter o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitKeywordParameters(@NotNull DylanKeywordParameters o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitLibraryDefinitionTail(@NotNull DylanLibraryDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitListFragment(@NotNull DylanListFragment o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitListStyleDefinitionRule(@NotNull DylanListStyleDefinitionRule o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitListStyleDefinitionRules(@NotNull DylanListStyleDefinitionRules o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitLiteral(@NotNull DylanLiteral o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitLocalDeclaration(@NotNull DylanLocalDeclaration o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitLocalMethods(@NotNull DylanLocalMethods o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitLogNegExpr(@NotNull DylanLogNegExpr o) {
@@ -536,15 +535,15 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitMacro(@NotNull DylanMacro o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMacroDefinition(@NotNull DylanMacroDefinition o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMacroName(@NotNull DylanMacroName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMacroStatement(@NotNull DylanMacroStatement o) {
@@ -552,19 +551,19 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitMainRuleSet(@NotNull DylanMainRuleSet o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMaybePatternAndSemicolon(@NotNull DylanMaybePatternAndSemicolon o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMethodDefinition(@NotNull DylanMethodDefinition o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMethodDefinitionTail(@NotNull DylanMethodDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMethodStatement(@NotNull DylanMethodStatement o) {
@@ -572,7 +571,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitMethodTail(@NotNull DylanMethodTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMinusExpr(@NotNull DylanMinusExpr o) {
@@ -580,15 +579,15 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitModifier(@NotNull DylanModifier o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitModifiers(@NotNull DylanModifiers o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitModuleDefinitionTail(@NotNull DylanModuleDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitMulExpr(@NotNull DylanMulExpr o) {
@@ -596,19 +595,19 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitNameNotEnd(@NotNull DylanNameNotEnd o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNamePrefix(@NotNull DylanNamePrefix o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNameStringOrSymbol(@NotNull DylanNameStringOrSymbol o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNameSuffix(@NotNull DylanNameSuffix o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNeqExpr(@NotNull DylanNeqExpr o) {
@@ -616,31 +615,31 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitNextRestKeyParameterList(@NotNull DylanNextRestKeyParameterList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNonBracketingPunctuation(@NotNull DylanNonBracketingPunctuation o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNonEndCoreWord(@NotNull DylanNonEndCoreWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNonStatementBasicFragment(@NotNull DylanNonStatementBasicFragment o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNondefiningBeginWordToken(@NotNull DylanNondefiningBeginWordToken o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNondefiningName(@NotNull DylanNondefiningName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNondefiningWord(@NotNull DylanNondefiningWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitNonidentExpr(@NotNull DylanNonidentExpr o) {
@@ -648,11 +647,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitNumericClauses(@NotNull DylanNumericClauses o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitOperand(@NotNull DylanOperand o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitOperandExpr(@NotNull DylanOperandExpr o) {
@@ -660,7 +659,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitOperator(@NotNull DylanOperator o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitOrExpr(@NotNull DylanOrExpr o) {
@@ -668,39 +667,39 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitOrdinaryBindingName(@NotNull DylanOrdinaryBindingName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitParameterList(@NotNull DylanParameterList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitParameters(@NotNull DylanParameters o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPattern(@NotNull DylanPattern o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPatternKeyword(@NotNull DylanPatternKeyword o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPatternKeywords(@NotNull DylanPatternKeywords o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPatternList(@NotNull DylanPatternList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPatternSequence(@NotNull DylanPatternSequence o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPatternVariable(@NotNull DylanPatternVariable o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPlusExpr(@NotNull DylanPlusExpr o) {
@@ -708,27 +707,27 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitPrefixOption(@NotNull DylanPrefixOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitProperty(@NotNull DylanProperty o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPropertyList(@NotNull DylanPropertyList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPropertyListPattern(@NotNull DylanPropertyListPattern o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitPunctuation(@NotNull DylanPunctuation o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitRenameOption(@NotNull DylanRenameOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitRequiredInitKeywordSlotOption(@NotNull DylanRequiredInitKeywordSlotOption o) {
@@ -736,23 +735,23 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitRequiredParameter(@NotNull DylanRequiredParameter o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitRequiredParameters(@NotNull DylanRequiredParameters o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitReservedWord(@NotNull DylanReservedWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitRestKeyParameterList(@NotNull DylanRestKeyParameterList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitRhs(@NotNull DylanRhs o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSelectStatement(@NotNull DylanSelectStatement o) {
@@ -760,31 +759,31 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitSelectStmtClause(@NotNull DylanSelectStmtClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSelectStmtConstituent(@NotNull DylanSelectStmtConstituent o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSelectStmtConstituents(@NotNull DylanSelectStmtConstituents o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSelectStmtLabel(@NotNull DylanSelectStmtLabel o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSelectStmtTail(@NotNull DylanSelectStmtTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSemicolonFragment(@NotNull DylanSemicolonFragment o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSeparator(@NotNull DylanSeparator o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSetterSlotOption(@NotNull DylanSetterSlotOption o) {
@@ -792,95 +791,95 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitSharedSymbols(@NotNull DylanSharedSymbols o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSharedSymbolsDefinitionTail(@NotNull DylanSharedSymbolsDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSimplePattern(@NotNull DylanSimplePattern o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSlotAdjective(@NotNull DylanSlotAdjective o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSlotDeclarations(@NotNull DylanSlotDeclarations o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSlotOption(@NotNull DylanSlotOption o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSlotOptions(@NotNull DylanSlotOptions o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSlotSpec(@NotNull DylanSlotSpec o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSourceRecords(@NotNull DylanSourceRecords o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitStatement(@NotNull DylanStatement o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitStatementRule(@NotNull DylanStatementRule o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitStatementRules(@NotNull DylanStatementRules o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitString(@NotNull DylanString o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitStringLiteral(@NotNull DylanStringLiteral o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSubstitution(@NotNull DylanSubstitution o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteArgument(@NotNull DylanSuiteArgument o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteArgumentCleanupFunction(@NotNull DylanSuiteArgumentCleanupFunction o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteArgumentDescription(@NotNull DylanSuiteArgumentDescription o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteArgumentSetupFunction(@NotNull DylanSuiteArgumentSetupFunction o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteArguments(@NotNull DylanSuiteArguments o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteComponent(@NotNull DylanSuiteComponent o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteComponents(@NotNull DylanSuiteComponents o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteDefinitionTail(@NotNull DylanSuiteDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSuiteSuiteComponent(@NotNull DylanSuiteSuiteComponent o) {
@@ -888,43 +887,43 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitSuiteTestTags(@NotNull DylanSuiteTestTags o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSupers(@NotNull DylanSupers o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSymbol(@NotNull DylanSymbol o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitSymbolValue(@NotNull DylanSymbolValue o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTableEntry(@NotNull DylanTableEntry o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTemplate(@NotNull DylanTemplate o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTemplateElement(@NotNull DylanTemplateElement o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTestArgument(@NotNull DylanTestArgument o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTestArguments(@NotNull DylanTestArguments o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTestDefinitionTail(@NotNull DylanTestDefinitionTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTestSuiteComponent(@NotNull DylanTestSuiteComponent o) {
@@ -932,7 +931,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitToken(@NotNull DylanToken o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitTypeSlotOption(@NotNull DylanTypeSlotOption o) {
@@ -940,15 +939,15 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitUnaryAndBinaryOperator(@NotNull DylanUnaryAndBinaryOperator o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUnaryOperatorOnly(@NotNull DylanUnaryOperatorOnly o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUniqueString(@NotNull DylanUniqueString o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUnlessStatement(@NotNull DylanUnlessStatement o) {
@@ -956,15 +955,15 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitUnlessTail(@NotNull DylanUnlessTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUnreservedName(@NotNull DylanUnreservedName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUnreservedWord(@NotNull DylanUnreservedWord o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUntilStatement(@NotNull DylanUntilStatement o) {
@@ -972,31 +971,31 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitUntilTail(@NotNull DylanUntilTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitUseClause(@NotNull DylanUseClause o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitValuesList(@NotNull DylanValuesList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitVariable(@NotNull DylanVariable o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitVariableList(@NotNull DylanVariableList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitVariableName(@NotNull DylanVariableName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitVariableSpec(@NotNull DylanVariableSpec o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitWhenStatement(@NotNull DylanWhenStatement o) {
@@ -1004,7 +1003,7 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitWhenTail(@NotNull DylanWhenTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitWhileStatement(@NotNull DylanWhileStatement o) {
@@ -1012,14 +1011,14 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitWhileTail(@NotNull DylanWhileTail o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitWordName(@NotNull DylanWordName o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
-  public void visitPsiElement(@NotNull PsiElement o) {
+  public void visitCompositeElement(@NotNull DylanCompositeElement o) {
     visitElement(o);
   }
 

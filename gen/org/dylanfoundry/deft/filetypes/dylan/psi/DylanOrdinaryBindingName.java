@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanOrdinaryBindingName extends PsiElement {
+public interface DylanOrdinaryBindingName extends DylanCompositeElement {
 
   @Nullable
   DylanEscapedName getEscapedName();

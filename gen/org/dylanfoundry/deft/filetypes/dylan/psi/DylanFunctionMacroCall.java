@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanFunctionMacroCall extends PsiElement {
+public interface DylanFunctionMacroCall extends DylanCompositeElement {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();

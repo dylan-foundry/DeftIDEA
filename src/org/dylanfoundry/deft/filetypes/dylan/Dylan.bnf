@@ -2,7 +2,8 @@
   parserClass="org.dylanfoundry.deft.filetypes.dylan.parser.DylanParser"
   parserUtilClass="org.dylanfoundry.deft.filetypes.dylan.DylanParserUtil"
 
-  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  implements="org.dylanfoundry.deft.filetypes.dylan.psi.DylanCompositeElement"
+  extends="org.dylanfoundry.deft.filetypes.dylan.psi.impl.DylanCompositeElementImpl"
  
   psiClassPrefix="Dylan"
   psiImplClassSuffix="Impl"
@@ -542,6 +543,9 @@ private variables ::= variable (COMMA variable)*
 variable ::= variable_name COLON_COLON operand_expr | variable_name
 
 variable_name ::= ordinary_name | VARIABLE_IGNORE
+  {
+    methods=[getReference processDeclarations]
+  }
 
 /* Expression, page 424-425 */
 

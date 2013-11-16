@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanInitArgOptionsImpl extends ASTWrapperPsiElement implements DylanInitArgOptions {
+public class DylanInitArgOptionsImpl extends DylanCompositeElementImpl implements DylanInitArgOptions {
 
   public DylanInitArgOptionsImpl(ASTNode node) {
     super(node);

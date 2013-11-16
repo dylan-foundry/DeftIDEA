@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanRequiredParameter extends PsiElement {
+public interface DylanRequiredParameter extends DylanCompositeElement {
 
   @Nullable
   DylanExpression getExpression();

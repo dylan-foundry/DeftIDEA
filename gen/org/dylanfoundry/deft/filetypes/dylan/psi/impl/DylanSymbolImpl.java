@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanSymbolImpl extends ASTWrapperPsiElement implements DylanSymbol {
+public class DylanSymbolImpl extends DylanCompositeElementImpl implements DylanSymbol {
 
   public DylanSymbolImpl(ASTNode node) {
     super(node);

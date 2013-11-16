@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanKeywordParametersImpl extends ASTWrapperPsiElement implements DylanKeywordParameters {
+public class DylanKeywordParametersImpl extends DylanCompositeElementImpl implements DylanKeywordParameters {
 
   public DylanKeywordParametersImpl(ASTNode node) {
     super(node);

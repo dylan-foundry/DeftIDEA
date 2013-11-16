@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNameSuffix extends PsiElement {
+public interface DylanNameSuffix extends DylanCompositeElement {
 
   @NotNull
   DylanString getString();

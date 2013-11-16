@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanImportOption extends PsiElement {
+public interface DylanImportOption extends DylanCompositeElement {
 
   @NotNull
   List<DylanVariableSpec> getVariableSpecList();

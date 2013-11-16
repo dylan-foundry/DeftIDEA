@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCreateClause extends PsiElement {
+public interface DylanCreateClause extends DylanCompositeElement {
 
   @NotNull
   List<DylanOrdinaryBindingName> getOrdinaryBindingNameList();

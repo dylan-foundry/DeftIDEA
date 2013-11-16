@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNextRestKeyParameterList extends PsiElement {
+public interface DylanNextRestKeyParameterList extends DylanCompositeElement {
 
   @Nullable
   DylanRestKeyParameterList getRestKeyParameterList();

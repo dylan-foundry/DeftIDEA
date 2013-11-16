@@ -5,6 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNondefiningWord extends PsiElement {
+public interface DylanNondefiningWord extends DylanCompositeElement {
 
 }

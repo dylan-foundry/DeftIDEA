@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNonStatementBasicFragment extends PsiElement {
+public interface DylanNonStatementBasicFragment extends DylanCompositeElement {
 
   @Nullable
   DylanBasicFragment getBasicFragment();

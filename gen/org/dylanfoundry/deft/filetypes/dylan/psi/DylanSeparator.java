@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanSeparator extends PsiElement {
+public interface DylanSeparator extends DylanCompositeElement {
 
   @Nullable
   DylanBinaryOperator getBinaryOperator();

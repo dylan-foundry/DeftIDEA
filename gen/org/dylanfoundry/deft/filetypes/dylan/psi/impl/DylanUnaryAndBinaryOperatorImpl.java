@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanUnaryAndBinaryOperatorImpl extends ASTWrapperPsiElement implements DylanUnaryAndBinaryOperator {
+public class DylanUnaryAndBinaryOperatorImpl extends DylanCompositeElementImpl implements DylanUnaryAndBinaryOperator {
 
   public DylanUnaryAndBinaryOperatorImpl(ASTNode node) {
     super(node);

@@ -5,6 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanAllocation extends PsiElement {
+public interface DylanAllocation extends DylanCompositeElement {
 
 }

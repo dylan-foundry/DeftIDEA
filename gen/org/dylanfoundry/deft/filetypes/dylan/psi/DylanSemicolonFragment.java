@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanSemicolonFragment extends PsiElement {
+public interface DylanSemicolonFragment extends DylanCompositeElement {
 
   @Nullable
   DylanBracketedFragment getBracketedFragment();

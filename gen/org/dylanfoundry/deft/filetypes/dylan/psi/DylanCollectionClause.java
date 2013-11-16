@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanCollectionClause extends PsiElement {
+public interface DylanCollectionClause extends DylanCompositeElement {
 
   @NotNull
   List<DylanExpression> getExpressionList();

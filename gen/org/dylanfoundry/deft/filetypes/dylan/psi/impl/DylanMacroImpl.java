@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanMacroImpl extends ASTWrapperPsiElement implements DylanMacro {
+public class DylanMacroImpl extends DylanCompositeElementImpl implements DylanMacro {
 
   public DylanMacroImpl(ASTNode node) {
     super(node);

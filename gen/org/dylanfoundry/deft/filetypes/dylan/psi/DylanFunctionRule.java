@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanFunctionRule extends PsiElement {
+public interface DylanFunctionRule extends DylanCompositeElement {
 
   @NotNull
   DylanMacroName getMacroName();

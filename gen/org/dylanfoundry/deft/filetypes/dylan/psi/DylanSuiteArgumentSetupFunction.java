@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanSuiteArgumentSetupFunction extends PsiElement {
+public interface DylanSuiteArgumentSetupFunction extends DylanCompositeElement {
 
   @NotNull
   DylanVariableName getVariableName();

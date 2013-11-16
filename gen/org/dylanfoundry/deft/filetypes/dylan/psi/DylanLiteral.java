@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanLiteral extends PsiElement {
+public interface DylanLiteral extends DylanCompositeElement {
 
   @Nullable
   DylanConstant getConstant();

@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanClassDefinitionTailImpl extends ASTWrapperPsiElement implements DylanClassDefinitionTail {
+public class DylanClassDefinitionTailImpl extends DylanCompositeElementImpl implements DylanClassDefinitionTail {
 
   public DylanClassDefinitionTailImpl(ASTNode node) {
     super(node);

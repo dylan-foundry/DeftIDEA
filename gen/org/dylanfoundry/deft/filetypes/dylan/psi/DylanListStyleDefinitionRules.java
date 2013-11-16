@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanListStyleDefinitionRules extends PsiElement {
+public interface DylanListStyleDefinitionRules extends DylanCompositeElement {
 
   @NotNull
   List<DylanListStyleDefinitionRule> getListStyleDefinitionRuleList();

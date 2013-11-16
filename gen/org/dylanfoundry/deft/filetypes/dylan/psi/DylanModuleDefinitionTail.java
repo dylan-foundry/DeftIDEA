@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanModuleDefinitionTail extends PsiElement {
+public interface DylanModuleDefinitionTail extends DylanCompositeElement {
 
   @Nullable
   DylanVariableName getVariableName();

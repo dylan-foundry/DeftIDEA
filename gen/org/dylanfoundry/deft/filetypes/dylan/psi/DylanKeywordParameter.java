@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanKeywordParameter extends PsiElement {
+public interface DylanKeywordParameter extends DylanCompositeElement {
 
   @Nullable
   DylanDefaultValue getDefaultValue();

@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanModifier extends PsiElement {
+public interface DylanModifier extends DylanCompositeElement {
 
   @NotNull
   DylanNondefiningName getNondefiningName();

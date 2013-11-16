@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static org.dylanfoundry.deft.filetypes.dylan.psi.DylanTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.dylanfoundry.deft.filetypes.dylan.psi.*;
 
-public class DylanHashWordImpl extends ASTWrapperPsiElement implements DylanHashWord {
+public class DylanHashWordImpl extends DylanCompositeElementImpl implements DylanHashWord {
 
   public DylanHashWordImpl(ASTNode node) {
     super(node);

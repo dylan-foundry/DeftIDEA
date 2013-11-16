@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanPattern extends PsiElement {
+public interface DylanPattern extends DylanCompositeElement {
 
   @NotNull
   List<DylanPatternList> getPatternListList();

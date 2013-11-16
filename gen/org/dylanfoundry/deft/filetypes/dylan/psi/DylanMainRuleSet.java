@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanMainRuleSet extends PsiElement {
+public interface DylanMainRuleSet extends DylanCompositeElement {
 
   @Nullable
   DylanBodyStyleDefinitionRules getBodyStyleDefinitionRules();

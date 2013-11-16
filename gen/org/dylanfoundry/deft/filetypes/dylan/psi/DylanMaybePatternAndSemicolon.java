@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanMaybePatternAndSemicolon extends PsiElement {
+public interface DylanMaybePatternAndSemicolon extends DylanCompositeElement {
 
   @Nullable
   DylanPattern getPattern();

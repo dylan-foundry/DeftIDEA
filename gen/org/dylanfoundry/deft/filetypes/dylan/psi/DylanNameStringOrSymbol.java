@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanNameStringOrSymbol extends PsiElement {
+public interface DylanNameStringOrSymbol extends DylanCompositeElement {
 
   @Nullable
   DylanString getString();

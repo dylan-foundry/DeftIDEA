@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanMacro extends PsiElement {
+public interface DylanMacro extends DylanCompositeElement {
 
   @Nullable
   DylanDefinitionMacroCall getDefinitionMacroCall();

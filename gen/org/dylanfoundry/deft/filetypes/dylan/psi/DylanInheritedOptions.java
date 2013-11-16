@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanInheritedOptions extends PsiElement {
+public interface DylanInheritedOptions extends DylanCompositeElement {
 
   @NotNull
   List<DylanSlotOption> getSlotOptionList();
