@@ -104,6 +104,7 @@ public class DylanSyntaxAnnotator implements Annotator {
       highlightKeyword(element, DylanTypes.TEST, holder);
     } else if (element instanceof DylanLocalDeclaration) {
       highlightKeyword(element, DylanTypes.HANDLER_T, holder);
+      highlightKeyword(element, DylanTypes.LOCAL, holder);
     }
   }
 
