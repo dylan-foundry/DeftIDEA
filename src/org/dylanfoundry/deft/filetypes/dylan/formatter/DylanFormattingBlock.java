@@ -156,7 +156,7 @@ public class DylanFormattingBlock extends AbstractBlock {
     }
 
     // TODO: Add settings to set this type of indent.
-    if ((DEFINITION_TOKEN_SET.contains(grandParentType)) && (parentType == DylanTypes.PARAMETER_LIST)) {
+    if ((DEFINITION_TOKEN_SET.contains(grandParentType)) && ((parentType == DylanTypes.PARAMETER_LIST) || (parentType == DylanTypes.GENERIC_PARAMETER_LIST))) {
       if (childType == DylanTypes.EQUAL_ARROW) {
         childIndent = Indent.getSpaceIndent(1);
       } else if (childType == DylanTypes.LPAREN) {
@@ -164,7 +164,7 @@ public class DylanFormattingBlock extends AbstractBlock {
       }
     }
 
-    if ((childType == DylanTypes.PARAMETERS) || (childType == DylanTypes.ARGUMENTS) || (childType == DylanTypes.VALUES_LIST)) {
+    if ((childType == DylanTypes.PARAMETERS) || (childType == DylanTypes.GENERIC_PARAMETERS) || (childType == DylanTypes.ARGUMENTS) || (childType == DylanTypes.VALUES_LIST)) {
       childAlignment = getAlignmentForChildren();
     }
 
