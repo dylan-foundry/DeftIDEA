@@ -311,6 +311,12 @@ public class DylanParser implements PsiParser {
     else if (root_ == FUNCTION_WORD) {
       result_ = function_word(builder_, level_ + 1);
     }
+    else if (root_ == GENERIC_PARAMETER_LIST) {
+      result_ = generic_parameter_list(builder_, level_ + 1);
+    }
+    else if (root_ == GENERIC_PARAMETERS) {
+      result_ = generic_parameters(builder_, level_ + 1);
+    }
     else if (root_ == GT_EXPR) {
       result_ = expression(builder_, level_ + 1, 1);
     }
@@ -3339,7 +3345,7 @@ public class DylanParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // DEFINE modifiers? GENERIC variable_name parameter_list
+  // DEFINE modifiers? GENERIC variable_name generic_parameter_list
   public static boolean definition_generic_definer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "definition_generic_definer")) return false;
     if (!nextTokenIs(builder_, DEFINE)) return false;
@@ -3352,7 +3358,7 @@ public class DylanParser implements PsiParser {
     result_ = result_ && consumeToken(builder_, GENERIC);
     pinned_ = result_; // pin = GENERIC
     result_ = result_ && report_error_(builder_, variable_name(builder_, level_ + 1));
-    result_ = pinned_ && parameter_list(builder_, level_ + 1) && result_;
+    result_ = pinned_ && generic_parameter_list(builder_, level_ + 1) && result_;
     if (result_ || pinned_) {
       marker_.done(DEFINITION_GENERIC_DEFINER);
     }
@@ -5030,6 +5036,148 @@ public class DylanParser implements PsiParser {
       marker_.rollbackTo();
     }
     result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  /* ********************************************************** */
+  // LPAREN generic_parameters? RPAREN EQUAL_ARROW variable
+  //     | LPAREN generic_parameters? RPAREN EQUAL_ARROW LPAREN values_list? RPAREN
+  //     | LPAREN generic_parameters? RPAREN
+  public static boolean generic_parameter_list(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list")) return false;
+    if (!nextTokenIs(builder_, LPAREN)) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = generic_parameter_list_0(builder_, level_ + 1);
+    if (!result_) result_ = generic_parameter_list_1(builder_, level_ + 1);
+    if (!result_) result_ = generic_parameter_list_2(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(GENERIC_PARAMETER_LIST);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    return result_;
+  }
+
+  // LPAREN generic_parameters? RPAREN EQUAL_ARROW variable
+  private static boolean generic_parameter_list_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && generic_parameter_list_0_1(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAREN, EQUAL_ARROW);
+    result_ = result_ && variable(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // generic_parameters?
+  private static boolean generic_parameter_list_0_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_0_1")) return false;
+    generic_parameters(builder_, level_ + 1);
+    return true;
+  }
+
+  // LPAREN generic_parameters? RPAREN EQUAL_ARROW LPAREN values_list? RPAREN
+  private static boolean generic_parameter_list_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_1")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && generic_parameter_list_1_1(builder_, level_ + 1);
+    result_ = result_ && consumeTokens(builder_, 0, RPAREN, EQUAL_ARROW, LPAREN);
+    result_ = result_ && generic_parameter_list_1_5(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // generic_parameters?
+  private static boolean generic_parameter_list_1_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_1_1")) return false;
+    generic_parameters(builder_, level_ + 1);
+    return true;
+  }
+
+  // values_list?
+  private static boolean generic_parameter_list_1_5(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_1_5")) return false;
+    values_list(builder_, level_ + 1);
+    return true;
+  }
+
+  // LPAREN generic_parameters? RPAREN
+  private static boolean generic_parameter_list_2(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_2")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = consumeToken(builder_, LPAREN);
+    result_ = result_ && generic_parameter_list_2_1(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, RPAREN);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
+    return result_;
+  }
+
+  // generic_parameters?
+  private static boolean generic_parameter_list_2_1(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameter_list_2_1")) return false;
+    generic_parameters(builder_, level_ + 1);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // required_parameters COMMA next_rest_key_parameter_list
+  //     | required_parameters
+  //     | rest_key_parameter_list
+  public static boolean generic_parameters(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameters")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    enterErrorRecordingSection(builder_, level_, _SECTION_GENERAL_, "<generic parameters>");
+    result_ = generic_parameters_0(builder_, level_ + 1);
+    if (!result_) result_ = required_parameters(builder_, level_ + 1);
+    if (!result_) result_ = rest_key_parameter_list(builder_, level_ + 1);
+    if (result_) {
+      marker_.done(GENERIC_PARAMETERS);
+    }
+    else {
+      marker_.rollbackTo();
+    }
+    result_ = exitErrorRecordingSection(builder_, level_, result_, false, _SECTION_GENERAL_, null);
+    return result_;
+  }
+
+  // required_parameters COMMA next_rest_key_parameter_list
+  private static boolean generic_parameters_0(PsiBuilder builder_, int level_) {
+    if (!recursion_guard_(builder_, level_, "generic_parameters_0")) return false;
+    boolean result_ = false;
+    Marker marker_ = builder_.mark();
+    result_ = required_parameters(builder_, level_ + 1);
+    result_ = result_ && consumeToken(builder_, COMMA);
+    result_ = result_ && next_rest_key_parameter_list(builder_, level_ + 1);
+    if (!result_) {
+      marker_.rollbackTo();
+    }
+    else {
+      marker_.drop();
+    }
     return result_;
   }
 

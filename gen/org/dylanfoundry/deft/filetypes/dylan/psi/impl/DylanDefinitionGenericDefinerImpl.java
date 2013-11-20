@@ -20,14 +20,14 @@ public class DylanDefinitionGenericDefinerImpl extends DylanDefinitionImpl imple
 
   @Override
   @Nullable
-  public DylanModifiers getModifiers() {
-    return findChildByClass(DylanModifiers.class);
+  public DylanGenericParameterList getGenericParameterList() {
+    return findChildByClass(DylanGenericParameterList.class);
   }
 
   @Override
   @Nullable
-  public DylanParameterList getParameterList() {
-    return findChildByClass(DylanParameterList.class);
+  public DylanModifiers getModifiers() {
+    return findChildByClass(DylanModifiers.class);
   }
 
   @Override

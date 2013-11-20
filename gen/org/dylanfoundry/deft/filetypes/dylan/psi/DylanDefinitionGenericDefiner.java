@@ -10,10 +10,10 @@ import com.intellij.navigation.ItemPresentation;
 public interface DylanDefinitionGenericDefiner extends DylanDefinition {
 
   @Nullable
-  DylanModifiers getModifiers();
+  DylanGenericParameterList getGenericParameterList();
 
   @Nullable
-  DylanParameterList getParameterList();
+  DylanModifiers getModifiers();
 
   @Nullable
   DylanVariableName getVariableName();

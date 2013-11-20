@@ -104,6 +104,8 @@ public interface DylanTypes {
   IElementType FUNCTION_RULE = new DylanElementType("FUNCTION_RULE");
   IElementType FUNCTION_RULES = new DylanElementType("FUNCTION_RULES");
   IElementType FUNCTION_WORD = new DylanElementType("FUNCTION_WORD");
+  IElementType GENERIC_PARAMETERS = new DylanElementType("GENERIC_PARAMETERS");
+  IElementType GENERIC_PARAMETER_LIST = new DylanElementType("GENERIC_PARAMETER_LIST");
   IElementType GTEQ_EXPR = new DylanElementType("GTEQ_EXPR");
   IElementType GT_EXPR = new DylanElementType("GT_EXPR");
   IElementType HANDLER = new DylanElementType("HANDLER");
@@ -673,6 +675,12 @@ public interface DylanTypes {
       }
       else if (type == FUNCTION_WORD) {
         return new DylanFunctionWordImpl(node);
+      }
+      else if (type == GENERIC_PARAMETERS) {
+        return new DylanGenericParametersImpl(node);
+      }
+      else if (type == GENERIC_PARAMETER_LIST) {
+        return new DylanGenericParameterListImpl(node);
       }
       else if (type == GTEQ_EXPR) {
         return new DylanGteqExprImpl(node);

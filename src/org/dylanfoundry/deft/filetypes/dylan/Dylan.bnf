@@ -359,7 +359,7 @@ definition_function_definer ::= DEFINE modifiers? FUNCTION variable_name paramet
 
 function_definition_tail ::= END FUNCTION variable_name? | END variable_name?
 
-definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name parameter_list
+definition_generic_definer ::= DEFINE modifiers? GENERIC variable_name generic_parameter_list
   {
     methods=[getName setName getNameIdentifier getPresentationIcon getPresentation]
     pin=GENERIC
@@ -837,6 +837,16 @@ values_list ::=
       variables COMMA HASH_REST variable
     | variables
     | HASH_REST variable
+
+generic_parameter_list ::=
+      LPAREN generic_parameters? RPAREN EQUAL_ARROW variable
+    | LPAREN generic_parameters? RPAREN EQUAL_ARROW LPAREN values_list? RPAREN
+    | LPAREN generic_parameters? RPAREN
+
+generic_parameters ::=
+      required_parameters COMMA next_rest_key_parameter_list
+    | required_parameters
+    | rest_key_parameter_list
 
 /* Macro Definitions, page 427 */
 
