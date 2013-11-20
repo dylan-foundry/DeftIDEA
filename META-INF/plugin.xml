@@ -5,9 +5,13 @@
     <p>This plugin provides support for the <a href="http://opendylan.org/">Dylan</a> programming language.</p>
   ]]></description>
   <vendor url="http://dylanfoundry.org/">Dylan Foundry</vendor>
-  <version>0.4.2</version>
+  <version>0.5</version>
   <depends>com.intellij.modules.lang</depends>
   <changes><![CDATA[
+  <p>0.5</p>
+  <ul>
+    <li>Fix bug with parsing generics.</li>
+  </ul>
   <p>0.4.2</p>
   <ul>
     <li>Initial support for smart indenting as you type. This doesn't dedent yet.</li>
