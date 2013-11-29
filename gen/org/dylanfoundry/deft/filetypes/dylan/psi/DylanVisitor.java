@@ -391,11 +391,11 @@ public class DylanVisitor extends PsiElementVisitor {
   }
 
   public void visitGenericParameterList(@NotNull DylanGenericParameterList o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitGenericParameters(@NotNull DylanGenericParameters o) {
-    visitPsiElement(o);
+    visitCompositeElement(o);
   }
 
   public void visitGtExpr(@NotNull DylanGtExpr o) {

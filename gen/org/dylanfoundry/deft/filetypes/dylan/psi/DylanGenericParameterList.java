@@ -5,7 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface DylanGenericParameterList extends PsiElement {
+public interface DylanGenericParameterList extends DylanCompositeElement {
 
   @Nullable
   DylanGenericParameters getGenericParameters();
